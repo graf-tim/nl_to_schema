@@ -1,5 +1,5 @@
 from models.schema import (
-    DataType,
+    Type,
     Column,
     ForeignKey,
     Table,
@@ -18,7 +18,7 @@ from models.intermediate import (
 from models.critic import CriticFinding, CriticReport
 
 __all__ = [
-    "DataType",
+    "Type",
     "Column",
     "ForeignKey",
     "Table",

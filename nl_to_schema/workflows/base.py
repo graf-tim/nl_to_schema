@@ -41,6 +41,55 @@ class WorkflowState(BaseModel):
 # System-Prompts
 # ---------------------------------------------------------------------------
 
+KONVENTIONEN = """
+KONVENTIONEN
+  
+TYPEN:
+- INTEGER: für ganze Zahlen (z.B. Alter, Anzahl)
+- VARCHAR: für kurze Texte (z.B. Name, E-Mail)
+- TEXT: für längere Texte (z.B. Beschreibung, Kommentar)
+- DATE: für Datumsangaben (z.B. Geburtsdatum, Ausleihdatum)
+- BOOLEAN: für Wahrheitswerte (z.B. ist_aktiv)
+- DECIMAL: für Dezimalzahlen (z.B. Preis, Bewertung)
+- TIMESTAMP: für Zeitstempel (z.B. Erstellungszeit)
+
+CONSTRAINTS:
+- Pflichtfelder:    nullable: false
+- Optionale Felder: nullable: true
+- Primärschlüssel:  primary_key: true
+
+NAMENSKONVENTIONEN:
+
+TABELLEN (Logisches Schema):
+- Plural, snake_case, Kleinschreibung, plural, englisch
+- Umlaute ersetzen: ä→ae, ö→oe, ü→ue, ß→ss
+- Korrekt: "persons", "books", "authors", "borrowings"
+
+PRIMÄRSCHLÜSSEL:
+- Format: id INTEGER PRIMARY KEY
+- Immer die ERSTE Spalte der Tabelle
+- Korrekt: "id"
+
+FREMDSCHLÜSSEL:
+- Format: {referenz_singular}_id INTEGER NOT NULL
+- Korrekt: "person_id", "book_id"
+
+JUNCTION TABLES (N:M Beziehungen):
+- Format: {tabelle_a}_{tabelle_b} (alphabetisch sortiert)
+- Korrekt: "author_books", "course_students"
+
+ATTRIBUTE:
+- snake_case, Kleinschreibung
+- Kurze Namen in englisch:
+  "E-Mail-Adresse" → "email"
+  "Vorname"     → "firstname"
+  "Nachname"      → "lastname"
+  "Geburtsdatum"     → "birthdate"
+  "Erscheinungsjahr" → "publicationyear"
+  "Ausleihdatum"  → "checkoutdate"
+  "Rückgabedatum"    → "returndate"
+"""
+
 RA_SYSTEM_PROMPT = """Du bist ein erfahrener Requirements Analyst für relationale Datenbanken.
 Aufgabe: Aus einem natürlichsprachlichen Anforderungstext einen strukturierten
 RequirementsReport extrahieren.
@@ -57,8 +106,9 @@ Vorgehen:
 
 Regeln:
 - Erfinde keine Entitäten oder Attribute, die nicht im Text begründet sind.
-- Bevorzuge Singular für Entitätsnamen (Kunde statt Kunden).
 - Fasse synonyme Begriffe zur selben Entität zusammen.
+
+""" + KONVENTIONEN + """
 
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
@@ -80,9 +130,10 @@ Vorgehen:
 
 Regeln:
 - Bleibe konzeptionell – noch keine Auflösung von M:N in Brückentabellen.
-- Verwende konsistente Namenskonventionen (snake_case).
 - Resolve Unklarheiten konservativ und dokumentiere die Annahme implizit über
   klare Namen und Pflichtfelder.
+
+""" + KONVENTIONEN + """
 
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
@@ -95,7 +146,7 @@ Vorgehen:
 <analyse>
 1. Identifiziere alle Tabellen mit ihren Spalten und Datentypen aus
    {INTEGER, VARCHAR, TEXT, DATE, BOOLEAN, DECIMAL, TIMESTAMP}.
-2. Vergib jeder Tabelle mindestens einen Primärschlüssel (Surrogat-id falls nötig).
+2. Vergib jeder Tabelle mindestens einen Primärschlüssel.
 3. Setze nullable=False für Pflichtfelder.
 4. Löse M:N-Beziehungen in Brückentabellen mit zusammengesetztem Primärschlüssel auf.
 5. Definiere Foreign Keys konsistent (gleicher Datentyp wie Ziel-PK).
@@ -104,11 +155,12 @@ Vorgehen:
 </analyse>
 
 Regeln:
-- snake_case für Tabellen- und Spaltennamen.
 - Jede Fremdschlüssel-Spalte muss zu einer existierenden Spalte einer existierenden
   Tabelle zeigen.
 - Keine Zirkelreferenzen, sofern fachlich nicht zwingend.
 - Vermeide Redundanz (Ziel: 3NF, soweit aus den Anforderungen ableitbar).
+
+""" + KONVENTIONEN + """
 
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
@@ -137,6 +189,8 @@ Setze qualitaet_ausreichend=True genau dann, wenn alle harten Pflichtkriterien
 entitaets_vollstaendigkeit) erfuellt sind und maximal Optimierungspotenzial
 in den weichen Kriterien besteht.
 
+""" + KONVENTIONEN + """
+
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
 
@@ -159,6 +213,8 @@ Andere Kriterien dürfen mit erfuellt=True und kurzer beschreibung passiert werd
 aber kommentiere keine inhaltliche Vollständigkeit. Trenne harte Fehler von weichen
 Optimierungen.
 
+""" + KONVENTIONEN + """
+
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
 
@@ -178,6 +234,8 @@ Vorgehen:
 
 Andere Kriterien dürfen mit erfuellt=True und kurzer beschreibung passiert werden.
 Trenne harte Fehler von weichen Optimierungen.
+
+""" + KONVENTIONEN + """
 
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
@@ -199,6 +257,8 @@ Vorgehen:
 4. Stelle sicher, dass das finale Schema syntaktisch korrekt, vollständig und
    normalisiert ist.
 </analyse>
+
+""" + KONVENTIONEN + """
 
 Gib ausschließlich das finale LogicalSchema im geforderten strukturierten Format zurück."""
 
@@ -224,6 +284,8 @@ Vorgehen:
 qualitaet_ausreichend=True genau dann, wenn alle harten Pflichtkriterien
 (syntaktische_korrektheit, pk_vollstaendigkeit, fk_integritaet,
 entitaets_vollstaendigkeit) erfuellt sind.
+
+""" + KONVENTIONEN + """
 
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
