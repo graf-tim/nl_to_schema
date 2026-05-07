@@ -1,0 +1,278 @@
+[
+  {
+    "id": "TC001",
+    "stufe": 1,
+    "anforderungstext": "Wir betreiben eine kleine öffentliche Bibliothek und brauchen eine Datenbank zur Verwaltung des Bestands und der Ausleihen. Pro Buch speichern wir Titel, ISBN, Erscheinungsjahr sowie genau einen Autor. Zu jedem Autor halten wir Vorname, Nachname und Geburtsdatum fest. Mitglieder der Bibliothek sind durch ihren Namen, ihre Adresse und ein Eintrittsdatum charakterisiert. Eine Ausleihe wird beim Vorgang erfasst und enthält das Ausleihdatum, das geplante Rückgabedatum und ein Mitglied sowie genau ein Buch. Ein Mitglied kann mehrere Ausleihen tätigen, ein Buch kann nacheinander mehrfach ausgeliehen werden, aber zu einem Zeitpunkt nur an ein Mitglied.",
+    "referenzschema": {
+      "tables": [
+        {
+          "name": "autor",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "vorname", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "nachname", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "geburtsdatum", "data_type": "DATE", "nullable": true, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "buch",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "titel", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "isbn", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "erscheinungsjahr", "data_type": "INTEGER", "nullable": true, "primary_key": false},
+            {"name": "autor_id", "data_type": "INTEGER", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "autor_id", "to_table": "autor", "to_column": "id"}
+          ]
+        },
+        {
+          "name": "mitglied",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "name", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "adresse", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "eintrittsdatum", "data_type": "DATE", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "ausleihe",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "ausleihdatum", "data_type": "DATE", "nullable": false, "primary_key": false},
+            {"name": "rueckgabedatum_geplant", "data_type": "DATE", "nullable": false, "primary_key": false},
+            {"name": "mitglied_id", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "buch_id", "data_type": "INTEGER", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "mitglied_id", "to_table": "mitglied", "to_column": "id"},
+            {"from_column": "buch_id", "to_table": "buch", "to_column": "id"}
+          ]
+        }
+      ]
+    },
+    "begruendung": "Stufe 1: 4 Entitäten, ausschließlich 1:N-Beziehungen, keine semantische Ambiguität, klare Pflichtfelder."
+  },
+  {
+    "id": "TC002",
+    "stufe": 2,
+    "anforderungstext": "Eine Hochschule benötigt ein System zur Verwaltung ihrer Lehrveranstaltungen. Studierende mit Matrikelnummer, Namen, E-Mail und Studiengang können sich für mehrere Kurse anmelden, jeder Kurs kann von vielen Studierenden besucht werden. Pro Anmeldung ist außerdem das Anmeldedatum und am Ende eine Note zu speichern. Kurse haben einen Titel, eine Kursnummer, eine Anzahl ECTS und werden in genau einem Semester angeboten; ein Semester ist durch Bezeichnung und Start- und Enddatum charakterisiert. Jeder Kurs wird von genau einem Dozenten gehalten. Dozenten haben einen Namen, ein Fachgebiet und eine Personalnummer. Ein Dozent kann viele Kurse halten. Räume haben eine Raumnummer und eine Kapazität; ein Kurs findet in genau einem Raum statt, ein Raum kann für viele Kurse genutzt werden. Es ist wichtig, dass Anmeldungen pro Studierendem und Kurs eindeutig sind.",
+    "referenzschema": {
+      "tables": [
+        {
+          "name": "studierender",
+          "columns": [
+            {"name": "matrikelnummer", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "name", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "email", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "studiengang", "data_type": "VARCHAR", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dozent",
+          "columns": [
+            {"name": "personalnummer", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "name", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "fachgebiet", "data_type": "VARCHAR", "nullable": true, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "raum",
+          "columns": [
+            {"name": "raumnummer", "data_type": "VARCHAR", "nullable": false, "primary_key": true},
+            {"name": "kapazitaet", "data_type": "INTEGER", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "semester",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "bezeichnung", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "startdatum", "data_type": "DATE", "nullable": false, "primary_key": false},
+            {"name": "enddatum", "data_type": "DATE", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "kurs",
+          "columns": [
+            {"name": "kursnummer", "data_type": "VARCHAR", "nullable": false, "primary_key": true},
+            {"name": "titel", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "ects", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "semester_id", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "dozent_personalnummer", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "raum_nummer", "data_type": "VARCHAR", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "semester_id", "to_table": "semester", "to_column": "id"},
+            {"from_column": "dozent_personalnummer", "to_table": "dozent", "to_column": "personalnummer"},
+            {"from_column": "raum_nummer", "to_table": "raum", "to_column": "raumnummer"}
+          ]
+        },
+        {
+          "name": "anmeldung",
+          "columns": [
+            {"name": "studierender_matrikelnummer", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "kurs_kursnummer", "data_type": "VARCHAR", "nullable": false, "primary_key": true},
+            {"name": "anmeldedatum", "data_type": "DATE", "nullable": false, "primary_key": false},
+            {"name": "note", "data_type": "DECIMAL", "nullable": true, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "studierender_matrikelnummer", "to_table": "studierender", "to_column": "matrikelnummer"},
+            {"from_column": "kurs_kursnummer", "to_table": "kurs", "to_column": "kursnummer"}
+          ]
+        }
+      ]
+    },
+    "begruendung": "Stufe 2: 6 Entitäten mit 1:N und einer auflösungspflichtigen M:N-Beziehung (Anmeldung), leichte Ambiguität bezüglich Note (optional)."
+  },
+  {
+    "id": "TC003",
+    "stufe": 3,
+    "anforderungstext": "Wir entwerfen ein Krankenhausverwaltungssystem. Patienten haben eine Patientennummer, Vor- und Nachnamen, Geburtsdatum, Geschlecht und eine Versicherungsnummer. Sie können mehrere Aufenthalte haben; ein Aufenthalt umfasst Aufnahmedatum, Entlassungsdatum (optional, solange der Patient noch im Haus ist), Aufnahmegrund und ist genau einer Station zugeordnet. Eine Station hat eine Bezeichnung, einen Stationsleiter (Arzt) und eine maximale Bettenanzahl. Ärzte werden durch Personalnummer, Name und Fachrichtung beschrieben; ein Arzt kann an vielen Stationen arbeiten und eine Station hat viele Ärzte zugeordnet. Während eines Aufenthalts können viele Behandlungen durchgeführt werden. Eine Behandlung erfolgt zu einem Zeitpunkt, hat eine Beschreibung und wird von einem oder mehreren Ärzten durchgeführt; jede Behandlung kann zudem mehrere Medikamente verordnen. Pro Verordnung sind Dosis und Häufigkeit zu speichern. Medikamente haben einen Namen, einen Wirkstoff und eine Standarddosierung. Diagnosen werden ebenfalls erfasst: pro Aufenthalt können mehrere Diagnosen vorliegen, jede mit ICD-10-Code, Beschreibung und einem Datum. Termine außerhalb von Aufenthalten existieren ebenfalls; ein Termin gehört zu einem Patienten, wird mit einem Arzt vereinbart und hat Datum, Uhrzeit und einen Status. Es ist im Gespräch, ob Pflegekräfte ebenfalls als eigene Entität geführt werden sollen, das ist aber noch nicht final entschieden.",
+    "referenzschema": {
+      "tables": [
+        {
+          "name": "patient",
+          "columns": [
+            {"name": "patientennummer", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "vorname", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "nachname", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "geburtsdatum", "data_type": "DATE", "nullable": false, "primary_key": false},
+            {"name": "geschlecht", "data_type": "VARCHAR", "nullable": true, "primary_key": false},
+            {"name": "versicherungsnummer", "data_type": "VARCHAR", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "arzt",
+          "columns": [
+            {"name": "personalnummer", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "name", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "fachrichtung", "data_type": "VARCHAR", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "station",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "bezeichnung", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "stationsleiter_personalnummer", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "max_bettenanzahl", "data_type": "INTEGER", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "stationsleiter_personalnummer", "to_table": "arzt", "to_column": "personalnummer"}
+          ]
+        },
+        {
+          "name": "station_arzt",
+          "columns": [
+            {"name": "station_id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "arzt_personalnummer", "data_type": "INTEGER", "nullable": false, "primary_key": true}
+          ],
+          "foreign_keys": [
+            {"from_column": "station_id", "to_table": "station", "to_column": "id"},
+            {"from_column": "arzt_personalnummer", "to_table": "arzt", "to_column": "personalnummer"}
+          ]
+        },
+        {
+          "name": "aufenthalt",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "patient_patientennummer", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "station_id", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "aufnahmedatum", "data_type": "DATE", "nullable": false, "primary_key": false},
+            {"name": "entlassungsdatum", "data_type": "DATE", "nullable": true, "primary_key": false},
+            {"name": "aufnahmegrund", "data_type": "TEXT", "nullable": true, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "patient_patientennummer", "to_table": "patient", "to_column": "patientennummer"},
+            {"from_column": "station_id", "to_table": "station", "to_column": "id"}
+          ]
+        },
+        {
+          "name": "diagnose",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "aufenthalt_id", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "icd10_code", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "beschreibung", "data_type": "TEXT", "nullable": true, "primary_key": false},
+            {"name": "datum", "data_type": "DATE", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "aufenthalt_id", "to_table": "aufenthalt", "to_column": "id"}
+          ]
+        },
+        {
+          "name": "behandlung",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "aufenthalt_id", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "zeitpunkt", "data_type": "TIMESTAMP", "nullable": false, "primary_key": false},
+            {"name": "beschreibung", "data_type": "TEXT", "nullable": true, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "aufenthalt_id", "to_table": "aufenthalt", "to_column": "id"}
+          ]
+        },
+        {
+          "name": "behandlung_arzt",
+          "columns": [
+            {"name": "behandlung_id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "arzt_personalnummer", "data_type": "INTEGER", "nullable": false, "primary_key": true}
+          ],
+          "foreign_keys": [
+            {"from_column": "behandlung_id", "to_table": "behandlung", "to_column": "id"},
+            {"from_column": "arzt_personalnummer", "to_table": "arzt", "to_column": "personalnummer"}
+          ]
+        },
+        {
+          "name": "medikament",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "name", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "wirkstoff", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "standarddosierung", "data_type": "VARCHAR", "nullable": true, "primary_key": false}
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "verordnung",
+          "columns": [
+            {"name": "behandlung_id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "medikament_id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "dosis", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "haeufigkeit", "data_type": "VARCHAR", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "behandlung_id", "to_table": "behandlung", "to_column": "id"},
+            {"from_column": "medikament_id", "to_table": "medikament", "to_column": "id"}
+          ]
+        },
+        {
+          "name": "termin",
+          "columns": [
+            {"name": "id", "data_type": "INTEGER", "nullable": false, "primary_key": true},
+            {"name": "patient_patientennummer", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "arzt_personalnummer", "data_type": "INTEGER", "nullable": false, "primary_key": false},
+            {"name": "datum", "data_type": "DATE", "nullable": false, "primary_key": false},
+            {"name": "uhrzeit", "data_type": "VARCHAR", "nullable": false, "primary_key": false},
+            {"name": "status", "data_type": "VARCHAR", "nullable": false, "primary_key": false}
+          ],
+          "foreign_keys": [
+            {"from_column": "patient_patientennummer", "to_table": "patient", "to_column": "patientennummer"},
+            {"from_column": "arzt_personalnummer", "to_table": "arzt", "to_column": "personalnummer"}
+          ]
+        }
+      ]
+    },
+    "begruendung": "Stufe 3: 11 Entitäten, mehrere M:N-Beziehungen mit Beziehungsattributen (Verordnung mit Dosis/Häufigkeit), substanzielle Ambiguität bezüglich Pflegekräften (bewusst nicht modelliert)."
+  }
+]
