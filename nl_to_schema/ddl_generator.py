@@ -3,17 +3,17 @@ from __future__ import annotations
 
 import sqlparse
 
-from models.schema import LogicalSchema, Table, Column, ForeignKey, DataType
+from models.schema import LogicalSchema, Table, Column, ForeignKey, Type
 
 
 _TYPE_RENDER = {
-    DataType.INTEGER: "INTEGER",
-    DataType.VARCHAR: "VARCHAR(255)",
-    DataType.TEXT: "TEXT",
-    DataType.DATE: "DATE",
-    DataType.BOOLEAN: "BOOLEAN",
-    DataType.DECIMAL: "DECIMAL(18,2)",
-    DataType.TIMESTAMP: "TIMESTAMP",
+    Type.INTEGER: "INTEGER",
+    Type.VARCHAR: "VARCHAR(255)",
+    Type.TEXT: "TEXT",
+    Type.DATE: "DATE",
+    Type.BOOLEAN: "BOOLEAN",
+    Type.DECIMAL: "DECIMAL(18,2)",
+    Type.TIMESTAMP: "TIMESTAMP",
 }
 
 
@@ -37,8 +37,8 @@ def _topological_sort(tables: list[Table]) -> list[Table]:
         on_stack.add(name)
         table = by_name[name]
         for fk in table.foreign_keys:
-            if fk.to_table != name and fk.to_table in by_name:
-                visit(fk.to_table, path + [name])
+            if fk.references_table != name and fk.references_table in by_name:
+                visit(fk.references_table, path + [name])
         on_stack.discard(name)
         visited.add(name)
         order.append(by_name[name])
@@ -49,7 +49,7 @@ def _topological_sort(tables: list[Table]) -> list[Table]:
 
 
 def _render_column(col: Column) -> str:
-    parts = [col.name, _TYPE_RENDER[col.data_type]]
+    parts = [col.name, _TYPE_RENDER[col.type]]
     if not col.nullable:
         parts.append("NOT NULL")
     return " ".join(parts)
@@ -70,7 +70,7 @@ def _render_table(table: Table) -> str:
         lines.append(
             f"    CONSTRAINT fk_{table.name}_{fk.from_column} "
             f"FOREIGN KEY ({fk.from_column}) "
-            f"REFERENCES {fk.to_table} ({fk.to_column})"
+            f"REFERENCES {fk.references_table} ({fk.references_column})"
         )
 
     body = ",\n".join(lines)
@@ -142,8 +142,8 @@ def validate_ddl_structural(ddl: str, schema: LogicalSchema) -> dict:
         for fk in t.foreign_keys:
             total_fks += 1
             if (
-                fk.to_table in table_columns
-                and fk.to_column in table_columns[fk.to_table]
+                fk.references_table in table_columns
+                and fk.references_column in table_columns[fk.references_table]
                 and fk.from_column in table_columns[t.name]
             ):
                 valid_fks += 1

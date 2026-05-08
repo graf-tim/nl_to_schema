@@ -46,7 +46,7 @@ def _ok_schema() -> LogicalSchema:
                     Column(name="autor_id", data_type=DataType.INTEGER, nullable=False),
                 ],
                 foreign_keys=[
-                    ForeignKey(from_column="autor_id", to_table="autor", to_column="id"),
+                    ForeignKey(from_column="autor_id", references_table="autor", references_column="id"),
                 ],
             ),
         ]

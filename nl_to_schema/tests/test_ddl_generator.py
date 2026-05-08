@@ -23,7 +23,7 @@ def _simple_schema() -> LogicalSchema:
                     Column(name="autor_id", data_type=DataType.INTEGER, nullable=False),
                 ],
                 foreign_keys=[
-                    ForeignKey(from_column="autor_id", to_table="autor", to_column="id"),
+                    ForeignKey(from_column="autor_id", references_table="autor", references_column="id"),
                 ],
             ),
         ]
@@ -51,7 +51,7 @@ def test_validate_ddl_structural_clean():
 
 def test_validate_ddl_structural_broken_fk():
     schema = _simple_schema()
-    schema.tables[1].foreign_keys[0].to_table = "nichtexistent"
+    schema.tables[1].foreign_keys[0].references_table = "nichtexistent"
     ddl = generate_ddl(schema)
     result = validate_ddl_structural(ddl, schema)
     assert result["fk_integritaet"] < 1.0
@@ -66,7 +66,7 @@ def test_circular_reference_raises():
                     Column(name="id", data_type=DataType.INTEGER, nullable=False, primary_key=True),
                     Column(name="b_id", data_type=DataType.INTEGER, nullable=False),
                 ],
-                foreign_keys=[ForeignKey(from_column="b_id", to_table="b", to_column="id")],
+                foreign_keys=[ForeignKey(from_column="b_id", references_table="b", references_column="id")],
             ),
             Table(
                 name="b",
@@ -74,7 +74,7 @@ def test_circular_reference_raises():
                     Column(name="id", data_type=DataType.INTEGER, nullable=False, primary_key=True),
                     Column(name="a_id", data_type=DataType.INTEGER, nullable=False),
                 ],
-                foreign_keys=[ForeignKey(from_column="a_id", to_table="a", to_column="id")],
+                foreign_keys=[ForeignKey(from_column="a_id", references_table="a", references_column="id")],
             ),
         ]
     )

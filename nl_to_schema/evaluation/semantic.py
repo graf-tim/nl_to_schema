@@ -111,7 +111,7 @@ def _relationships(schema: LogicalSchema) -> set[tuple[str, str]]:
     rels: set[tuple[str, str]] = set()
     for t in schema.tables:
         for fk in t.foreign_keys:
-            rels.add((t.name.lower(), fk.to_table.lower()))
+            rels.add((t.name.lower(), fk.references_table.lower()))
     return rels
 
 
@@ -142,12 +142,12 @@ def semantic_score(
     entitaet_f1 = _f1(tp, fp, fn)
 
     attr_tp = attr_fp = attr_fn = 0
-    name_to_table_gen = {t.name: t for t in generated.tables}
-    name_to_table_ref = {t.name: t for t in reference.tables}
+    name_references_table_gen = {t.name: t for t in generated.tables}
+    name_references_table_ref = {t.name: t for t in reference.tables}
     matched_pairs_by_name: dict[str, str] = {}
     for i, j, _ in table_pairs:
-        gen_t = name_to_table_gen[gen_names[i]]
-        ref_t = name_to_table_ref[ref_names[j]]
+        gen_t = name_references_table_gen[gen_names[i]]
+        ref_t = name_references_table_ref[ref_names[j]]
         matched_pairs_by_name[gen_t.name.lower()] = ref_t.name.lower()
         a_tp, a_fp, a_fn = _attribute_f1_for_match(gen_t, ref_t, threshold, grey_log)
         attr_tp += a_tp
