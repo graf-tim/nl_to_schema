@@ -17,7 +17,7 @@ from models.intermediate import (
     ERModell,
     RequirementsReport,
 )
-from models.schema import Column, DataType, ForeignKey, LogicalSchema, Table
+from models.schema import Column, Type, ForeignKey, LogicalSchema, Table
 from models.critic import CriticFinding, CriticReport
 from workflows.base import WorkflowState
 
@@ -34,16 +34,16 @@ def _ok_schema() -> LogicalSchema:
             Table(
                 name="autor",
                 columns=[
-                    Column(name="id", data_type=DataType.INTEGER, nullable=False, primary_key=True),
-                    Column(name="name", data_type=DataType.VARCHAR, nullable=False),
+                    Column(name="id", type=Type.INTEGER, nullable=False, primary_key=True),
+                    Column(name="name", type=Type.VARCHAR, nullable=False),
                 ],
             ),
             Table(
                 name="buch",
                 columns=[
-                    Column(name="id", data_type=DataType.INTEGER, nullable=False, primary_key=True),
-                    Column(name="titel", data_type=DataType.VARCHAR, nullable=False),
-                    Column(name="autor_id", data_type=DataType.INTEGER, nullable=False),
+                    Column(name="id", type=Type.INTEGER, nullable=False, primary_key=True),
+                    Column(name="titel", type=Type.VARCHAR, nullable=False),
+                    Column(name="autor_id", type=Type.INTEGER, nullable=False),
                 ],
                 foreign_keys=[
                     ForeignKey(from_column="autor_id", references_table="autor", references_column="id"),

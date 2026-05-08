@@ -52,24 +52,45 @@ def _run_workflow(name: str, anforderungstext: str) -> WorkflowState:
 
 
 def _evaluate(
-    state: WorkflowState, anforderungstext: str, reference: LogicalSchema
+    state: WorkflowState,
+    anforderungstext: str,
+    reference: LogicalSchema,
+    *,
+    skip_qualitative: bool = False,
 ) -> dict[str, Any]:
+    """Berechnet die drei Score-Dimensionen plus gewichteten Gesamtscore.
+
+    Mit `skip_qualitative=True` wird der LLM-as-Judge-Aufruf weggelassen.
+    `weighted_total` wird dann mit re-normalisierten Gewichten aus den beiden
+    übrigen Dimensionen gebildet, damit der Score weiterhin in [0,1] und
+    intern vergleichbar bleibt.
+    """
     if state.logical_schema is None:
         return {
             "structural": {"score": 0.0, "syntaktisch_korrekt": False},
             "semantic": {"semantic_score": 0.0},
-            "qualitative": {"qualitative_score": 0.0},
+            "qualitative": {"qualitative_score": None, "skipped": skip_qualitative},
             "weighted_total": 0.0,
             "note": "Workflow lieferte kein logical_schema.",
         }
     structural = structural_details(state.final_ddl or "", state.logical_schema)
     semantic = semantic_score(state.logical_schema, reference)
-    qualitative = qualitative_score(state.logical_schema, anforderungstext)
-    total = (
-        WEIGHTS["strukturell"] * structural["score"]
-        + WEIGHTS["semantisch"] * semantic["semantic_score"]
-        + WEIGHTS["qualitativ"] * qualitative["qualitative_score"]
-    )
+
+    if skip_qualitative:
+        qualitative = {"qualitative_score": None, "skipped": True}
+        # Re-normalisiert auf die zwei aktiven Dimensionen.
+        denom = WEIGHTS["strukturell"] + WEIGHTS["semantisch"]
+        total = (
+            (WEIGHTS["strukturell"] / denom) * structural["score"]
+            + (WEIGHTS["semantisch"] / denom) * semantic["semantic_score"]
+        )
+    else:
+        qualitative = qualitative_score(state.logical_schema, anforderungstext)
+        total = (
+            WEIGHTS["strukturell"] * structural["score"]
+            + WEIGHTS["semantisch"] * semantic["semantic_score"]
+            + WEIGHTS["qualitativ"] * qualitative["qualitative_score"]
+        )
     return {
         "structural": structural,
         "semantic": semantic,
@@ -103,8 +124,48 @@ def _save_result(
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
 
+def _select_testcases(
+    testcases: list[dict],
+    *,
+    ids: list[str] | None,
+    limit_per_stufe: int | None,
+) -> list[dict]:
+    """Wählt Testfälle aus.
+
+    1. Wenn `ids` gesetzt: nur diese IDs (in Eingangsreihenfolge der Datei).
+    2. Sonst, wenn `limit_per_stufe` gesetzt: pro Stufe die ersten N Einträge
+       in der Reihenfolge, in der sie in `testcases.json` stehen
+       (typischerweise alphabetisch nach ID, da der Generator sortiert speichert).
+    3. Sonst: alle Testfälle.
+    """
+    if ids:
+        wanted = set(ids)
+        return [t for t in testcases if t["id"] in wanted]
+    if limit_per_stufe is not None:
+        per_stufe_count: dict[int, int] = {}
+        out: list[dict] = []
+        for tc in testcases:
+            stufe = tc.get("stufe")
+            n = per_stufe_count.get(stufe, 0)
+            if n < limit_per_stufe:
+                out.append(tc)
+                per_stufe_count[stufe] = n + 1
+        return out
+    return list(testcases)
+
+
 def main() -> None:
-    load_dotenv()
+    # .env-Suche analog zum Testdata-Generator: lädt nl_to_schema/.env auch dann,
+    # wenn das Skript aus einem anderen cwd gestartet wird. override=True, damit
+    # leere Shell-Vars (z.B. GOOGLE_API_KEY="") überschrieben werden.
+    script_dir = Path(__file__).resolve().parent
+    for candidate in (
+        Path.cwd() / ".env",
+        script_dir / ".env",
+        script_dir.parent / ".env",
+    ):
+        if candidate.exists():
+            load_dotenv(dotenv_path=candidate, override=True)
     _setup_logging()
 
     parser = argparse.ArgumentParser(description=__doc__)
@@ -122,11 +183,42 @@ def main() -> None:
         default=None,
         help="Optional: nur diese Testfall-IDs ausführen.",
     )
+    parser.add_argument(
+        "--limit-per-stufe",
+        type=int,
+        default=None,
+        help=(
+            "Pro Stufe nur die ersten N Testfälle ausführen "
+            "(z.B. --limit-per-stufe 15)."
+        ),
+    )
+    parser.add_argument(
+        "--skip-qualitative",
+        action="store_true",
+        help=(
+            "LLM-as-Judge (qualitative Evaluation) überspringen. "
+            "weighted_total wird dann aus structural+semantic re-normalisiert."
+        ),
+    )
     args = parser.parse_args()
 
-    testcases = _load_testcases(args.testcases)
-    if args.testfall_ids:
-        testcases = [t for t in testcases if t["id"] in args.testfall_ids]
+    all_testcases = _load_testcases(args.testcases)
+    testcases = _select_testcases(
+        all_testcases,
+        ids=args.testfall_ids,
+        limit_per_stufe=args.limit_per_stufe,
+    )
+    if not testcases:
+        logging.error("Keine Testfälle ausgewählt — Abbruch.")
+        return
+    logging.info(
+        "Ausgewählt: %d von %d Testfällen", len(testcases), len(all_testcases)
+    )
+    if args.skip_qualitative:
+        logging.warning(
+            "LLM-as-Judge wird übersprungen (--skip-qualitative). "
+            "weighted_total = (3/7)·structural + (4/7)·semantic."
+        )
 
     args.output.mkdir(parents=True, exist_ok=True)
 
@@ -147,7 +239,12 @@ def main() -> None:
                     workflow_name=wf,
                     error=f"workflow_crashed: {exc}",
                 )
-            evaluation = _evaluate(state, anforderungstext, reference)
+            evaluation = _evaluate(
+                state,
+                anforderungstext,
+                reference,
+                skip_qualitative=args.skip_qualitative,
+            )
             telemetry = LEDGER.summary()
             logging.info(
                 "[%s][%s] tokens in=%d out=%d cost=$%.5f calls=%d",

@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from agents._llm import call_structured
 from models.schema import LogicalSchema
+from workflows.base import KONVENTIONEN, get_judge_llm
 
 
 logger = logging.getLogger(__name__)
@@ -25,15 +26,19 @@ bis 5 (sehr gut):
 2) datentypangemessenheit: Sind die gewählten Datentypen fachlich korrekt
    (z.B. DATE statt VARCHAR für Datumsspalten, DECIMAL für Geld, BOOLEAN für Flags)?
 
-3) konventionskonsistenz: Sind Namenskonventionen einheitlich
-   (snake_case vs. CamelCase, Singular vs. Plural, Konsistenz bei id-Spalten,
-   einheitliche Pluralisierung bei Brückentabellen)?
+3) konventionskonsistenz: Werden die unten beschriebenen Projekt-Namens- und
+   Strukturkonventionen eingehalten (siehe KONVENTIONEN-Block)?
 
 Vorgehen:
 <analyse>
 1. Gehe alle Tabellen einzeln durch und sammle Beobachtungen pro Dimension.
-2. Vergib pro Dimension einen Integer-Score 1..5 mit kurzer Begründung.
+2. Beziehe dich beim Konventionscheck explizit auf die KONVENTIONEN-Regeln
+   (Plural, snake_case, englische Attributnamen, Format der id/_id-Spalten,
+   alphabetische Junction-Table-Namen, Datentypzuordnung).
+3. Vergib pro Dimension einen Integer-Score 1..5 mit kurzer Begründung.
 </analyse>
+
+""" + KONVENTIONEN + """
 
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
@@ -64,6 +69,7 @@ def qualitative_score(schema: LogicalSchema, anforderungstext: str) -> dict:
             system_prompt=JUDGE_SYSTEM_PROMPT,
             user_message=user_message,
             output_model=QualitativeJudgement,
+            llm_factory=get_judge_llm,
         )
     except Exception as exc:
         logger.exception("LLM-as-Judge fehlgeschlagen: %s", exc)

@@ -3,8 +3,7 @@
 Der Ledger ist ein Modul-Singleton. Vor jedem Run wird er via reset() geleert,
 am Ende der Auswertung via summary() ausgelesen und ins Ergebnis geschrieben.
 
-Preise sind Stand 2025/2026 für die OpenAI-Modelle, die hier praktisch genutzt
-werden. Nicht gelistete Modelle führen zu cost_usd=0.0.
+Preise sind Stand 2025/2026. Nicht gelistete Modelle führen zu cost_usd=0.0.
 """
 from __future__ import annotations
 
@@ -13,12 +12,24 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 
-# USD pro 1 Token (1M-Preis / 1_000_000). Quelle: OpenAI-Pricing-Seite.
+# USD pro 1 Token (1M-Preis / 1_000_000). Quellen: OpenAI- und Anthropic-Pricing.
 PRICING_PER_TOKEN: dict[str, dict[str, float]] = {
-    "gpt-4o-mini":  {"input": 0.15 / 1_000_000, "output": 0.60 / 1_000_000},
-    "gpt-4o":       {"input": 2.50 / 1_000_000, "output": 10.00 / 1_000_000},
-    "gpt-4.1-mini": {"input": 0.40 / 1_000_000, "output": 1.60 / 1_000_000},
-    "gpt-4.1":      {"input": 2.00 / 1_000_000, "output": 8.00 / 1_000_000},
+    # OpenAI
+    "gpt-4o-mini":      {"input":  0.15 / 1_000_000, "output":  0.60 / 1_000_000},
+    "gpt-4o":           {"input":  2.50 / 1_000_000, "output": 10.00 / 1_000_000},
+    "gpt-4.1-mini":     {"input":  0.40 / 1_000_000, "output":  1.60 / 1_000_000},
+    "gpt-4.1":          {"input":  2.00 / 1_000_000, "output":  8.00 / 1_000_000},
+    # Anthropic
+    "claude-opus-4-6":  {"input": 15.00 / 1_000_000, "output": 75.00 / 1_000_000},
+    "claude-opus-4-5":  {"input": 15.00 / 1_000_000, "output": 75.00 / 1_000_000},
+    "claude-sonnet-4-6":{"input":  3.00 / 1_000_000, "output": 15.00 / 1_000_000},
+    "claude-sonnet-4-5":{"input":  3.00 / 1_000_000, "output": 15.00 / 1_000_000},
+    "claude-haiku-4-5": {"input":  0.80 / 1_000_000, "output":  4.00 / 1_000_000},
+    # Google (Gemini): grobe Richtwerte; bitte ggf. an Live-Pricing anpassen.
+    "gemini-3.1-pro":   {"input":  2.00 / 1_000_000, "output": 10.00 / 1_000_000},
+    "gemini-2.5-pro":   {"input":  1.25 / 1_000_000, "output":  5.00 / 1_000_000},
+    "gemini-2.0-pro":   {"input":  1.25 / 1_000_000, "output":  5.00 / 1_000_000},
+    "gemini-1.5-pro":   {"input":  1.25 / 1_000_000, "output":  5.00 / 1_000_000},
 }
 
 

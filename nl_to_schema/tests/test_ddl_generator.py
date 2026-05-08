@@ -2,7 +2,7 @@
 import pytest
 
 from ddl_generator import generate_ddl, validate_ddl_structural
-from models.schema import Column, DataType, ForeignKey, LogicalSchema, Table
+from models.schema import Column, Type, ForeignKey, LogicalSchema, Table
 
 
 def _simple_schema() -> LogicalSchema:
@@ -11,16 +11,16 @@ def _simple_schema() -> LogicalSchema:
             Table(
                 name="autor",
                 columns=[
-                    Column(name="id", data_type=DataType.INTEGER, nullable=False, primary_key=True),
-                    Column(name="name", data_type=DataType.VARCHAR, nullable=False),
+                    Column(name="id", type=Type.INTEGER, nullable=False, primary_key=True),
+                    Column(name="name", type=Type.VARCHAR, nullable=False),
                 ],
             ),
             Table(
                 name="buch",
                 columns=[
-                    Column(name="id", data_type=DataType.INTEGER, nullable=False, primary_key=True),
-                    Column(name="titel", data_type=DataType.VARCHAR, nullable=False),
-                    Column(name="autor_id", data_type=DataType.INTEGER, nullable=False),
+                    Column(name="id", type=Type.INTEGER, nullable=False, primary_key=True),
+                    Column(name="titel", type=Type.VARCHAR, nullable=False),
+                    Column(name="autor_id", type=Type.INTEGER, nullable=False),
                 ],
                 foreign_keys=[
                     ForeignKey(from_column="autor_id", references_table="autor", references_column="id"),
@@ -63,16 +63,16 @@ def test_circular_reference_raises():
             Table(
                 name="a",
                 columns=[
-                    Column(name="id", data_type=DataType.INTEGER, nullable=False, primary_key=True),
-                    Column(name="b_id", data_type=DataType.INTEGER, nullable=False),
+                    Column(name="id", type=Type.INTEGER, nullable=False, primary_key=True),
+                    Column(name="b_id", type=Type.INTEGER, nullable=False),
                 ],
                 foreign_keys=[ForeignKey(from_column="b_id", references_table="b", references_column="id")],
             ),
             Table(
                 name="b",
                 columns=[
-                    Column(name="id", data_type=DataType.INTEGER, nullable=False, primary_key=True),
-                    Column(name="a_id", data_type=DataType.INTEGER, nullable=False),
+                    Column(name="id", type=Type.INTEGER, nullable=False, primary_key=True),
+                    Column(name="a_id", type=Type.INTEGER, nullable=False),
                 ],
                 foreign_keys=[ForeignKey(from_column="a_id", references_table="a", references_column="id")],
             ),

@@ -327,9 +327,32 @@ def finalize(state: WorkflowState) -> WorkflowState:
 # LLM-Helfer
 # ---------------------------------------------------------------------------
 
-def get_llm(temperature: float = 0.0):
-    """Gibt einen ChatOpenAI-Client mit deterministischer Konfiguration zurück."""
-    from langchain_openai import ChatOpenAI
+WORKFLOW_DEFAULT_MODEL = "claude-opus-4-6"
+JUDGE_DEFAULT_MODEL = "gemini-2.5-pro"
+JUDGE_DEFAULT_TEMPERATURE = 1.0
 
-    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-    return ChatOpenAI(model=model, temperature=temperature)
+
+def get_llm(temperature: float = 0.0):
+    """Workflow-LLM: Claude Opus 4.6 (überschreibbar via WORKFLOW_MODEL).
+
+    Nutzt langchain-anthropic. Strukturierter Output via with_structured_output
+    funktioniert analog zu ChatOpenAI.
+    """
+    from langchain_anthropic import ChatAnthropic
+
+    model = os.getenv("WORKFLOW_MODEL", WORKFLOW_DEFAULT_MODEL)
+    return ChatAnthropic(model=model, temperature=temperature)
+
+
+def get_judge_llm(temperature: float = JUDGE_DEFAULT_TEMPERATURE):
+    """LLM-as-Judge für die qualitative Evaluation.
+
+    Bewusst ein anderes Modell als für die Workflows und für die Testdaten-
+    Generierung, um Preference Leakage zu minimieren. Default: Gemini 2.5 Pro
+    mit temperature=1.0 (überschreibbar via JUDGE_MODEL). Voraussetzung:
+    GOOGLE_API_KEY in der Umgebung.
+    """
+    from langchain_google_genai import ChatGoogleGenerativeAI
+
+    model = os.getenv("JUDGE_MODEL", JUDGE_DEFAULT_MODEL)
+    return ChatGoogleGenerativeAI(model=model, temperature=temperature)

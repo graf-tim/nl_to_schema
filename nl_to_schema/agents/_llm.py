@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 import os
 import time
-from typing import Type, TypeVar
+from typing import Callable, Optional, Type, TypeVar
 
 from pydantic import BaseModel
 
@@ -15,6 +15,8 @@ from workflows.base import get_llm
 logger = logging.getLogger(__name__)
 
 T = TypeVar("T", bound=BaseModel)
+
+LLMFactory = Callable[[], object]
 
 
 def _approx_tokens(text: str) -> int:
@@ -52,17 +54,27 @@ def call_structured(
     user_message: str,
     output_model: Type[T],
     max_retries: int = 2,
+    llm_factory: Optional[LLMFactory] = None,
 ) -> T:
     """Ruft das LLM mit strukturiertem Output auf, mit Retry, Logging und Tokens.
 
-    Erwartet einen ChatOpenAI-LLM. Nutzt include_raw=True, sodass die rohe
-    AIMessage mit usage_metadata erhalten bleibt und ihre Token-Counts in den
-    globalen TokenLedger geschrieben werden können.
+    Funktioniert provider-agnostisch (ChatOpenAI, ChatAnthropic, ...). Nutzt
+    `with_structured_output(..., include_raw=True)`, damit die rohe AIMessage
+    mit `usage_metadata` erhalten bleibt und Token-Counts in den TokenLedger
+    geschrieben werden können.
+
+    Args:
+        llm_factory: Optionaler LLM-Konstruktor. Default: workflow-LLM
+            (Claude Opus 4.6). Für den qualitativen Judge wird hier
+            workflows.base.get_judge_llm übergeben.
     """
-    base_llm = get_llm()
+    factory = llm_factory or get_llm
+    base_llm = factory()
     structured = base_llm.with_structured_output(output_model, include_raw=True)
-    model_name = getattr(base_llm, "model_name", None) or os.getenv(
-        "OPENAI_MODEL", "gpt-4o-mini"
+    model_name = (
+        getattr(base_llm, "model", None)
+        or getattr(base_llm, "model_name", None)
+        or "unknown-model"
     )
     approx_in = _approx_tokens(system_prompt) + _approx_tokens(user_message)
 
