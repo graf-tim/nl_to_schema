@@ -120,8 +120,7 @@ USER_PROMPT_STUFE_3 = """Erstelle Testfall {id} der Komplexitätsstufe 3 für di
 
 Spezifikation Stufe 3:
 - Anzahl Tabellen im finalen Schema: 8 oder mehr
-- Beziehungstypen: mehrere 1:N- und M:N-Beziehungen, mindestens eine
-  schwache Entität oder eine ternäre Beziehung
+- Beziehungstypen: mehrere 1:N- und M:N-Beziehungen.
 - Semantische Ambiguität: substanziell — mindestens 3 Stellen mit offenen
   oder widersprüchlichen Formulierungen
 - Domaenenkomplexität: spezialisiertes Fachwissen erforderlich;

@@ -59,14 +59,14 @@ def validiere_schema_konsistenz(testfall: Testfall) -> list[str]:
                     f"FK in '{table.name}': Quellspalte '{fk.from_column}' "
                     f"existiert nicht in der eigenen Tabelle."
                 )
-            if fk.to_table not in table_columns:
+            if fk.references_table not in table_columns:
                 fehler.append(
-                    f"FK in '{table.name}': Zieltabelle '{fk.to_table}' existiert nicht."
+                    f"FK in '{table.name}': Zieltabelle '{fk.references_table}' existiert nicht."
                 )
-            elif fk.to_column not in table_columns[fk.to_table]:
+            elif fk.references_column not in table_columns[fk.references_table]:
                 fehler.append(
-                    f"FK in '{table.name}': Zielspalte '{fk.to_column}' "
-                    f"existiert nicht in '{fk.to_table}'."
+                    f"FK in '{table.name}': Zielspalte '{fk.references_column}' "
+                    f"existiert nicht in '{fk.references_table}'."
                 )
     return fehler
 
@@ -137,7 +137,7 @@ def _format_table_inline(table) -> str:
         flag_str = " " + " ".join(flags) if flags else ""
         parts.append(f"{col.name} {col.data_type.value}{flag_str}")
     fk_strs = [
-        f"FK→{fk.to_table}.{fk.to_column}({fk.from_column})"
+        f"FK→{fk.references_table}.{fk.references_column}({fk.from_column})"
         for fk in table.foreign_keys
     ]
     if fk_strs:
