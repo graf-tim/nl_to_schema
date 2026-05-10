@@ -108,8 +108,6 @@ Regeln:
 - Erfinde keine Entitäten oder Attribute, die nicht im Text begründet sind.
 - Fasse synonyme Begriffe zur selben Entität zusammen.
 
-""" + KONVENTIONEN + """
-
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
 
@@ -133,8 +131,6 @@ Regeln:
 - Resolve Unklarheiten konservativ und dokumentiere die Annahme implizit über
   klare Namen und Pflichtfelder.
 
-""" + KONVENTIONEN + """
-
 Gib das Ergebnis ausschließlich im geforderten strukturierten Format zurück."""
 
 
@@ -146,11 +142,12 @@ Vorgehen:
 <analyse>
 1. Identifiziere alle Tabellen mit ihren Spalten und Datentypen aus
    {INTEGER, VARCHAR, TEXT, DATE, BOOLEAN, DECIMAL, TIMESTAMP}.
-2. Vergib jeder Tabelle mindestens einen Primärschlüssel.
-3. Setze nullable=False für Pflichtfelder.
-4. Löse M:N-Beziehungen in Brückentabellen mit zusammengesetztem Primärschlüssel auf.
-5. Definiere Foreign Keys konsistent (gleicher Datentyp wie Ziel-PK).
-6. Wenn ein critic_report vorliegt: adressiere jedes Finding mit erfuellt=False und
+2. wende die englischen Namenskonventionen für Tabellen, Spalten, Primär- und Fremdschlüssel an.
+3. Vergib jeder Tabelle mindestens einen Primärschlüssel.
+4. Markiere Primärschlüssel (primary_key: true) und Pflichtfelder (nullable: false).
+5. Löse M:N-Beziehungen in Brückentabellen mit zusammengesetztem Primärschlüssel auf.
+6. Definiere Foreign Keys konsistent (gleicher Datentyp wie Ziel-PK).
+7. Wenn ein critic_report vorliegt: adressiere jedes Finding mit erfuellt=False und
    wende die korrekturanweisung an.
 </analyse>
 
@@ -179,7 +176,7 @@ Vorgehen:
    - beziehungs_korrektheit (Kardinalitäten und Auflösung von M:N stimmen)
    - normalisierung (mind. 3NF; keine offensichtlichen Redundanzen)
 2. Trenne harte Fehler (erfuellt=False) von weichen Optimierungen
-   (erfuellt=True, beschreibe Optimierung im Kommentar, korrekturanweisung leer).
+   (erfuellt=True, beschreibe Optimierung im Kommentar, korrekturanweisung als leerer String "" (Feld nicht weglassen)).
 3. Formuliere für jedes nicht erfuellte Kriterium eine konkrete, ausführbare
    korrekturanweisung.
 </analyse>
@@ -327,7 +324,7 @@ def finalize(state: WorkflowState) -> WorkflowState:
 # LLM-Helfer
 # ---------------------------------------------------------------------------
 
-WORKFLOW_DEFAULT_MODEL = "claude-opus-4-6"
+WORKFLOW_DEFAULT_MODEL = "claude-haiku-4-5-20251001"
 JUDGE_DEFAULT_MODEL = "gemini-2.5-pro"
 JUDGE_DEFAULT_TEMPERATURE = 1.0
 

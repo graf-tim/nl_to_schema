@@ -14,7 +14,9 @@ class CriticFinding(BaseModel):
     ]
     erfuellt: bool
     beschreibung: str
-    korrekturanweisung: str
+    # Bei erfuellt=True wird das Feld vom LLM gerne weggelassen (statt als ""
+    # geschickt) — Default sorgt dafür, dass die Validierung trotzdem durchgeht.
+    korrekturanweisung: str = ""
 
 
 class CriticReport(BaseModel):

@@ -103,6 +103,10 @@ def _serialize_state(state: WorkflowState) -> dict:
     return state.model_dump(mode="json")
 
 
+def _result_path(out_dir: Path, workflow: str, testfall_id: str) -> Path:
+    return out_dir / workflow / f"{testfall_id}.json"
+
+
 def _save_result(
     out_dir: Path,
     workflow: str,
@@ -111,8 +115,8 @@ def _save_result(
     evaluation: dict,
     telemetry: dict,
 ) -> None:
-    sub = out_dir / workflow
-    sub.mkdir(parents=True, exist_ok=True)
+    path = _result_path(out_dir, workflow, testfall_id)
+    path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "testfall_id": testfall_id,
         "workflow": workflow,
@@ -120,8 +124,57 @@ def _save_result(
         "evaluation": evaluation,
         "telemetry": telemetry,
     }
-    with (sub / f"{testfall_id}.json").open("w", encoding="utf-8") as f:
+    with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
+
+
+def _load_existing_result(
+    out_dir: Path, workflow: str, testfall_id: str
+) -> dict | None:
+    """Liest ein bereits gespeichertes Ergebnis, oder None falls nicht/ defekt."""
+    path = _result_path(out_dir, workflow, testfall_id)
+    if not path.exists():
+        return None
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as exc:
+        logging.warning(
+            "Bestehende Datei konnte nicht gelesen werden, wird neu gerechnet: %s (%s)",
+            path,
+            exc,
+        )
+        return None
+
+
+def _summary_row(
+    *,
+    tc: dict,
+    workflow: str,
+    evaluation: dict,
+    telemetry: dict,
+    error: str,
+) -> dict[str, Any]:
+    """Baut eine Zeile für summary.csv aus evaluation+telemetry-Dicts."""
+    structural = evaluation.get("structural") or {}
+    semantic = evaluation.get("semantic") or {}
+    qualitative = evaluation.get("qualitative") or {}
+    return {
+        "testfall_id": tc.get("id"),
+        "stufe": tc.get("stufe"),
+        "workflow": workflow,
+        "structural_score": structural.get("score"),
+        "syntaktisch_korrekt": structural.get("syntaktisch_korrekt"),
+        "semantic_score": semantic.get("semantic_score"),
+        "qualitative_score": qualitative.get("qualitative_score"),
+        "weighted_total": evaluation.get("weighted_total"),
+        "input_tokens": telemetry.get("total_input_tokens", 0),
+        "output_tokens": telemetry.get("total_output_tokens", 0),
+        "total_tokens": telemetry.get("total_tokens", 0),
+        "cost_usd": round(telemetry.get("total_cost_usd", 0.0) or 0.0, 6),
+        "llm_calls": telemetry.get("total_calls", 0),
+        "error": error or "",
+    }
 
 
 def _select_testcases(
@@ -200,6 +253,15 @@ def main() -> None:
             "weighted_total wird dann aus structural+semantic re-normalisiert."
         ),
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help=(
+            "Bestehende results/<workflow>/<id>.json überschreiben. "
+            "Default: vorhandene Ergebnisse werden übersprungen und ihre "
+            "Werte in die summary.csv übernommen (Idempotenz)."
+        ),
+    )
     args = parser.parse_args()
 
     all_testcases = _load_testcases(args.testcases)
@@ -228,6 +290,31 @@ def main() -> None:
         anforderungstext = tc["anforderungstext"]
         reference = LogicalSchema.model_validate(tc["referenzschema"])
         for wf in args.workflows:
+            # Idempotenz: bestehendes Ergebnis nicht erneut rechnen.
+            if not args.force:
+                existing = _load_existing_result(args.output, wf, tc_id)
+                if existing is not None:
+                    evaluation = existing.get("evaluation") or {}
+                    telemetry = existing.get("telemetry") or {}
+                    state_data = existing.get("state") or {}
+                    error = state_data.get("error") or ""
+                    logging.info(
+                        "[%s][%s] SKIP — bereits in %s",
+                        wf,
+                        tc_id,
+                        _result_path(args.output, wf, tc_id),
+                    )
+                    summary_rows.append(
+                        _summary_row(
+                            tc=tc,
+                            workflow=wf,
+                            evaluation=evaluation,
+                            telemetry=telemetry,
+                            error=error,
+                        )
+                    )
+                    continue
+
             logging.info("Starte Workflow=%s Testfall=%s", wf, tc_id)
             LEDGER.reset()
             try:
@@ -257,26 +344,13 @@ def main() -> None:
             )
             _save_result(args.output, wf, tc_id, state, evaluation, telemetry)
             summary_rows.append(
-                {
-                    "testfall_id": tc_id,
-                    "stufe": tc.get("stufe"),
-                    "workflow": wf,
-                    "structural_score": evaluation["structural"].get("score"),
-                    "syntaktisch_korrekt": evaluation["structural"].get(
-                        "syntaktisch_korrekt"
-                    ),
-                    "semantic_score": evaluation["semantic"].get("semantic_score"),
-                    "qualitative_score": evaluation["qualitative"].get(
-                        "qualitative_score"
-                    ),
-                    "weighted_total": evaluation["weighted_total"],
-                    "input_tokens": telemetry["total_input_tokens"],
-                    "output_tokens": telemetry["total_output_tokens"],
-                    "total_tokens": telemetry["total_tokens"],
-                    "cost_usd": round(telemetry["total_cost_usd"], 6),
-                    "llm_calls": telemetry["total_calls"],
-                    "error": state.error or "",
-                }
+                _summary_row(
+                    tc=tc,
+                    workflow=wf,
+                    evaluation=evaluation,
+                    telemetry=telemetry,
+                    error=state.error or "",
+                )
             )
 
     csv_path = args.output / "summary.csv"

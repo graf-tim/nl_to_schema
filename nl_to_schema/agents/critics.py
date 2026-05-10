@@ -88,7 +88,28 @@ def _structural_findings(schema: LogicalSchema) -> list[CriticFinding]:
 # LLM-basiertes Subset (inhaltliche Kriterien)
 # ---------------------------------------------------------------------------
 
-def _content_critic_user_message(state: WorkflowState) -> str:
+def _format_structural_summary(findings: list[CriticFinding]) -> str:
+    """Kompakte Übersicht der bereits deterministisch berechneten Strukturchecks."""
+    lines = ["Bereits deterministisch geprüft (du musst sie nicht neu bewerten):"]
+    for f in findings:
+        mark = "OK" if f.erfuellt else "FEHLER"
+        lines.append(f"  - {f.criterion}: [{mark}] {f.beschreibung}")
+    lines.append(
+        "Konzentriere dich auf die INHALTLICHEN Kriterien "
+        "(entitaets_vollstaendigkeit, attribut_vollstaendigkeit, "
+        "beziehungs_korrektheit, normalisierung). Erwarte, dass nahezu jedes "
+        "Schema mindestens 1-2 nicht-triviale Schwachstellen enthält — sei "
+        "ein streng prüfender Auditor und identifiziere harte Fehler "
+        "(erfuellt=False) statt alles wohlwollend durchzuwinken."
+    )
+    return "\n".join(lines)
+
+
+def _content_critic_user_message(
+    state: WorkflowState,
+    *,
+    structural_findings: list[CriticFinding] | None = None,
+) -> str:
     if state.logical_schema is None:
         raise ValueError("CriticAgent: kein LogicalSchema vorhanden.")
     parts = [
@@ -112,6 +133,8 @@ def _content_critic_user_message(state: WorkflowState) -> str:
             "ERModell (Kontext):",
             state.er_modell.model_dump_json(indent=2),
         ]
+    if structural_findings:
+        parts += ["", _format_structural_summary(structural_findings)]
     parts += [
         "",
         "Bewerte das Schema gemäß den Kriterien deines Systemprompts.",
@@ -119,17 +142,9 @@ def _content_critic_user_message(state: WorkflowState) -> str:
     return "\n".join(parts)
 
 
-def _hard_criteria_ok(findings: list[CriticFinding]) -> bool:
-    hard = {
-        "syntaktische_korrektheit",
-        "pk_vollstaendigkeit",
-        "fk_integritaet",
-        "entitaets_vollstaendigkeit",
-    }
-    by_criterion = {f.criterion: f for f in findings}
-    return all(
-        by_criterion.get(c) is not None and by_criterion[c].erfuellt for c in hard
-    )
+def _quality_sufficient(findings: list[CriticFinding]) -> bool:
+    """Workflow-Qualität ist ausreichend, wenn KEIN Finding erfuellt=False meldet."""
+    return all(f.erfuellt for f in findings)
 
 
 def _merge_findings(
@@ -149,8 +164,11 @@ def _run_content_critic(
     *,
     agent_name: str,
     system_prompt: str,
+    structural_findings: list[CriticFinding] | None = None,
 ) -> CriticReport:
-    user_message = _content_critic_user_message(state)
+    user_message = _content_critic_user_message(
+        state, structural_findings=structural_findings
+    )
     return call_structured(
         workflow_name=state.workflow_name,
         iteration=state.iteration,
@@ -171,7 +189,10 @@ def iw_critic(state: WorkflowState) -> WorkflowState:
     structural = _structural_findings(state.logical_schema)
     try:
         llm_report = _run_content_critic(
-            state, agent_name="iw_critic", system_prompt=CRITIC_SYSTEM_PROMPT
+            state,
+            agent_name="iw_critic",
+            system_prompt=CRITIC_SYSTEM_PROMPT,
+            structural_findings=structural,
         )
     except Exception as exc:
         logger.exception("[%s] iw_critic LLM-Aufruf fehlgeschlagen.", state.workflow_name)
@@ -182,7 +203,7 @@ def iw_critic(state: WorkflowState) -> WorkflowState:
 
     findings = _merge_findings(structural, llm_report)
     report = CriticReport(
-        qualitaet_ausreichend=_hard_criteria_ok(findings),
+        qualitaet_ausreichend=_quality_sufficient(findings),
         findings=findings,
     )
     return state.model_copy(update={"critic_report": report})
@@ -197,6 +218,7 @@ def oa_validator(state: WorkflowState) -> WorkflowState:
             state,
             agent_name="oa_validator",
             system_prompt=OA_VALIDATOR_SYSTEM_PROMPT,
+            structural_findings=structural,
         )
     except Exception as exc:
         logger.exception("[%s] oa_validator LLM-Aufruf fehlgeschlagen.", state.workflow_name)
@@ -208,7 +230,7 @@ def oa_validator(state: WorkflowState) -> WorkflowState:
         )
 
     findings = _merge_findings(structural, llm_report)
-    hard_ok = _hard_criteria_ok(findings)
+    hard_ok = _quality_sufficient(findings)
 
     if hard_ok:
         origin: Optional[str] = None
@@ -242,7 +264,10 @@ def mad_critic_c1(state: WorkflowState) -> WorkflowState:
     structural = _structural_findings(state.logical_schema)
     try:
         llm_report = _run_content_critic(
-            state, agent_name="mad_critic_c1", system_prompt=CRITIC_C1_SYSTEM_PROMPT
+            state,
+            agent_name="mad_critic_c1",
+            system_prompt=CRITIC_C1_SYSTEM_PROMPT,
+            structural_findings=structural,
         )
     except Exception as exc:
         logger.exception("[%s] mad_critic_c1 fehlgeschlagen.", state.workflow_name)
@@ -260,7 +285,7 @@ def mad_critic_c1(state: WorkflowState) -> WorkflowState:
 
     findings = _merge_findings(structural, llm_report)
     report = CriticReport(
-        qualitaet_ausreichend=_hard_criteria_ok(findings),
+        qualitaet_ausreichend=_quality_sufficient(findings),
         findings=findings,
     )
     n_unmet = sum(1 for f in findings if not f.erfuellt)
@@ -281,7 +306,10 @@ def mad_critic_c2(state: WorkflowState) -> WorkflowState:
     structural = _structural_findings(state.logical_schema)
     try:
         llm_report = _run_content_critic(
-            state, agent_name="mad_critic_c2", system_prompt=CRITIC_C2_SYSTEM_PROMPT
+            state,
+            agent_name="mad_critic_c2",
+            system_prompt=CRITIC_C2_SYSTEM_PROMPT,
+            structural_findings=structural,
         )
     except Exception as exc:
         logger.exception("[%s] mad_critic_c2 fehlgeschlagen.", state.workflow_name)
@@ -299,7 +327,7 @@ def mad_critic_c2(state: WorkflowState) -> WorkflowState:
 
     findings = _merge_findings(structural, llm_report)
     report = CriticReport(
-        qualitaet_ausreichend=_hard_criteria_ok(findings),
+        qualitaet_ausreichend=_quality_sufficient(findings),
         findings=findings,
     )
     n_unmet = sum(1 for f in findings if not f.erfuellt)
@@ -377,7 +405,7 @@ def mad_moderator(state: WorkflowState) -> WorkflowState:
             if f.criterion not in {x.criterion for x in findings}:
                 findings.append(f)
     final_report = CriticReport(
-        qualitaet_ausreichend=_hard_criteria_ok(findings),
+        qualitaet_ausreichend=_quality_sufficient(findings),
         findings=findings,
     )
 
