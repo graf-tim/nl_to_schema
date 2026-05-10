@@ -6,7 +6,9 @@ Aufruf:
 from __future__ import annotations
 
 import argparse
+import csv
 import json
+import random
 import sys
 from pathlib import Path
 from typing import Any
@@ -19,14 +21,30 @@ from models import LogicalSchema, Testfall
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "output"
 
-STICHPROBE_IDS: list[str] = [
-    # Stufe 1
-    "TC005", "TC012", "TC019", "TC026", "TC033",
-    # Stufe 2
-    "TC038", "TC044", "TC050", "TC056", "TC062",
-    # Stufe 3
-    "TC070", "TC076", "TC082", "TC088", "TC094",
-]
+DEFAULT_PER_STUFE = 5
+
+
+def random_sample_per_stufe(
+    testfaelle: list[Testfall],
+    per_stufe: int = DEFAULT_PER_STUFE,
+) -> list[Testfall]:
+    """Wählt pro Stufe zufällig `per_stufe` Testfälle (oder alle, falls weniger).
+
+    Sortiert die Auswahl pro Stufe nach ID, damit der Validierungsbericht eine
+    nachvollziehbare Reihenfolge hat (auch wenn die Auswahl selbst zufällig ist).
+    """
+    by_stufe: dict[int, list[Testfall]] = {}
+    for tc in testfaelle:
+        by_stufe.setdefault(tc.stufe, []).append(tc)
+
+    sample: list[Testfall] = []
+    for stufe in sorted(by_stufe.keys()):
+        items = by_stufe[stufe]
+        n = min(per_stufe, len(items))
+        chosen = random.sample(items, n)
+        chosen.sort(key=lambda tc: tc.id)
+        sample.extend(chosen)
+    return sample
 
 
 # ---------------------------------------------------------------------------
@@ -79,18 +97,6 @@ def _word_count(text: str) -> int:
     return len([w for w in text.split() if w.strip()])
 
 
-def _has_m_n_bridge(testfall: Testfall) -> bool:
-    """Heuristik: Tabelle mit zusammengesetztem PK aus 2+ FK-Spalten = Brückentabelle."""
-    for table in testfall.referenzschema.tables:
-        pk_cols = {c.name for c in table.columns if c.primary_key}
-        if len(pk_cols) < 2:
-            continue
-        fk_cols = {fk.from_column for fk in table.foreign_keys}
-        if len(pk_cols & fk_cols) >= 2:
-            return True
-    return False
-
-
 def berechne_statistiken(testfaelle: list[Testfall]) -> dict[str, Any]:
     pro_stufe: dict[int, list[Testfall]] = {1: [], 2: [], 3: []}
     for tc in testfaelle:
@@ -114,12 +120,112 @@ def berechne_statistiken(testfaelle: list[Testfall]) -> dict[str, Any]:
         }
 
     n = len(testfaelle)
-    mit_bruecke = sum(1 for tc in testfaelle if _has_m_n_bridge(tc))
     return {
         "gesamt": n,
         "pro_stufe": stats_pro_stufe,
-        "anteil_mit_m_n_bruecke": round(mit_bruecke / n, 3) if n else 0.0,
     }
+
+
+# ---------------------------------------------------------------------------
+# Auto-Prüfung: alle Testfälle als CSV
+# ---------------------------------------------------------------------------
+
+AUTO_PRUEFUNG_FIELDS = [
+    "testfall_id",
+    "stufe",
+    "domaene",
+    "anzahl_tabellen",
+    "anzahl_spalten",
+    "anzahl_foreign_keys",
+    "automatische_pruefung",  # "OK" oder "FEHLER"
+    "anzahl_fehler",
+    "fehler",  # ' | '-getrennte Liste der konkreten Fehlermeldungen
+]
+
+
+def auto_pruefung_zeile(testfall: Testfall) -> dict[str, Any]:
+    fehler = validiere_schema_konsistenz(testfall)
+    n_tabellen = len(testfall.referenzschema.tables)
+    n_spalten = sum(len(t.columns) for t in testfall.referenzschema.tables)
+    n_fks = sum(len(t.foreign_keys) for t in testfall.referenzschema.tables)
+    return {
+        "testfall_id": testfall.id,
+        "stufe": testfall.stufe,
+        "domaene": testfall.domaene,
+        "anzahl_tabellen": n_tabellen,
+        "anzahl_spalten": n_spalten,
+        "anzahl_foreign_keys": n_fks,
+        "automatische_pruefung": "OK" if not fehler else "FEHLER",
+        "anzahl_fehler": len(fehler),
+        "fehler": " | ".join(fehler),
+    }
+
+
+def schreibe_auto_pruefung_csv(testfaelle: list[Testfall], path: Path) -> dict[str, int]:
+    """Führt die automatische Prüfung über alle Testfälle aus und schreibt ein CSV.
+
+    Rückgabe: dict mit Zusammenfassung {gesamt, ok, fehler}.
+    """
+    rows = [auto_pruefung_zeile(tc) for tc in testfaelle]
+    rows.sort(key=lambda r: r["testfall_id"])
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=AUTO_PRUEFUNG_FIELDS)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    n_fehler = sum(1 for r in rows if r["automatische_pruefung"] == "FEHLER")
+    return {
+        "gesamt": len(rows),
+        "ok": len(rows) - n_fehler,
+        "fehler": n_fehler,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Stichprobe als CSV (für manuelle Prüfung)
+# ---------------------------------------------------------------------------
+
+STICHPROBE_FIELDS = [
+    "testfall_id",
+    "stufe",
+    "domaene",
+    "anforderungstext",
+    "schema",
+    # Manuelle Prüfung — leer zum Ausfüllen
+    "inhaltliche_vollstaendigkeit",
+    "datentypen_angemessen",
+    "normalisierung_3nf",
+    "komplexitaetsstufe_konform",
+    "anmerkungen",
+]
+
+
+def schreibe_stichprobe_csv(stichprobe: list[Testfall], path: Path) -> None:
+    """Schreibt die Stichprobe als CSV mit leeren Spalten für die manuelle Prüfung."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=STICHPROBE_FIELDS)
+        writer.writeheader()
+        for tc in stichprobe:
+            schema_lines = [
+                _format_table_inline(t).strip() for t in tc.referenzschema.tables
+            ]
+            writer.writerow(
+                {
+                    "testfall_id": tc.id,
+                    "stufe": tc.stufe,
+                    "domaene": tc.domaene,
+                    "anforderungstext": tc.anforderungstext,
+                    "schema": "\n".join(schema_lines),
+                    "inhaltliche_vollstaendigkeit": "",
+                    "datentypen_angemessen": "",
+                    "normalisierung_3nf": "",
+                    "komplexitaetsstufe_konform": "",
+                    "anmerkungen": "",
+                }
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -135,7 +241,7 @@ def _format_table_inline(table) -> str:
         if not col.nullable:
             flags.append("NOT NULL")
         flag_str = " " + " ".join(flags) if flags else ""
-        parts.append(f"{col.name} {col.data_type.value}{flag_str}")
+        parts.append(f"{col.name} {col.type.value}{flag_str}")
     fk_strs = [
         f"FK→{fk.references_table}.{fk.references_column}({fk.from_column})"
         for fk in table.foreign_keys
@@ -202,6 +308,12 @@ def main() -> int:
         default=OUTPUT_DIR / "testcases.json",
         help="Pfad zur konsolidierten testcases.json",
     )
+    parser.add_argument(
+        "--per-stufe",
+        type=int,
+        default=DEFAULT_PER_STUFE,
+        help=f"Stichprobengröße pro Stufe (Default: {DEFAULT_PER_STUFE}).",
+    )
     args = parser.parse_args()
 
     if not args.input.exists():
@@ -209,16 +321,12 @@ def main() -> int:
         return 2
 
     testfaelle = _load_testcases(args.input)
-    by_id = {tc.id: tc for tc in testfaelle}
+    if not testfaelle:
+        print("Keine Testfälle in der Eingabedatei.", file=sys.stderr)
+        return 2
 
-    # Stichprobe ziehen
-    stichprobe: list[Testfall] = []
-    fehlende: list[str] = []
-    for sid in STICHPROBE_IDS:
-        if sid in by_id:
-            stichprobe.append(by_id[sid])
-        else:
-            fehlende.append(sid)
+    # Stichprobe: zufällig pro Stufe
+    stichprobe = random_sample_per_stufe(testfaelle, per_stufe=args.per_stufe)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     stichprobe_path = OUTPUT_DIR / "stichprobe.json"
@@ -230,13 +338,17 @@ def main() -> int:
             indent=2,
         )
 
+    # Stichprobe zusätzlich als CSV mit leeren Prüfspalten für die manuelle Bewertung
+    stichprobe_csv_path = OUTPUT_DIR / "stichprobe.csv"
+    schreibe_stichprobe_csv(stichprobe, stichprobe_csv_path)
+
     # Validierungsbericht
     bericht_lines: list[str] = []
-    if fehlende:
-        bericht_lines.append(
-            f"WARNUNG: folgende Stichproben-IDs fehlen im Datensatz: {', '.join(fehlende)}"
-        )
-        bericht_lines.append("")
+    bericht_lines.append(
+        f"Zufallsstichprobe: {args.per_stufe} Testfälle pro Stufe"
+    )
+    bericht_lines.append(f"Ausgewählte IDs: {', '.join(tc.id for tc in stichprobe)}")
+    bericht_lines.append("")
     for tc in stichprobe:
         fehler = validiere_schema_konsistenz(tc)
         bericht_lines.append(_format_block(tc, fehler))
@@ -245,12 +357,23 @@ def main() -> int:
     with bericht_path.open("w", encoding="utf-8") as f:
         f.write("\n".join(bericht_lines))
 
+    # Auto-Prüfung über ALLE Testfälle als CSV
+    auto_csv_path = OUTPUT_DIR / "auto_pruefung.csv"
+    auto_summary = schreibe_auto_pruefung_csv(testfaelle, auto_csv_path)
+
     # Statistiken
     stats = berechne_statistiken(testfaelle)
 
     # Konsolen-Output
-    print(f"Stichprobe gespeichert: {stichprobe_path} ({len(stichprobe)} Testfälle)")
+    print(f"Stichprobe (JSON):      {stichprobe_path} ({len(stichprobe)} Testfälle)")
+    print(f"Stichprobe (CSV):       {stichprobe_csv_path}")
     print(f"Validierungsbericht:    {bericht_path}")
+    print(
+        f"Auto-Prüfung CSV:       {auto_csv_path} "
+        f"(gesamt={auto_summary['gesamt']}, "
+        f"ok={auto_summary['ok']}, "
+        f"fehler={auto_summary['fehler']})"
+    )
     print()
     print("Statistiken:")
     print(f"  Gesamt: {stats['gesamt']}")
@@ -264,12 +387,13 @@ def main() -> int:
             f"Tabellen avg={s['tabellen_avg']}, "
             f"Spalten avg={s['spalten_avg']}"
         )
-    print(f"  Anteil mit M:N-Brückentabelle: {stats['anteil_mit_m_n_bruecke']}")
 
-    # Anzahl Stichproben mit Konsistenzfehler
-    fehlerhaft = sum(1 for tc in stichprobe if validiere_schema_konsistenz(tc))
-    if fehlerhaft:
-        print(f"  Stichproben-Fehler: {fehlerhaft}/{len(stichprobe)}")
+    # Exit-Code 1 wenn irgendein Testfall in der Auto-Prüfung gefehlt hat
+    if auto_summary["fehler"]:
+        print(
+            f"\nAuto-Prüfung: {auto_summary['fehler']}/{auto_summary['gesamt']} "
+            f"Testfälle haben strukturelle Fehler. Details in {auto_csv_path.name}."
+        )
         return 1
     return 0
 
