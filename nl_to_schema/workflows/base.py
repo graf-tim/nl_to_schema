@@ -325,12 +325,12 @@ def finalize(state: WorkflowState) -> WorkflowState:
 # ---------------------------------------------------------------------------
 
 WORKFLOW_DEFAULT_MODEL = "claude-haiku-4-5-20251001"
-JUDGE_DEFAULT_MODEL = "gemini-2.5-pro"
-JUDGE_DEFAULT_TEMPERATURE = 1.0
+ERROR_CLASSIFIER_DEFAULT_MODEL = "gemini-2.5-pro"
+ERROR_CLASSIFIER_DEFAULT_TEMPERATURE = 1.0
 
 
 def get_llm(temperature: float = 0.0):
-    """Workflow-LLM: Claude Opus 4.6 (überschreibbar via WORKFLOW_MODEL).
+    """Workflow-LLM: Claude (überschreibbar via WORKFLOW_MODEL).
 
     Nutzt langchain-anthropic. Strukturierter Output via with_structured_output
     funktioniert analog zu ChatOpenAI.
@@ -341,15 +341,15 @@ def get_llm(temperature: float = 0.0):
     return ChatAnthropic(model=model, temperature=temperature)
 
 
-def get_judge_llm(temperature: float = JUDGE_DEFAULT_TEMPERATURE):
-    """LLM-as-Judge für die qualitative Evaluation.
+def get_error_classifier_llm(temperature: float = ERROR_CLASSIFIER_DEFAULT_TEMPERATURE):
+    """LLM für die diagnostische Fehlerklassifikation (kein Score-Gewicht).
 
-    Bewusst ein anderes Modell als für die Workflows und für die Testdaten-
+    Bewusst ein anderer Provider als für die Workflows und die Testdaten-
     Generierung, um Preference Leakage zu minimieren. Default: Gemini 2.5 Pro
-    mit temperature=1.0 (überschreibbar via JUDGE_MODEL). Voraussetzung:
+    (überschreibbar via ERROR_CLASSIFIER_MODEL). Voraussetzung:
     GOOGLE_API_KEY in der Umgebung.
     """
     from langchain_google_genai import ChatGoogleGenerativeAI
 
-    model = os.getenv("JUDGE_MODEL", JUDGE_DEFAULT_MODEL)
+    model = os.getenv("ERROR_CLASSIFIER_MODEL", ERROR_CLASSIFIER_DEFAULT_MODEL)
     return ChatGoogleGenerativeAI(model=model, temperature=temperature)

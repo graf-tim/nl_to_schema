@@ -113,11 +113,17 @@ def _is_syntactically_valid(ddl: str) -> bool:
 
 
 def validate_ddl_structural(ddl: str, schema: LogicalSchema) -> dict:
-    """Strukturelle Validierung als Gate-Kriterium plus PK/FK-Quoten.
+    """Strukturelle Validierung als Gate-Kriterium plus PK/FK-Quoten und absolute Counts.
 
-    - syntaktisch_korrekt: bool (Gate)
-    - pk_vollstaendigkeit: float in [0,1]
-    - fk_integritaet:      float in [0,1]
+    Felder:
+      - syntaktisch_korrekt:        bool (Gate)
+      - pk_vollstaendigkeit:        float in [0,1]  (Rate)
+      - fk_integritaet:             float in [0,1]  (Rate, für Rückwärtskompatibilität)
+      - pk_tabellen_gesamt:         int
+      - pk_tabellen_mit_pk:         int
+      - fk_referenzen_gesamt:       int
+      - fk_referenzen_gueltig:      int
+      - fk_referenzen_ungueltig:    int
     """
     syntaktisch_korrekt = _is_syntactically_valid(ddl)
 
@@ -126,12 +132,18 @@ def validate_ddl_structural(ddl: str, schema: LogicalSchema) -> dict:
             "syntaktisch_korrekt": syntaktisch_korrekt,
             "pk_vollstaendigkeit": 0.0,
             "fk_integritaet": 1.0,
+            "pk_tabellen_gesamt": 0,
+            "pk_tabellen_mit_pk": 0,
+            "fk_referenzen_gesamt": 0,
+            "fk_referenzen_gueltig": 0,
+            "fk_referenzen_ungueltig": 0,
         }
 
+    n_tabellen = len(schema.tables)
     tables_with_pk = sum(
         1 for t in schema.tables if any(c.primary_key for c in t.columns)
     )
-    pk_quote = tables_with_pk / len(schema.tables)
+    pk_quote = tables_with_pk / n_tabellen
 
     table_columns: dict[str, set[str]] = {
         t.name: {c.name for c in t.columns} for t in schema.tables
@@ -148,9 +160,15 @@ def validate_ddl_structural(ddl: str, schema: LogicalSchema) -> dict:
             ):
                 valid_fks += 1
     fk_quote = 1.0 if total_fks == 0 else valid_fks / total_fks
+    invalid_fks = total_fks - valid_fks
 
     return {
         "syntaktisch_korrekt": syntaktisch_korrekt,
         "pk_vollstaendigkeit": pk_quote,
         "fk_integritaet": fk_quote,
+        "pk_tabellen_gesamt": n_tabellen,
+        "pk_tabellen_mit_pk": tables_with_pk,
+        "fk_referenzen_gesamt": total_fks,
+        "fk_referenzen_gueltig": valid_fks,
+        "fk_referenzen_ungueltig": invalid_fks,
     }

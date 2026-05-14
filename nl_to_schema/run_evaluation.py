@@ -2,6 +2,15 @@
 
 Aufruf:
     python run_evaluation.py --testcases testcases.json --output results/
+
+Bewertet zwei Dimensionen:
+  - strukturell (40 %): Score = syntax_gate · fk_gate · pk_rate
+  - semantisch  (60 %): 0.4·entitaet_f1 + 0.4·attribut_f1 + 0.2·beziehung_recall
+
+Pro (testfall, workflow) wird zusätzlich eine Liste "abweichungen" persistiert:
+nicht-gematchte Referenz-Elemente (Tabellen/Attribute/Beziehungen) mit
+`fehlerklasse: null`. Diese Klasse wird vom separaten Modul
+`run_error_classification.py` für eine manuell ausgewählte Stichprobe befüllt.
 """
 from __future__ import annotations
 
@@ -16,15 +25,14 @@ from typing import Any
 from dotenv import load_dotenv
 
 from agents._telemetry import LEDGER
-from evaluation.qualitative import qualitative_score
 from evaluation.semantic import semantic_score
-from evaluation.structural import structural_details
+from evaluation.structural import structural_evaluation
 from models.schema import LogicalSchema
 from workflows.base import WorkflowState
 from workflows.registry import WORKFLOWS, build
 
 
-WEIGHTS = {"strukturell": 0.30, "semantisch": 0.40, "qualitativ": 0.30}
+WEIGHTS = {"strukturell": 0.40, "semantisch": 0.60}
 
 
 def _setup_logging() -> None:
@@ -51,51 +59,90 @@ def _run_workflow(name: str, anforderungstext: str) -> WorkflowState:
     return WorkflowState.model_validate(raw)
 
 
+def _empty_structural() -> dict:
+    return {
+        "score": 0.0,
+        "syntax_gate": 0,
+        "fk_gate": 0,
+        "pk_rate": 0.0,
+        "pk_tabellen_gesamt": 0,
+        "pk_tabellen_mit_pk": 0,
+        "fk_referenzen_gesamt": 0,
+        "fk_referenzen_ungueltig": 0,
+    }
+
+
+def _empty_semantic() -> dict:
+    leer = {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "matched": 0,
+        "nur_in_referenz": 0,
+        "nur_in_generiert": 0,
+    }
+    return {
+        "score": 0.0,
+        "entitaet": dict(leer),
+        "attribut": dict(leer),
+        "beziehung": {
+            "recall": 0.0,
+            "matched": 0,
+            "nur_in_referenz": 0,
+            "nur_in_generiert": 0,
+        },
+        "abweichungen": [],
+    }
+
+
 def _evaluate(
     state: WorkflowState,
     anforderungstext: str,
     reference: LogicalSchema,
-    *,
-    skip_qualitative: bool = False,
 ) -> dict[str, Any]:
-    """Berechnet die drei Score-Dimensionen plus gewichteten Gesamtscore.
+    """Berechnet die zwei Score-Dimensionen plus gewichteten Gesamtscore.
 
-    Mit `skip_qualitative=True` wird der LLM-as-Judge-Aufruf weggelassen.
-    `weighted_total` wird dann mit re-normalisierten Gewichten aus den beiden
-    übrigen Dimensionen gebildet, damit der Score weiterhin in [0,1] und
-    intern vergleichbar bleibt.
+    Output-Format folgt der Spec aus dem Plan:
+      score_strukturell, score_semantisch, score_gesamt,
+      detail_strukturell, detail_semantisch, abweichungen
     """
     if state.logical_schema is None:
+        empty_struct = _empty_structural()
+        empty_sem = _empty_semantic()
         return {
-            "structural": {"score": 0.0, "syntaktisch_korrekt": False},
-            "semantic": {"semantic_score": 0.0},
-            "qualitative": {"qualitative_score": None, "skipped": skip_qualitative},
-            "weighted_total": 0.0,
+            "score_strukturell": 0.0,
+            "score_semantisch": 0.0,
+            "score_gesamt": 0.0,
+            "detail_strukturell": {k: v for k, v in empty_struct.items() if k != "score"},
+            "detail_semantisch": {k: v for k, v in empty_sem.items() if k not in ("score", "abweichungen")},
+            "abweichungen": [],
             "note": "Workflow lieferte kein logical_schema.",
         }
-    structural = structural_details(state.final_ddl or "", state.logical_schema)
+
+    structural = structural_evaluation(state.final_ddl or "", state.logical_schema)
     semantic = semantic_score(state.logical_schema, reference)
 
-    if skip_qualitative:
-        qualitative = {"qualitative_score": None, "skipped": True}
-        # Re-normalisiert auf die zwei aktiven Dimensionen.
-        denom = WEIGHTS["strukturell"] + WEIGHTS["semantisch"]
-        total = (
-            (WEIGHTS["strukturell"] / denom) * structural["score"]
-            + (WEIGHTS["semantisch"] / denom) * semantic["semantic_score"]
-        )
-    else:
-        qualitative = qualitative_score(state.logical_schema, anforderungstext)
-        total = (
-            WEIGHTS["strukturell"] * structural["score"]
-            + WEIGHTS["semantisch"] * semantic["semantic_score"]
-            + WEIGHTS["qualitativ"] * qualitative["qualitative_score"]
-        )
+    score_strukturell = structural["score"]
+    score_semantisch = semantic["score"]
+    score_gesamt = (
+        WEIGHTS["strukturell"] * score_strukturell
+        + WEIGHTS["semantisch"] * score_semantisch
+    )
+
+    detail_strukturell = {k: v for k, v in structural.items() if k != "score"}
+    detail_semantisch = {
+        "entitaet": semantic["entitaet"],
+        "attribut": semantic["attribut"],
+        "beziehung": semantic["beziehung"],
+    }
+
     return {
-        "structural": structural,
-        "semantic": semantic,
-        "qualitative": qualitative,
-        "weighted_total": total,
+        "score_strukturell": score_strukturell,
+        "score_semantisch": score_semantisch,
+        "score_gesamt": score_gesamt,
+        "detail_strukturell": detail_strukturell,
+        "detail_semantisch": detail_semantisch,
+        "abweichungen": semantic["abweichungen"],
     }
 
 
@@ -120,8 +167,8 @@ def _save_result(
     payload = {
         "testfall_id": testfall_id,
         "workflow": workflow,
+        **evaluation,
         "state": _serialize_state(state),
-        "evaluation": evaluation,
         "telemetry": telemetry,
     }
     with path.open("w", encoding="utf-8") as f:
@@ -156,22 +203,45 @@ def _summary_row(
     error: str,
 ) -> dict[str, Any]:
     """Baut eine Zeile für summary.csv aus evaluation+telemetry-Dicts."""
-    structural = evaluation.get("structural") or {}
-    semantic = evaluation.get("semantic") or {}
-    qualitative = evaluation.get("qualitative") or {}
+    detail_s = evaluation.get("detail_strukturell") or {}
+    detail_sem = evaluation.get("detail_semantisch") or {}
+    entitaet = detail_sem.get("entitaet") or {}
+    attribut = detail_sem.get("attribut") or {}
+    beziehung = detail_sem.get("beziehung") or {}
     return {
         "testfall_id": tc.get("id"),
         "stufe": tc.get("stufe"),
         "workflow": workflow,
-        "structural_score": structural.get("score"),
-        "syntaktisch_korrekt": structural.get("syntaktisch_korrekt"),
-        "semantic_score": semantic.get("semantic_score"),
-        "qualitative_score": qualitative.get("qualitative_score"),
-        "weighted_total": evaluation.get("weighted_total"),
+        "score_strukturell": evaluation.get("score_strukturell"),
+        "score_semantisch": evaluation.get("score_semantisch"),
+        "score_gesamt": evaluation.get("score_gesamt"),
+        "syntax_gate": detail_s.get("syntax_gate"),
+        "fk_gate": detail_s.get("fk_gate"),
+        "pk_rate": detail_s.get("pk_rate"),
+        "pk_tabellen_gesamt": detail_s.get("pk_tabellen_gesamt"),
+        "pk_tabellen_mit_pk": detail_s.get("pk_tabellen_mit_pk"),
+        "fk_referenzen_gesamt": detail_s.get("fk_referenzen_gesamt"),
+        "fk_referenzen_ungueltig": detail_s.get("fk_referenzen_ungueltig"),
+        "entitaet_precision": entitaet.get("precision"),
+        "entitaet_recall": entitaet.get("recall"),
+        "entitaet_f1": entitaet.get("f1"),
+        "entitaet_matched": entitaet.get("matched"),
+        "entitaet_nur_in_referenz": entitaet.get("nur_in_referenz"),
+        "entitaet_nur_in_generiert": entitaet.get("nur_in_generiert"),
+        "attribut_precision": attribut.get("precision"),
+        "attribut_recall": attribut.get("recall"),
+        "attribut_f1": attribut.get("f1"),
+        "attribut_matched": attribut.get("matched"),
+        "attribut_nur_in_referenz": attribut.get("nur_in_referenz"),
+        "attribut_nur_in_generiert": attribut.get("nur_in_generiert"),
+        "beziehung_recall": beziehung.get("recall"),
+        "beziehung_matched": beziehung.get("matched"),
+        "beziehung_nur_in_referenz": beziehung.get("nur_in_referenz"),
+        "beziehung_nur_in_generiert": beziehung.get("nur_in_generiert"),
+        "abweichungen_total": len(evaluation.get("abweichungen") or []),
         "input_tokens": telemetry.get("total_input_tokens", 0),
         "output_tokens": telemetry.get("total_output_tokens", 0),
         "total_tokens": telemetry.get("total_tokens", 0),
-        "cost_usd": round(telemetry.get("total_cost_usd", 0.0) or 0.0, 6),
         "llm_calls": telemetry.get("total_calls", 0),
         "error": error or "",
     }
@@ -210,7 +280,7 @@ def _select_testcases(
 def main() -> None:
     # .env-Suche analog zum Testdata-Generator: lädt nl_to_schema/.env auch dann,
     # wenn das Skript aus einem anderen cwd gestartet wird. override=True, damit
-    # leere Shell-Vars (z.B. GOOGLE_API_KEY="") überschrieben werden.
+    # leere Shell-Vars überschrieben werden.
     script_dir = Path(__file__).resolve().parent
     for candidate in (
         Path.cwd() / ".env",
@@ -246,14 +316,6 @@ def main() -> None:
         ),
     )
     parser.add_argument(
-        "--skip-qualitative",
-        action="store_true",
-        help=(
-            "LLM-as-Judge (qualitative Evaluation) überspringen. "
-            "weighted_total wird dann aus structural+semantic re-normalisiert."
-        ),
-    )
-    parser.add_argument(
         "--force",
         action="store_true",
         help=(
@@ -276,11 +338,6 @@ def main() -> None:
     logging.info(
         "Ausgewählt: %d von %d Testfällen", len(testcases), len(all_testcases)
     )
-    if args.skip_qualitative:
-        logging.warning(
-            "LLM-as-Judge wird übersprungen (--skip-qualitative). "
-            "weighted_total = (3/7)·structural + (4/7)·semantic."
-        )
 
     args.output.mkdir(parents=True, exist_ok=True)
 
@@ -293,8 +350,21 @@ def main() -> None:
             # Idempotenz: bestehendes Ergebnis nicht erneut rechnen.
             if not args.force:
                 existing = _load_existing_result(args.output, wf, tc_id)
-                if existing is not None:
-                    evaluation = existing.get("evaluation") or {}
+                if (
+                    existing is not None
+                    and "score_gesamt" in existing  # neues Schema, sonst neu rechnen
+                ):
+                    evaluation = {
+                        k: existing.get(k)
+                        for k in (
+                            "score_strukturell",
+                            "score_semantisch",
+                            "score_gesamt",
+                            "detail_strukturell",
+                            "detail_semantisch",
+                            "abweichungen",
+                        )
+                    }
                     telemetry = existing.get("telemetry") or {}
                     state_data = existing.get("state") or {}
                     error = state_data.get("error") or ""
@@ -326,17 +396,13 @@ def main() -> None:
                     workflow_name=wf,
                     error=f"workflow_crashed: {exc}",
                 )
-            evaluation = _evaluate(
-                state,
-                anforderungstext,
-                reference,
-                skip_qualitative=args.skip_qualitative,
-            )
+            evaluation = _evaluate(state, anforderungstext, reference)
             telemetry = LEDGER.summary()
             logging.info(
-                "[%s][%s] tokens in=%d out=%d cost=$%.5f calls=%d",
+                "[%s][%s] score_gesamt=%.3f tokens in=%d out=%d cost=$%.5f calls=%d",
                 wf,
                 tc_id,
+                evaluation.get("score_gesamt") or 0.0,
                 telemetry["total_input_tokens"],
                 telemetry["total_output_tokens"],
                 telemetry["total_cost_usd"],
