@@ -1,0 +1,519 @@
+{
+  "testfall_id": "TC030",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9789473684210526,
+  "score_gesamt": 0.9873684210526316,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9473684210526315,
+      "recall": 0.9473684210526315,
+      "f1": 0.9473684210526315,
+      "matched": 18,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Pizzalieferdienst moechte seine Bestellungen uebersichtlich verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und die Lieferadresse gespeichert werden. Ein Kunde kann im Lauf der Zeit mehrere Bestellungen aufgeben, aber jede Bestellung gehoert immer genau zu einem Kunden. Zu jeder Bestellung sollen das Bestelldatum, der aktuelle Status und der Gesamtbetrag festgehalten werden. Ausserdem soll gespeichert werden, welche Pizzen in einer Bestellung enthalten sind. Fuer jede enthaltene Pizza soll vermerkt werden, um welche Pizza es sich handelt, wie viele davon bestellt wurden und welcher Einzelpreis zum Zeitpunkt der Bestellung galt. Zu jeder Pizza sollen Name, Beschreibung und der reguläre Preis gespeichert werden.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "pizzas",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "order_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "pizza_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "pizza_id",
+              "references_table": "pizzas",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "Lieferadresse"
+          ],
+          "beschreibung": "Repräsentiert einen Kunden des Pizzalieferdienstes mit seinen Kontaktdaten und Lieferadresse."
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            "Bestelldatum",
+            "Status",
+            "Gesamtbetrag"
+          ],
+          "beschreibung": "Repräsentiert eine Bestellung eines Kunden mit Datum, aktuellem Status und Gesamtbetrag."
+        },
+        {
+          "name": "Pizza",
+          "attribute": [
+            "Name",
+            "Beschreibung",
+            "Preis"
+          ],
+          "beschreibung": "Repräsentiert eine Pizza im Angebot mit Name, Beschreibung und regulärem Preis."
+        },
+        {
+          "name": "BestellungsPizza",
+          "attribute": [
+            "Menge",
+            "Einzelpreis"
+          ],
+          "beschreibung": "Repräsentiert die Zuordnung von Pizzen zu Bestellungen mit Menge und zum Bestellzeitpunkt gültigem Einzelpreis."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Bestellungen aufgeben, aber jede Bestellung gehört genau zu einem Kunden."
+        },
+        {
+          "von": "Bestellung",
+          "zu": "BestellungsPizza",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Bestellung kann mehrere Pizzen enthalten, jede Zuordnung gehört zu genau einer Bestellung."
+        },
+        {
+          "von": "Pizza",
+          "zu": "BestellungsPizza",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Pizza kann in mehreren Bestellungen enthalten sein, jede Zuordnung bezieht sich auf genau eine Pizza."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist unklar, ob die Lieferadresse als einzelnes Attribut oder als strukturierte Komponenten (Straße, Hausnummer, PLZ, Stadt) gespeichert werden soll.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Der 'Status' einer Bestellung ist nicht näher definiert. Es ist unklar, welche Statuswerte möglich sind (z.B. 'offen', 'in Zubereitung', 'unterwegs', 'geliefert', 'storniert').",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht explizit geklärt, ob ein Kunde eindeutig identifiziert werden kann (z.B. durch eine Kundennummer) oder ob die Kombination von Vorname und Nachname ausreicht.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob eine Pizza eindeutig durch ihren Namen identifiziert wird oder ob eine separate Pizza-ID notwendig ist.",
+          "betroffene_elemente": [
+            "Pizza"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Lieferadresse",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            {
+              "name": "bestellungId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bestelldatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Gesamtbetrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Pizza",
+          "attribute": [
+            {
+              "name": "pizzaId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "BestellungsPizza",
+          "attribute": [
+            {
+              "name": "bestellungsPizzaId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bestellungId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "pizzaId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Menge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Einzelpreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "BestellungsPizza",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Pizza",
+          "zu": "BestellungsPizza",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    delivery_address TEXT NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    order_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    total_amount DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE pizzas (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_pizzas PRIMARY KEY (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    pizza_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_pizza_id FOREIGN KEY (pizza_id) REFERENCES pizzas (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7419,
+    "total_output_tokens": 2994,
+    "total_tokens": 10413,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1473,
+        "output_tokens": 949,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2461,
+        "output_tokens": 1042,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3485,
+        "output_tokens": 1003,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1473,
+        "output_tokens": 949,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2461,
+        "output_tokens": 1042,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3485,
+        "output_tokens": 1003,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,978 @@
+{
+  "testfall_id": "TC036",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.635072463768116,
+  "score_gesamt": 0.7810434782608696,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 10,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "matched": 6,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.6285714285714286,
+      "recall": 0.6470588235294118,
+      "f1": 0.6376811594202899,
+      "matched": 22,
+      "nur_in_referenz": 12,
+      "nur_in_generiert": 13
+    },
+    "beziehung": {
+      "recall": 0.4,
+      "matched": 4,
+      "nur_in_referenz": 6,
+      "nur_in_generiert": 1
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "school_classes",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "assessments.assessment_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "assessments.title",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "students.school_class_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "grades.grade",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers.school_class_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes.school_year",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes.teacher_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers.school_class_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers.teacher_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "assessments → subject_teachers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes → teachers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers → school_classes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers → teachers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "students → school_classes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers → school_classes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Schule soll eine Lösung entstehen, mit der die wichtigsten Abläufe rund um Unterricht und Teilnahme festgehalten werden können. Von allen Kindern und Jugendlichen sollen die üblichen Kontaktdaten sowie das Geburtsdatum bekannt sein. Außerdem muss nachvollziehbar sein, in welcher Lerngruppe jemand aktuell geführt wird. Lehrkräfte sollen mit Namen, Erreichbarkeit und ihrem Einstellungsdatum erfasst werden. Eine Lehrkraft kann mehrere Fächer unterrichten, und ein Fach wird an der Schule oft von mehreren Lehrkräften übernommen. Die Schule bietet verschiedene Lerngruppen an, etwa nach Jahrgang oder Profil. Jede Lerngruppe hat eine Bezeichnung und ein Schuljahr. Pro Lerngruppe gibt es eine Klassenleitung. Zusätzlich sollen die unterrichteten Fächer verwaltet werden. Dabei ist wichtig, welche Lehrkraft welches Fach in welcher Lerngruppe übernimmt. Für Leistungsnachweise soll gespeichert werden, wann sie stattgefunden haben, worum es ging und welche Note ein Kind erhalten hat. Eine Note bezieht sich immer auf einen konkreten Leistungsnachweis. Es soll außerdem möglich sein festzuhalten, welche Lehrkräfte eine Lerngruppe betreuen, da dies im Schulalltag nicht immer nur die Klassenleitung betrifft. Was genau als Betreuung gilt, kann je nach organisatorischer Regelung der Schule unterschiedlich ausgelegt werden.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "students",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "learninggroup_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "teachers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "subjects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "learninggroups",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "schoolyear",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "classleader_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "classleader_id",
+              "references_table": "teachers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "assessments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "topic",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subject_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subject_id",
+              "references_table": "subjects",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "grades",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "value",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "student_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "assessment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "student_id",
+              "references_table": "students",
+              "references_column": "id"
+            },
+            {
+              "from_column": "assessment_id",
+              "references_table": "assessments",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "teacher_subjects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "teacher_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subject_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "learninggroup_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "teacher_id",
+              "references_table": "teachers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subject_id",
+              "references_table": "subjects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "supervisions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "teacher_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "learninggroup_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "supervision_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "teacher_id",
+              "references_table": "teachers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Schüler",
+          "attribute": [
+            "Name",
+            "Kontaktdaten",
+            "Geburtsdatum",
+            "aktuelle_Lerngruppe"
+          ],
+          "beschreibung": "Kinder und Jugendliche, die die Schule besuchen. Von ihnen werden Kontaktdaten, Geburtsdatum und ihre aktuelle Lerngruppenzugehörigkeit erfasst."
+        },
+        {
+          "name": "Lehrkraft",
+          "attribute": [
+            "Name",
+            "Erreichbarkeit",
+            "Einstellungsdatum"
+          ],
+          "beschreibung": "Unterrichtende Personen an der Schule. Sie werden mit Namen, Erreichbarkeit und Einstellungsdatum erfasst und können mehrere Fächer unterrichten."
+        },
+        {
+          "name": "Fach",
+          "attribute": [
+            "Bezeichnung"
+          ],
+          "beschreibung": "Unterrichtsfächer, die an der Schule angeboten werden. Ein Fach kann von mehreren Lehrkräften unterrichtet werden."
+        },
+        {
+          "name": "Lerngruppe",
+          "attribute": [
+            "Bezeichnung",
+            "Schuljahr",
+            "Klassenleitung"
+          ],
+          "beschreibung": "Gruppen von Schülern, organisiert etwa nach Jahrgang oder Profil. Jede Lerngruppe hat eine Bezeichnung, ein Schuljahr und eine zugeordnete Klassenleitung."
+        },
+        {
+          "name": "Leistungsnachweis",
+          "attribute": [
+            "Datum",
+            "Thema",
+            "Fach"
+          ],
+          "beschreibung": "Überprüfungen von Schülerleistungen, bei denen ein Datum, das Thema und das betroffene Fach dokumentiert werden."
+        },
+        {
+          "name": "Note",
+          "attribute": [
+            "Wert",
+            "Schüler",
+            "Leistungsnachweis"
+          ],
+          "beschreibung": "Bewertung eines Schülers für einen konkreten Leistungsnachweis. Eine Note bezieht sich immer auf einen Leistungsnachweis und einen Schüler."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Schüler",
+          "zu": "Lerngruppe",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Schüler wird in einer Lerngruppe geführt (aktuell). Mehrere Schüler gehören zu einer Lerngruppe."
+        },
+        {
+          "von": "Lehrkraft",
+          "zu": "Fach",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Lehrkraft kann mehrere Fächer unterrichten, und ein Fach wird oft von mehreren Lehrkräften unterrichtet."
+        },
+        {
+          "von": "Lehrkraft",
+          "zu": "Lerngruppe",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Lehrkraft ist Klassenleitung einer Lerngruppe oder betreut eine Lerngruppe. Mehrere Lehrkräfte können eine Lerngruppe betreuen."
+        },
+        {
+          "von": "Lehrkraft",
+          "zu": "Fach",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Verknüpfung: Welche Lehrkraft unterrichtet welches Fach in welcher Lerngruppe (Unterrichtsverteilung)."
+        },
+        {
+          "von": "Lerngruppe",
+          "zu": "Fach",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Lerngruppe hat mehrere Fächer, die unterrichtet werden. Ein Fach wird in mehreren Lerngruppen unterrichtet."
+        },
+        {
+          "von": "Schüler",
+          "zu": "Leistungsnachweis",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Schüler nimmt an mehreren Leistungsnachweisen teil. Ein Leistungsnachweis betrifft mehrere Schüler."
+        },
+        {
+          "von": "Note",
+          "zu": "Leistungsnachweis",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Eine Note bezieht sich immer auf einen konkreten Leistungsnachweis. Ein Leistungsnachweis kann mehrere Noten haben (eine pro Schüler)."
+        },
+        {
+          "von": "Note",
+          "zu": "Schüler",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Eine Note gehört zu einem Schüler. Ein Schüler kann mehrere Noten haben."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Die genaue Struktur der Unterrichtsverteilung ist unklar: Soll es eine separate Entität 'Unterrichtsverteilung' oder 'Unterrichtsgruppe' geben, die die Kombination (Lehrkraft, Fach, Lerngruppe) abbildet, oder wird dies durch mehrere M:N-Beziehungen modelliert?",
+          "betroffene_elemente": [
+            "Lehrkraft",
+            "Fach",
+            "Lerngruppe"
+          ]
+        },
+        {
+          "beschreibung": "Die Unterscheidung zwischen 'Klassenleitung' und 'Betreuung' einer Lerngruppe ist nicht präzise definiert. Es ist unklar, ob die Klassenleitung eine spezielle Form der Betreuung ist oder ob es sich um zwei separate Rollen handelt.",
+          "betroffene_elemente": [
+            "Lehrkraft",
+            "Lerngruppe"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht klar, ob ein Schüler im Laufe der Zeit mehrere Lerngruppen durchläuft (historische Nachverfolgung) oder nur die aktuelle Lerngruppe relevant ist. Das Attribut 'aktuelle_Lerngruppe' deutet auf letzteres hin, aber die Anforderung sagt 'in welcher Lerngruppe jemand aktuell geführt wird'.",
+          "betroffene_elemente": [
+            "Schüler",
+            "Lerngruppe"
+          ]
+        },
+        {
+          "beschreibung": "Die Struktur der 'Kontaktdaten' ist nicht spezifiziert. Unklar ist, ob dies ein einzelnes Attribut oder mehrere Attribute (Telefon, E-Mail, Adresse etc.) sein sollen.",
+          "betroffene_elemente": [
+            "Schüler"
+          ]
+        },
+        {
+          "beschreibung": "Die Struktur der 'Erreichbarkeit' von Lehrkräften ist nicht spezifiziert. Unklar ist, ob dies Telefon, E-Mail, Adresse oder eine Kombination sein soll.",
+          "betroffene_elemente": [
+            "Lehrkraft"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob ein Leistungsnachweis sich auf ein spezifisches Fach bezieht oder ob das Fach implizit durch die Lehrkraft und Lerngruppe bestimmt wird.",
+          "betroffene_elemente": [
+            "Leistungsnachweis",
+            "Fach"
+          ]
+        },
+        {
+          "beschreibung": "Die Beziehung zwischen Leistungsnachweis und Lerngruppe ist nicht explizit erwähnt. Unklar ist, ob ein Leistungsnachweis sich auf eine spezifische Lerngruppe bezieht oder ob dies implizit durch die Schüler bestimmt wird.",
+          "betroffene_elemente": [
+            "Leistungsnachweis",
+            "Lerngruppe"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Schüler",
+          "attribute": [
+            {
+              "name": "schüler_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktdaten",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lerngruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Lehrkraft",
+          "attribute": [
+            {
+              "name": "lehrkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "erreichbarkeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "einstellungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Fach",
+          "attribute": [
+            {
+              "name": "fach_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Lerngruppe",
+          "attribute": [
+            {
+              "name": "lerngruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "schuljahr",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "klassenleitung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Leistungsnachweis",
+          "attribute": [
+            {
+              "name": "leistungsnachweis_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "thema",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fach_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Note",
+          "attribute": [
+            {
+              "name": "note_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "wert",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "schüler_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leistungsnachweis_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Unterrichtsverteilung",
+          "attribute": [
+            {
+              "name": "unterrichtsverteilung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lehrkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fach_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lerngruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Betreuung",
+          "attribute": [
+            {
+              "name": "betreuung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lehrkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lerngruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "betreuungsart",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Schüler",
+          "zu": "Lerngruppe",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Lehrkraft",
+          "zu": "Lerngruppe",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Unterrichtsverteilung",
+          "zu": "Lehrkraft",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Unterrichtsverteilung",
+          "zu": "Fach",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Unterrichtsverteilung",
+          "zu": "Lerngruppe",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Betreuung",
+          "zu": "Lehrkraft",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Betreuung",
+          "zu": "Lerngruppe",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Leistungsnachweis",
+          "zu": "Fach",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Note",
+          "zu": "Schüler",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Note",
+          "zu": "Leistungsnachweis",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE subjects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_subjects PRIMARY KEY (id)\n);\n\nCREATE TABLE assessments (\n    id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    topic VARCHAR(255) NOT NULL,\n    subject_id INTEGER NOT NULL,\n    CONSTRAINT pk_assessments PRIMARY KEY (id),\n    CONSTRAINT fk_assessments_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id)\n);\n\nCREATE TABLE teachers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    hiredate DATE NOT NULL,\n    CONSTRAINT pk_teachers PRIMARY KEY (id)\n);\n\nCREATE TABLE learninggroups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    schoolyear VARCHAR(255) NOT NULL,\n    classleader_id INTEGER NOT NULL,\n    CONSTRAINT pk_learninggroups PRIMARY KEY (id),\n    CONSTRAINT fk_learninggroups_classleader_id FOREIGN KEY (classleader_id) REFERENCES teachers (id)\n);\n\nCREATE TABLE students (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    birthdate DATE NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    CONSTRAINT pk_students PRIMARY KEY (id),\n    CONSTRAINT fk_students_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n\nCREATE TABLE grades (\n    id INTEGER NOT NULL,\n    value DECIMAL(18,2) NOT NULL,\n    student_id INTEGER NOT NULL,\n    assessment_id INTEGER NOT NULL,\n    CONSTRAINT pk_grades PRIMARY KEY (id),\n    CONSTRAINT fk_grades_student_id FOREIGN KEY (student_id) REFERENCES students (id),\n    CONSTRAINT fk_grades_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id)\n);\n\nCREATE TABLE supervisions (\n    id INTEGER NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    supervision_type VARCHAR(255),\n    CONSTRAINT pk_supervisions PRIMARY KEY (id),\n    CONSTRAINT fk_supervisions_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_supervisions_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n\nCREATE TABLE teacher_subjects (\n    id INTEGER NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    subject_id INTEGER NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    CONSTRAINT pk_teacher_subjects PRIMARY KEY (id),\n    CONSTRAINT fk_teacher_subjects_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_teacher_subjects_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id),\n    CONSTRAINT fk_teacher_subjects_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 10335,
+    "total_output_tokens": 6203,
+    "total_tokens": 16538,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1672,
+        "output_tokens": 2126,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3885,
+        "output_tokens": 2040,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4778,
+        "output_tokens": 2037,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1672,
+        "output_tokens": 2126,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3885,
+        "output_tokens": 2040,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4778,
+        "output_tokens": 2037,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,1246 @@
+{
+  "testfall_id": "TC092",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6096638655462185,
+  "score_gesamt": 0.7657983193277311,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 22,
+    "pk_tabellen_mit_pk": 22,
+    "fk_referenzen_gesamt": 26,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.45454545454545453,
+      "recall": 1.0,
+      "f1": 0.625,
+      "matched": 10,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 12
+    },
+    "attribut": {
+      "precision": 0.37209302325581395,
+      "recall": 0.64,
+      "f1": 0.4705882352941177,
+      "matched": 32,
+      "nur_in_referenz": 18,
+      "nur_in_generiert": 54
+    },
+    "beziehung": {
+      "recall": 0.8571428571428571,
+      "matched": 12,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 1
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "diagnoses.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "studies.code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.study_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.container_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.processing_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.current_storage_location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.concentration",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.rin",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "institutions.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "institutions.category",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sample_diagnoses.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sample_diagnoses.comment",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons.internal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "consents.scope",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_studies.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_studies.enrollmentdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "institution_studies.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "institution_studies.role",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples → storage_locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples → studies",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für unsere Biobank sollen menschliche Proben aus verschiedenen Studien erfasst werden. Es geht vor allem um Blut, Serum, Plasma, Gewebe und manchmal auch DNA-Aliquots. Zu jeder Probe muss nachvollziehbar sein, von welcher Person sie stammt, in welcher Studie sie gewonnen wurde und wann die Entnahme ungefähr stattgefunden hat. Die Personen nehmen teils nur an einer Studie teil, teils wohl an mehreren; außerdem kann es sein, dass bei Nachbeobachtungen weitere Proben dazukommen. Wir brauchen neben einer internen Kennung auch medizinisch relevante Basisangaben wie Geburtsdatum und biologisches Geschlecht, falls bekannt. \n\nStudien haben ein Kürzel, einen Titel, laufen über bestimmte Zeiträume und werden meistens von einer Einrichtung verantwortet. Teilweise arbeiten aber mehrere Einrichtungen zusammen, und manchmal kommt eine Probe über eine andere Stelle in die Sammlung. Einrichtungen sollen mit Name, Ort und einer Art Kategorie wie Klinik, Forschungslabor oder Register hinterlegt werden.\n\nProben werden in Behältern und an Lagerorten aufbewahrt. Ein Lagerort kann z. B. ein Gebäude, Raum, Gefrierschrank oder Rack sein; wie fein das später aufgelöst wird, ist noch nicht ganz entschieden. Wichtig ist, dass man den aktuellen Platz kennt. Manche Proben werden umgelagert oder in mehrere Aliquote aufgeteilt. Ob ein Aliquot als eigene Probe zählt oder nur als Untereinheit, müssten wir im System sinnvoll abbilden.\n\nAußerdem sollen zu Proben Diagnosebezüge dokumentiert werden, etwa ICD-Codes oder Freitextangaben, weil dieselbe Person mehrere Diagnosen haben kann und eine Diagnose nicht immer für alle Proben gleichermaßen relevant ist. Für Auswertungen möchten wir auch die Verarbeitungsart festhalten, etwa frisch, zentrifugiert oder formalinfixiert, sowie Qualitätswerte wie Konzentration oder RIN, sofern vorhanden. Nicht jede Probe hat alle diese Angaben.\n\nSchließlich muss man sehen können, welche Einwilligung für eine Person vorliegt und ob sie widerrufen wurde. Unklar ist noch, ob eine Einwilligung studienbezogen oder allgemein gelten soll; beides kommt in der Praxis vor.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "internal_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "biological_sex",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "institution_categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "institutions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "category_id",
+              "references_table": "institution_categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "studies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "acronym",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "responsible_institution_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "responsible_institution_id",
+              "references_table": "institutions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "study_institutions",
+          "columns": [
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "institution_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "institution_id",
+              "references_table": "institutions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "person_studies",
+          "columns": [
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sample_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "location_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "storage_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "parent_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "location_type_id",
+              "references_table": "location_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "parent_location_id",
+              "references_table": "storage_locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "container_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "containers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "container_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "container_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "container_type_id",
+              "references_table": "container_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "storage_history",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "container_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "storage_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "moved_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "moved_by",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "container_id",
+              "references_table": "containers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "storage_location_id",
+              "references_table": "storage_locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "processing_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "samples",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sample_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "sample_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "collection_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "collection_institution_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "container_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "parent_sample_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_aliquot",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "sample_type_id",
+              "references_table": "sample_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "collection_institution_id",
+              "references_table": "institutions",
+              "references_column": "id"
+            },
+            {
+              "from_column": "container_id",
+              "references_table": "containers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "parent_sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sample_studies",
+          "columns": [
+            {
+              "name": "sample_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "processing_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "sample_processing",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sample_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "processing_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "processing_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_current",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "processing_type_id",
+              "references_table": "processing_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "quality_parameters",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "default_unit",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "sample_quality",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sample_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quality_parameter_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quality_value",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "unit",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "measurement_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "quality_parameter_id",
+              "references_table": "quality_parameters",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "diagnoses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "icd_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "diagnosis_text",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "sample_diagnoses",
+          "columns": [
+            {
+              "name": "sample_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "is_relevant",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "relevance_note",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "consents",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "consent_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "consent_scope",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "consent_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_withdrawn",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "withdrawal_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'samples' hat redundante Fremdschlüssel. Die Spalte 'study_id' ist direkt in 'samples' enthalten, obwohl die Beziehung Person→Studie bereits über 'person_studies' definiert ist. Dies führt zu Dateninkonsistenzen: Eine Person kann in Studie A sein, aber eine Probe derselben Person könnte fälschlicherweise Studie B zugeordnet werden. Die Anforderung 'von welcher Person sie stammt, in welcher Studie sie gewonnen wurde' sollte über die Verknüpfung person→person_studies→study validiert werden, nicht durch redundante Spalten.",
+          "korrekturanweisung": "Entfernen Sie 'study_id' aus der 'samples'-Tabelle. Die Studienzugehörigkeit wird implizit über die person_id und die person_studies-Tabelle bestimmt. Falls eine Probe ausnahmsweise einer anderen Studie zugeordnet werden muss als die Person registriert ist, ist dies ein Geschäftslogik-Problem, das durch Constraints oder Anwendungslogik gelöst werden sollte, nicht durch redundante Spalten."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'samples' hat sowohl 'container_id' als auch implizite Lagerung über 'parent_sample_id' (Aliquot-Hierarchie). Die Anforderung 'Manche Proben werden umgelagert oder in mehrere Aliquote aufgeteilt' wird unzureichend abgebildet. Ein Aliquot (is_aliquot=true) sollte nicht in einem Container sein, sondern nur die Elternprobe. Derzeit können Aliquote unabhängig in Containern landen, was zu Inkonsistenzen führt.",
+          "korrekturanweisung": "Klären Sie die Semantik: (1) Nur Originalproben (is_aliquot=false) haben einen Container. (2) Aliquote erben den Container ihrer Elternprobe oder haben keinen eigenen. Implementieren Sie einen CHECK-Constraint: IF is_aliquot=true THEN container_id IS NULL. Alternativ: Führen Sie eine separate 'aliquots'-Tabelle ein mit parent_sample_id und ohne container_id."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen Proben und Diagnosen ist nicht korrekt modelliert. Die Anforderung 'Diagnosebezüge dokumentieren, weil dieselbe Person mehrere Diagnosen hat und eine Diagnose nicht immer für alle Proben gleichermaßen relevant ist' wird durch die aktuelle Struktur nicht erfüllt. Die Tabelle 'diagnoses' ist an 'person_id' gebunden, nicht an 'sample_id'. Dies bedeutet, dass eine Diagnose entweder für alle Proben einer Person gilt oder für keine. Die Junction-Tabelle 'sample_diagnoses' versucht, dies zu korrigieren, aber die Semantik ist unklar: Ist eine Diagnose in 'diagnoses' eine Person-Diagnose, die dann selektiv auf Proben angewendet wird, oder sollte es sample-spezifische Diagnosen geben?",
+          "korrekturanweisung": "Umstrukturieren Sie: (1) Entfernen Sie 'person_id' aus 'diagnoses' oder machen Sie es optional. (2) Definieren Sie 'diagnoses' als eigenständige Entität mit icd_code und diagnosis_text. (3) Erstellen Sie eine neue Junction-Tabelle 'sample_diagnoses' mit (sample_id, diagnosis_id) als Composite-PK. (4) Optional: Fügen Sie 'diagnosis_date' hinzu, um zeitliche Bezüge zu erfassen. Dies ermöglicht, dass eine Diagnose mehreren Proben zugeordnet wird und eine Probe mehrere Diagnosen hat, ohne Person-Redundanz."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'sample_institutions' ist semantisch unklar. Die Anforderung 'manchmal kommt eine Probe über eine andere Stelle in die Sammlung' wird durch 'source_institution_id' in 'samples' abgedeckt. Die Junction-Tabelle 'sample_institutions' mit optionalem 'role' scheint redundant oder dient einem anderen Zweck (z.B. alle beteiligten Institutionen). Es ist unklar, ob 'source_institution_id' und 'sample_institutions' das gleiche ausdrücken oder unterschiedliche Rollen haben (z.B. 'source' vs. 'processing' vs. 'storage'). Dies führt zu Dateninkonsistenzen.",
+          "korrekturanweisung": "Klären Sie die Semantik: (1) Wenn 'sample_institutions' alle beteiligten Institutionen mit Rollen abbilden soll, entfernen Sie 'source_institution_id' aus 'samples' und nutzen Sie 'sample_institutions' mit role='source', role='processing', etc. (2) Wenn 'source_institution_id' ausreicht, entfernen Sie 'sample_institutions'. (3) Empfehlung: Nutzen Sie 'sample_institutions' mit Rollen-Enumeration (source, processing, storage, responsible) für maximale Flexibilität."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'samples' verletzt die 3NF durch transitive Abhängigkeiten. Die Spalte 'current_processing_type_id' ist redundant, da die aktuelle Verarbeitung bereits in 'sample_processing' mit 'is_current=true' abgebildet wird. Dies führt zu Anomalien: Wenn 'sample_processing' aktualisiert wird, muss 'samples.current_processing_type_id' manuell synchronisiert werden. Dies ist fehleranfällig.",
+          "korrekturanweisung": "Entfernen Sie 'current_processing_type_id' aus 'samples'. Die aktuelle Verarbeitung wird durch eine Query über 'sample_processing' WHERE is_current=true ermittelt. Falls Performance kritisch ist, nutzen Sie eine Materialized View oder einen Trigger, nicht redundante Spalten."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'samples' hat die Spalte 'sample_type' als VARCHAR ohne Normalisierung. Dies ist eine Enumerations-ähnliche Spalte (Blut, Serum, Plasma, Gewebe, DNA-Aliquots), die zu Inkonsistenzen führt (z.B. 'Blut' vs. 'blut' vs. 'BLOOD'). Dies verletzt die 1NF/2NF durch fehlende Normalisierung.",
+          "korrekturanweisung": "Erstellen Sie eine Lookup-Tabelle 'sample_types' mit (id, name) und ersetzen Sie 'sample_type' VARCHAR durch 'sample_type_id' INTEGER mit FK zu 'sample_types'. Dies erzwingt Konsistenz und ermöglicht Erweiterungen (z.B. Beschreibungen, Kategorien)."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung 'Einwilligung studienbezogen oder allgemein' wird unzureichend abgebildet. Die Tabelle 'consents' hat 'study_id' als NULLABLE, was bedeutet, dass eine Einwilligung entweder studienbezogen (study_id NOT NULL) oder allgemein (study_id IS NULL) ist. Dies ist semantisch unklar und führt zu Abfrage-Komplexität. Es ist nicht definiert, wie eine allgemeine Einwilligung mit studienbezogenen Proben interagiert.",
+          "korrekturanweisung": "Klären Sie die Geschäftslogik: (1) Wenn allgemeine Einwilligungen studienbezogene ersetzen, nutzen Sie einen CHECK-Constraint oder Trigger. (2) Wenn beide koexistieren, definieren Sie explizit: 'Eine Probe darf nur verwendet werden, wenn (a) eine allgemeine Einwilligung vorliegt ODER (b) eine studienbezogene Einwilligung für die Studie der Probe vorliegt UND nicht widerrufen wurde.' (3) Empfehlung: Fügen Sie eine 'consent_scope' ENUM-Spalte hinzu (GENERAL, STUDY_SPECIFIC) für Klarheit."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'storage_locations' hat 'parent_location_id' für hierarchische Strukturen (Gebäude→Raum→Gefrierschrank→Rack), aber es gibt keine Constraints für zirkuläre Referenzen oder Tiefenbegrenzung. Eine Location könnte sich selbst als Parent referenzieren oder eine zirkuläre Kette bilden, was zu Abfrage-Fehlern führt.",
+          "korrekturanweisung": "Implementieren Sie einen CHECK-Constraint: parent_location_id != id. Für zirkuläre Referenzen ist ein Trigger erforderlich, der die Hierarchie validiert. Alternativ: Dokumentieren Sie die maximale Hierarchie-Tiefe und implementieren Sie Anwendungslogik zur Validierung."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'containers' hat 'current_storage_location_id', aber die Anforderung 'Manche Proben werden umgelagert' wird durch 'storage_history' abgedeckt. Es ist unklar, ob 'current_storage_location_id' redundant ist oder ob es als Denormalisierung für Performance dient. Falls redundant, führt dies zu Synchronisationsproblemen.",
+          "korrekturanweisung": "Klären Sie: (1) Wenn 'current_storage_location_id' redundant ist, entfernen Sie es und ermitteln Sie den aktuellen Ort durch: SELECT storage_location_id FROM storage_history WHERE container_id=? ORDER BY moved_date DESC LIMIT 1. (2) Falls Performance kritisch ist, nutzen Sie einen Trigger, um 'current_storage_location_id' automatisch zu aktualisieren, wenn ein neuer Eintrag in 'storage_history' eingefügt wird."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'persons' hat 'internal_id' als VARCHAR NOT NULL, aber es gibt keinen UNIQUE-Constraint. Dies bedeutet, dass mehrere Personen die gleiche 'internal_id' haben können, was zu Verwechslungen führt. Die Anforderung 'interne Kennung' impliziert Eindeutigkeit.",
+          "korrekturanweisung": "Fügen Sie einen UNIQUE-Constraint hinzu: ALTER TABLE persons ADD CONSTRAINT uk_persons_internal_id UNIQUE (internal_id). Dies erzwingt, dass jede Person eine eindeutige interne Kennung hat."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'samples' hat 'sample_id' als VARCHAR NOT NULL, aber es gibt keinen UNIQUE-Constraint. Dies bedeutet, dass mehrere Proben die gleiche 'sample_id' haben können, was zu Verwechslungen führt. Die Anforderung 'interne Kennung' impliziert Eindeutigkeit.",
+          "korrekturanweisung": "Fügen Sie einen UNIQUE-Constraint hinzu: ALTER TABLE samples ADD CONSTRAINT uk_samples_sample_id UNIQUE (sample_id). Dies erzwingt, dass jede Probe eine eindeutige Kennung hat."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen 'samples' und 'containers' ist optional (container_id NULLABLE), aber die Anforderung 'Proben werden in Behältern aufbewahrt' impliziert, dass jede Probe einen Container haben sollte. Dies ist semantisch unklar: Können Proben ohne Container existieren, oder ist dies ein Fehler?",
+          "korrekturanweisung": "Klären Sie die Geschäftslogik: (1) Wenn alle Proben einen Container haben müssen, machen Sie 'container_id' NOT NULL. (2) Wenn Proben temporär ohne Container sein können (z.B. während der Verarbeitung), dokumentieren Sie dies und implementieren Sie einen CHECK-Constraint oder Trigger, der sicherstellt, dass Proben vor Abschluss einen Container haben. (3) Wenn Aliquote keinen Container haben (siehe vorherige Anmerkung), machen Sie 'container_id' NOT NULL nur für is_aliquot=false."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Entität 'sample_types' fehlt. Der Anforderungstext nennt explizit verschiedene Probentypen (Blut, Serum, Plasma, Gewebe, DNA-Aliquots). Im Schema wird sample_type als VARCHAR direkt in der samples-Tabelle gespeichert, statt als Fremdschlüssel auf eine Referenztabelle zu verweisen. Dies führt zu Redundanz, Inkonsistenz und erschwert Validierung und Auswertung.",
+          "korrekturanweisung": "Erstelle eine neue Tabelle 'sample_types' mit Spalten: id (INTEGER PRIMARY KEY), name (VARCHAR NOT NULL). Ersetze die Spalte 'sample_type' in 'samples' durch 'sample_type_id' (INTEGER NOT NULL, FK auf sample_types.id)."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der Tabelle 'diagnoses' fehlt ein Attribut zur Dokumentation der Relevanz einer Diagnose für einzelne Proben. Der Anforderungstext betont: 'eine Diagnose nicht immer für alle Proben gleichermaßen relevant ist'. Die aktuelle Struktur (sample_diagnoses als reine Verknüpfungstabelle) erlaubt keine Speicherung von Relevanzinformationen oder Kontextangaben pro Probe-Diagnose-Beziehung.",
+          "korrekturanweisung": "Erweitere die Tabelle 'sample_diagnoses' um Spalten wie 'is_relevant' (BOOLEAN, nullable=true) oder 'relevance_note' (TEXT, nullable=true), um die Relevanz einer Diagnose für eine spezifische Probe dokumentieren zu können."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der Tabelle 'samples' fehlt ein Attribut zur Dokumentation der Herkunftsinstitution (source_institution_id existiert zwar, aber ist optional). Der Anforderungstext besagt: 'manchmal kommt eine Probe über eine andere Stelle in die Sammlung'. Dies ist eine kritische Information für die Nachvollziehbarkeit. Zudem ist unklar, ob source_institution_id die ursprüngliche Entnahmestelle oder die Stelle ist, von der die Probe eingegangen ist. Eine Unterscheidung ist fachlich notwendig.",
+          "korrekturanweisung": "Überprüfe die Semantik von source_institution_id und erwäge eine Umbenennung in 'collection_institution_id' (Entnahmestelle). Erwäge zusätzlich ein Attribut 'receiving_institution_id' (Stelle, von der die Probe eingegangen ist), falls beide Informationen relevant sind. Setze mindestens eines dieser Attribute auf NOT NULL."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "SCHWACHE OPTIMIERUNG: In der Tabelle 'samples' ist das Attribut 'collection_date' optional (nullable=true). Der Anforderungstext betont: 'zu jeder Probe muss nachvollziehbar sein... wann die Entnahme ungefähr stattgefunden hat'. Dies deutet auf eine Pflichtangabe hin, auch wenn die Genauigkeit variieren kann (z.B. nur Monat/Jahr).",
+          "korrekturanweisung": "Setze 'collection_date' auf NOT NULL oder dokumentiere explizit, dass Proben ohne Entnahmedatum zulässig sind und wie diese behandelt werden."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'samples' und 'studies' ist nicht korrekt modelliert. Der Anforderungstext besagt: 'Personen nehmen teils nur an einer Studie teil, teils wohl an mehreren'. Dies ist in 'person_studies' korrekt abgebildet. Allerdings ist in 'samples' die Spalte 'study_id' als NOT NULL definiert, was impliziert, dass jede Probe genau einer Studie zugeordnet ist. Dies ist zu restriktiv: Eine Probe könnte theoretisch für mehrere Studien relevant sein (z.B. bei Nachbeobachtungen oder Sekundärnutzung). Alternativ: Wenn eine Probe immer genau einer Studie zugeordnet ist, muss dies explizit dokumentiert sein.",
+          "korrekturanweisung": "Kläre die fachliche Anforderung: (1) Wenn Proben mehreren Studien zugeordnet werden können, erstelle eine Brückentabelle 'sample_studies' (sample_id, study_id). (2) Wenn eine Probe immer genau einer Studie zugeordnet ist, dokumentiere dies und behalte die aktuelle Struktur bei. Derzeit ist die Anforderung unklar."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'consents' und 'studies' ist nicht korrekt modelliert. Der Anforderungstext besagt: 'Unklar ist noch, ob eine Einwilligung studienbezogen oder allgemein gelten soll; beides kommt in der Praxis vor.' Die aktuelle Struktur (study_id nullable) erlaubt zwar beide Fälle, aber es gibt keine Validierungslogik oder Dokumentation, die sicherstellt, dass eine Einwilligung entweder studienbezogen ODER allgemein ist (nicht beides gleichzeitig). Dies kann zu Dateninkonsistenzen führen.",
+          "korrekturanweisung": "Dokumentiere explizit die Geschäftsregel: Eine Einwilligung ist entweder studienbezogen (study_id NOT NULL) oder allgemein (study_id NULL), aber nicht beides. Erwäge eine CHECK-Constraint oder ein Validierungsverfahren auf Anwendungsebene. Optional: Erstelle zwei separate Tabellentypen oder ein Attribut 'consent_scope' (ENUM: 'general', 'study-specific')."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehung zwischen 'samples' und 'containers' ist korrekt modelliert (1:N). Die Beziehung zwischen 'containers' und 'storage_locations' ist korrekt modelliert (N:1 mit parent_location_id für hierarchische Strukturen). Die Beziehung zwischen 'samples' und 'parent_sample_id' (Aliquote) ist korrekt modelliert (self-referencing 1:N).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Hauptentitäten sind vorhanden: persons, studies, institutions, samples, diagnoses, consents, storage_locations, containers, processing_types, quality_parameters. Auch Brückentabellen für M:N-Beziehungen sind vorhanden (person_studies, study_institutions, sample_institutions, sample_diagnoses, sample_processing, sample_quality).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Die meisten fachlich relevanten Attribute sind vorhanden: Personen (internal_id, firstname, lastname, birthdate, biological_sex), Studien (acronym, title, start_date, end_date), Institutionen (name, location, category), Proben (sample_id, collection_date, sample_type, container, processing, quality), Diagnosen (icd_code, diagnosis_text), Einwilligungen (consent_type, consent_date, is_withdrawn, withdrawal_date). Lagerung und Verarbeitung sind detailliert abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF) normalisiert. Keine offensichtlichen Anomalien wie transitive Abhängigkeiten oder Redundanzen (abgesehen von der sample_type-Problematik, die eine Normalisierungsverletzung darstellt). Brückentabellen sind korrekt für M:N-Beziehungen eingesetzt.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    internal_id VARCHAR(255) NOT NULL,\n    firstname VARCHAR(255),\n    lastname VARCHAR(255),\n    birthdate DATE,\n    biological_sex VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE institution_categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_institution_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE institutions (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    category_id INTEGER,\n    CONSTRAINT pk_institutions PRIMARY KEY (id),\n    CONSTRAINT fk_institutions_category_id FOREIGN KEY (category_id) REFERENCES institution_categories (id)\n);\n\nCREATE TABLE studies (\n    id INTEGER NOT NULL,\n    acronym VARCHAR(255) NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    responsible_institution_id INTEGER,\n    CONSTRAINT pk_studies PRIMARY KEY (id),\n    CONSTRAINT fk_studies_responsible_institution_id FOREIGN KEY (responsible_institution_id) REFERENCES institutions (id)\n);\n\nCREATE TABLE consents (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    study_id INTEGER,\n    consent_type VARCHAR(255) NOT NULL,\n    consent_scope VARCHAR(255) NOT NULL,\n    consent_date DATE NOT NULL,\n    is_withdrawn BOOLEAN NOT NULL,\n    withdrawal_date DATE,\n    CONSTRAINT pk_consents PRIMARY KEY (id),\n    CONSTRAINT fk_consents_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_consents_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE container_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_container_types PRIMARY KEY (id)\n);\n\nCREATE TABLE containers (\n    id INTEGER NOT NULL,\n    container_id VARCHAR(255) NOT NULL,\n    container_type_id INTEGER,\n    CONSTRAINT pk_containers PRIMARY KEY (id),\n    CONSTRAINT fk_containers_container_type_id FOREIGN KEY (container_type_id) REFERENCES container_types (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    icd_code VARCHAR(255),\n    diagnosis_text TEXT,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE location_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_location_types PRIMARY KEY (id)\n);\n\nCREATE TABLE person_studies (\n    person_id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    CONSTRAINT pk_person_studies PRIMARY KEY (person_id, study_id),\n    CONSTRAINT fk_person_studies_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_person_studies_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE processing_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_processing_types PRIMARY KEY (id)\n);\n\nCREATE TABLE quality_parameters (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    default_unit VARCHAR(255),\n    CONSTRAINT pk_quality_parameters PRIMARY KEY (id)\n);\n\nCREATE TABLE sample_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_sample_types PRIMARY KEY (id)\n);\n\nCREATE TABLE samples (\n    id INTEGER NOT NULL,\n    sample_id VARCHAR(255) NOT NULL,\n    person_id INTEGER NOT NULL,\n    sample_type_id INTEGER NOT NULL,\n    collection_date DATE NOT NULL,\n    collection_institution_id INTEGER NOT NULL,\n    container_id INTEGER,\n    parent_sample_id INTEGER,\n    is_aliquot BOOLEAN NOT NULL,\n    CONSTRAINT pk_samples PRIMARY KEY (id),\n    CONSTRAINT fk_samples_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_samples_sample_type_id FOREIGN KEY (sample_type_id) REFERENCES sample_types (id),\n    CONSTRAINT fk_samples_collection_institution_id FOREIGN KEY (collection_institution_id) REFERENCES institutions (id),\n    CONSTRAINT fk_samples_container_id FOREIGN KEY (container_id) REFERENCES containers (id),\n    CONSTRAINT fk_samples_parent_sample_id FOREIGN KEY (parent_sample_id) REFERENCES samples (id)\n);\n\nCREATE TABLE sample_diagnoses (\n    sample_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    is_relevant BOOLEAN,\n    relevance_note TEXT,\n    CONSTRAINT pk_sample_diagnoses PRIMARY KEY (sample_id, diagnosis_id),\n    CONSTRAINT fk_sample_diagnoses_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_sample_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE sample_processing (\n    id INTEGER NOT NULL,\n    sample_id INTEGER NOT NULL,\n    processing_type_id INTEGER NOT NULL,\n    processing_date DATE,\n    is_current BOOLEAN,\n    CONSTRAINT pk_sample_processing PRIMARY KEY (id),\n    CONSTRAINT fk_sample_processing_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_sample_processing_processing_type_id FOREIGN KEY (processing_type_id) REFERENCES processing_types (id)\n);\n\nCREATE TABLE sample_quality (\n    id INTEGER NOT NULL,\n    sample_id INTEGER NOT NULL,\n    quality_parameter_id INTEGER NOT NULL,\n    quality_value DECIMAL(18,2),\n    unit VARCHAR(255),\n    measurement_date DATE,\n    CONSTRAINT pk_sample_quality PRIMARY KEY (id),\n    CONSTRAINT fk_sample_quality_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_sample_quality_quality_parameter_id FOREIGN KEY (quality_parameter_id) REFERENCES quality_parameters (id)\n);\n\nCREATE TABLE sample_studies (\n    sample_id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    CONSTRAINT pk_sample_studies PRIMARY KEY (sample_id, study_id),\n    CONSTRAINT fk_sample_studies_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_sample_studies_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE storage_locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location_type_id INTEGER,\n    parent_location_id INTEGER,\n    CONSTRAINT pk_storage_locations PRIMARY KEY (id),\n    CONSTRAINT fk_storage_locations_location_type_id FOREIGN KEY (location_type_id) REFERENCES location_types (id),\n    CONSTRAINT fk_storage_locations_parent_location_id FOREIGN KEY (parent_location_id) REFERENCES storage_locations (id)\n);\n\nCREATE TABLE storage_history (\n    id INTEGER NOT NULL,\n    container_id INTEGER NOT NULL,\n    storage_location_id INTEGER NOT NULL,\n    moved_date TIMESTAMP NOT NULL,\n    moved_by VARCHAR(255),\n    CONSTRAINT pk_storage_history PRIMARY KEY (id),\n    CONSTRAINT fk_storage_history_container_id FOREIGN KEY (container_id) REFERENCES containers (id),\n    CONSTRAINT fk_storage_history_storage_location_id FOREIGN KEY (storage_location_id) REFERENCES storage_locations (id)\n);\n\nCREATE TABLE study_institutions (\n    study_id INTEGER NOT NULL,\n    institution_id INTEGER NOT NULL,\n    CONSTRAINT pk_study_institutions PRIMARY KEY (study_id, institution_id),\n    CONSTRAINT fk_study_institutions_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_study_institutions_institution_id FOREIGN KEY (institution_id) REFERENCES institutions (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 13 Tabelle(n).",
+      "[iter=1] C1: 11 unerfüllte Findings.",
+      "[iter=1] C2: 5 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 20 Tabelle(n).",
+      "[iter=2] C1: 12 unerfüllte Findings.",
+      "[iter=2] C2: 6 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 21 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 22 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 69856,
+    "total_output_tokens": 29400,
+    "total_tokens": 99256,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 28238,
+        "output_tokens": 13118,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 13810,
+        "output_tokens": 6882,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 13722,
+        "output_tokens": 4272,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 14086,
+        "output_tokens": 5128,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2740,
+        "output_tokens": 3052,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6079,
+        "output_tokens": 3033,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6035,
+        "output_tokens": 1884,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 11276,
+        "output_tokens": 5082,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7731,
+        "output_tokens": 3849,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7687,
+        "output_tokens": 2388,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 14222,
+        "output_tokens": 4984,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 14086,
+        "output_tokens": 5128,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

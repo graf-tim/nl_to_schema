@@ -1,0 +1,510 @@
+{
+  "testfall_id": "TC010",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.38947368421052636,
+  "score_gesamt": 0.6336842105263158,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 5,
+    "pk_tabellen_mit_pk": 5,
+    "fk_referenzen_gesamt": 4,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.4,
+      "recall": 0.6666666666666666,
+      "f1": 0.5,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.42857142857142855,
+      "recall": 0.5294117647058824,
+      "f1": 0.4736842105263158,
+      "matched": 9,
+      "nur_in_referenz": 8,
+      "nur_in_generiert": 12
+    },
+    "beziehung": {
+      "recall": 0.0,
+      "matched": 0,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "borrowings",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "movies.genre",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "movies.age_rating",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.movie_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.checkoutdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.duedate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.returndate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings → movies",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Videothek soll festgehalten werden, welche Filme vorhanden sind, welche Kundinnen und Kunden registriert sind und welche Ausleihen stattfinden. Zu jedem Film werden der Titel, das Erscheinungsjahr, das Genre und die Altersfreigabe benötigt. Jeder Film liegt genau einmal als einzelnes Exemplar vor. Von jeder Kundin und jedem Kunden sollen Vorname, Nachname, E-Mail-Adresse, Telefonnummer und das Registrierungsdatum gespeichert werden. Wenn ein Film ausgeliehen wird, muss nachvollziehbar sein, wer ihn ausgeliehen hat, welcher Film betroffen ist, wann die Ausleihe begonnen hat, bis wann der Film spätestens zurückgebracht werden soll und wann er tatsächlich zurückgegeben wurde. Eine Ausleihe gehört immer genau zu einer Person und genau zu einem Film.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "registrationdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "age_ratings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "rating_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "genres",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "movies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publicationyear",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "genre_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "agerating_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "genre_id",
+              "references_table": "genres",
+              "references_column": "id"
+            },
+            {
+              "from_column": "agerating_id",
+              "references_table": "age_ratings",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "rentals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "movie_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkoutdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duedate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "returndate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "movie_id",
+              "references_table": "movies",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'movies' enthält das redundante Attribut 'is_available', das aus der Ausleihenhistorie (rentals) ableitbar ist. Ein Film ist verfügbar, wenn kein aktiver Ausleihdatensatz (returndate IS NULL) existiert. Dies verletzt das Prinzip der Datennormalisierung und führt zu Konsistenzrisiken.",
+          "korrekturanweisung": "Entfernen Sie das Attribut 'is_available' aus der Tabelle 'movies'. Die Verfügbarkeit sollte durch eine Abfrage auf die rentals-Tabelle ermittelt werden (z.B. SELECT COUNT(*) FROM rentals WHERE movie_id = ? AND returndate IS NULL)."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute aus dem Anforderungstext sind vorhanden und korrekt benannt (firstname, lastname, email, phone, registrationdate, title, publicationyear, genre, agerating, checkoutdate, duedate, returndate).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: movies → genres (N:1), rentals → customers (N:1), rentals → movies (N:1). Jede Ausleihe gehört genau zu einer Person und genau zu einem Film.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Das Schema verletzt die 3NF durch das redundante Attribut 'is_available' in der Tabelle 'movies'. Dies ist eine abgeleitete Tatsache (derived fact), die aus der Ausleihenhistorie berechnet werden kann und nicht persistent gespeichert werden sollte. Dies führt zu Anomalien: Bei jeder Ausleihe/Rückgabe muss 'is_available' manuell aktualisiert werden, was Inkonsistenzen verursachen kann.",
+          "korrekturanweisung": "Entfernen Sie 'is_available' aus movies. Implementieren Sie stattdessen eine Abfrage-Logik auf Anwendungsebene oder eine View: CREATE VIEW available_movies AS SELECT m.* FROM movies m WHERE NOT EXISTS (SELECT 1 FROM rentals r WHERE r.movie_id = m.id AND r.returndate IS NULL);"
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: customers, movies, genres (als Normalisierung von movies), rentals. Keine fehlenden Entitäten identifiziert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der Tabelle 'movies' fehlt das Attribut 'agerating' als Altersfreigabe. Der Anforderungstext fordert explizit: 'Zu jedem Film werden der Titel, das Erscheinungsjahr, das Genre und die Altersfreigabe benötigt.' Das Attribut 'agerating' ist zwar vorhanden, aber als INTEGER modelliert. Dies ist semantisch falsch: Altersfreigaben sind kategorische Werte (z.B. '0', '6', '12', '16', '18' oder FSK-Klassifizierungen), nicht beliebige Ganzzahlen. Empfehlung: Entweder als VARCHAR mit Constraint oder als separate Lookup-Tabelle 'age_ratings' mit FK-Referenz modellieren.",
+          "korrekturanweisung": "Ändern Sie 'agerating' in 'movies' von INTEGER zu VARCHAR oder erstellen Sie eine Lookup-Tabelle 'age_ratings' mit id und rating_name, und referenzieren Sie diese mit einem FK 'agerating_id'."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der Tabelle 'movies' ist das Attribut 'is_available' vorhanden, wird aber im Anforderungstext NICHT gefordert. Dies ist eine Hinzufügung ohne fachliche Begründung. Kritischer: Dieses Attribut ist redundant und fehleranfällig. Der Verfügbarkeitsstatus kann und sollte aus der 'rentals'-Tabelle abgeleitet werden (ein Film ist verfügbar, wenn kein aktiver Leihvorgang mit returndate=NULL existiert). Redundante Daten führen zu Inkonsistenzen.",
+          "korrekturanweisung": "Entfernen Sie das Attribut 'is_available' aus der Tabelle 'movies'. Die Verfügbarkeit sollte durch eine Abfrage auf die 'rentals'-Tabelle ermittelt werden."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: 1:N zwischen customers und rentals, 1:N zwischen movies und rentals, 1:N zwischen genres und movies. Kardinalitäten entsprechen den Anforderungen ('Eine Ausleihe gehört immer genau zu einer Person und genau zu einem Film').",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema befindet sich in 3. Normalform (3NF). Die Normalisierung durch die separate 'genres'-Tabelle ist korrekt und vermeidet Redundanzen. Keine Anomalien erkannt.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE age_ratings (\n    id INTEGER NOT NULL,\n    rating_name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_age_ratings PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    registrationdate DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE genres (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_genres PRIMARY KEY (id)\n);\n\nCREATE TABLE movies (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publicationyear INTEGER NOT NULL,\n    genre_id INTEGER NOT NULL,\n    agerating_id INTEGER NOT NULL,\n    CONSTRAINT pk_movies PRIMARY KEY (id),\n    CONSTRAINT fk_movies_genre_id FOREIGN KEY (genre_id) REFERENCES genres (id),\n    CONSTRAINT fk_movies_agerating_id FOREIGN KEY (agerating_id) REFERENCES age_ratings (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    movie_id INTEGER NOT NULL,\n    checkoutdate DATE NOT NULL,\n    duedate DATE NOT NULL,\n    returndate DATE,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_rentals_movie_id FOREIGN KEY (movie_id) REFERENCES movies (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=1] C1: 2 unerfüllte Findings.",
+      "[iter=1] C2: 0 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=2] C1: 2 unerfüllte Findings.",
+      "[iter=2] C2: 2 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 5 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 5 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 30746,
+    "total_output_tokens": 7724,
+    "total_tokens": 38470,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 12665,
+        "output_tokens": 2922,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6328,
+        "output_tokens": 1967,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6240,
+        "output_tokens": 1681,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5513,
+        "output_tokens": 1154,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2308,
+        "output_tokens": 727,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3070,
+        "output_tokens": 1037,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3026,
+        "output_tokens": 729,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4919,
+        "output_tokens": 1041,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3258,
+        "output_tokens": 930,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3214,
+        "output_tokens": 952,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5438,
+        "output_tokens": 1154,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5513,
+        "output_tokens": 1154,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

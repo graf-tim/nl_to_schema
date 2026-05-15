@@ -1,0 +1,975 @@
+{
+  "testfall_id": "TC034",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8036414565826331,
+  "score_gesamt": 0.8821848739495799,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8571428571428571,
+      "recall": 0.8571428571428571,
+      "f1": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.7575757575757576,
+      "recall": 0.7142857142857143,
+      "f1": 0.7352941176470589,
+      "matched": 25,
+      "nur_in_referenz": 10,
+      "nur_in_generiert": 8
+    },
+    "beziehung": {
+      "recall": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "room_categories",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "rooms.max_occupancy",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "bookings.booked_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.unit_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "guests.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "guests.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "bookings_services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "room_categories.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "room_categories.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "room_categories.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "room_categories.regular_nightly_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "rooms → room_categories",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Hotelbetrieb moechte seine Zimmer, Buchungen und zusaetzlichen Angebote uebersichtlich verwalten. Fuer jedes Zimmer soll festgehalten werden, welche Nummer es hat, auf welcher Etage es liegt, wie viele Personen maximal darin uebernachten koennen und zu welcher Kategorie es gehoert, zum Beispiel Standard, Deluxe oder Suite. Zu jeder Kategorie soll auch hinterlegt werden, wie hoch der reguläre Preis pro Nacht ist und eine kurze Beschreibung, was typischerweise dazugehört.\n\nGaeste sollen mit Namen, E-Mail-Adresse, Telefonnummer und, falls vorhanden, ihrer Postanschrift erfasst werden. Eine Buchung wird immer von einem Gast vorgenommen und bezieht sich auf ein bestimmtes Zimmer. Wichtig sind An- und Abreisedatum, der Zeitpunkt der Buchung und der aktuelle Stand, etwa angefragt, bestaetigt oder storniert.\n\nAusserdem bietet das Hotel Leistungen wie Fruehstueck, Parkplatz, Spa oder Fahrradverleih an. Solche Leistungen koennen zu einer Buchung dazugebucht werden, und dieselbe Leistung kann natuerlich bei vielen Buchungen vorkommen. Dabei soll auch vermerkt werden, in welcher Menge oder fuer wie viele Tage etwas gebucht wurde.\n\nZimmer koennen im Alltag auch voruebergehend nicht verfuegbar sein, etwa wegen Renovierung oder technischer Probleme. Diese Information soll ebenfalls nachvollziehbar sein.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price_per_night",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "rooms",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "room_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "floor",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "max_persons",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "guests",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "bookings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "guest_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "room_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkin_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkout_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "booking_timestamp",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "guest_id",
+              "references_table": "guests",
+              "references_column": "id"
+            },
+            {
+              "from_column": "room_id",
+              "references_table": "rooms",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "booking_services",
+          "columns": [
+            {
+              "name": "booking_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "num_days",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "booking_id",
+              "references_table": "bookings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_id",
+              "references_table": "services",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "room_unavailability",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "room_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reason",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "room_id",
+              "references_table": "rooms",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Zimmer",
+          "attribute": [
+            "Zimmernummer",
+            "Etage",
+            "Maximale Personenanzahl",
+            "Kategorie"
+          ],
+          "beschreibung": "Repräsentiert ein Hotelzimmer mit seiner Nummer, Etage, Kapazität und Kategorienzuordnung."
+        },
+        {
+          "name": "Kategorie",
+          "attribute": [
+            "Kategoriename",
+            "Regulärer Preis pro Nacht",
+            "Beschreibung"
+          ],
+          "beschreibung": "Klassifizierung von Zimmern (z.B. Standard, Deluxe, Suite) mit Preis und Ausstattungsbeschreibung."
+        },
+        {
+          "name": "Gast",
+          "attribute": [
+            "Name",
+            "E-Mail-Adresse",
+            "Telefonnummer",
+            "Postanschrift"
+          ],
+          "beschreibung": "Repräsentiert einen Hotelgast mit Kontaktinformationen."
+        },
+        {
+          "name": "Buchung",
+          "attribute": [
+            "Anreisedatum",
+            "Abreisedatum",
+            "Buchungszeitpunkt",
+            "Status"
+          ],
+          "beschreibung": "Repräsentiert eine Reservierung eines Gastes für ein Zimmer mit zeitlichen Angaben und Status (angefragt, bestätigt, storniert)."
+        },
+        {
+          "name": "Leistung",
+          "attribute": [
+            "Leistungsname",
+            "Beschreibung"
+          ],
+          "beschreibung": "Zusätzliche Angebote des Hotels wie Frühstück, Parkplatz, Spa oder Fahrradverleih."
+        },
+        {
+          "name": "Buchung_Leistung",
+          "attribute": [
+            "Menge",
+            "Anzahl Tage"
+          ],
+          "beschreibung": "Verknüpfungstabelle zwischen Buchungen und Leistungen mit Informationen zur Menge oder Dauer der gebuchten Leistung."
+        },
+        {
+          "name": "Zimmer_Verfügbarkeit",
+          "attribute": [
+            "Startdatum",
+            "Enddatum",
+            "Grund"
+          ],
+          "beschreibung": "Dokumentiert Zeiträume, in denen ein Zimmer nicht verfügbar ist (z.B. wegen Renovierung oder technischer Probleme)."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Zimmer",
+          "zu": "Kategorie",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Zimmer gehört zu genau einer Kategorie; eine Kategorie kann mehrere Zimmer haben."
+        },
+        {
+          "von": "Buchung",
+          "zu": "Gast",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jede Buchung wird von genau einem Gast vorgenommen; ein Gast kann mehrere Buchungen haben."
+        },
+        {
+          "von": "Buchung",
+          "zu": "Zimmer",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jede Buchung bezieht sich auf genau ein Zimmer; ein Zimmer kann mehrfach gebucht werden."
+        },
+        {
+          "von": "Buchung",
+          "zu": "Leistung",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Buchung kann mehrere Leistungen enthalten; eine Leistung kann bei mehreren Buchungen vorkommen. Die Verknüpfung erfolgt über die Buchung_Leistung-Tabelle."
+        },
+        {
+          "von": "Zimmer_Verfügbarkeit",
+          "zu": "Zimmer",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Verfügbarkeitseintrag bezieht sich auf genau ein Zimmer; ein Zimmer kann mehrere Verfügbarkeitszeiträume haben."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist unklar, ob die Postanschrift ein einzelnes Attribut oder mehrere Attribute (Straße, Hausnummer, PLZ, Stadt, Land) sein soll.",
+          "betroffene_elemente": [
+            "Gast"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht spezifiziert, ob ein Gast eindeutig identifiziert werden kann (z.B. durch eine Gast-ID oder E-Mail) oder ob Duplikate möglich sind.",
+          "betroffene_elemente": [
+            "Gast"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob der Status einer Buchung ein einfaches Attribut (z.B. Enum) oder eine separate Entität mit Statushistorie sein soll.",
+          "betroffene_elemente": [
+            "Buchung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht definiert, ob die Attribute 'Menge' und 'Anzahl Tage' in der Buchung_Leistung-Tabelle beide immer vorhanden sind oder ob sie je nach Leistungstyp unterschiedlich verwendet werden.",
+          "betroffene_elemente": [
+            "Buchung_Leistung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob Zimmer während eines Verfügbarkeitszeitraums komplett blockiert sind oder ob Überschneidungen mit Buchungen möglich/zu verhindern sind.",
+          "betroffene_elemente": [
+            "Zimmer_Verfügbarkeit",
+            "Buchung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht spezifiziert, ob die Kategoriebeschreibung strukturiert (z.B. mit einzelnen Ausstattungsmerkmalen) oder als Freitext vorliegen soll.",
+          "betroffene_elemente": [
+            "Kategorie"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kategorie",
+          "attribute": [
+            {
+              "name": "kategorie_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kategoriename",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "regulaerer_preis_pro_nacht",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Zimmer",
+          "attribute": [
+            {
+              "name": "zimmer_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zimmernummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "etage",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "maximale_personenanzahl",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kategorie_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Gast",
+          "attribute": [
+            {
+              "name": "gast_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email_adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "postanschrift",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Buchung",
+          "attribute": [
+            {
+              "name": "buchung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gast_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zimmer_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "anreisedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "abreisedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "buchungszeitpunkt",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Leistung",
+          "attribute": [
+            {
+              "name": "leistung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leistungsname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Buchung_Leistung",
+          "attribute": [
+            {
+              "name": "buchung_leistung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "buchung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leistung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "menge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "anzahl_tage",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Zimmer_Verfuegbarkeit",
+          "attribute": [
+            {
+              "name": "verfuegbarkeit_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zimmer_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "grund",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Zimmer",
+          "zu": "Kategorie",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Buchung",
+          "zu": "Gast",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Buchung",
+          "zu": "Zimmer",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Buchung",
+          "zu": "Leistung",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "menge",
+            "anzahl_tage"
+          ]
+        },
+        {
+          "von": "Zimmer_Verfuegbarkeit",
+          "zu": "Zimmer",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 7 Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: categories, rooms, guests, bookings, services, booking_services, room_unavailability. Keine Entität fehlt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: Zimmer (room_number, floor, max_persons, category_id), Kategorie (name, price_per_night, description), Gast (name, email, phone, address), Buchung (checkin_date, checkout_date, booking_timestamp, status), Leistung (name, description), Buchung_Leistung (quantity, num_days), Zimmer_Verfügbarkeit (start_date, end_date, reason). Nullable-Markierungen entsprechen den Anforderungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 5 Beziehungen aus dem ERModell sind korrekt implementiert: Zimmer→Kategorie (N:1), Buchung→Gast (N:1), Buchung→Zimmer (N:1), Buchung↔Leistung (M:N via booking_services), Zimmer_Verfügbarkeit→Zimmer (N:1). Kardinalitäten und FK-Richtungen sind konsistent.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Keine Redundanzen durch Denormalisierung; (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table booking_services ist korrekt normalisiert mit Composite-PK (booking_id, service_id).",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE guests (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    address TEXT,\n    CONSTRAINT pk_guests PRIMARY KEY (id)\n);\n\nCREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    price_per_night DECIMAL(18,2) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE rooms (\n    id INTEGER NOT NULL,\n    room_number VARCHAR(255) NOT NULL,\n    floor INTEGER NOT NULL,\n    max_persons INTEGER NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_rooms PRIMARY KEY (id),\n    CONSTRAINT fk_rooms_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE bookings (\n    id INTEGER NOT NULL,\n    guest_id INTEGER NOT NULL,\n    room_id INTEGER NOT NULL,\n    checkin_date DATE NOT NULL,\n    checkout_date DATE NOT NULL,\n    booking_timestamp TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_bookings PRIMARY KEY (id),\n    CONSTRAINT fk_bookings_guest_id FOREIGN KEY (guest_id) REFERENCES guests (id),\n    CONSTRAINT fk_bookings_room_id FOREIGN KEY (room_id) REFERENCES rooms (id)\n);\n\nCREATE TABLE services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_services PRIMARY KEY (id)\n);\n\nCREATE TABLE booking_services (\n    booking_id INTEGER NOT NULL,\n    service_id INTEGER NOT NULL,\n    quantity INTEGER,\n    num_days INTEGER,\n    CONSTRAINT pk_booking_services PRIMARY KEY (booking_id, service_id),\n    CONSTRAINT fk_booking_services_booking_id FOREIGN KEY (booking_id) REFERENCES bookings (id),\n    CONSTRAINT fk_booking_services_service_id FOREIGN KEY (service_id) REFERENCES services (id)\n);\n\nCREATE TABLE room_unavailability (\n    id INTEGER NOT NULL,\n    room_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    reason VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_room_unavailability PRIMARY KEY (id),\n    CONSTRAINT fk_room_unavailability_room_id FOREIGN KEY (room_id) REFERENCES rooms (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 7 Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: categories, rooms, guests, bookings, services, booking_services, room_unavailability. Keine Entität fehlt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: Zimmer (room_number, floor, max_persons, category_id), Kategorie (name, price_per_night, description), Gast (name, email, phone, address), Buchung (checkin_date, checkout_date, booking_timestamp, status), Leistung (name, description), Buchung_Leistung (quantity, num_days), Zimmer_Verfügbarkeit (start_date, end_date, reason). Nullable-Markierungen entsprechen den Anforderungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 5 Beziehungen aus dem ERModell sind korrekt implementiert: Zimmer→Kategorie (N:1), Buchung→Gast (N:1), Buchung→Zimmer (N:1), Buchung↔Leistung (M:N via booking_services), Zimmer_Verfügbarkeit→Zimmer (N:1). Kardinalitäten und FK-Richtungen sind konsistent.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Keine Redundanzen durch Denormalisierung; (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table booking_services ist korrekt normalisiert mit Composite-PK (booking_id, service_id).",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 17793,
+    "total_output_tokens": 6411,
+    "total_tokens": 24204,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1678,
+        "output_tokens": 1616,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3379,
+        "output_tokens": 2115,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4635,
+        "output_tokens": 1756,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 1,
+        "input_tokens": 8101,
+        "output_tokens": 924,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1678,
+        "output_tokens": 1616,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3379,
+        "output_tokens": 2115,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4635,
+        "output_tokens": 1756,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8101,
+        "output_tokens": 924,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

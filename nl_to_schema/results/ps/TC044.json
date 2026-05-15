@@ -1,0 +1,845 @@
+{
+  "testfall_id": "TC044",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7090909090909091,
+  "score_gesamt": 0.8254545454545454,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.6060606060606061,
+      "recall": 0.6060606060606061,
+      "f1": 0.6060606060606061,
+      "matched": 20,
+      "nur_in_referenz": 13,
+      "nur_in_generiert": 13
+    },
+    "beziehung": {
+      "recall": 0.6666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "claims",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.managed_since",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisors.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisors.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisors.hiredate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.contract_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.advisor_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.claimdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.processed_amount",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims → advisors",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims → contracts",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine Versicherungsagentur möchte ihre täglichen Vorgänge besser im Blick behalten. Erfasst werden sollen Kundinnen und Kunden mit ihren Kontaktdaten und dem Datum, seit wann sie von der Agentur betreut werden. Für jede Person können mehrere Verträge laufen, zum Beispiel für Auto, Hausrat oder Haftpflicht. Zu jedem Vertrag sollen Beginn, geplantes Ende, aktueller Status und der regelmäßige Beitrag festgehalten werden. Die verschiedenen Versicherungsarten haben eigene Bezeichnungen und allgemeine Beschreibungen.\n\nAußerdem arbeiten in der Agentur mehrere Beraterinnen und Berater. Von ihnen sollen Name, E-Mail, Telefonnummer, Eintrittsdatum und ob sie aktuell aktiv sind gespeichert werden. Ein Kunde kann von mehreren Beratern betreut werden, etwa wenn jemand im Urlaub ist oder Spezialwissen gebraucht wird. Ebenso betreut ein Berater in der Regel viele Kunden.\n\nZu Verträgen gibt es Schadensmeldungen. Dabei sind Meldedatum, kurze Schilderung, bearbeiteter Betrag und der aktuelle Stand wichtig. Eine Meldung wird von einem Berater aufgenommen, der sich zunächst darum kümmert. Falls später jemand anderes die weitere Bearbeitung übernimmt, reicht es, wenn trotzdem nur diese erste Zuständigkeit festgehalten wird. Bei einem Vertrag kann es im Lauf der Zeit auch mehrere Meldungen geben.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "care_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "insurance_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "contracts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "insurance_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "regular_premium",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "insurance_type_id",
+              "references_table": "insurance_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "advisors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "customer_advisors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "advisor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "care_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "advisor_id",
+              "references_table": "advisors",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "damage_claims",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contract_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "advisor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "claim_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "processed_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "advisor_id",
+              "references_table": "advisors",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Kundennummer",
+            "Name",
+            "Kontaktdaten",
+            "Betreuungsbeginn"
+          ],
+          "beschreibung": "Kundinnen und Kunden der Versicherungsagentur mit ihren Kontaktdaten und dem Datum, seit wann sie betreut werden."
+        },
+        {
+          "name": "Vertrag",
+          "attribute": [
+            "Vertragsnummer",
+            "Beginn",
+            "geplantes Ende",
+            "Status",
+            "regelmäßiger Beitrag"
+          ],
+          "beschreibung": "Versicherungsverträge für Kunden mit Laufzeit, Status und Beitragsinformationen."
+        },
+        {
+          "name": "Versicherungsart",
+          "attribute": [
+            "Versicherungsart-ID",
+            "Bezeichnung",
+            "Beschreibung"
+          ],
+          "beschreibung": "Verschiedene Versicherungsarten wie Auto, Hausrat oder Haftpflicht mit eigenen Bezeichnungen und allgemeinen Beschreibungen."
+        },
+        {
+          "name": "Berater",
+          "attribute": [
+            "Berater-ID",
+            "Name",
+            "E-Mail",
+            "Telefonnummer",
+            "Eintrittsdatum",
+            "aktiv"
+          ],
+          "beschreibung": "Beraterinnen und Berater der Agentur mit Kontaktdaten, Eintrittsdatum und Aktivitätsstatus."
+        },
+        {
+          "name": "Schadensmeldung",
+          "attribute": [
+            "Meldungsnummer",
+            "Meldedatum",
+            "Schilderung",
+            "bearbeiteter Betrag",
+            "Stand"
+          ],
+          "beschreibung": "Schadensmeldungen zu Verträgen mit Meldedatum, Beschreibung, bearbeitetem Betrag und aktuellem Stand."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Vertrag",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Verträge haben."
+        },
+        {
+          "von": "Vertrag",
+          "zu": "Versicherungsart",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Vertrag bezieht sich auf genau eine Versicherungsart."
+        },
+        {
+          "von": "Kunde",
+          "zu": "Berater",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Kunde kann von mehreren Beratern betreut werden, und ein Berater betreut mehrere Kunden."
+        },
+        {
+          "von": "Vertrag",
+          "zu": "Schadensmeldung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Vertrag kann mehrere Schadensmeldungen haben."
+        },
+        {
+          "von": "Schadensmeldung",
+          "zu": "Berater",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Schadensmeldung wird von einem Berater aufgenommen, der sich zunächst darum kümmert."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Die genaue Struktur der 'Kontaktdaten' ist nicht spezifiziert. Unklar ist, ob diese als einzelne Attribute (z.B. Adresse, Telefon, E-Mail) oder als zusammengefasstes Feld modelliert werden sollen.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Bei der M:N-Beziehung zwischen Kunde und Berater ist unklar, ob zusätzliche Attribute wie Betreuungsbeginn oder Betreuungsart pro Zuordnung erfasst werden sollen.",
+          "betroffene_elemente": [
+            "Kunde",
+            "Berater"
+          ]
+        },
+        {
+          "beschreibung": "Die Aussage 'Falls später jemand anderes die weitere Bearbeitung übernimmt, reicht es, wenn trotzdem nur diese erste Zuständigkeit festgehalten wird' ist mehrdeutig: Unklar ist, ob Übergaben an andere Berater dokumentiert werden sollen oder nicht.",
+          "betroffene_elemente": [
+            "Schadensmeldung",
+            "Berater"
+          ]
+        },
+        {
+          "beschreibung": "Der 'aktuelle Stand' einer Schadensmeldung ist nicht näher definiert. Unklar ist, ob dies ein Statuswert (z.B. 'offen', 'in Bearbeitung', 'abgeschlossen') oder ein Freitextfeld sein soll.",
+          "betroffene_elemente": [
+            "Schadensmeldung"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Betreuungsbeginn",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Versicherungsart",
+          "attribute": [
+            {
+              "name": "VersicherungsartID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Vertrag",
+          "attribute": [
+            {
+              "name": "VertragID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VersicherungsartID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beginn",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geplantesEnde",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "regelmaessigerBeitrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Berater",
+          "attribute": [
+            {
+              "name": "BeraterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Eintrittsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "aktiv",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Schadensmeldung",
+          "attribute": [
+            {
+              "name": "MeldungsID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VertragID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BeraterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Meldedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Schilderung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bearbeiteterBetrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Stand",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "KundeBeraeter",
+          "attribute": [
+            {
+              "name": "KundeBeraeterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BeraterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BetreuungsbeginnBeziehung",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Vertrag",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Vertrag",
+          "zu": "Versicherungsart",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kunde",
+          "zu": "Berater",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "BetreuungsbeginnBeziehung"
+          ]
+        },
+        {
+          "von": "Vertrag",
+          "zu": "Schadensmeldung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Schadensmeldung",
+          "zu": "Berater",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE advisors (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    start_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_advisors PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE insurance_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_insurance_types PRIMARY KEY (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    insurance_type_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    planned_end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    regular_premium DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_contracts_insurance_type_id FOREIGN KEY (insurance_type_id) REFERENCES insurance_types (id)\n);\n\nCREATE TABLE customer_advisors (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    advisor_id INTEGER NOT NULL,\n    care_start_date DATE,\n    CONSTRAINT pk_customer_advisors PRIMARY KEY (id),\n    CONSTRAINT fk_customer_advisors_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_customer_advisors_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id)\n);\n\nCREATE TABLE damage_claims (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    advisor_id INTEGER NOT NULL,\n    claim_date DATE NOT NULL,\n    description TEXT NOT NULL,\n    processed_amount DECIMAL(18,2),\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_damage_claims PRIMARY KEY (id),\n    CONSTRAINT fk_damage_claims_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_damage_claims_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9250,
+    "total_output_tokens": 5130,
+    "total_tokens": 14380,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1663,
+        "output_tokens": 1309,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3041,
+        "output_tokens": 2087,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4546,
+        "output_tokens": 1734,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1663,
+        "output_tokens": 1309,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3041,
+        "output_tokens": 2087,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4546,
+        "output_tokens": 1734,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

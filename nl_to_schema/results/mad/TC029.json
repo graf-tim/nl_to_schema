@@ -1,0 +1,419 @@
+{
+  "testfall_id": "TC029",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8928571428571428,
+  "score_gesamt": 0.9357142857142857,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 1.0,
+      "f1": 0.8571428571428571,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.8235294117647058,
+      "recall": 0.9333333333333333,
+      "f1": 0.8749999999999999,
+      "matched": 14,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 3
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "fishes.is_fresh",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein kleiner Fischhandel möchte seine täglichen Verkäufe ordentlich festhalten. Für jeden Lieferanten soll gespeichert werden, wie er heißt, aus welchem Ort er kommt und ob die Zusammenarbeit aktuell noch besteht. Jeder Fisch, der verkauft wird, gehört genau zu einem Lieferanten. Zu jedem Fisch sollen die Bezeichnung, die Warengruppe, der Preis pro Kilogramm und die Angabe erfasst werden, ob er frisch oder tiefgekühlt angeboten wird. Außerdem sollen Verkäufe dokumentiert werden. Zu jedem Verkauf wird das Verkaufsdatum, die verkaufte Menge in Kilogramm und der tatsächlich berechnete Gesamtpreis festgehalten. Jeder Verkauf bezieht sich immer auf genau einen Fisch. Ein Fisch kann im Laufe der Zeit in vielen einzelnen Verkäufen vorkommen.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "suppliers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "product_groups",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "fishes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "product_group_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price_per_kg",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "storage_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "product_group_id",
+              "references_table": "product_groups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sales",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "fish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "saledate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity_kg",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "fish_id",
+              "references_table": "fishes",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung verlangt, dass zu jedem Verkauf 'der tatsächlich berechnete Gesamtpreis' festgehalten wird. Das Schema speichert nur 'price_per_kg_at_sale' (Preis pro kg zum Verkaufszeitpunkt), nicht den Gesamtpreis. Der Gesamtpreis muss als separate Spalte 'total_price' (DECIMAL) in der sales-Tabelle gespeichert werden, um die Anforderung zu erfüllen.",
+          "korrekturanweisung": "Füge in der sales-Tabelle eine Spalte 'total_price DECIMAL NOT NULL' hinzu, die den tatsächlich berechneten Gesamtpreis speichert."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung verlangt, dass zu jedem Fisch 'die Angabe erfasst werden, ob er frisch oder tiefgekühlt angeboten wird'. Das Attribut 'is_fresh' (BOOLEAN) ist zu restriktiv: es kann nur 'frisch' oder 'tiefgekühlt' darstellen, nicht aber Zustände wie 'tiefgekühlt' explizit als Wert speichern. Besser: Attribut 'storage_type' (VARCHAR) mit Werten 'fresh' oder 'frozen' für semantische Klarheit und Erweiterbarkeit.",
+          "korrekturanweisung": "Ersetze 'is_fresh BOOLEAN' durch 'storage_type VARCHAR NOT NULL' mit Constraint CHECK (storage_type IN ('fresh', 'frozen'))."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: 1:N (suppliers → fishes), 1:N (product_groups → fishes), 1:N (fishes → sales). Keine N:M-Beziehungen erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "NORMALISIERUNGSVERLETZUNG (3NF): In der sales-Tabelle existiert eine transitive Abhängigkeit: sales.fish_id → fishes.price_per_kg, aber sales speichert zusätzlich 'price_per_kg_at_sale'. Dies ist eine berechtigte Denormalisierung (historische Preiserfassung), ABER: Der Gesamtpreis wird nicht gespeichert und muss bei jeder Abfrage berechnet werden (quantity_kg * price_per_kg_at_sale). Dies ist eine Verletzung des Prinzips der Datenkonsistenz. Zusätzlich: Das Attribut 'price_per_kg_at_sale' ist redundant, wenn der Gesamtpreis direkt gespeichert wird. Empfehlung: Speichere den Gesamtpreis direkt und leite den Preis pro kg bei Bedarf ab, oder speichere beide Werte explizit.",
+          "korrekturanweisung": "Füge 'total_price DECIMAL NOT NULL' in sales ein. Entferne 'price_per_kg_at_sale' oder behalte es als denormalisierte Kopie für Abfrageleistung, aber dokumentiere dies explizit."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: Lieferanten (suppliers), Fische (fishes), Warengruppen (product_groups) und Verkäufe (sales). Die Entitätsstruktur ist vollständig.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der Tabelle 'sales' fehlt das Attribut für den tatsächlich berechneten Gesamtpreis. Der Anforderungstext fordert explizit: 'der tatsächlich berechnete Gesamtpreis festgehalten'. Derzeit sind nur 'price_per_kg_at_sale' und 'quantity_kg' vorhanden, aus denen der Gesamtpreis berechnet werden könnte, aber das Attribut selbst ist nicht explizit modelliert. Dies ist eine Anforderungsverletzung.",
+          "korrekturanweisung": "Füge in der Tabelle 'sales' ein Attribut 'total_price' vom Typ DECIMAL NOT NULL hinzu, das den tatsächlich berechneten Gesamtpreis speichert. Dies entspricht der expliziten Anforderung und verbessert die Datenintegrität und Abfrageleistung."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: 1:N zwischen suppliers und fishes (Fremdschlüssel supplier_id), 1:N zwischen product_groups und fishes (Fremdschlüssel product_group_id), und 1:N zwischen fishes und sales (Fremdschlüssel fish_id). Die Kardinalitäten entsprechen den Anforderungen. Keine M:N-Beziehungen erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema befindet sich in 3. Normalform (3NF). Keine Anomalien erkannt. Die Zerlegung in separate Tabellen für Lieferanten, Warengruppen, Fische und Verkäufe ist angemessen und vermeidet Redundanzen.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE product_groups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_product_groups PRIMARY KEY (id)\n);\n\nCREATE TABLE fishes (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    product_group_id INTEGER NOT NULL,\n    price_per_kg DECIMAL(18,2) NOT NULL,\n    storage_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_fishes PRIMARY KEY (id),\n    CONSTRAINT fk_fishes_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_fishes_product_group_id FOREIGN KEY (product_group_id) REFERENCES product_groups (id)\n);\n\nCREATE TABLE sales (\n    id INTEGER NOT NULL,\n    fish_id INTEGER NOT NULL,\n    saledate DATE NOT NULL,\n    quantity_kg DECIMAL(18,2) NOT NULL,\n    total_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_sales PRIMARY KEY (id),\n    CONSTRAINT fk_sales_fish_id FOREIGN KEY (fish_id) REFERENCES fishes (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=1] C1: 3 unerfüllte Findings.",
+      "[iter=1] C2: 0 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=2] C1: 3 unerfüllte Findings.",
+      "[iter=2] C2: 1 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 4 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 30945,
+    "total_output_tokens": 7694,
+    "total_tokens": 38639,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 12946,
+        "output_tokens": 2859,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6308,
+        "output_tokens": 2507,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6220,
+        "output_tokens": 1386,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5471,
+        "output_tokens": 942,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2315,
+        "output_tokens": 684,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3016,
+        "output_tokens": 1330,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2972,
+        "output_tokens": 669,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5161,
+        "output_tokens": 1068,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3292,
+        "output_tokens": 1177,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3248,
+        "output_tokens": 717,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5470,
+        "output_tokens": 1107,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5471,
+        "output_tokens": 942,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

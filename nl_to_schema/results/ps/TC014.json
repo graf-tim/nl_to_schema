@@ -1,0 +1,608 @@
+{
+  "testfall_id": "TC014",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.952,
+  "score_gesamt": 0.9712,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.88,
+      "recall": 0.88,
+      "f1": 0.88,
+      "matched": 22,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "orders.created_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.scheduled_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.hiredate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Malergeschäft möchte seine Aufträge übersichtlich verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer, E-Mail-Adresse und Anschrift gespeichert werden. Ein Kunde kann mehrere Aufträge erteilen, aber jeder Auftrag gehört immer genau zu einem Kunden. Für jeden Auftrag sollen das Erfassungsdatum, die geplante Ausführung, der aktuelle Status und eine kurze Beschreibung festgehalten werden. Zusätzlich arbeitet das Unternehmen mit eigenen Mitarbeitern. Von jedem Mitarbeiter sollen Vorname, Nachname, Telefonnummer, E-Mail-Adresse und das Eintrittsdatum bekannt sein. Jeder Auftrag wird genau einem Mitarbeiter zur Bearbeitung zugewiesen, ein Mitarbeiter kann jedoch mehrere Aufträge betreuen. Außerdem sollen zu jedem Auftrag eine Rechnung mit Rechnungsdatum, Fälligkeitsdatum, Gesamtbetrag und Information über die Bezahlung gespeichert werden.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "creation_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_execution_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "invoices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "invoice_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "due_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_paid",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse",
+            "Anschrift"
+          ],
+          "beschreibung": "Repräsentiert einen Kunden des Malergeschäfts, der Aufträge erteilen kann."
+        },
+        {
+          "name": "Auftrag",
+          "attribute": [
+            "Erfassungsdatum",
+            "geplante Ausführung",
+            "Status",
+            "Beschreibung"
+          ],
+          "beschreibung": "Repräsentiert einen Auftrag, der von einem Kunden erteilt und von einem Mitarbeiter bearbeitet wird."
+        },
+        {
+          "name": "Mitarbeiter",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse",
+            "Eintrittsdatum"
+          ],
+          "beschreibung": "Repräsentiert einen Mitarbeiter des Malergeschäfts, der Aufträge bearbeitet."
+        },
+        {
+          "name": "Rechnung",
+          "attribute": [
+            "Rechnungsdatum",
+            "Fälligkeitsdatum",
+            "Gesamtbetrag",
+            "Bezahlungsinformation"
+          ],
+          "beschreibung": "Repräsentiert eine Rechnung für einen Auftrag mit Zahlungsinformationen."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Aufträge erteilen, aber jeder Auftrag gehört genau zu einem Kunden."
+        },
+        {
+          "von": "Mitarbeiter",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Mitarbeiter kann mehrere Aufträge betreuen, aber jeder Auftrag wird genau einem Mitarbeiter zugewiesen."
+        },
+        {
+          "von": "Auftrag",
+          "zu": "Rechnung",
+          "kardinalitaet": "1:1",
+          "beschreibung": "Zu jedem Auftrag soll eine Rechnung gespeichert werden."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist unklar, ob ein Auftrag immer genau eine Rechnung hat oder ob es auch Aufträge ohne Rechnung geben kann.",
+          "betroffene_elemente": [
+            "Auftrag",
+            "Rechnung"
+          ]
+        },
+        {
+          "beschreibung": "Die genaue Bedeutung und mögliche Werte des Attributs 'Status' bei Aufträgen sind nicht spezifiziert (z.B. offen, in Bearbeitung, abgeschlossen).",
+          "betroffene_elemente": [
+            "Auftrag"
+          ]
+        },
+        {
+          "beschreibung": "Das Attribut 'Bezahlungsinformation' bei Rechnungen ist vage formuliert. Unklar ist, ob dies ein boolescher Wert (bezahlt/nicht bezahlt), ein Datum oder weitere Details sein soll.",
+          "betroffene_elemente": [
+            "Rechnung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht klar, ob die Anschrift des Kunden aus mehreren Feldern (Straße, Hausnummer, PLZ, Stadt) besteht oder als einzelnes Feld gespeichert werden soll.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "emailAdresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "anschrift",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Mitarbeiter",
+          "attribute": [
+            {
+              "name": "mitarbeiterId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "emailAdresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "eintrittsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Auftrag",
+          "attribute": [
+            {
+              "name": "auftragId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "mitarbeiterId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "erfassungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geplante_ausfuehrung",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Rechnung",
+          "attribute": [
+            {
+              "name": "rechnungId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "auftragId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "rechnungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "faelligkeitsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gesamtbetrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezahlt",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Mitarbeiter",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Auftrag",
+          "zu": "Rechnung",
+          "kardinalitaet": "1:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    creation_date DATE NOT NULL,\n    planned_execution_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE invoices (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    invoice_date DATE NOT NULL,\n    due_date DATE NOT NULL,\n    total_amount DECIMAL(18,2) NOT NULL,\n    is_paid BOOLEAN NOT NULL,\n    CONSTRAINT pk_invoices PRIMARY KEY (id),\n    CONSTRAINT fk_invoices_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7963,
+    "total_output_tokens": 3459,
+    "total_tokens": 11422,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1535,
+        "output_tokens": 1003,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2591,
+        "output_tokens": 1227,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3837,
+        "output_tokens": 1229,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1535,
+        "output_tokens": 1003,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2591,
+        "output_tokens": 1227,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3837,
+        "output_tokens": 1229,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

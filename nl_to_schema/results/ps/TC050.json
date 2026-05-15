@@ -1,0 +1,856 @@
+{
+  "testfall_id": "TC050",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5425641025641026,
+  "score_gesamt": 0.7255384615384616,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.5666666666666667,
+      "recall": 0.4857142857142857,
+      "f1": 0.523076923076923,
+      "matched": 17,
+      "nur_in_referenz": 18,
+      "nur_in_generiert": 13
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customer_addresses",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.customer_address_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.order_timestamp",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.street",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.postal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.label",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.street",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.postal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders.dish_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders.order_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders.quantity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders → dishes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders → orders",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders → customer_addresses",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Lieferdienst möchte seine täglichen Bestellungen besser verwalten. Kundinnen und Kunden sollen mit Namen, Telefonnummer und ihrer E-Mail erfasst werden. Da viele Stammkunden mehrere Orte angeben, sollen pro Person auch mehrere Lieferadressen möglich sein, etwa Zuhause, Büro oder die Wohnung von Freunden. Bestellungen werden immer für genau eine dieser Adressen aufgegeben. Zu jeder Bestellung soll festgehalten werden, wann sie eingegangen ist, in welchem Zustand sie sich befindet und welcher Gesamtbetrag berechnet wurde.\n\nDer Lieferdienst arbeitet mit verschiedenen Restaurants zusammen. Zu jedem Restaurant sollen Name, Telefonnummer, Adresse und die Küche festgehalten werden. Ein Restaurant bietet mehrere Gerichte an. Für jedes Gericht braucht man die Bezeichnung, eine Beschreibung, den aktuellen Preis und ob es gerade verfügbar ist. Manche Gerichte können zeitweise bei mehreren Restaurants in ähnlicher Form vorkommen, für den Betrieb reicht es aber, wenn jedes Gericht genau einem Restaurant zugeordnet ist.\n\nIn einer Bestellung können mehrere Gerichte enthalten sein, und ein Gericht kann natürlich in vielen verschiedenen Bestellungen vorkommen. Außerdem soll gespeichert werden, in welcher Menge ein Gericht in einer Bestellung gewählt wurde. Optional soll zu einer Bestellung eine kurze Bemerkung möglich sein. Später könnten auch Fahrerinnen und Fahrer berücksichtigt werden, zunächst geht es aber nur um Bestellungen bis zur Übergabe an den Lieferdienst.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "delivery_addresses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "restaurants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "cuisine",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dishes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "restaurant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "restaurant_id",
+              "references_table": "restaurants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "delivery_address_id",
+              "references_table": "delivery_addresses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "dish_id",
+              "references_table": "dishes",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Name",
+            "Telefonnummer",
+            "E-Mail"
+          ],
+          "beschreibung": "Kundinnen und Kunden des Lieferdiensts mit Kontaktinformationen"
+        },
+        {
+          "name": "Lieferadresse",
+          "attribute": [
+            "Adresse",
+            "Adresstyp"
+          ],
+          "beschreibung": "Lieferadressen von Kunden (z.B. Zuhause, Büro, Wohnung von Freunden). Ein Kunde kann mehrere Adressen haben."
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            "Eingangsdatum",
+            "Zustand",
+            "Gesamtbetrag",
+            "Bemerkung"
+          ],
+          "beschreibung": "Bestellungen von Kunden, die für genau eine Lieferadresse aufgegeben werden"
+        },
+        {
+          "name": "Restaurant",
+          "attribute": [
+            "Name",
+            "Telefonnummer",
+            "Adresse",
+            "Küche"
+          ],
+          "beschreibung": "Restaurants, mit denen der Lieferdienst zusammenarbeitet"
+        },
+        {
+          "name": "Gericht",
+          "attribute": [
+            "Bezeichnung",
+            "Beschreibung",
+            "Preis",
+            "Verfügbarkeit"
+          ],
+          "beschreibung": "Gerichte, die von Restaurants angeboten werden. Jedes Gericht gehört zu genau einem Restaurant."
+        },
+        {
+          "name": "BestellungGericht",
+          "attribute": [
+            "Menge"
+          ],
+          "beschreibung": "Zuordnung zwischen Bestellungen und Gerichten mit Mengenangabe"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Lieferadresse",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Lieferadressen haben"
+        },
+        {
+          "von": "Kunde",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Bestellungen aufgeben"
+        },
+        {
+          "von": "Lieferadresse",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Bestellung wird immer für genau eine Lieferadresse aufgegeben"
+        },
+        {
+          "von": "Restaurant",
+          "zu": "Gericht",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Restaurant bietet mehrere Gerichte an; jedes Gericht gehört zu genau einem Restaurant"
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Gericht",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Bestellung kann mehrere Gerichte enthalten; ein Gericht kann in vielen Bestellungen vorkommen. Die Zuordnung erfolgt über BestellungGericht mit Mengenangabe."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Der Attribut 'Zustand' bei Bestellung ist nicht näher spezifiziert. Unklar sind die möglichen Werte (z.B. 'eingegangen', 'in Bearbeitung', 'bereit zur Lieferung', etc.) und ob es sich um ein Enum oder Freitext handelt.",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Das Attribut 'Verfügbarkeit' bei Gericht ist nicht präzisiert. Unklar ist, ob es sich um einen booleschen Wert (verfügbar/nicht verfügbar) oder um eine detailliertere Information handelt.",
+          "betroffene_elemente": [
+            "Gericht"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Bemerkung zu einer Bestellung optional ist (wie angegeben) oder ob sie auch NULL-Werte annehmen kann. Auch die maximale Länge ist nicht definiert.",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht klar, ob der 'Preis' eines Gerichts der aktuelle Preis ist oder ob Preishistorie gespeichert werden soll. Unklar ist auch, ob der Preis in der Bestellung festgehalten werden soll (zum Zeitpunkt der Bestellung).",
+          "betroffene_elemente": [
+            "Gericht",
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Das Attribut 'Adresstyp' bei Lieferadresse ist impliziert (Zuhause, Büro, etc.), aber nicht explizit definiert. Unklar ist, ob dies ein vordefiniertes Enum oder Freitext sein soll.",
+          "betroffene_elemente": [
+            "Lieferadresse"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Lieferadresse",
+          "attribute": [
+            {
+              "name": "adresseId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "adresstyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            {
+              "name": "bestellungId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "adresseId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "eingangsdatum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zustand",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gesamtbetrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bemerkung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Restaurant",
+          "attribute": [
+            {
+              "name": "restaurantId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kueche",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Gericht",
+          "attribute": [
+            {
+              "name": "gerichtId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "restaurantId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "verfuegbarkeit",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "BestellungGericht",
+          "attribute": [
+            {
+              "name": "bestellungGerichtId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bestellungId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gerichtId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "menge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Lieferadresse",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kunde",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Lieferadresse",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Restaurant",
+          "zu": "Gericht",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Gericht",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "menge"
+          ]
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE delivery_addresses (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    address_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_delivery_addresses PRIMARY KEY (id),\n    CONSTRAINT fk_delivery_addresses_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE restaurants (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    cuisine VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_restaurants PRIMARY KEY (id)\n);\n\nCREATE TABLE dishes (\n    id INTEGER NOT NULL,\n    restaurant_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    CONSTRAINT pk_dishes PRIMARY KEY (id),\n    CONSTRAINT fk_dishes_restaurant_id FOREIGN KEY (restaurant_id) REFERENCES restaurants (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    delivery_address_id INTEGER NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    total_amount DECIMAL(18,2) NOT NULL,\n    notes TEXT,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_delivery_address_id FOREIGN KEY (delivery_address_id) REFERENCES delivery_addresses (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    dish_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_dish_id FOREIGN KEY (dish_id) REFERENCES dishes (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9204,
+    "total_output_tokens": 4538,
+    "total_tokens": 13742,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1694,
+        "output_tokens": 1374,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3135,
+        "output_tokens": 1559,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4375,
+        "output_tokens": 1605,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1694,
+        "output_tokens": 1374,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3135,
+        "output_tokens": 1559,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4375,
+        "output_tokens": 1605,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

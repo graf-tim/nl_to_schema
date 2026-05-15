@@ -1,0 +1,499 @@
+{
+  "testfall_id": "TC066",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.47170868347338935,
+  "score_gesamt": 0.6830252100840336,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.4166666666666667,
+      "recall": 0.46875,
+      "f1": 0.4411764705882353,
+      "matched": 15,
+      "nur_in_referenz": 17,
+      "nur_in_generiert": 21
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.shipping_address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "payments.payment_method",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.category_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products → categories",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Bestellplattform sollen Kundinnen und Kunden ihre Einkäufe verwalten können. Zu jeder Person sollen die üblichen Kontaktdaten festgehalten werden, damit Bestätigungen verschickt und Rückfragen geklärt werden können. Das Sortiment besteht aus Artikeln mit Name, Beschreibung und aktuellem Verkaufspreis. Manche Artikel gehören gleichzeitig in mehrere Bereiche des Shops, damit sie bei der Suche leichter gefunden werden. \n\nWenn jemand etwas kauft, soll der Einkauf mit Datum, Bearbeitungsstand und einer Lieferanschrift gespeichert werden. Ein Einkauf kann aus mehreren Artikeln bestehen, und bei jedem Artikel muss nachvollziehbar bleiben, wie viele Stück bestellt wurden und zu welchem Einzelpreis der Kauf zustande kam, auch wenn sich der Preis im Sortiment später ändert. Zu einem Einkauf kann eine Zahlung erfasst werden; im Alltag kommt es aber vor, dass eine Bestellung noch offen ist oder zunächst nur vorgemerkt wird. \n\nAußerdem sollen Bereiche des Shops mit Bezeichnung und kurzer Erklärung gepflegt werden. Unklar ist fachlich zunächst, ob ein Artikel immer genau einem Bereich zugeordnet ist oder auch mehreren. Ebenso ist offen, ob pro Einkauf genau eine Zahlung existiert oder ob mehrere Zahlungsversuche relevant sein können. Das System soll Auswertungen über Bestellungen, Umsätze und beliebte Artikel ermöglichen.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "postalcode",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "article_categories",
+          "columns": [
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "delivery_city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "delivery_postalcode",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "delivery_country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "payments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "paymentdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE article_categories (\n    article_id INTEGER NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_article_categories PRIMARY KEY (article_id, category_id),\n    CONSTRAINT fk_article_categories_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    street VARCHAR(255),\n    city VARCHAR(255),\n    postalcode VARCHAR(255),\n    country VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    delivery_street VARCHAR(255),\n    delivery_city VARCHAR(255),\n    delivery_postalcode VARCHAR(255),\n    delivery_country VARCHAR(255),\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    paymentdate DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2493,
+    "total_output_tokens": 1608,
+    "total_tokens": 4101,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2493,
+        "output_tokens": 1608,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2493,
+        "output_tokens": 1608,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

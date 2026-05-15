@@ -1,0 +1,711 @@
+{
+  "testfall_id": "TC035",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.49162745098039223,
+  "score_gesamt": 0.6949764705882353,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 9,
+    "pk_tabellen_mit_pk": 9,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5555555555555556,
+      "recall": 0.625,
+      "f1": 0.5882352941176471,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 4
+    },
+    "attribut": {
+      "precision": 0.38636363636363635,
+      "recall": 0.5483870967741935,
+      "f1": 0.4533333333333333,
+      "matched": 17,
+      "nur_in_referenz": 14,
+      "nur_in_generiert": 27
+    },
+    "beziehung": {
+      "recall": 0.375,
+      "matched": 3,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.hire_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_ingredients.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.opening_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.dish_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.employee_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants → dishes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants → employees",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Restaurantkette soll festgehalten werden, welche Standorte es gibt und welche Mitarbeitenden dort im Einsatz sind. Zu jedem Standort sollen Name, Stadt, Adresse und das Eröffnungsdatum bekannt sein. Mitarbeitende haben persönliche Kontaktdaten, ein Eintrittsdatum und arbeiten normalerweise an einem Standort. In der Praxis kommt es aber vor, dass jemand zeitweise auch in anderen Filialen aushilft. Welche Einsätze dafür genau dokumentiert werden müssen, soll im System nachvollziehbar sein.\n\nAußerdem soll die Speisekarte verwaltet werden. Gerichte haben einen Namen, eine Beschreibung, einen Preis und werden einer Kategorie wie Vorspeise, Hauptgericht oder Dessert zugeordnet. Nicht jedes Gericht ist dauerhaft überall erhältlich, weil manche Filialen abweichende Karten oder saisonale Angebote haben. Es muss deshalb erkennbar sein, in welchem Restaurant welches Gericht angeboten wird.\n\nZu den Gerichten sollen auch Zutaten gepflegt werden, unter anderem damit Hinweise für Allergien oder Unverträglichkeiten möglich sind. Eine Zutat kann in mehreren Gerichten vorkommen, und ein Gericht besteht aus mehreren Zutaten. Ob dabei nur die Verwendung an sich oder auch Mengen festgehalten werden, ist fachlich nicht ganz klar. Zusätzlich soll gespeichert werden, ob eine Zutat typischerweise als Allergen gilt.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "openingdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "primary_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "primary_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "employee_assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "assignment_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dishes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_allergen",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dish_ingredients",
+          "columns": [
+            {
+              "name": "dish_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "ingredient_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "unit",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "dish_id",
+              "references_table": "dishes",
+              "references_column": "id"
+            },
+            {
+              "from_column": "ingredient_id",
+              "references_table": "ingredients",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "location_dishes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "available_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "available_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "dish_id",
+              "references_table": "dishes",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "location_dish_notes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "location_dish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "note",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "location_dish_id",
+              "references_table": "location_dishes",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: Standorte, Mitarbeitende, Einsätze, Kategorien, Gerichte, Zutaten, Zuordnungen Gericht-Zutat, Verfügbarkeit Gericht-Standort. Die zusätzliche Tabelle 'location_dish_notes' ist eine sinnvolle Erweiterung für Notizen zu Gericht-Standort-Kombinationen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Attribute fehlen: (1) In 'employee_assignments' fehlt eine Dokumentation des Einsatzzwecks oder der Einsatzart (assignment_type ist zu vage und nicht strukturiert). (2) In 'location_dishes' fehlt ein Attribut zur Kennzeichnung, ob ein Gericht dauerhaft oder nur saisonal angeboten wird (die Datumsfelder sind optional, aber es gibt keine explizite Markierung für 'permanent' vs. 'temporary'). (3) In 'ingredients' fehlt ein Attribut für die Einheit oder Kategorie der Zutat (z.B. 'Allergen-Kategorie' wie Nüsse, Gluten, Milch etc.).",
+          "korrekturanweisung": "Ergänze in 'employee_assignments' ein Feld 'assignment_reason' (VARCHAR, nullable) für strukturierte Dokumentation. Ergänze in 'location_dishes' ein Feld 'is_permanent' (BOOLEAN, NOT NULL, default=true) zur Unterscheidung zwischen Dauergerichten und saisonalen Angeboten. Erwäge in 'ingredients' ein Feld 'allergen_category' (VARCHAR, nullable) zur Klassifizierung von Allergen-Typen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Fehler in der Modellierung von N:M-Beziehungen: (1) 'dish_ingredients' hat einen künstlichen PK (id), obwohl die natürliche Identifikation durch (dish_id, ingredient_id) gegeben ist. Dies führt zu Redundanz und erschwert die Datenintegrität (Duplikate sind möglich). (2) 'location_dishes' hat ebenfalls einen künstlichen PK (id), obwohl (location_id, dish_id) eindeutig sein sollte. Dies ist problematisch, da die gleiche Gericht-Standort-Kombination mehrfach eingefügt werden könnte. (3) Die Tabelle 'location_dish_notes' referenziert 'location_dishes' über 'location_dish_id', was die Redundanz verstärkt. (4) Die Kardinalität zwischen 'employees' und 'locations' ist nicht korrekt modelliert: Ein Mitarbeiter hat einen Primärstandort (primary_location_id), aber die Einsätze werden über 'employee_assignments' dokumentiert. Dies ist konzeptionell richtig, aber es fehlt eine Konsistenzregel: Der Primärstandort sollte auch in 'employee_assignments' als Eintrag vorhanden sein oder explizit ausgeschlossen sein.",
+          "korrekturanweisung": "Ändere 'dish_ingredients' zu einem echten Junction-Table: Entferne das 'id'-Feld und definiere (dish_id, ingredient_id) als zusammengesetzten Primärschlüssel. Ändere 'location_dishes' analog: Entferne das 'id'-Feld und definiere (location_id, dish_id) als zusammengesetzten Primärschlüssel. Passe 'location_dish_notes' an, um auf (location_id, dish_id) zu referenzieren oder verwende einen Composite-FK. Dokumentiere in den Geschäftsregeln, ob der Primärstandort eines Mitarbeiters auch in 'employee_assignments' eingetragen sein muss."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Normalisierungsprobleme: (1) 'location_dishes' mit künstlichem PK führt zu Redundanz und Anomalien (Update-Anomalien bei Verfügbarkeitsdaten). (2) 'location_dish_notes' ist eine Erweiterung von 'location_dishes', die zu Datenredundanz führt, wenn Notizen häufig aktualisiert werden. (3) 'assignment_type' in 'employee_assignments' ist ein VARCHAR ohne Struktur – dies sollte entweder eine Enumeration sein oder auf eine separate Tabelle 'assignment_types' verweisen. (4) Keine Normalisierung von Kontaktdaten in 'employees': Mehrere Kontaktfelder (email, phone, address) könnten in eine separate 'employee_contacts'-Tabelle ausgelagert werden, um Flexibilität zu erhöhen (z.B. mehrere E-Mails oder Telefonnummern pro Mitarbeiter).",
+          "korrekturanweisung": "Implementiere (location_id, dish_id) als zusammengesetzten PK in 'location_dishes' (siehe beziehungs_korrektheit). Erwäge, 'location_dish_notes' in 'location_dishes' zu integrieren oder als separate Audit-Tabelle zu strukturieren. Erstelle eine Referenztabelle 'assignment_types' mit Werten wie 'primary', 'temporary_help', 'training' und referenziere diese in 'employee_assignments'. Optional: Lagere Kontaktdaten in 'employee_contacts' aus, um mehrere Kontaktmöglichkeiten pro Mitarbeiter zu unterstützen."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE dishes (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_dishes PRIMARY KEY (id),\n    CONSTRAINT fk_dishes_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE ingredients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    is_allergen BOOLEAN NOT NULL,\n    CONSTRAINT pk_ingredients PRIMARY KEY (id)\n);\n\nCREATE TABLE dish_ingredients (\n    dish_id INTEGER NOT NULL,\n    ingredient_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2),\n    unit VARCHAR(255),\n    CONSTRAINT pk_dish_ingredients PRIMARY KEY (dish_id, ingredient_id),\n    CONSTRAINT fk_dish_ingredients_dish_id FOREIGN KEY (dish_id) REFERENCES dishes (id),\n    CONSTRAINT fk_dish_ingredients_ingredient_id FOREIGN KEY (ingredient_id) REFERENCES ingredients (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    openingdate DATE NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    address VARCHAR(255),\n    birthdate DATE,\n    hiredate DATE NOT NULL,\n    primary_location_id INTEGER NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id),\n    CONSTRAINT fk_employees_primary_location_id FOREIGN KEY (primary_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE employee_assignments (\n    id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE,\n    assignment_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_employee_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_employee_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_assignments_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE location_dishes (\n    id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    dish_id INTEGER NOT NULL,\n    available_from DATE,\n    available_until DATE,\n    CONSTRAINT pk_location_dishes PRIMARY KEY (id),\n    CONSTRAINT fk_location_dishes_location_id FOREIGN KEY (location_id) REFERENCES locations (id),\n    CONSTRAINT fk_location_dishes_dish_id FOREIGN KEY (dish_id) REFERENCES dishes (id)\n);\n\nCREATE TABLE location_dish_notes (\n    id INTEGER NOT NULL,\n    location_dish_id INTEGER NOT NULL,\n    note TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_location_dish_notes PRIMARY KEY (id),\n    CONSTRAINT fk_location_dish_notes_location_dish_id FOREIGN KEY (location_dish_id) REFERENCES location_dishes (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: Standorte, Mitarbeitende, Einsätze, Kategorien, Gerichte, Zutaten, Zuordnungen Gericht-Zutat, Verfügbarkeit Gericht-Standort. Die zusätzliche Tabelle 'location_dish_notes' ist eine sinnvolle Erweiterung für Notizen zu Gericht-Standort-Kombinationen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Attribute fehlen: (1) In 'employee_assignments' fehlt eine Dokumentation des Einsatzzwecks oder der Einsatzart (assignment_type ist zu vage und nicht strukturiert). (2) In 'location_dishes' fehlt ein Attribut zur Kennzeichnung, ob ein Gericht dauerhaft oder nur saisonal angeboten wird (die Datumsfelder sind optional, aber es gibt keine explizite Markierung für 'permanent' vs. 'temporary'). (3) In 'ingredients' fehlt ein Attribut für die Einheit oder Kategorie der Zutat (z.B. 'Allergen-Kategorie' wie Nüsse, Gluten, Milch etc.).",
+          "korrekturanweisung": "Ergänze in 'employee_assignments' ein Feld 'assignment_reason' (VARCHAR, nullable) für strukturierte Dokumentation. Ergänze in 'location_dishes' ein Feld 'is_permanent' (BOOLEAN, NOT NULL, default=true) zur Unterscheidung zwischen Dauergerichten und saisonalen Angeboten. Erwäge in 'ingredients' ein Feld 'allergen_category' (VARCHAR, nullable) zur Klassifizierung von Allergen-Typen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Fehler in der Modellierung von N:M-Beziehungen: (1) 'dish_ingredients' hat einen künstlichen PK (id), obwohl die natürliche Identifikation durch (dish_id, ingredient_id) gegeben ist. Dies führt zu Redundanz und erschwert die Datenintegrität (Duplikate sind möglich). (2) 'location_dishes' hat ebenfalls einen künstlichen PK (id), obwohl (location_id, dish_id) eindeutig sein sollte. Dies ist problematisch, da die gleiche Gericht-Standort-Kombination mehrfach eingefügt werden könnte. (3) Die Tabelle 'location_dish_notes' referenziert 'location_dishes' über 'location_dish_id', was die Redundanz verstärkt. (4) Die Kardinalität zwischen 'employees' und 'locations' ist nicht korrekt modelliert: Ein Mitarbeiter hat einen Primärstandort (primary_location_id), aber die Einsätze werden über 'employee_assignments' dokumentiert. Dies ist konzeptionell richtig, aber es fehlt eine Konsistenzregel: Der Primärstandort sollte auch in 'employee_assignments' als Eintrag vorhanden sein oder explizit ausgeschlossen sein.",
+          "korrekturanweisung": "Ändere 'dish_ingredients' zu einem echten Junction-Table: Entferne das 'id'-Feld und definiere (dish_id, ingredient_id) als zusammengesetzten Primärschlüssel. Ändere 'location_dishes' analog: Entferne das 'id'-Feld und definiere (location_id, dish_id) als zusammengesetzten Primärschlüssel. Passe 'location_dish_notes' an, um auf (location_id, dish_id) zu referenzieren oder verwende einen Composite-FK. Dokumentiere in den Geschäftsregeln, ob der Primärstandort eines Mitarbeiters auch in 'employee_assignments' eingetragen sein muss."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Normalisierungsprobleme: (1) 'location_dishes' mit künstlichem PK führt zu Redundanz und Anomalien (Update-Anomalien bei Verfügbarkeitsdaten). (2) 'location_dish_notes' ist eine Erweiterung von 'location_dishes', die zu Datenredundanz führt, wenn Notizen häufig aktualisiert werden. (3) 'assignment_type' in 'employee_assignments' ist ein VARCHAR ohne Struktur – dies sollte entweder eine Enumeration sein oder auf eine separate Tabelle 'assignment_types' verweisen. (4) Keine Normalisierung von Kontaktdaten in 'employees': Mehrere Kontaktfelder (email, phone, address) könnten in eine separate 'employee_contacts'-Tabelle ausgelagert werden, um Flexibilität zu erhöhen (z.B. mehrere E-Mails oder Telefonnummern pro Mitarbeiter).",
+          "korrekturanweisung": "Implementiere (location_id, dish_id) als zusammengesetzten PK in 'location_dishes' (siehe beziehungs_korrektheit). Erwäge, 'location_dish_notes' in 'location_dishes' zu integrieren oder als separate Audit-Tabelle zu strukturieren. Erstelle eine Referenztabelle 'assignment_types' mit Werten wie 'primary', 'temporary_help', 'training' und referenziere diese in 'employee_assignments'. Optional: Lagere Kontaktdaten in 'employee_contacts' aus, um mehrere Kontaktmöglichkeiten pro Mitarbeiter zu unterstützen."
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 28556,
+    "total_output_tokens": 11005,
+    "total_tokens": 39561,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 14489,
+        "output_tokens": 6090,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 14067,
+        "output_tokens": 4915,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2479,
+        "output_tokens": 1723,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4550,
+        "output_tokens": 1809,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6255,
+        "output_tokens": 2005,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4580,
+        "output_tokens": 1285,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5755,
+        "output_tokens": 2362,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4937,
+        "output_tokens": 1821,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

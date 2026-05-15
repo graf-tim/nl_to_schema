@@ -1,0 +1,721 @@
+{
+  "testfall_id": "TC046",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.35464285714285715,
+  "score_gesamt": 0.6127857142857143,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.375,
+      "recall": 0.42857142857142855,
+      "f1": 0.39999999999999997,
+      "matched": 3,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 5
+    },
+    "attribut": {
+      "precision": 0.3142857142857143,
+      "recall": 0.3793103448275862,
+      "f1": 0.34375,
+      "matched": 11,
+      "nur_in_referenz": 18,
+      "nur_in_generiert": 24
+    },
+    "beziehung": {
+      "recall": 0.2857142857142857,
+      "matched": 2,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "storage_locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_storage_locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipts",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipt_items",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_suppliers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_suppliers.lead_time_days",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "articles.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "storage_locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "storage_locations.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "storage_locations.area",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_storage_locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_storage_locations.article_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_storage_locations.storage_location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_storage_locations.quantity_on_hand",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipts.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipts.supplier_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipts.receipt_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipts.notes",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipt_items.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipt_items.goods_receipt_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipt_items.article_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipt_items.quantity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_storage_locations → articles",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "article_storage_locations → storage_locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipt_items → articles",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipt_items → goods_receipts",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "goods_receipts → suppliers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für unser Lager soll festgehalten werden, welche Artikel wir führen, von wem wir sie beziehen und wo sie im Haus liegen. Zu jedem Artikel brauchen wir eine Bezeichnung, eine kurze Beschreibung, eine interne Kennung und die Information, ob er aktuell noch geführt wird. Manche Artikel kommen von mehreren Lieferanten, und ein Lieferant kann natürlich viele verschiedene Artikel liefern. Dabei möchten wir auch festhalten, unter welcher Nummer der jeweilige Lieferant den Artikel führt und wie lange die übliche Lieferzeit ist.\n\nDas Lager ist in mehrere Bereiche gegliedert. Jeder Bereich hat eine Bezeichnung und kann für bestimmte Artikel vorgesehen sein. Ein Artikel kann aber je nach Situation auch an mehreren Stellen liegen, etwa wenn Ware umgelagert wird oder Restbestände woanders untergebracht sind. Für jede Lagerstelle soll ersichtlich sein, wie viel von einem Artikel dort momentan vorhanden ist.\n\nAußerdem möchten wir Wareneingänge dokumentieren. Wenn eine Lieferung eintrifft, soll nachvollziehbar sein, von welchem Lieferanten sie kam, wann sie eingetroffen ist und welche Artikel in welcher Menge enthalten waren. Falls es Bemerkungen zu einer Lieferung gibt, sollen diese ebenfalls notiert werden können.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "internal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "suppliers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "article_suppliers",
+          "columns": [
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_article_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_time_days",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "warehouse_areas",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "warehouse_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "warehouse_area_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "shelf",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "compartment",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "level",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "last_updated",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "warehouse_area_id",
+              "references_table": "warehouse_areas",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "warehouse_location_articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "warehouse_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "last_updated",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "warehouse_location_id",
+              "references_table": "warehouse_locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "deliveries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "arrival_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "remarks",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "delivery_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "delivery_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "delivery_id",
+              "references_table": "deliveries",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'article_warehouse_areas' ist redundant und semantisch fehlerhaft. Sie dokumentiert nur, welche Artikel in welchen Bereichen 'vorgesehen' sind, enthält aber keine Mengenangaben. Die tatsächliche Lagerstelle mit Menge wird in 'warehouse_locations' erfasst. Dies führt zu Inkonsistenzen: Ein Artikel kann in 'warehouse_locations' an einem Ort liegen, ohne in 'article_warehouse_areas' als 'vorgesehen' eingetragen zu sein. Die Anforderung 'Ein Artikel kann je nach Situation auch an mehreren Stellen liegen' wird bereits durch 'warehouse_locations' mit Composite Key (article_id, warehouse_area_id) abgedeckt. 'article_warehouse_areas' ist überflüssig und sollte entfernt werden.",
+          "korrekturanweisung": "Entfernen Sie die Tabelle 'article_warehouse_areas'. Die Zuordnung von Artikeln zu Lagerbereichen wird bereits durch die tatsächlichen Lagerstellen in 'warehouse_locations' impliziert. Falls Sie eine explizite Zuordnung 'Artikel ist für Bereich vorgesehen' benötigen, müssen Sie dies als separate Entität mit eigenem ID und Zeitstempel modellieren, um Versionierung zu ermöglichen."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'warehouse_locations' enthält ein Attribut 'location_code', das semantisch unklar ist. Nach der Anforderung soll ersichtlich sein, 'wo sie im Haus liegen' — dies deutet auf eine räumliche Struktur hin (z.B. Regal, Fach, Ebene). Der 'location_code' ist zu vage und könnte zu Dateneingabe-Fehlern führen. Zudem fehlt ein Zeitstempel (z.B. 'last_updated'), um nachzuvollziehen, wann die Menge zuletzt aktualisiert wurde — wichtig für Lagerverwaltung und Audit-Trail.",
+          "korrekturanweisung": "Ersetzen Sie 'location_code' durch strukturierte Attribute wie 'shelf', 'compartment', 'level' (jeweils VARCHAR oder INTEGER) oder führen Sie eine separate Tabelle 'warehouse_locations_master' ein. Fügen Sie ein Attribut 'last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP' hinzu, um Änderungen nachvollziehbar zu machen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'warehouse_locations' und 'warehouse_areas' ist nicht korrekt modelliert. 'warehouse_locations' hat einen Composite Key (article_id, warehouse_area_id), aber es fehlt eine explizite Fremdschlüssel-Constraint auf (warehouse_area_id) → warehouse_areas(id). Zwar ist die FK in der JSON-Definition vorhanden, aber die Kombination (article_id, warehouse_area_id) als PK ist problematisch: Sie impliziert, dass ein Artikel an jedem Ort nur EINMAL liegen kann. Die Anforderung 'Ein Artikel kann je nach Situation auch an mehreren Stellen liegen' deutet aber darauf hin, dass es mehrere Lagerstellen pro Bereich geben kann (z.B. Regal A und Regal B im gleichen Bereich). Der PK sollte eine eindeutige Lagerstellen-ID sein, nicht die Kombination aus Artikel und Bereich.",
+          "korrekturanweisung": "Redesign: Führen Sie eine Tabelle 'warehouse_locations_master' mit eigenem ID ein (z.B. location_id INTEGER PRIMARY KEY), die einen Bereich referenziert. Dann hat 'warehouse_locations' den PK (location_id, article_id) oder besser noch: (id INTEGER PRIMARY KEY) mit FK zu location_id und article_id. Dies ermöglicht mehrere Lagerstellen pro Bereich und mehrere Artikel pro Lagerstelle."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'suppliers' verletzt die 3NF durch transitive Abhängigkeiten. Die Attribute 'address', 'city', 'postal_code' sind funktional abhängig von 'postal_code' (oder umgekehrt), nicht direkt vom PK 'id'. Dies führt zu Anomalien: Wenn ein Lieferant mehrere Adressen hat oder eine Adresse mehrere Lieferanten, entstehen Redundanzen und Update-Anomalien. Beispiel: Ändert sich die Stadt für eine Postleitzahl, müssen alle Lieferanten mit dieser PLZ aktualisiert werden. Zudem ist unklar, ob 'address' Straße+Hausnummer oder nur Straße ist.",
+          "korrekturanweisung": "Normalisieren Sie: Erstellen Sie eine Tabelle 'supplier_addresses' mit eigenem ID (address_id INTEGER PRIMARY KEY), die address, city, postal_code enthält. 'suppliers' referenziert dann eine primary_address_id (oder Sie modellieren mehrere Adressen pro Lieferant mit Gültigkeitsdatum). Alternativ: Wenn jeder Lieferant nur eine Adresse hat, ist die aktuelle Struktur akzeptabel, aber dann sollte 'address' in Straße und Hausnummer aufgeteilt werden."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: articles, suppliers, warehouse_areas, deliveries. Die Brückentabellen (article_suppliers, article_warehouse_areas, warehouse_locations, delivery_items) sind korrekt modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'article_warehouse_areas' ist redundant und unvollständig. Sie modelliert nur die Zuordnung von Artikeln zu Bereichen (M:N), enthält aber NICHT die kritische Information 'quantity' (Bestandsmenge an dieser Lagerstelle). Der Anforderungstext fordert explizit: 'Für jede Lagerstelle soll ersichtlich sein, wie viel von einem Artikel dort momentan vorhanden ist.' Diese Information existiert nur in 'warehouse_locations', die aber ein anderes Konzept (Artikel + Bereich + location_code) modelliert. Es ist unklar, ob 'warehouse_locations' die tatsächliche Lagerstelle mit Bestandsmenge ist oder ob 'article_warehouse_areas' dafür gedacht ist. Die Tabelle 'article_warehouse_areas' sollte entweder gelöscht oder mit 'quantity' erweitert werden.",
+          "korrekturanweisung": "Entweder: (1) 'article_warehouse_areas' löschen, da 'warehouse_locations' bereits die M:N-Beziehung mit Bestandsmenge abbildet, ODER (2) 'article_warehouse_areas' mit Spalte 'quantity INTEGER NOT NULL' erweitern und 'warehouse_locations' löschen, falls location_code nicht benötigt wird. Klärung erforderlich: Ist 'location_code' eine notwendige Granularität innerhalb eines Bereichs?"
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "WEICHER FEHLER: Die Tabelle 'suppliers' enthält Adressinformationen (address, city, postal_code), die optional sind (nullable: true). Der Anforderungstext erwähnt keine Adressdaten für Lieferanten. Diese Attribute sind nicht im Anforderungstext gefordert und könnten als Übermodellierung betrachtet werden. Allerdings ist dies eine schwache Optimierungsfrage, nicht kritisch.",
+          "korrekturanweisung": "Optional: Adressfelder aus 'suppliers' entfernen, falls nicht geschäftsrelevant. Oder: Mindestens 'name' und 'email' als Kontaktinformationen beibehalten, da diese für Lieferantenmanagement sinnvoll sind."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'warehouse_areas' und 'articles' ist doppelt modelliert. Es existieren zwei Tabellen, die diese M:N-Beziehung abbilden: (1) 'article_warehouse_areas' (nur Zuordnung, keine Menge) und (2) 'warehouse_locations' (Zuordnung + location_code + quantity). Dies ist semantisch inkonsistent und führt zu Datenredundanz und Anomalien. Ein Artikel kann in 'article_warehouse_areas' einem Bereich zugeordnet sein, aber in 'warehouse_locations' können unterschiedliche Mengen an verschiedenen location_codes desselben Bereichs existieren. Die Kardinalität ist unklar: Ist ein Artikel in einem Bereich an genau einer oder mehreren Stellen (location_codes) lagern?",
+          "korrekturanweisung": "Entscheidung treffen: (A) Wenn ein Artikel pro Bereich nur an EINER Stelle lagert: 'warehouse_locations' als einzige Tabelle behalten, 'article_warehouse_areas' löschen. (B) Wenn ein Artikel pro Bereich an MEHREREN Stellen lagert: 'warehouse_locations' mit Composite-PK (article_id, warehouse_area_id, location_code) behalten, 'article_warehouse_areas' löschen. Aktuell ist 'warehouse_locations' mit PK (article_id, warehouse_area_id) modelliert, was mehrere location_codes pro Artikel-Bereich-Paar ausschließt — dies widerspricht dem Anforderungstext ('an mehreren Stellen liegen')."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'warehouse_locations' hat einen unvollständigen Primärschlüssel. Der PK ist (article_id, warehouse_area_id), aber die Spalte 'location_code' ist ebenfalls vorhanden und soll die genaue Lagerstelle identifizieren. Der Anforderungstext sagt: 'Ein Artikel kann aber je nach Situation auch an mehreren Stellen liegen'. Dies bedeutet, dass ein Artikel in einem Bereich an mehreren location_codes lagern kann. Der aktuelle PK erlaubt aber nur EINE Zeile pro (article_id, warehouse_area_id)-Kombination, was mehrere location_codes ausschließt. Der PK sollte (article_id, warehouse_area_id, location_code) sein.",
+          "korrekturanweisung": "Primärschlüssel von 'warehouse_locations' ändern zu: (article_id, warehouse_area_id, location_code). Dies ermöglicht mehrere Lagerstellen pro Artikel-Bereich-Kombination."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'warehouse_locations' verletzt die 3NF durch redundante Fremdschlüssel. Sie hat FK zu 'articles' (article_id) und 'warehouse_areas' (warehouse_area_id), aber der PK ist (article_id, warehouse_area_id). Dies ist zwar nicht formal falsch, aber die Spalte 'location_code' ist ein Attribut der Lagerstelle, nicht der Beziehung. Besser wäre eine separate Tabelle 'warehouse_locations' mit PK 'id' und FKs zu articles und warehouse_areas, oder eine klare Modellierung, ob location_code eine eigenständige Entität ist. Aktuell ist unklar, ob location_code eindeutig pro Bereich oder global eindeutig sein soll.",
+          "korrekturanweisung": "Klärung: Ist 'location_code' eindeutig pro Bereich oder global? Falls pro Bereich: 'warehouse_locations' mit PK (warehouse_area_id, location_code) und FK zu warehouse_areas, dann separate Tabelle für Bestandsmengen. Falls global: 'warehouse_locations' als eigenständige Entität mit PK 'id', dann M:N-Tabelle für Artikel-Lagerstelle-Bestandsmengen."
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    internal_code VARCHAR(255) NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE article_suppliers (\n    article_id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    supplier_article_number VARCHAR(255) NOT NULL,\n    delivery_time_days INTEGER,\n    CONSTRAINT pk_article_suppliers PRIMARY KEY (article_id, supplier_id),\n    CONSTRAINT fk_article_suppliers_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_suppliers_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n\nCREATE TABLE deliveries (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    arrival_date DATE NOT NULL,\n    remarks TEXT,\n    CONSTRAINT pk_deliveries PRIMARY KEY (id),\n    CONSTRAINT fk_deliveries_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n\nCREATE TABLE delivery_items (\n    id INTEGER NOT NULL,\n    delivery_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    CONSTRAINT pk_delivery_items PRIMARY KEY (id),\n    CONSTRAINT fk_delivery_items_delivery_id FOREIGN KEY (delivery_id) REFERENCES deliveries (id),\n    CONSTRAINT fk_delivery_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE warehouse_areas (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_warehouse_areas PRIMARY KEY (id)\n);\n\nCREATE TABLE warehouse_locations (\n    id INTEGER NOT NULL,\n    warehouse_area_id INTEGER NOT NULL,\n    shelf VARCHAR(255),\n    compartment VARCHAR(255),\n    level VARCHAR(255),\n    last_updated TIMESTAMP NOT NULL,\n    CONSTRAINT pk_warehouse_locations PRIMARY KEY (id),\n    CONSTRAINT fk_warehouse_locations_warehouse_area_id FOREIGN KEY (warehouse_area_id) REFERENCES warehouse_areas (id)\n);\n\nCREATE TABLE warehouse_location_articles (\n    id INTEGER NOT NULL,\n    warehouse_location_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    last_updated TIMESTAMP NOT NULL,\n    CONSTRAINT pk_warehouse_location_articles PRIMARY KEY (id),\n    CONSTRAINT fk_warehouse_location_articles_warehouse_location_id FOREIGN KEY (warehouse_location_id) REFERENCES warehouse_locations (id),\n    CONSTRAINT fk_warehouse_location_articles_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 3 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 5 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 8 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 41774,
+    "total_output_tokens": 13434,
+    "total_tokens": 55208,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 17283,
+        "output_tokens": 5272,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8178,
+        "output_tokens": 2916,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8090,
+        "output_tokens": 3285,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 8223,
+        "output_tokens": 1961,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2430,
+        "output_tokens": 1424,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3952,
+        "output_tokens": 1142,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3908,
+        "output_tokens": 1329,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6666,
+        "output_tokens": 1887,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4226,
+        "output_tokens": 1774,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4182,
+        "output_tokens": 1956,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8187,
+        "output_tokens": 1961,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8223,
+        "output_tokens": 1961,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,405 @@
+{
+  "testfall_id": "TC015",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 1.0,
+  "score_gesamt": 1.0,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 16,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [],
+  "state": {
+    "anforderungstext": "Ein Nachhilfeinstitut möchte seine Organisation übersichtlich festhalten. Für jede Lehrkraft sollen Vorname, Nachname, E-Mail-Adresse und das Einstellungsdatum gespeichert werden. Das Institut bietet mehrere Unterrichtsfächer wie Mathematik, Englisch oder Physik an. Zu jedem Fach sollen die Bezeichnung und eine kurze Beschreibung hinterlegt werden. Jede Lehrkraft unterrichtet genau ein Fach, ein Fach kann aber von mehreren Lehrkräften unterrichtet werden. Außerdem sollen die Schülerinnen und Schüler erfasst werden. Von ihnen werden Vorname, Nachname, Geburtsdatum, E-Mail-Adresse und das Anmeldedatum benötigt. Jede Schülerin und jeder Schüler ist genau einer Lehrkraft fest zugeordnet, während eine Lehrkraft mehrere Schülerinnen und Schüler betreuen kann.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "teachers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subject_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subject_id",
+              "references_table": "subjects",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "subjects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "students",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enrollmentdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "teacher_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "teacher_id",
+              "references_table": "teachers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Lehrkraft",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "E-Mail-Adresse",
+            "Einstellungsdatum"
+          ],
+          "beschreibung": "Lehrkräfte des Nachhilfeinstituts, die Unterrichtsfächer unterrichten und Schüler betreuen"
+        },
+        {
+          "name": "Unterrichtsfach",
+          "attribute": [
+            "Bezeichnung",
+            "Beschreibung"
+          ],
+          "beschreibung": "Unterrichtsfächer, die vom Institut angeboten werden (z.B. Mathematik, Englisch, Physik)"
+        },
+        {
+          "name": "Schüler",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Geburtsdatum",
+            "E-Mail-Adresse",
+            "Anmeldedatum"
+          ],
+          "beschreibung": "Schülerinnen und Schüler, die beim Institut angemeldet sind und von Lehrkräften betreut werden"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Lehrkraft",
+          "zu": "Unterrichtsfach",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jede Lehrkraft unterrichtet genau ein Fach, ein Fach kann aber von mehreren Lehrkräften unterrichtet werden"
+        },
+        {
+          "von": "Schüler",
+          "zu": "Lehrkraft",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Schüler ist genau einer Lehrkraft fest zugeordnet, eine Lehrkraft kann mehrere Schüler betreuen"
+        }
+      ],
+      "unklarheiten": []
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Lehrkraft",
+          "attribute": [
+            {
+              "name": "lehrkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "einstellungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Unterrichtsfach",
+          "attribute": [
+            {
+              "name": "fach_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Schüler",
+          "attribute": [
+            {
+              "name": "schueler_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "anmeldedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Lehrkraft",
+          "zu": "Unterrichtsfach",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Schüler",
+          "zu": "Lehrkraft",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE subjects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_subjects PRIMARY KEY (id)\n);\n\nCREATE TABLE teachers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    hiredate DATE NOT NULL,\n    subject_id INTEGER NOT NULL,\n    CONSTRAINT pk_teachers PRIMARY KEY (id),\n    CONSTRAINT fk_teachers_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id)\n);\n\nCREATE TABLE students (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    enrollmentdate DATE NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    CONSTRAINT pk_students PRIMARY KEY (id),\n    CONSTRAINT fk_students_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 6716,
+    "total_output_tokens": 2100,
+    "total_tokens": 8816,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1499,
+        "output_tokens": 516,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2023,
+        "output_tokens": 773,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3194,
+        "output_tokens": 811,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1499,
+        "output_tokens": 516,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2023,
+        "output_tokens": 773,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3194,
+        "output_tokens": 811,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

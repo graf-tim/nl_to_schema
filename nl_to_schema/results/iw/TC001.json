@@ -1,0 +1,308 @@
+{
+  "testfall_id": "TC001",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9692307692307693,
+  "score_gesamt": 0.9815384615384616,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9230769230769231,
+      "recall": 0.9230769230769231,
+      "f1": 0.9230769230769231,
+      "matched": 12,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "shelves.label",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Bibliothek soll festgehalten werden, welche Bücher vorhanden sind, von wem sie geschrieben wurden und in welchem Regal sie stehen. Zu jedem Buch werden der Titel, das Erscheinungsjahr und eine kurze Beschreibung benötigt. Jedes Buch stammt genau von einer Autorin oder einem Autor, aber eine Autorin oder ein Autor kann mehrere Bücher geschrieben haben. Außerdem steht jedes Buch genau in einem Regal, während in einem Regal mehrere Bücher stehen können. Für Autorinnen und Autoren sollen Vorname, Nachname und Geburtsdatum gespeichert werden. Für Regale werden eine Bezeichnung und der Standortbereich in der Bibliothek benötigt. Es sollen nur aktuell vorhandene Bücher erfasst werden, keine Ausleihen oder Reservierungen.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "authors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "shelves",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_area",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "books",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publicationyear",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "author_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "shelf_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "author_id",
+              "references_table": "authors",
+              "references_column": "id"
+            },
+            {
+              "from_column": "shelf_id",
+              "references_table": "shelves",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: authors (Autorinnen/Autoren), shelves (Regale) und books (Bücher). Die Anforderung 'Es sollen nur aktuell vorhandene Bücher erfasst werden' ist durch die Struktur erfüllt (keine Ausleihen/Reservierungen).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: authors (firstname, lastname, birthdate), shelves (designation, location_area), books (title, publicationyear, description, author_id, shelf_id). Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: 1:N zwischen authors und books (ein Autor schreibt mehrere Bücher, jedes Buch hat genau einen Autor), 1:N zwischen shelves und books (ein Regal enthält mehrere Bücher, jedes Buch steht in genau einem Regal). Kardinalitäten entsprechen den Anforderungen. Keine M:N-Beziehungen vorhanden, daher keine Junction Tables nötig.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt mindestens 3NF: Keine Redundanzen erkennbar, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, keine transitiven Abhängigkeiten. Die Struktur ist normalisiert und effizient.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE authors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    CONSTRAINT pk_authors PRIMARY KEY (id)\n);\n\nCREATE TABLE shelves (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    location_area VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_shelves PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publicationyear INTEGER,\n    description TEXT,\n    author_id INTEGER NOT NULL,\n    shelf_id INTEGER NOT NULL,\n    CONSTRAINT pk_books PRIMARY KEY (id),\n    CONSTRAINT fk_books_author_id FOREIGN KEY (author_id) REFERENCES authors (id),\n    CONSTRAINT fk_books_shelf_id FOREIGN KEY (shelf_id) REFERENCES shelves (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: authors (Autorinnen/Autoren), shelves (Regale) und books (Bücher). Die Anforderung 'Es sollen nur aktuell vorhandene Bücher erfasst werden' ist durch die Struktur erfüllt (keine Ausleihen/Reservierungen).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: authors (firstname, lastname, birthdate), shelves (designation, location_area), books (title, publicationyear, description, author_id, shelf_id). Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: 1:N zwischen authors und books (ein Autor schreibt mehrere Bücher, jedes Buch hat genau einen Autor), 1:N zwischen shelves und books (ein Regal enthält mehrere Bücher, jedes Buch steht in genau einem Regal). Kardinalitäten entsprechen den Anforderungen. Keine M:N-Beziehungen vorhanden, daher keine Junction Tables nötig.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt mindestens 3NF: Keine Redundanzen erkennbar, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, keine transitiven Abhängigkeiten. Die Struktur ist normalisiert und effizient.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 2,
+    "total_input_tokens": 5382,
+    "total_output_tokens": 1453,
+    "total_tokens": 6835,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 1,
+        "input_tokens": 2293,
+        "output_tokens": 610,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 1,
+        "input_tokens": 3089,
+        "output_tokens": 843,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2293,
+        "output_tokens": 610,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3089,
+        "output_tokens": 843,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

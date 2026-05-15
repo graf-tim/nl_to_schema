@@ -1,0 +1,701 @@
+{
+  "testfall_id": "TC037",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7278294862248698,
+  "score_gesamt": 0.8366976917349218,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 9,
+    "pk_tabellen_mit_pk": 9,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.7777777777777778,
+      "recall": 0.875,
+      "f1": 0.823529411764706,
+      "matched": 7,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.675,
+      "recall": 0.6923076923076923,
+      "f1": 0.6835443037974683,
+      "matched": 27,
+      "nur_in_referenz": 12,
+      "nur_in_generiert": 13
+    },
+    "beziehung": {
+      "recall": 0.625,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "patient_medications",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "medications.form",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "medications.strength",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "doctors.specialty",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "doctors.employment_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "prescriptions.dosage_instruction",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments.notes",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointment_diagnoses.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.patient_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.medication_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.is_allergy",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications → medications",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications → patients",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "prescriptions → medications",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Arztpraxis soll eine übersichtliche Verwaltung entstehen. Von den Patientinnen und Patienten sollen die üblichen Kontaktdaten sowie das Geburtsdatum festgehalten werden. Die Praxis beschäftigt mehrere Ärztinnen und Ärzte verschiedener Fachrichtungen. Zu jedem Arzt soll nachvollziehbar sein, seit wann er in der Praxis arbeitet und ob er aktuell im Dienst ist.\n\nPatienten kommen zu Terminen in die Praxis. Ein Termin findet immer bei genau einem Arzt statt und hat einen geplanten Zeitpunkt. Außerdem soll erkennbar sein, ob der Termin wahrgenommen, abgesagt oder verschoben wurde. Nicht jeder Besuch läuft gleich ab: Bei einem Termin können mehrere Diagnosen festgestellt werden, und dieselbe Diagnose kann natürlich bei vielen verschiedenen Patienten oder Besuchen vorkommen.\n\nNach einem Besuch können Medikamente verordnet werden. Dabei soll dokumentiert werden, welches Medikament gemeint ist, in welcher Menge und wie oft es eingenommen werden soll. Da manche Mittel in unterschiedlichen Formen oder Stärken vorkommen, sollen zu Medikamenten auch solche Angaben gepflegt werden. Zusätzlich möchte die Praxis notieren, welche Patienten bestimmte Medikamente wegen Unverträglichkeiten nicht bekommen dürfen.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "patients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "doctors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "specialization",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "doctor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "scheduled_time",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "doctor_id",
+              "references_table": "doctors",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "diagnoses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointment_diagnoses",
+          "columns": [
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "medications",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medication_variants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "medication_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "form_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "strength",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "strength_unit",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "medication_id",
+              "references_table": "medications",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "prescriptions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medication_variant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "frequency",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medication_variant_id",
+              "references_table": "medication_variants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "medication_variant_intolerances",
+          "columns": [
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "medication_variant_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "recorded_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medication_variant_id",
+              "references_table": "medication_variants",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'prescriptions' enthält redundante Fremdschlüssel. Die Spalten 'patient_id' und 'doctor_id' sind bereits über 'appointment_id' → appointments → (patient_id, doctor_id) erreichbar. Dies verletzt die Entitätsintegrität durch Redundanz und schafft Inkonsistenzrisiken (z.B. wenn prescription.patient_id ≠ appointment.patient_id).",
+          "korrekturanweisung": "Entfernen Sie 'patient_id' und 'doctor_id' aus 'prescriptions'. Diese Informationen können über einen JOIN mit 'appointments' abgerufen werden. Behalten Sie nur 'appointment_id' und 'medication_variant_id' als Fremdschlüssel."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung 'welche Patienten bestimmte Medikamente wegen Unverträglichkeiten nicht bekommen dürfen' ist nur teilweise abgebildet. Die Tabelle 'medication_intolerances' referenziert 'medications' (nicht 'medication_variants'). Wenn ein Patient eine Unverträglichkeit gegen ein Medikament hat, ist unklar, ob dies für ALLE Varianten (Formen/Stärken) gilt oder nur spezifische. Dies führt zu Mehrdeutigkeit bei der Verschreibung.",
+          "korrekturanweisung": "Klären Sie die Semantik: (1) Falls Unverträglichkeit für alle Varianten eines Medikaments gilt → aktuelles Design ist korrekt, aber dokumentieren Sie dies. (2) Falls varianten-spezifische Unverträglichkeiten möglich sind → erstellen Sie eine zusätzliche Tabelle 'medication_variant_intolerances' oder ändern Sie 'medication_intolerances' auf Variant-Ebene."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Tabelle 'patient_diagnoses' modelliert eine N:M-Beziehung zwischen Patienten und Diagnosen, aber die Anforderung besagt: 'Bei einem Termin können mehrere Diagnosen festgestellt werden, und dieselbe Diagnose kann natürlich bei vielen verschiedenen Patienten oder Besuchen vorkommen.' Dies bedeutet, dass Diagnosen an TERMINE gebunden sind, nicht direkt an Patienten. Die Tabelle 'patient_diagnoses' ist redundant und führt zu Dateninkonsistenz: Eine Diagnose könnte in 'patient_diagnoses' eingetragen sein, ohne dass ein entsprechender Termin existiert.",
+          "korrekturanweisung": "Entfernen Sie die Tabelle 'patient_diagnoses'. Diagnosen sollten ausschließlich über 'appointment_diagnoses' mit Terminen verknüpft werden. Patienten-Diagnose-Beziehungen können bei Bedarf durch Aggregation über Termine abgeleitet werden."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "NORMALISIERUNGSVERLETZUNG (3NF): Die Tabelle 'prescriptions' enthält transitive Abhängigkeiten. Die Spalte 'prescribed_date' ist funktional abhängig von 'appointment_id' (ein Termin hat einen Zeitpunkt), nicht vom Primärschlüssel 'id'. Ebenso sind 'patient_id' und 'doctor_id' transitiv über 'appointment_id' abhängig. Dies führt zu Anomalien: Wenn ein Termin verschoben wird, müssen alle zugehörigen Verschreibungen aktualisiert werden.",
+          "korrekturanweisung": "Normalisieren Sie 'prescriptions': (1) Entfernen Sie 'patient_id', 'doctor_id' und 'prescribed_date' (diese sind über 'appointment_id' ableitbar). (2) Behalten Sie nur: id (PK), appointment_id (FK), medication_variant_id (FK), quantity, frequency. Das Verschreibungsdatum ergibt sich aus dem Termin."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: Patienten, Ärzte, Termine, Diagnosen, Medikamente (mit Formen/Varianten), Verordnungen und Unverträglichkeiten. Keine fehlenden Entitäten identifiziert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'prescriptions' enthält redundante Fremdschlüssel. Die Spalten 'patient_id' und 'doctor_id' sind bereits über 'appointment_id' → appointments → (patient_id, doctor_id) ableitbar und verstoßen gegen Normalisierung. Zudem fehlt ein Attribut zur Dokumentation des Verordnungsdatums als separate Information vom Termin (prescribed_date existiert, aber die semantische Trennung ist unklar). Kritischer: Die Tabelle 'medication_variants' hat kein Attribut für die Einheit der Stärke (z.B. 'mg', 'ml') – nur 'strength' als VARCHAR ist unzureichend für korrekte Dosierungsangaben.",
+          "korrekturanweisung": "1) Entfernen Sie 'patient_id' und 'doctor_id' aus 'prescriptions' – diese sind über appointment_id ableitbar. 2) Fügen Sie in 'medication_variants' ein Attribut 'strength_unit' (VARCHAR) hinzu, um Einheiten zu dokumentieren (z.B. 'mg', 'ml', 'µg'). 3) Klären Sie semantisch, ob 'prescribed_date' in prescriptions notwendig ist oder ob das Verordnungsdatum immer mit dem Termin identisch ist."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen Patienten und Diagnosen ist semantisch falsch modelliert. Die Tabelle 'patient_diagnoses' suggeriert, dass eine Diagnose eine Eigenschaft des Patienten ist (z.B. chronische Erkrankung). Tatsächlich sollten Diagnosen aber nur im Kontext eines Termins dokumentiert werden – eine Diagnose ist ein Ergebnis eines Besuchs, nicht eine dauerhafte Patienteneigenschaft. Die Tabelle 'patient_diagnoses' ist daher redundant und semantisch inkorrekt. Korrekt ist nur 'appointment_diagnoses'. WARNUNG: Die Kardinalität in 'prescriptions' ist unklar – kann ein Termin mehrere Verordnungen desselben Medikaments haben? Das Schema erlaubt es, aber es ist nicht dokumentiert.",
+          "korrekturanweisung": "1) Entfernen Sie die Tabelle 'patient_diagnoses' vollständig – Diagnosen gehören ausschließlich zu Terminen, nicht zu Patienten als Dauerzustand. 2) Falls chronische Diagnosen dokumentiert werden sollen, müsste eine separate Entität 'chronic_diagnoses' mit Gültigkeitsdaten (start_date, end_date) eingeführt werden. 3) Dokumentieren Sie die Kardinalität: Ein Termin kann mehrere Verordnungen haben (1:N), aber kann ein Termin mehrere Verordnungen desselben Medikaments haben?"
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "WEICHE OPTIMIERUNG: Die Tabelle 'medication_intolerances' referenziert 'medications' statt 'medication_variants'. Semantisch ist unklar: Ist eine Unverträglichkeit gegen ein Medikament generell (alle Varianten) oder nur gegen bestimmte Varianten (z.B. nur Tabletten, nicht Injektionen)? Das Schema dokumentiert dies nicht. Dies kann zu Verordnungsfehlern führen, wenn z.B. ein Patient gegen Ibuprofen-Tabletten allergisch ist, aber Ibuprofen-Creme verträgt.",
+          "korrekturanweisung": "Klären Sie fachlich: Gilt die Unverträglichkeit für das gesamte Medikament oder nur für bestimmte Varianten? Falls letzteres: Ändern Sie 'medication_intolerances' so, dass es auf 'medication_variants' referenziert (mit entsprechender Umbenennung zu 'medication_variant_intolerances'). Falls ersteres: Dokumentieren Sie dies explizit und erwägen Sie ein Attribut 'applies_to_all_variants' (BOOLEAN)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'prescriptions' verletzt die 3. Normalform durch Redundanz. Die Spalten 'patient_id' und 'doctor_id' sind funktional abhängig von 'appointment_id' (da jeder Termin genau einen Patienten und einen Arzt hat) und sollten nicht in 'prescriptions' gespeichert sein. Dies führt zu Anomalien: Wenn ein Termin aktualisiert wird, müssen möglicherweise mehrere Verordnungen angepasst werden. WARNUNG: 'medication_forms' ist eine sehr einfache Entität (nur id und form_name) – erwägen Sie, ob dies wirklich eine separate Tabelle sein sollte oder ob 'form_name' direkt in 'medication_variants' gehört.",
+          "korrekturanweisung": "1) Entfernen Sie 'patient_id' und 'doctor_id' aus 'prescriptions'. Queries können diese über appointment_id → appointments nachschlagen. 2) Falls häufige Joins problematisch sind, ist dies ein Performance-Problem, keine Normalisierungsverletzung – lösen Sie es durch Indizes, nicht durch Denormalisierung. 3) Erwägen Sie, 'medication_forms' zu eliminieren und 'form_name' direkt in 'medication_variants' zu speichern, falls keine weiteren Attribute für Formen geplant sind."
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    address VARCHAR(255),\n    birthdate DATE NOT NULL,\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE doctors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255) NOT NULL,\n    startdate DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_doctors PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    doctor_id INTEGER NOT NULL,\n    scheduled_time TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_appointments_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctors (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_diagnoses (\n    appointment_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointment_diagnoses PRIMARY KEY (appointment_id, diagnosis_id),\n    CONSTRAINT fk_appointment_diagnoses_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE medications (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_medications PRIMARY KEY (id)\n);\n\nCREATE TABLE medication_variants (\n    id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    form_name VARCHAR(255) NOT NULL,\n    strength VARCHAR(255),\n    strength_unit VARCHAR(255),\n    CONSTRAINT pk_medication_variants PRIMARY KEY (id),\n    CONSTRAINT fk_medication_variants_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n\nCREATE TABLE medication_variant_intolerances (\n    patient_id INTEGER NOT NULL,\n    medication_variant_id INTEGER NOT NULL,\n    recorded_date TIMESTAMP NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_medication_variant_intolerances PRIMARY KEY (patient_id, medication_variant_id),\n    CONSTRAINT fk_medication_variant_intolerances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_medication_variant_intolerances_medication_variant_id FOREIGN KEY (medication_variant_id) REFERENCES medication_variants (id)\n);\n\nCREATE TABLE prescriptions (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER NOT NULL,\n    medication_variant_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_prescriptions PRIMARY KEY (id),\n    CONSTRAINT fk_prescriptions_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_prescriptions_medication_variant_id FOREIGN KEY (medication_variant_id) REFERENCES medication_variants (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 11 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 4 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 9 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 9 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 44414,
+    "total_output_tokens": 14517,
+    "total_tokens": 58931,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 17951,
+        "output_tokens": 6595,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 9318,
+        "output_tokens": 3084,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 9230,
+        "output_tokens": 2623,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 7915,
+        "output_tokens": 2215,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2452,
+        "output_tokens": 1677,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4254,
+        "output_tokens": 1667,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4210,
+        "output_tokens": 894,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7058,
+        "output_tokens": 2703,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5064,
+        "output_tokens": 1417,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5020,
+        "output_tokens": 1729,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8441,
+        "output_tokens": 2215,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7915,
+        "output_tokens": 2215,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

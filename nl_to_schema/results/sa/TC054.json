@@ -1,0 +1,386 @@
+{
+  "testfall_id": "TC054",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8697336561743343,
+  "score_gesamt": 0.9218401937046006,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 8,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.7857142857142857,
+      "recall": 0.7096774193548387,
+      "f1": 0.7457627118644068,
+      "matched": 22,
+      "nur_in_referenz": 9,
+      "nur_in_generiert": 6
+    },
+    "beziehung": {
+      "recall": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "acts.origin_country",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "acts.is_band",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "act_genres.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "stages.location_description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "festival_days.festival_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "festival_days.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tickets.validity_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tickets.festival_day_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "act_program_slots.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tickets → festival_days",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein mehrtägiges Musikfestival sollen die wichtigsten Informationen so festgehalten werden, dass das Organisationsteam den Ablauf und die auftretenden Künstler gut im Blick behalten kann. Es gibt mehrere Bühnen auf dem Gelände. Für jede Bühne soll bekannt sein, wie sie heißt, wo sie sich ungefähr befindet und wie viele Besucher dort maximal Platz haben.\n\nAn den einzelnen Festivaltagen finden Programmpunkte statt. Jeder Programmpunkt gehört zu genau einer Bühne und hat eine geplante Anfangs- und Endzeit. Außerdem soll notiert werden, ob es sich eher um einen regulären Auftritt, einen Soundcheck oder einen sonstigen Slot handelt.\n\nKünstler können allein auftreten oder als Band unterwegs sein. Von jedem Act sollen Name, Herkunftsland und eine kurze Beschreibung gepflegt werden. Ein Act kann bei einem Festival auch mehrfach eingeplant werden, etwa an verschiedenen Tagen oder auf unterschiedlichen Bühnen. Manche Programmpunkte werden von mehreren Acts gemeinsam gestaltet.\n\nZusätzlich sollen Genres wie Rock, Elektro oder Jazz gepflegt werden, damit man Acts besser einordnen kann. Ein Act kann mehreren Genres zugeordnet sein. Für Besucher ist außerdem wichtig, welche Tickets angeboten werden. Dabei soll erfasst werden, wie das Ticket heißt, für welchen Zeitraum es gedacht ist und was es kostet. Manche Tickets gelten nur an bestimmten Tagen, andere für das ganze Festival.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "stages",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "max_capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "festival_days",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "day_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "day_number",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "acts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "genres",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "act_genres",
+          "columns": [
+            {
+              "name": "act_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "genre_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "act_id",
+              "references_table": "acts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "genre_id",
+              "references_table": "genres",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "program_slots",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "stage_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "festival_day_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_time",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_time",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "slot_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "stage_id",
+              "references_table": "stages",
+              "references_column": "id"
+            },
+            {
+              "from_column": "festival_day_id",
+              "references_table": "festival_days",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "program_slot_acts",
+          "columns": [
+            {
+              "name": "program_slot_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "act_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "program_slot_id",
+              "references_table": "program_slots",
+              "references_column": "id"
+            },
+            {
+              "from_column": "act_id",
+              "references_table": "acts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "tickets",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_to",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE acts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    country VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_acts PRIMARY KEY (id)\n);\n\nCREATE TABLE genres (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_genres PRIMARY KEY (id)\n);\n\nCREATE TABLE act_genres (\n    act_id INTEGER NOT NULL,\n    genre_id INTEGER NOT NULL,\n    CONSTRAINT pk_act_genres PRIMARY KEY (act_id, genre_id),\n    CONSTRAINT fk_act_genres_act_id FOREIGN KEY (act_id) REFERENCES acts (id),\n    CONSTRAINT fk_act_genres_genre_id FOREIGN KEY (genre_id) REFERENCES genres (id)\n);\n\nCREATE TABLE festival_days (\n    id INTEGER NOT NULL,\n    day_date DATE NOT NULL,\n    day_number INTEGER,\n    CONSTRAINT pk_festival_days PRIMARY KEY (id)\n);\n\nCREATE TABLE stages (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    max_capacity INTEGER,\n    CONSTRAINT pk_stages PRIMARY KEY (id)\n);\n\nCREATE TABLE program_slots (\n    id INTEGER NOT NULL,\n    stage_id INTEGER NOT NULL,\n    festival_day_id INTEGER NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    slot_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_program_slots PRIMARY KEY (id),\n    CONSTRAINT fk_program_slots_stage_id FOREIGN KEY (stage_id) REFERENCES stages (id),\n    CONSTRAINT fk_program_slots_festival_day_id FOREIGN KEY (festival_day_id) REFERENCES festival_days (id)\n);\n\nCREATE TABLE program_slot_acts (\n    program_slot_id INTEGER NOT NULL,\n    act_id INTEGER NOT NULL,\n    CONSTRAINT pk_program_slot_acts PRIMARY KEY (program_slot_id, act_id),\n    CONSTRAINT fk_program_slot_acts_program_slot_id FOREIGN KEY (program_slot_id) REFERENCES program_slots (id),\n    CONSTRAINT fk_program_slot_acts_act_id FOREIGN KEY (act_id) REFERENCES acts (id)\n);\n\nCREATE TABLE tickets (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_to DATE NOT NULL,\n    CONSTRAINT pk_tickets PRIMARY KEY (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2489,
+    "total_output_tokens": 1447,
+    "total_tokens": 3936,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2489,
+        "output_tokens": 1447,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2489,
+        "output_tokens": 1447,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

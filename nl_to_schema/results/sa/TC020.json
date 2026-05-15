@@ -1,0 +1,253 @@
+{
+  "testfall_id": "TC020",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6166666666666666,
+  "score_gesamt": 0.77,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.625,
+      "recall": 0.625,
+      "f1": 0.625,
+      "matched": 10,
+      "nur_in_referenz": 6,
+      "nur_in_generiert": 6
+    },
+    "beziehung": {
+      "recall": 0.5,
+      "matched": 1,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "photo_orders",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.appointment_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.shooting_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.completion_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders → appointments",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Fotoatelier moechte seine Kunden, Termine und gebuchten Fotoauftraege verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und E-Mail-Adresse festgehalten werden. Ein Kunde kann mehrere Termine vereinbaren, aber jeder Termin gehoert immer genau zu einem Kunden. Zu jedem Termin sollen Datum, Uhrzeit und ein Status wie geplant, abgeschlossen oder abgesagt gespeichert werden. Aus einem Termin kann genau ein Fotoauftrag entstehen, manchmal aber auch keiner, zum Beispiel wenn der Termin abgesagt wurde. Fuer jeden Fotoauftrag sollen die Art des Shootings, eine kurze Beschreibung, der vereinbarte Preis und das Datum der Fertigstellung erfasst werden. Jeder Fotoauftrag gehoert genau zu dem Termin, aus dem er entstanden ist.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "photo_jobs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "shooting_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "agreed_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "completion_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE photo_jobs (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER NOT NULL,\n    shooting_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    agreed_price DECIMAL(18,2) NOT NULL,\n    completion_date DATE,\n    CONSTRAINT pk_photo_jobs PRIMARY KEY (id),\n    CONSTRAINT fk_photo_jobs_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2306,
+    "total_output_tokens": 702,
+    "total_tokens": 3008,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2306,
+        "output_tokens": 702,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2306,
+        "output_tokens": 702,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

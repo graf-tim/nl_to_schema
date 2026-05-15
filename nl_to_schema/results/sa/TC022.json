@@ -1,0 +1,257 @@
+{
+  "testfall_id": "TC022",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.48,
+  "score_gesamt": 0.688,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.5333333333333333,
+      "recall": 0.5333333333333333,
+      "f1": 0.5333333333333333,
+      "matched": 8,
+      "nur_in_referenz": 7,
+      "nur_in_generiert": 7
+    },
+    "beziehung": {
+      "recall": 0.0,
+      "matched": 0,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "toys",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sales.toy_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.manufacturer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.is_available",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sales → toys",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys → manufacturers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Spielzeuggeschäft möchte seine Artikel, die Hersteller und die Verkäufe festhalten. Zu jedem Hersteller sollen der Name, die E-Mail-Adresse und die Telefonnummer gespeichert werden. Jeder Artikel stammt genau von einem Hersteller. Für jeden Artikel werden die Bezeichnung, eine kurze Beschreibung, der Verkaufspreis und ob der Artikel aktuell erhältlich ist benötigt. Außerdem soll festgehalten werden, wann ein Verkauf stattgefunden hat. Ein Verkauf bezieht sich immer auf genau einen Artikel. Zu jedem Verkauf sollen die verkaufte Menge und der zum Verkaufszeitpunkt berechnete Gesamtbetrag gespeichert werden. Es soll möglich sein, alle Artikel eines Herstellers sowie alle Verkäufe zu einem bestimmten Artikel auszuwerten.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "sale_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sales",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "sale_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE articles (\n    id INTEGER NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    sale_price DECIMAL(18,2) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id),\n    CONSTRAINT fk_articles_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE sales (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    sale_date TIMESTAMP NOT NULL,\n    quantity INTEGER NOT NULL,\n    total_amount DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_sales PRIMARY KEY (id),\n    CONSTRAINT fk_sales_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2296,
+    "total_output_tokens": 673,
+    "total_tokens": 2969,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2296,
+        "output_tokens": 673,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2296,
+        "output_tokens": 673,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

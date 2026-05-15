@@ -1,0 +1,760 @@
+{
+  "testfall_id": "TC043",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9333333333333333,
+  "score_gesamt": 0.96,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 7,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.8620689655172413,
+      "recall": 0.8064516129032258,
+      "f1": 0.8333333333333334,
+      "matched": 25,
+      "nur_in_referenz": 6,
+      "nur_in_generiert": 4
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 6,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "manufacturers.headquarters",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "active_ingredients_medications.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "medications.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "medications.is_prescription_only",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Apotheke soll festgehalten werden, welche Arzneimittel im Sortiment sind und von welchen Herstellern sie kommen. Zu jedem Mittel braucht man den Namen, die Darreichungsform wie Tabletten oder Salbe, die Packungsgröße, den Verkaufspreis und ob es rezeptpflichtig ist. Manche Mittel haben mehrere Wirkstoffe, und derselbe Wirkstoff kann in verschiedenen Mitteln vorkommen. Bei Wirkstoffen soll auch die Stärke mit erfasst werden, weil dieselben Stoffe je nach Mittel unterschiedlich dosiert sein können.\n\nAußerdem möchte die Apotheke dokumentieren, welche Kundinnen und Kunden Medikamente erhalten haben. Dabei soll nachvollziehbar bleiben, wann etwas ausgegeben wurde und in welcher Menge. Falls ein Rezept vorlag, soll auch die ausstellende Arztpraxis bekannt sein. Nicht jede Abgabe läuft aber über ein Rezept.\n\nVon Kundinnen und Kunden werden Name, Geburtsdatum und Kontaktmöglichkeit benötigt. Bei Arztpraxen reichen Name, Fachrichtung und Anschrift. Bei Herstellern sollen Name und Sitz hinterlegt werden. Es kommt vor, dass ein Mittel von genau einem Hersteller stammt, ein Hersteller aber viele Mittel liefert. Für Auswertungen soll später erkennbar sein, welche Wirkstoffe häufig in abgegebenen Mitteln enthalten waren.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "active_ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medicines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dosage_form",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "package_size",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "selling_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "requires_prescription",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "medicine_active_ingredients",
+          "columns": [
+            {
+              "name": "medicine_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "active_ingredient_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "strength",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "medicine_id",
+              "references_table": "medicines",
+              "references_column": "id"
+            },
+            {
+              "from_column": "active_ingredient_id",
+              "references_table": "active_ingredients",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medical_practices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "specialty",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dispensings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dispensing_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medicine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medical_practice_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "medicine_id",
+              "references_table": "medicines",
+              "references_column": "id"
+            },
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medical_practice_id",
+              "references_table": "medical_practices",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Arzneimittel",
+          "attribute": [
+            "Name",
+            "Darreichungsform",
+            "Packungsgröße",
+            "Verkaufspreis",
+            "Rezeptpflicht"
+          ],
+          "beschreibung": "Medikamente im Sortiment der Apotheke mit ihren Eigenschaften"
+        },
+        {
+          "name": "Hersteller",
+          "attribute": [
+            "Name",
+            "Sitz"
+          ],
+          "beschreibung": "Unternehmen, die Arzneimittel produzieren und an die Apotheke liefern"
+        },
+        {
+          "name": "Wirkstoff",
+          "attribute": [
+            "Name",
+            "Stärke"
+          ],
+          "beschreibung": "Aktive Substanzen in Arzneimitteln, können in verschiedenen Dosierungen vorkommen"
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Name",
+            "Geburtsdatum",
+            "Kontaktmöglichkeit"
+          ],
+          "beschreibung": "Kundinnen und Kunden, die Medikamente in der Apotheke erhalten"
+        },
+        {
+          "name": "Arztpraxis",
+          "attribute": [
+            "Name",
+            "Fachrichtung",
+            "Anschrift"
+          ],
+          "beschreibung": "Medizinische Einrichtungen, die Rezepte für Arzneimittel ausstellen"
+        },
+        {
+          "name": "Abgabe",
+          "attribute": [
+            "Datum",
+            "Menge"
+          ],
+          "beschreibung": "Dokumentation der Ausgabe von Arzneimitteln an Kunden mit Zeitstempel und Menge"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Arzneimittel",
+          "zu": "Hersteller",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Arzneimittel stammt von genau einem Hersteller, ein Hersteller liefert viele Mittel"
+        },
+        {
+          "von": "Arzneimittel",
+          "zu": "Wirkstoff",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Arzneimittel kann mehrere Wirkstoffe enthalten, ein Wirkstoff kann in verschiedenen Mitteln vorkommen"
+        },
+        {
+          "von": "Abgabe",
+          "zu": "Arzneimittel",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Abgabe bezieht sich auf ein bestimmtes Arzneimittel"
+        },
+        {
+          "von": "Abgabe",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Abgabe erfolgt an einen Kunden, ein Kunde kann mehrere Abgaben erhalten"
+        },
+        {
+          "von": "Abgabe",
+          "zu": "Arztpraxis",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Abgabe kann optional auf ein Rezept einer Arztpraxis zurückgehen, nicht jede Abgabe hat ein Rezept"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Die Beziehung zwischen Wirkstoff und Arzneimittel ist als M:N modelliert, aber unklar ist, ob die Stärke des Wirkstoffs ein Attribut des Wirkstoffs selbst ist oder ob sie spezifisch für die Kombination von Wirkstoff und Arzneimittel gilt. Der Text sagt 'dieselben Stoffe je nach Mittel unterschiedlich dosiert sein können', was darauf hindeutet, dass die Stärke kontextabhängig ist.",
+          "betroffene_elemente": [
+            "Wirkstoff",
+            "Arzneimittel"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Arztpraxis-Information bei einer Abgabe optional oder obligatorisch ist. Der Text sagt 'Falls ein Rezept vorlag, soll auch die ausstellende Arztpraxis bekannt sein' und 'Nicht jede Abgabe läuft aber über ein Rezept', was impliziert, dass die Arztpraxis-Referenz optional ist.",
+          "betroffene_elemente": [
+            "Abgabe",
+            "Arztpraxis"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob ein Rezept als separate Entität modelliert werden sollte oder ob die Rezeptinformation nur als Fremdschlüssel in der Abgabe-Tabelle gespeichert wird.",
+          "betroffene_elemente": [
+            "Abgabe",
+            "Arztpraxis"
+          ]
+        },
+        {
+          "beschreibung": "Die genaue Struktur der M:N-Beziehung zwischen Arzneimittel und Wirkstoff ist unklar: Sollte es eine Verbindungstabelle geben, die auch die dosierungsspezifische Stärke speichert, oder ist Stärke ein globales Attribut des Wirkstoffs?",
+          "betroffene_elemente": [
+            "Arzneimittel",
+            "Wirkstoff"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Hersteller",
+          "attribute": [
+            {
+              "name": "herstellerId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "sitz",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Arzneimittel",
+          "attribute": [
+            {
+              "name": "arzneimittelId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "darreichungsform",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "packunggrossse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "verkaufspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "rezeptpflicht",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "herstellerId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Wirkstoff",
+          "attribute": [
+            {
+              "name": "wirkstoffId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Arzneimittel_Wirkstoff",
+          "attribute": [
+            {
+              "name": "arzneimittelId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "wirkstoffId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "staerke",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kundeId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktmoeglichkeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Arztpraxis",
+          "attribute": [
+            {
+              "name": "arztpraxisId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fachrichtung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "anschrift",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Abgabe",
+          "attribute": [
+            {
+              "name": "abgabeId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "datum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "menge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "arzneimittelId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundeId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "arztpraxisId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Arzneimittel",
+          "zu": "Hersteller",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Arzneimittel",
+          "zu": "Wirkstoff",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "staerke"
+          ]
+        },
+        {
+          "von": "Abgabe",
+          "zu": "Arzneimittel",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Abgabe",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Abgabe",
+          "zu": "Arztpraxis",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE active_ingredients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_active_ingredients PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    contact VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE medicines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    dosage_form VARCHAR(255) NOT NULL,\n    package_size VARCHAR(255) NOT NULL,\n    selling_price DECIMAL(18,2) NOT NULL,\n    requires_prescription BOOLEAN NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_medicines PRIMARY KEY (id),\n    CONSTRAINT fk_medicines_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE medical_practices (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    specialty VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medical_practices PRIMARY KEY (id)\n);\n\nCREATE TABLE dispensings (\n    id INTEGER NOT NULL,\n    dispensing_date TIMESTAMP NOT NULL,\n    quantity INTEGER NOT NULL,\n    medicine_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    medical_practice_id INTEGER,\n    CONSTRAINT pk_dispensings PRIMARY KEY (id),\n    CONSTRAINT fk_dispensings_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_dispensings_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_dispensings_medical_practice_id FOREIGN KEY (medical_practice_id) REFERENCES medical_practices (id)\n);\n\nCREATE TABLE medicine_active_ingredients (\n    medicine_id INTEGER NOT NULL,\n    active_ingredient_id INTEGER NOT NULL,\n    strength VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medicine_active_ingredients PRIMARY KEY (medicine_id, active_ingredient_id),\n    CONSTRAINT fk_medicine_active_ingredients_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_medicine_active_ingredients_active_ingredient_id FOREIGN KEY (active_ingredient_id) REFERENCES active_ingredients (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9184,
+    "total_output_tokens": 4969,
+    "total_tokens": 14153,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1655,
+        "output_tokens": 1447,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3167,
+        "output_tokens": 1911,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4362,
+        "output_tokens": 1611,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1655,
+        "output_tokens": 1447,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3167,
+        "output_tokens": 1911,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4362,
+        "output_tokens": 1611,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

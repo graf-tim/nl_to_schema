@@ -1,0 +1,700 @@
+{
+  "testfall_id": "TC044",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6323809523809524,
+  "score_gesamt": 0.7794285714285714,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.625,
+      "recall": 0.8333333333333334,
+      "f1": 0.7142857142857143,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.47619047619047616,
+      "recall": 0.6060606060606061,
+      "f1": 0.5333333333333333,
+      "matched": 20,
+      "nur_in_referenz": 13,
+      "nur_in_generiert": 22
+    },
+    "beziehung": {
+      "recall": 0.6666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisors.hiredate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.processed_amount",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisor_customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisor_customers.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.managed_since",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisor_customers → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine Versicherungsagentur möchte ihre täglichen Vorgänge besser im Blick behalten. Erfasst werden sollen Kundinnen und Kunden mit ihren Kontaktdaten und dem Datum, seit wann sie von der Agentur betreut werden. Für jede Person können mehrere Verträge laufen, zum Beispiel für Auto, Hausrat oder Haftpflicht. Zu jedem Vertrag sollen Beginn, geplantes Ende, aktueller Status und der regelmäßige Beitrag festgehalten werden. Die verschiedenen Versicherungsarten haben eigene Bezeichnungen und allgemeine Beschreibungen.\n\nAußerdem arbeiten in der Agentur mehrere Beraterinnen und Berater. Von ihnen sollen Name, E-Mail, Telefonnummer, Eintrittsdatum und ob sie aktuell aktiv sind gespeichert werden. Ein Kunde kann von mehreren Beratern betreut werden, etwa wenn jemand im Urlaub ist oder Spezialwissen gebraucht wird. Ebenso betreut ein Berater in der Regel viele Kunden.\n\nZu Verträgen gibt es Schadensmeldungen. Dabei sind Meldedatum, kurze Schilderung, bearbeiteter Betrag und der aktuelle Stand wichtig. Eine Meldung wird von einem Berater aufgenommen, der sich zunächst darum kümmert. Falls später jemand anderes die weitere Bearbeitung übernimmt, reicht es, wenn trotzdem nur diese erste Zuständigkeit festgehalten wird. Bei einem Vertrag kann es im Lauf der Zeit auch mehrere Meldungen geben.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "customer_since",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "advisors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "insurance_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "contract_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "claim_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "contracts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "insurance_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "contract_status_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "premium",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "insurance_type_id",
+              "references_table": "insurance_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "contract_status_id",
+              "references_table": "contract_statuses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "advisor_persons",
+          "columns": [
+            {
+              "name": "advisor_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "advisor_id",
+              "references_table": "advisors",
+              "references_column": "id"
+            },
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "claims",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contract_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "advisor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "claim_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "claim_status_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "advisor_id",
+              "references_table": "advisors",
+              "references_column": "id"
+            },
+            {
+              "from_column": "claim_status_id",
+              "references_table": "claim_statuses",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung besagt, dass 'ein Kunde von mehreren Beratern betreut werden' kann und 'ein Berater in der Regel viele Kunden' betreut. Dies ist eine N:M-Beziehung. Die Junction-Table advisor_persons modelliert dies korrekt. JEDOCH: In der contracts-Tabelle ist advisor_id als NOT NULL definiert und als Foreign Key auf advisors. Dies erzwingt, dass JEDER Vertrag genau einem Berater zugeordnet ist. Das widerspricht der Anforderung, dass die Kundenbetreuung flexibel zwischen mehreren Beratern aufgeteilt sein kann. Ein Vertrag sollte nicht an einen einzelnen Berater gebunden sein, sondern die Betreuung sollte über die advisor_persons-Beziehung erfolgen.",
+          "korrekturanweisung": "Entfernen Sie advisor_id aus der contracts-Tabelle. Die Betreuungsbeziehung zwischen Kunden und Beratern wird ausschließlich über advisor_persons modelliert. Wenn ein Vertrag einem Berater zugeordnet werden muss, kann dies über die person_id und die advisor_persons-Tabelle abgeleitet werden."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die claims-Tabelle hat advisor_id als NOT NULL Foreign Key. Laut Anforderung wird eine Meldung 'von einem Berater aufgenommen, der sich zunächst darum kümmert'. Dies ist die INITIALE Zuständigkeit. Die Anforderung sagt aber auch: 'Falls später jemand anderes die weitere Bearbeitung übernimmt, reicht es, wenn trotzdem nur diese erste Zuständigkeit festgehalten wird.' Das ist korrekt modelliert. JEDOCH: Es gibt keine Spalte für den Bearbeitungsstatus oder Zeitstempel der Bearbeitung. Außerdem fehlt ein Attribut für das 'geplante Ende' (end_date) bei Verträgen, das in der Anforderung als 'geplantes Ende' erwähnt wird. Die contracts-Tabelle hat zwar end_date, aber dies ist nullable und könnte als 'tatsächliches Ende' missverstanden werden. Semantisch sollte dies 'planned_end_date' sein.",
+          "korrekturanweisung": "Benennen Sie end_date in contracts in planned_end_date um für semantische Klarheit. Prüfen Sie, ob für claims ein Bearbeitungs-Zeitstempel (z.B. processed_date) oder weitere Status-Attribute erforderlich sind."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Modellierung der Kundenbetreuung ist inkonsistent. Die advisor_persons-Tabelle modelliert eine N:M-Beziehung zwischen Beratern und Kunden (persons). Gleichzeitig hat die contracts-Tabelle einen advisor_id, der einen Vertrag an einen einzelnen Berater bindet. Dies führt zu Redundanz und Anomalien: (1) Ein Kunde kann mehrere Berater haben (via advisor_persons), aber jeder Vertrag ist an genau einen Berater gebunden. (2) Es ist unklar, ob advisor_persons die aktuelle Betreuung oder nur eine historische Zuordnung darstellt. (3) Die Anforderung sagt, dass 'ein Kunde von mehreren Beratern betreut werden' kann – dies sollte auf Kundenebene gelten, nicht auf Vertragsebene. Die advisor_persons-Tabelle wird dadurch redundant, wenn contracts bereits die Betreuung abbildet.",
+          "korrekturanweisung": "Entfernen Sie advisor_id aus contracts. Modellieren Sie die Betreuung ausschließlich über advisor_persons (Kunde ↔ Berater). Für claims: Behalten Sie advisor_id, da eine Meldung von einem spezifischen Berater aufgenommen wird. Alternativ: Wenn Verträge doch an Berater gebunden sein sollen, entfernen Sie advisor_persons und modellieren Sie die N:M-Beziehung über eine separate Tabelle advisor_contracts."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Verstoß gegen 3NF durch Redundanz und transitive Abhängigkeiten. (1) Die contracts-Tabelle hat sowohl person_id als auch advisor_id. Wenn advisor_persons die Betreuungsbeziehung modelliert, ist advisor_id in contracts redundant und führt zu Update-Anomalien. (2) Die Lookup-Tabellen (insurance_types, contract_statuses, claim_statuses) sind korrekt normalisiert. (3) JEDOCH: In der persons-Tabelle sind Adresskomponenten (street, postal_code, city, country) als separate Spalten gespeichert. Dies ist nicht falsch, aber es könnte eine separate address-Tabelle geben, wenn Adressen mehrfach vorkommen oder sich ändern. Für diese Anforderung ist es akzeptabel. (4) HAUPTPROBLEM: Die Redundanz zwischen advisor_persons und contracts.advisor_id führt zu Inkonsistenzen: Wenn ein Berater aus advisor_persons entfernt wird, können Verträge noch auf ihn verweisen. Dies ist ein Integritätsproblem.",
+          "korrekturanweisung": "Entfernen Sie advisor_id aus contracts und modellieren Sie die Betreuung ausschließlich über advisor_persons. Falls Verträge dennoch an Berater gebunden sein müssen, erstellen Sie eine separate Tabelle advisor_contracts mit Composite-PK (advisor_id, contract_id) und Zeitstempel für die Zuständigkeitsdauer."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: Kunden (persons), Berater (advisors), Versicherungsarten (insurance_types), Verträge (contracts), Schadensmeldungen (claims). Zusätzlich wurden sinnvoll Lookup-Tabellen für Statuses (contract_statuses, claim_statuses) eingeführt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der Tabelle 'contracts' fehlt ein Attribut für das geplante Enddatum. Der Anforderungstext fordert explizit: 'Beginn, geplantes Ende, aktueller Status und der regelmäßige Beitrag'. Das Feld 'end_date' ist zwar vorhanden, aber semantisch mehrdeutig: Es könnte sowohl das geplante Ende als auch das tatsächliche Kündigungsdatum bedeuten. Für eine korrekte Geschäftslogik sollten zwei separate Felder existieren: 'planned_end_date' (geplantes Ende) und optional 'actual_end_date' (tatsächliches Ende). Aktuell ist unklar, ob 'end_date' das geplante oder tatsächliche Ende abbildet.",
+          "korrekturanweisung": "Spalte 'end_date' umbenennen in 'planned_end_date' oder zusätzlich 'actual_end_date' hinzufügen, um Geschäftslogik korrekt abzubilden."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen Kunden und Beratern ist korrekt als M:N modelliert (Tabelle 'advisor_persons'). ABER: Die Tabelle 'contracts' enthält ein Feld 'advisor_id', das einen einzelnen Berater pro Vertrag festlegt. Der Anforderungstext sagt jedoch: 'Ein Kunde kann von mehreren Beratern betreut werden, etwa wenn jemand im Urlaub ist oder Spezialwissen gebraucht wird.' Dies impliziert, dass auch ein Vertrag von mehreren Beratern betreut werden kann (z.B. Übergabe bei Urlaub). Die aktuelle Modellierung erlaubt nur einen Berater pro Vertrag. Entweder ist die Anforderung missinterpretiert worden, oder es fehlt eine M:N-Beziehung zwischen 'contracts' und 'advisors'.",
+          "korrekturanweisung": "Klärung erforderlich: Falls Verträge von mehreren Beratern betreut werden können, muss eine Junction-Tabelle 'advisor_contracts' (oder 'contract_advisors') mit Primärschlüssel (advisor_id, contract_id) erstellt werden. Das Feld 'advisor_id' in 'contracts' sollte dann entfernt werden. Falls nur ein Berater pro Vertrag zulässig ist, sollte die Anforderung präzisiert werden."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "WEICHER FEHLER (Optimierung): Die Tabelle 'contracts' hat ein Feld 'advisor_id', das einen Berater pro Vertrag festlegt. Gleichzeitig existiert die M:N-Tabelle 'advisor_persons', die die Beziehung zwischen Beratern und Kunden modelliert. Dies führt zu redundanter Information: Ein Berater ist bereits über 'advisor_persons' mit einem Kunden verbunden; das Feld 'advisor_id' in 'contracts' wiederholt diese Information auf Vertragsebene. Dies ist nicht zwingend falsch (ein Vertrag könnte einen spezialisierten Berater haben), aber es sollte dokumentiert sein, ob 'advisor_id' in 'contracts' immer ein Berater sein muss, der auch in 'advisor_persons' für diese Person eingetragen ist.",
+          "korrekturanweisung": "Optional: Dokumentation oder Constraint hinzufügen, dass advisor_id in contracts ein Berater sein muss, der auch in advisor_persons für die entsprechende person_id eingetragen ist."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, Fremdschlüssel referenzieren korrekt, und es gibt keine transitive Abhängigkeiten. Lookup-Tabellen (contract_statuses, claim_statuses, insurance_types) sind korrekt ausgelagert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE advisors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_advisors PRIMARY KEY (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    country VARCHAR(255),\n    customer_since DATE NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE advisor_persons (\n    advisor_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    CONSTRAINT pk_advisor_persons PRIMARY KEY (advisor_id, person_id),\n    CONSTRAINT fk_advisor_persons_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id),\n    CONSTRAINT fk_advisor_persons_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE claim_statuses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_claim_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE insurance_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_insurance_types PRIMARY KEY (id)\n);\n\nCREATE TABLE contract_statuses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_contract_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    insurance_type_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    planned_end_date DATE,\n    contract_status_id INTEGER NOT NULL,\n    premium DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_contracts_insurance_type_id FOREIGN KEY (insurance_type_id) REFERENCES insurance_types (id),\n    CONSTRAINT fk_contracts_contract_status_id FOREIGN KEY (contract_status_id) REFERENCES contract_statuses (id)\n);\n\nCREATE TABLE claims (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    advisor_id INTEGER NOT NULL,\n    claim_date DATE NOT NULL,\n    description TEXT,\n    amount DECIMAL(18,2) NOT NULL,\n    claim_status_id INTEGER NOT NULL,\n    CONSTRAINT pk_claims PRIMARY KEY (id),\n    CONSTRAINT fk_claims_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_claims_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id),\n    CONSTRAINT fk_claims_claim_status_id FOREIGN KEY (claim_status_id) REFERENCES claim_statuses (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 6 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 4 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 3 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 8 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 43351,
+    "total_output_tokens": 14403,
+    "total_tokens": 57754,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 17906,
+        "output_tokens": 5969,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8756,
+        "output_tokens": 3416,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8668,
+        "output_tokens": 2800,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 8021,
+        "output_tokens": 2218,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2481,
+        "output_tokens": 1457,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4072,
+        "output_tokens": 1557,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4028,
+        "output_tokens": 1428,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7290,
+        "output_tokens": 2294,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4684,
+        "output_tokens": 1859,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4640,
+        "output_tokens": 1372,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8135,
+        "output_tokens": 2218,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8021,
+        "output_tokens": 2218,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

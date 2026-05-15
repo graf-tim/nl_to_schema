@@ -1,0 +1,980 @@
+{
+  "testfall_id": "TC057",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.4430913348946136,
+  "score_gesamt": 0.6658548009367682,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.41379310344827586,
+      "recall": 0.375,
+      "f1": 0.3934426229508197,
+      "matched": 12,
+      "nur_in_referenz": 20,
+      "nur_in_generiert": 17
+    },
+    "beziehung": {
+      "recall": 0.2857142857142857,
+      "matched": 2,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "members",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "author_books.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "authors.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "authors.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.birthdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.registrationdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries.book_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries.library_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries.is_available",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.member_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.library_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.book_library_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.checkoutdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.duedate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.returndate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries → books",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries → libraries",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings → book_libraries",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings → libraries",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings → members",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Verbund aus mehreren Bibliotheken möchte seine Medien und die Ausleihen gemeinsam verwalten. Jede Bibliothek hat einen Namen, einen Standort und eine allgemeine Kontaktadresse. Leserinnen und Leser sollen sich einmal registrieren und dann in verschiedenen Häusern Medien ausleihen können. Von ihnen werden Name, E-Mail-Adresse, Geburtsdatum und das Datum der Anmeldung benötigt.\n\nIm Bestand gibt es vor allem Bücher. Zu jedem Buch sollen Titel, Erscheinungsjahr, Sprache und eine internationale Kennnummer festgehalten werden. Ein Buch kann von mehreren Personen geschrieben worden sein, und eine Autorin oder ein Autor kann natürlich auch viele Bücher veröffentlicht haben. Nicht jedes Werk liegt in jeder Bibliothek vor, deshalb muss nachvollziehbar sein, welche Bibliothek welche Exemplare bzw. Titel im Bestand hat. Außerdem soll sichtbar sein, ob ein Medium aktuell ausleihbar ist.\n\nWenn jemand etwas mitnimmt, muss festgehalten werden, wer es ausgeliehen hat, in welcher Bibliothek die Ausleihe erfolgt ist, wann die Ausleihe begann und bis wann die Rückgabe vorgesehen ist. Falls etwas später zurückkommt, soll auch das tatsächliche Rückgabedatum gespeichert werden. Mitarbeitende möchten später außerdem auswerten können, welche Autorinnen und Autoren in welchen Bibliotheken besonders stark vertreten sind.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "libraries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "readers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "registration_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "books",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publication_year",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "language",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "isbn",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "authors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "author_books",
+          "columns": [
+            {
+              "name": "author_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "book_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "author_id",
+              "references_table": "authors",
+              "references_column": "id"
+            },
+            {
+              "from_column": "book_id",
+              "references_table": "books",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "inventory",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "book_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "library_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "book_id",
+              "references_table": "books",
+              "references_column": "id"
+            },
+            {
+              "from_column": "library_id",
+              "references_table": "libraries",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "checkouts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "reader_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "inventory_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "library_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkout_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "due_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "return_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "reader_id",
+              "references_table": "readers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "inventory_id",
+              "references_table": "inventory",
+              "references_column": "id"
+            },
+            {
+              "from_column": "library_id",
+              "references_table": "libraries",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Bibliothek",
+          "attribute": [
+            "Name",
+            "Standort",
+            "Kontaktadresse"
+          ],
+          "beschreibung": "Eine Bibliothek im Verbund mit Standortinformationen und Kontaktdaten."
+        },
+        {
+          "name": "Leser",
+          "attribute": [
+            "Name",
+            "E-Mail-Adresse",
+            "Geburtsdatum",
+            "Anmeldungsdatum"
+          ],
+          "beschreibung": "Eine Leserin oder ein Leser, die/der sich einmal registriert und in verschiedenen Bibliotheken Medien ausleihen kann."
+        },
+        {
+          "name": "Buch",
+          "attribute": [
+            "Titel",
+            "Erscheinungsjahr",
+            "Sprache",
+            "Internationale Kennnummer"
+          ],
+          "beschreibung": "Ein Buch als Werk mit bibliografischen Metadaten."
+        },
+        {
+          "name": "Autor",
+          "attribute": [
+            "Name"
+          ],
+          "beschreibung": "Eine Autorin oder ein Autor, die/der ein oder mehrere Bücher verfasst hat."
+        },
+        {
+          "name": "Bestand",
+          "attribute": [
+            "Ausleihbar"
+          ],
+          "beschreibung": "Ein Exemplar eines Buches in einer bestimmten Bibliothek mit Verfügbarkeitsstatus."
+        },
+        {
+          "name": "Ausleihe",
+          "attribute": [
+            "Ausleih-Datum",
+            "Rückgabe-Fälligkeitsdatum",
+            "Tatsächliches-Rückgabedatum"
+          ],
+          "beschreibung": "Ein Ausleihvorgang, bei dem ein Leser ein Medium aus einer Bibliothek mitnimmt."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Buch",
+          "zu": "Autor",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Buch kann von mehreren Autoren geschrieben worden sein, und ein Autor kann mehrere Bücher veröffentlicht haben."
+        },
+        {
+          "von": "Bestand",
+          "zu": "Buch",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Bestandseintrag bezieht sich auf genau ein Buch; ein Buch kann mehrfach im Bestand verschiedener Bibliotheken vorhanden sein."
+        },
+        {
+          "von": "Bestand",
+          "zu": "Bibliothek",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Bestandseintrag gehört zu genau einer Bibliothek; eine Bibliothek kann mehrere Exemplare verschiedener Bücher haben."
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Leser",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Ausleihe wird von genau einem Leser durchgeführt; ein Leser kann mehrere Ausleihen tätigen."
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Bestand",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Ausleihe bezieht sich auf genau einen Bestandseintrag; ein Bestandseintrag kann mehrfach ausgeliehen werden."
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Bibliothek",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Ausleihe erfolgt in genau einer Bibliothek; eine Bibliothek kann mehrere Ausleihen durchführen."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Unklar ist, ob das Attribut 'Ausleihbar' im Bestand ein boolescher Status ist oder ob es sich um ein berechnetes Feld handelt, das sich aus den Ausleihen ergibt (z.B. ob aktuell ein Exemplar verfügbar ist).",
+          "betroffene_elemente": [
+            "Bestand"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die 'Internationale Kennnummer' eines Buches eindeutig ist (z.B. ISBN) und ob sie als Primärschlüssel fungiert oder ob ein separater Schlüssel benötigt wird.",
+          "betroffene_elemente": [
+            "Buch"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob ein Leser mehrere Exemplare desselben Buches gleichzeitig ausleihen kann und wie dies in der Ausleihe-Entität abgebildet wird.",
+          "betroffene_elemente": [
+            "Ausleihe",
+            "Bestand",
+            "Leser"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Entität 'Bestand' ein einzelnes Exemplar oder eine Aggregation mehrerer Exemplare desselben Buches in einer Bibliothek darstellt.",
+          "betroffene_elemente": [
+            "Bestand"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob Mitarbeitende als separate Entität modelliert werden müssen oder ob sie nur als Rollen/Benutzer des Systems zu verstehen sind.",
+          "betroffene_elemente": [
+            "Bibliothek"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Bibliothek",
+          "attribute": [
+            {
+              "name": "BibliothekID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Standort",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Kontaktadresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Leser",
+          "attribute": [
+            {
+              "name": "LeserID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Anmeldungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Buch",
+          "attribute": [
+            {
+              "name": "BuchID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Titel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Erscheinungsjahr",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Sprache",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "InternationaleKennnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Autor",
+          "attribute": [
+            {
+              "name": "AutorID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestand",
+          "attribute": [
+            {
+              "name": "BestandID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BuchID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BibliothekID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Ausleihbar",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Ausleihe",
+          "attribute": [
+            {
+              "name": "AusleiheID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "LeserID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BestandID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BibliothekID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "AusleihDatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "RueckgabeFaelligkeitsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TatsaechlichesRueckgabedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Buch",
+          "zu": "Autor",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestand",
+          "zu": "Buch",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestand",
+          "zu": "Bibliothek",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Leser",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Bestand",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Bibliothek",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: libraries, readers, books, authors, inventory (Bestand), checkouts (Ausleihe). Keine Entität fehlt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im RequirementsReport und ERModell geforderten Attribute sind im LogicalSchema vorhanden und korrekt benannt: libraries (name, location, contact_address), readers (name, email, birthdate, registration_date), books (title, publication_year, language, isbn), authors (name), inventory (book_id, library_id, is_available), checkouts (reader_id, inventory_id, library_id, checkout_date, due_date, return_date). Namenskonventionen sind eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle im ERModell definierten Beziehungen sind korrekt im LogicalSchema abgebildet: (1) Buch-Autor M:N via author_books Junction-Table; (2) Bestand-Buch N:1 via book_id FK; (3) Bestand-Bibliothek N:1 via library_id FK; (4) Ausleihe-Leser N:1 via reader_id FK; (5) Ausleihe-Bestand N:1 via inventory_id FK; (6) Ausleihe-Bibliothek N:1 via library_id FK. Kardinalitäten sind korrekt implementiert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar; (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln; (3) Keine transitiven Abhängigkeiten. Die inventory-Tabelle ist korrekt als Assoziationstabelle mit eigenem PK modelliert (nicht nur Composite-Key), was Flexibilität für mehrfache Ausleihen desselben Exemplars ermöglicht.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE authors (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_authors PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publication_year INTEGER NOT NULL,\n    language VARCHAR(255) NOT NULL,\n    isbn VARCHAR(255),\n    CONSTRAINT pk_books PRIMARY KEY (id)\n);\n\nCREATE TABLE author_books (\n    author_id INTEGER NOT NULL,\n    book_id INTEGER NOT NULL,\n    CONSTRAINT pk_author_books PRIMARY KEY (author_id, book_id),\n    CONSTRAINT fk_author_books_author_id FOREIGN KEY (author_id) REFERENCES authors (id),\n    CONSTRAINT fk_author_books_book_id FOREIGN KEY (book_id) REFERENCES books (id)\n);\n\nCREATE TABLE readers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_readers PRIMARY KEY (id)\n);\n\nCREATE TABLE libraries (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    contact_address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_libraries PRIMARY KEY (id)\n);\n\nCREATE TABLE inventory (\n    id INTEGER NOT NULL,\n    book_id INTEGER NOT NULL,\n    library_id INTEGER NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    CONSTRAINT pk_inventory PRIMARY KEY (id),\n    CONSTRAINT fk_inventory_book_id FOREIGN KEY (book_id) REFERENCES books (id),\n    CONSTRAINT fk_inventory_library_id FOREIGN KEY (library_id) REFERENCES libraries (id)\n);\n\nCREATE TABLE checkouts (\n    id INTEGER NOT NULL,\n    reader_id INTEGER NOT NULL,\n    inventory_id INTEGER NOT NULL,\n    library_id INTEGER NOT NULL,\n    checkout_date DATE NOT NULL,\n    due_date DATE NOT NULL,\n    return_date DATE,\n    CONSTRAINT pk_checkouts PRIMARY KEY (id),\n    CONSTRAINT fk_checkouts_reader_id FOREIGN KEY (reader_id) REFERENCES readers (id),\n    CONSTRAINT fk_checkouts_inventory_id FOREIGN KEY (inventory_id) REFERENCES inventory (id),\n    CONSTRAINT fk_checkouts_library_id FOREIGN KEY (library_id) REFERENCES libraries (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: libraries, readers, books, authors, inventory (Bestand), checkouts (Ausleihe). Keine Entität fehlt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im RequirementsReport und ERModell geforderten Attribute sind im LogicalSchema vorhanden und korrekt benannt: libraries (name, location, contact_address), readers (name, email, birthdate, registration_date), books (title, publication_year, language, isbn), authors (name), inventory (book_id, library_id, is_available), checkouts (reader_id, inventory_id, library_id, checkout_date, due_date, return_date). Namenskonventionen sind eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle im ERModell definierten Beziehungen sind korrekt im LogicalSchema abgebildet: (1) Buch-Autor M:N via author_books Junction-Table; (2) Bestand-Buch N:1 via book_id FK; (3) Bestand-Bibliothek N:1 via library_id FK; (4) Ausleihe-Leser N:1 via reader_id FK; (5) Ausleihe-Bestand N:1 via inventory_id FK; (6) Ausleihe-Bibliothek N:1 via library_id FK. Kardinalitäten sind korrekt implementiert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar; (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln; (3) Keine transitiven Abhängigkeiten. Die inventory-Tabelle ist korrekt als Assoziationstabelle mit eigenem PK modelliert (nicht nur Composite-Key), was Flexibilität für mehrfache Ausleihen desselben Exemplars ermöglicht.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 16680,
+    "total_output_tokens": 5715,
+    "total_tokens": 22395,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1670,
+        "output_tokens": 1484,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3219,
+        "output_tokens": 1588,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4300,
+        "output_tokens": 1633,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 1,
+        "input_tokens": 7491,
+        "output_tokens": 1010,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1670,
+        "output_tokens": 1484,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3219,
+        "output_tokens": 1588,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4300,
+        "output_tokens": 1633,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7491,
+        "output_tokens": 1010,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

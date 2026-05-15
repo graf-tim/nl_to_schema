@@ -1,0 +1,499 @@
+{
+  "testfall_id": "TC061",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.4765367965367966,
+  "score_gesamt": 0.685922077922078,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5,
+      "recall": 0.5714285714285714,
+      "f1": 0.5333333333333333,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 4
+    },
+    "attribut": {
+      "precision": 0.5,
+      "recall": 0.53125,
+      "f1": 0.5151515151515151,
+      "matched": 17,
+      "nur_in_referenz": 15,
+      "nur_in_generiert": 17
+    },
+    "beziehung": {
+      "recall": 0.2857142857142857,
+      "matched": 2,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "subscription_plans",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions.subscription_plan_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions.promotion_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "magazines.publication_frequency",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.magazine_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.plan_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.duration_months",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.enddate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.promotion_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.subscription_plan_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans → promotions",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans → subscription_plans",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans → magazines",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions → promotions",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions → subscription_plans",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Verlag bietet verschiedene Abos fuer seine Zeitschriften an. Jede Zeitschrift hat einen Titel und erscheint in einem bestimmten Rhythmus, zum Beispiel monatlich oder vierteljaehrlich. Zu jeder Zeitschrift koennen mehrere Abo-Varianten angeboten werden, etwa Print, Digital oder eine Kombination daraus. Die Preise koennen sich je nach Laufzeit unterscheiden, zum Beispiel monatlich oder fuer ein ganzes Jahr.\n\nKundinnen und Kunden sollen mit Namen, E-Mail-Adresse und dem Datum ihrer Registrierung verwaltet werden. Eine Person kann mehrere Abos gleichzeitig haben, auch fuer unterschiedliche Zeitschriften. Wenn jemand ein Abo abschliesst, soll festgehalten werden, ab wann es gilt und ob es bereits beendet wurde. Ausserdem soll nachvollziehbar sein, ueber welchen Weg das Abo zustande kam, etwa online, telefonisch oder im Rahmen einer Aktion.\n\nFuer Werbeaktionen koennen mehrere Abo-Varianten vorgesehen sein, und dieselbe Abo-Variante kann auch in verschiedenen Aktionen vorkommen. Nicht jede Aktion ist unbegrenzt gueltig; manche laufen nur in einem bestimmten Zeitraum. Wenn ein Kunde ein Abo nutzt, sollen die zugehoerigen Zahlungen gespeichert werden. Dabei ist wichtig, wann bezahlt wurde, welcher Betrag eingegangen ist und ob die Zahlung erfolgreich war.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "registrationdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "magazines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "frequency",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "subscription_variants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "magazine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "magazine_id",
+              "references_table": "magazines",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "subscription_prices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "subscription_variant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duration",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subscription_variant_id",
+              "references_table": "subscription_variants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "campaigns",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "campaign_subscription_variants",
+          "columns": [
+            {
+              "name": "campaign_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "subscription_variant_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "campaign_id",
+              "references_table": "campaigns",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subscription_variant_id",
+              "references_table": "subscription_variants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "subscriptions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subscription_variant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "acquisition_channel",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "campaign_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subscription_variant_id",
+              "references_table": "subscription_variants",
+              "references_column": "id"
+            },
+            {
+              "from_column": "campaign_id",
+              "references_table": "campaigns",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "payments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "subscription_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "paymentdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_successful",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subscription_id",
+              "references_table": "subscriptions",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE campaigns (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    startdate DATE,\n    enddate DATE,\n    CONSTRAINT pk_campaigns PRIMARY KEY (id)\n);\n\nCREATE TABLE magazines (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_magazines PRIMARY KEY (id)\n);\n\nCREATE TABLE subscription_variants (\n    id INTEGER NOT NULL,\n    magazine_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_subscription_variants PRIMARY KEY (id),\n    CONSTRAINT fk_subscription_variants_magazine_id FOREIGN KEY (magazine_id) REFERENCES magazines (id)\n);\n\nCREATE TABLE campaign_subscription_variants (\n    campaign_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    CONSTRAINT pk_campaign_subscription_variants PRIMARY KEY (campaign_id, subscription_variant_id),\n    CONSTRAINT fk_campaign_subscription_variants_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id),\n    CONSTRAINT fk_campaign_subscription_variants_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registrationdate DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE subscriptions (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE,\n    acquisition_channel VARCHAR(255) NOT NULL,\n    campaign_id INTEGER,\n    CONSTRAINT pk_subscriptions PRIMARY KEY (id),\n    CONSTRAINT fk_subscriptions_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_subscriptions_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id),\n    CONSTRAINT fk_subscriptions_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    subscription_id INTEGER NOT NULL,\n    paymentdate DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    is_successful BOOLEAN NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_subscription_id FOREIGN KEY (subscription_id) REFERENCES subscriptions (id)\n);\n\nCREATE TABLE subscription_prices (\n    id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    duration VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_subscription_prices PRIMARY KEY (id),\n    CONSTRAINT fk_subscription_prices_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2472,
+    "total_output_tokens": 1694,
+    "total_tokens": 4166,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2472,
+        "output_tokens": 1694,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2472,
+        "output_tokens": 1694,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

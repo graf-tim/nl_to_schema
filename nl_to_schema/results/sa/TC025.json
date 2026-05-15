@@ -1,0 +1,229 @@
+{
+  "testfall_id": "TC025",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9529411764705882,
+  "score_gesamt": 0.9717647058823529,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.8823529411764706,
+      "recall": 0.8823529411764706,
+      "f1": 0.8823529411764706,
+      "matched": 15,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "repair_orders.accepted_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "repair_orders.requested_work",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Schuhreparaturbetrieb moechte seine Kunden, die abgegebenen Schuhe und die dazugehoerigen Reparaturauftraege verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und auf Wunsch auch die E-Mail-Adresse gespeichert werden. Zu jedem abgegebenen Schuhpaar sollen Marke, Modell, Farbe und die Schuhgroesse festgehalten werden. Jedes Schuhpaar gehoert genau einem Kunden. Fuer jeden Reparaturauftrag soll erfasst werden, wann der Auftrag angenommen wurde, welche Arbeiten gewuenscht sind, ob der Auftrag bereits abgeschlossen ist und welcher Preis berechnet wird. Jeder Reparaturauftrag bezieht sich genau auf ein Schuhpaar. Ein Schuhpaar kann im Laufe der Zeit mehrere Reparaturauftraege haben.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "shoes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "brand",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "size",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "repair_orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "shoe_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "order_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "work_description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_completed",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "shoe_id",
+              "references_table": "shoes",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE shoes (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    size VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_shoes PRIMARY KEY (id),\n    CONSTRAINT fk_shoes_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE repair_orders (\n    id INTEGER NOT NULL,\n    shoe_id INTEGER NOT NULL,\n    order_date DATE NOT NULL,\n    work_description TEXT NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_repair_orders PRIMARY KEY (id),\n    CONSTRAINT fk_repair_orders_shoe_id FOREIGN KEY (shoe_id) REFERENCES shoes (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2316,
+    "total_output_tokens": 727,
+    "total_tokens": 3043,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2316,
+        "output_tokens": 727,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2316,
+        "output_tokens": 727,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

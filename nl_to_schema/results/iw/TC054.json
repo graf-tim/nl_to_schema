@@ -1,0 +1,604 @@
+{
+  "testfall_id": "TC054",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8178932178932179,
+  "score_gesamt": 0.8907359307359307,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 10,
+    "pk_tabellen_mit_pk": 10,
+    "fk_referenzen_gesamt": 11,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "matched": 8,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.6857142857142857,
+      "recall": 0.7741935483870968,
+      "f1": 0.7272727272727272,
+      "matched": 24,
+      "nur_in_referenz": 7,
+      "nur_in_generiert": 11
+    },
+    "beziehung": {
+      "recall": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "acts.origin_country",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "acts.is_band",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "act_genres.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tickets.validity_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "festival_days.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "stages.location_description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "act_program_slots.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tickets → festival_days",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein mehrtägiges Musikfestival sollen die wichtigsten Informationen so festgehalten werden, dass das Organisationsteam den Ablauf und die auftretenden Künstler gut im Blick behalten kann. Es gibt mehrere Bühnen auf dem Gelände. Für jede Bühne soll bekannt sein, wie sie heißt, wo sie sich ungefähr befindet und wie viele Besucher dort maximal Platz haben.\n\nAn den einzelnen Festivaltagen finden Programmpunkte statt. Jeder Programmpunkt gehört zu genau einer Bühne und hat eine geplante Anfangs- und Endzeit. Außerdem soll notiert werden, ob es sich eher um einen regulären Auftritt, einen Soundcheck oder einen sonstigen Slot handelt.\n\nKünstler können allein auftreten oder als Band unterwegs sein. Von jedem Act sollen Name, Herkunftsland und eine kurze Beschreibung gepflegt werden. Ein Act kann bei einem Festival auch mehrfach eingeplant werden, etwa an verschiedenen Tagen oder auf unterschiedlichen Bühnen. Manche Programmpunkte werden von mehreren Acts gemeinsam gestaltet.\n\nZusätzlich sollen Genres wie Rock, Elektro oder Jazz gepflegt werden, damit man Acts besser einordnen kann. Ein Act kann mehreren Genres zugeordnet sein. Für Besucher ist außerdem wichtig, welche Tickets angeboten werden. Dabei soll erfasst werden, wie das Ticket heißt, für welchen Zeitraum es gedacht ist und was es kostet. Manche Tickets gelten nur an bestimmten Tagen, andere für das ganze Festival.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "festivals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "festival_days",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "festival_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "day_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "day_number",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "festival_id",
+              "references_table": "festivals",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "stages",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "festival_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "max_capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "festival_id",
+              "references_table": "festivals",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "acts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "genres",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "act_genres",
+          "columns": [
+            {
+              "name": "act_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "genre_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "act_id",
+              "references_table": "acts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "genre_id",
+              "references_table": "genres",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "program_slots",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "festival_day_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "stage_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_time",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_time",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "slot_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "festival_day_id",
+              "references_table": "festival_days",
+              "references_column": "id"
+            },
+            {
+              "from_column": "stage_id",
+              "references_table": "stages",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "program_slot_acts",
+          "columns": [
+            {
+              "name": "program_slot_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "act_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "program_slot_id",
+              "references_table": "program_slots",
+              "references_column": "id"
+            },
+            {
+              "from_column": "act_id",
+              "references_table": "acts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "tickets",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "festival_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_full_festival",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "festival_id",
+              "references_table": "festivals",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "ticket_festival_days",
+          "columns": [
+            {
+              "name": "ticket_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "festival_day_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "ticket_id",
+              "references_table": "tickets",
+              "references_column": "id"
+            },
+            {
+              "from_column": "festival_day_id",
+              "references_table": "festival_days",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Festivaltage' (festival_days) ist nicht korrekt modelliert. Nach Anforderung gehören Programmpunkte zu 'einzelnen Festivaltagen', was impliziert, dass Festivaltage als eigenständige Entität mit Datumsangaben existieren. Dies ist vorhanden. JEDOCH: Die Anforderung erwähnt explizit 'Tickets gelten nur an bestimmten Tagen, andere für das ganze Festival'. Das Schema modelliert dies über die Junction-Table 'ticket_festival_days', was funktional ist. ABER: Es fehlt eine explizite Entität oder ein Attribut zur Abbildung von Zeiträumen für Tickets. Ein Ticket mit 'is_full_festival=false' muss über 'ticket_festival_days' mit Tagen verknüpft sein, aber es gibt keine Möglichkeit, einen zusammenhängenden Zeitraum (z.B. 'Freitag bis Sonntag') direkt zu erfassen. Dies führt zu Redundanz und Fehleranfälligkeit. Zusätzlich fehlt eine explizite Modellierung von 'Zeiträumen' oder 'Tickettypen mit Gültigkeitszeiträumen'.",
+          "korrekturanweisung": "Erweitern Sie die 'tickets'-Tabelle um die Attribute 'start_date' (DATE, nullable) und 'end_date' (DATE, nullable). Wenn 'is_full_festival=true', sind diese NULL. Wenn 'is_full_festival=false', müssen beide Werte gesetzt sein. Die Junction-Table 'ticket_festival_days' kann dann optional für explizite Tage verwendet werden, oder Sie ersetzen sie durch die Datumsattribute. Alternativ: Fügen Sie ein Attribut 'valid_from' und 'valid_to' zur 'tickets'-Tabelle hinzu."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere zentrale Attribute fehlen oder sind unzureichend modelliert: (1) In der 'program_slots'-Tabelle: Das Attribut 'slot_type' ist als VARCHAR definiert, aber es gibt keine Enumeration oder Validierung für die Werte 'regulärer Auftritt', 'Soundcheck', 'sonstiger Slot'. Dies führt zu Datenkonsistenzproblemen. (2) In der 'tickets'-Tabelle: Es fehlt ein Attribut zur Unterscheidung zwischen 'Tagesticket' und 'Festivalticket' auf struktureller Ebene (derzeit nur 'is_full_festival' als Boolean). (3) In der 'festival_days'-Tabelle: Das Attribut 'day_number' ist optional (nullable=true), sollte aber für die Sortierung und Identifikation zentral sein und daher NOT NULL sein.",
+          "korrekturanweisung": "(1) Ersetzen Sie 'slot_type' VARCHAR durch ein ENUM-ähnliches Konzept oder dokumentieren Sie die zulässigen Werte (z.B. 'regular', 'soundcheck', 'other'). (2) Ändern Sie 'day_number' in 'festival_days' zu nullable=false, da dies ein zentrales Attribut für die Tagesidentifikation ist. (3) Optional: Fügen Sie ein Attribut 'ticket_type' (z.B. ENUM: 'day_ticket', 'festival_ticket') zur 'tickets'-Tabelle hinzu, um die Semantik zu verdeutlichen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Kardinalität zwischen 'tickets' und 'festival_days' ist nicht korrekt modelliert. Nach Anforderung: 'Manche Tickets gelten nur an bestimmten Tagen, andere für das ganze Festival.' Das Schema verwendet 'is_full_festival' als Boolean und eine Junction-Table 'ticket_festival_days' für Tagestickets. Dies ist funktional, aber semantisch problematisch: (1) Wenn 'is_full_festival=true', sollte die Junction-Table leer sein (oder gar keine Einträge haben). Es gibt keine Constraint, der dies erzwingt. (2) Wenn 'is_full_festival=false', MUSS mindestens ein Eintrag in 'ticket_festival_days' existieren. Dies ist nicht durch das Schema erzwungen. (3) Die Kardinalität ist M:N (ein Ticket kann mehrere Tage abdecken, ein Tag kann mehrere Tickets haben), aber die Auflösung über die Junction-Table ist nicht mit der 'is_full_festival'-Logik synchronisiert.",
+          "korrekturanweisung": "Implementieren Sie eine Constraint-Logik: (1) Wenn 'is_full_festival=true', darf kein Eintrag in 'ticket_festival_days' für dieses Ticket existieren. (2) Wenn 'is_full_festival=false', MUSS mindestens ein Eintrag in 'ticket_festival_days' existieren. Alternativ: Ersetzen Sie die Junction-Table durch 'start_date' und 'end_date' in der 'tickets'-Tabelle (siehe Empfehlung unter 'entitaets_vollstaendigkeit'). Dies würde die Kardinalität klarer machen: 1:N (ein Ticket gilt für einen Datumsbereich, viele Tage können in diesem Bereich liegen)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3NF normalisiert. Es gibt keine offensichtlichen Redundanzen oder transitive Abhängigkeiten. Junction-Tables sind korrekt für M:N-Beziehungen verwendet (act_genres, program_slot_acts, ticket_festival_days). Alle Attribute sind atomar und nicht wiederholend.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE acts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    country VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_acts PRIMARY KEY (id)\n);\n\nCREATE TABLE genres (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_genres PRIMARY KEY (id)\n);\n\nCREATE TABLE act_genres (\n    act_id INTEGER NOT NULL,\n    genre_id INTEGER NOT NULL,\n    CONSTRAINT pk_act_genres PRIMARY KEY (act_id, genre_id),\n    CONSTRAINT fk_act_genres_act_id FOREIGN KEY (act_id) REFERENCES acts (id),\n    CONSTRAINT fk_act_genres_genre_id FOREIGN KEY (genre_id) REFERENCES genres (id)\n);\n\nCREATE TABLE festivals (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_festivals PRIMARY KEY (id)\n);\n\nCREATE TABLE festival_days (\n    id INTEGER NOT NULL,\n    festival_id INTEGER NOT NULL,\n    day_date DATE NOT NULL,\n    day_number INTEGER,\n    CONSTRAINT pk_festival_days PRIMARY KEY (id),\n    CONSTRAINT fk_festival_days_festival_id FOREIGN KEY (festival_id) REFERENCES festivals (id)\n);\n\nCREATE TABLE stages (\n    id INTEGER NOT NULL,\n    festival_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    max_capacity INTEGER,\n    CONSTRAINT pk_stages PRIMARY KEY (id),\n    CONSTRAINT fk_stages_festival_id FOREIGN KEY (festival_id) REFERENCES festivals (id)\n);\n\nCREATE TABLE program_slots (\n    id INTEGER NOT NULL,\n    festival_day_id INTEGER NOT NULL,\n    stage_id INTEGER NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    slot_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_program_slots PRIMARY KEY (id),\n    CONSTRAINT fk_program_slots_festival_day_id FOREIGN KEY (festival_day_id) REFERENCES festival_days (id),\n    CONSTRAINT fk_program_slots_stage_id FOREIGN KEY (stage_id) REFERENCES stages (id)\n);\n\nCREATE TABLE program_slot_acts (\n    program_slot_id INTEGER NOT NULL,\n    act_id INTEGER NOT NULL,\n    CONSTRAINT pk_program_slot_acts PRIMARY KEY (program_slot_id, act_id),\n    CONSTRAINT fk_program_slot_acts_program_slot_id FOREIGN KEY (program_slot_id) REFERENCES program_slots (id),\n    CONSTRAINT fk_program_slot_acts_act_id FOREIGN KEY (act_id) REFERENCES acts (id)\n);\n\nCREATE TABLE tickets (\n    id INTEGER NOT NULL,\n    festival_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    is_full_festival BOOLEAN NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_tickets PRIMARY KEY (id),\n    CONSTRAINT fk_tickets_festival_id FOREIGN KEY (festival_id) REFERENCES festivals (id)\n);\n\nCREATE TABLE ticket_festival_days (\n    ticket_id INTEGER NOT NULL,\n    festival_day_id INTEGER NOT NULL,\n    CONSTRAINT pk_ticket_festival_days PRIMARY KEY (ticket_id, festival_day_id),\n    CONSTRAINT fk_ticket_festival_days_ticket_id FOREIGN KEY (ticket_id) REFERENCES tickets (id),\n    CONSTRAINT fk_ticket_festival_days_festival_day_id FOREIGN KEY (festival_day_id) REFERENCES festival_days (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Festivaltage' (festival_days) ist nicht korrekt modelliert. Nach Anforderung gehören Programmpunkte zu 'einzelnen Festivaltagen', was impliziert, dass Festivaltage als eigenständige Entität mit Datumsangaben existieren. Dies ist vorhanden. JEDOCH: Die Anforderung erwähnt explizit 'Tickets gelten nur an bestimmten Tagen, andere für das ganze Festival'. Das Schema modelliert dies über die Junction-Table 'ticket_festival_days', was funktional ist. ABER: Es fehlt eine explizite Entität oder ein Attribut zur Abbildung von Zeiträumen für Tickets. Ein Ticket mit 'is_full_festival=false' muss über 'ticket_festival_days' mit Tagen verknüpft sein, aber es gibt keine Möglichkeit, einen zusammenhängenden Zeitraum (z.B. 'Freitag bis Sonntag') direkt zu erfassen. Dies führt zu Redundanz und Fehleranfälligkeit. Zusätzlich fehlt eine explizite Modellierung von 'Zeiträumen' oder 'Tickettypen mit Gültigkeitszeiträumen'.",
+          "korrekturanweisung": "Erweitern Sie die 'tickets'-Tabelle um die Attribute 'start_date' (DATE, nullable) und 'end_date' (DATE, nullable). Wenn 'is_full_festival=true', sind diese NULL. Wenn 'is_full_festival=false', müssen beide Werte gesetzt sein. Die Junction-Table 'ticket_festival_days' kann dann optional für explizite Tage verwendet werden, oder Sie ersetzen sie durch die Datumsattribute. Alternativ: Fügen Sie ein Attribut 'valid_from' und 'valid_to' zur 'tickets'-Tabelle hinzu."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere zentrale Attribute fehlen oder sind unzureichend modelliert: (1) In der 'program_slots'-Tabelle: Das Attribut 'slot_type' ist als VARCHAR definiert, aber es gibt keine Enumeration oder Validierung für die Werte 'regulärer Auftritt', 'Soundcheck', 'sonstiger Slot'. Dies führt zu Datenkonsistenzproblemen. (2) In der 'tickets'-Tabelle: Es fehlt ein Attribut zur Unterscheidung zwischen 'Tagesticket' und 'Festivalticket' auf struktureller Ebene (derzeit nur 'is_full_festival' als Boolean). (3) In der 'festival_days'-Tabelle: Das Attribut 'day_number' ist optional (nullable=true), sollte aber für die Sortierung und Identifikation zentral sein und daher NOT NULL sein.",
+          "korrekturanweisung": "(1) Ersetzen Sie 'slot_type' VARCHAR durch ein ENUM-ähnliches Konzept oder dokumentieren Sie die zulässigen Werte (z.B. 'regular', 'soundcheck', 'other'). (2) Ändern Sie 'day_number' in 'festival_days' zu nullable=false, da dies ein zentrales Attribut für die Tagesidentifikation ist. (3) Optional: Fügen Sie ein Attribut 'ticket_type' (z.B. ENUM: 'day_ticket', 'festival_ticket') zur 'tickets'-Tabelle hinzu, um die Semantik zu verdeutlichen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Kardinalität zwischen 'tickets' und 'festival_days' ist nicht korrekt modelliert. Nach Anforderung: 'Manche Tickets gelten nur an bestimmten Tagen, andere für das ganze Festival.' Das Schema verwendet 'is_full_festival' als Boolean und eine Junction-Table 'ticket_festival_days' für Tagestickets. Dies ist funktional, aber semantisch problematisch: (1) Wenn 'is_full_festival=true', sollte die Junction-Table leer sein (oder gar keine Einträge haben). Es gibt keine Constraint, der dies erzwingt. (2) Wenn 'is_full_festival=false', MUSS mindestens ein Eintrag in 'ticket_festival_days' existieren. Dies ist nicht durch das Schema erzwungen. (3) Die Kardinalität ist M:N (ein Ticket kann mehrere Tage abdecken, ein Tag kann mehrere Tickets haben), aber die Auflösung über die Junction-Table ist nicht mit der 'is_full_festival'-Logik synchronisiert.",
+          "korrekturanweisung": "Implementieren Sie eine Constraint-Logik: (1) Wenn 'is_full_festival=true', darf kein Eintrag in 'ticket_festival_days' für dieses Ticket existieren. (2) Wenn 'is_full_festival=false', MUSS mindestens ein Eintrag in 'ticket_festival_days' existieren. Alternativ: Ersetzen Sie die Junction-Table durch 'start_date' und 'end_date' in der 'tickets'-Tabelle (siehe Empfehlung unter 'entitaets_vollstaendigkeit'). Dies würde die Kardinalität klarer machen: 1:N (ein Ticket gilt für einen Datumsbereich, viele Tage können in diesem Bereich liegen)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3NF normalisiert. Es gibt keine offensichtlichen Redundanzen oder transitive Abhängigkeiten. Junction-Tables sind korrekt für M:N-Beziehungen verwendet (act_genres, program_slot_acts, ticket_festival_days). Alle Attribute sind atomar und nicht wiederholend.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 26975,
+    "total_output_tokens": 9804,
+    "total_tokens": 36779,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 13591,
+        "output_tokens": 5497,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 13384,
+        "output_tokens": 4307,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2485,
+        "output_tokens": 1273,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3998,
+        "output_tokens": 1293,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5376,
+        "output_tokens": 2071,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4652,
+        "output_tokens": 1171,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5730,
+        "output_tokens": 2153,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4734,
+        "output_tokens": 1843,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

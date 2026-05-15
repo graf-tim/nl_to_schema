@@ -1,0 +1,574 @@
+{
+  "testfall_id": "TC012",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.982608695652174,
+  "score_gesamt": 0.9895652173913044,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9565217391304348,
+      "recall": 0.9565217391304348,
+      "f1": 0.9565217391304348,
+      "matched": 22,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "employees.entrydate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Optikergeschaeft moechte seine taeglichen Ablaeufe einfach verwalten. Fuer jede Kundin und jeden Kunden sollen Vorname, Nachname, Telefonnummer, E-Mail-Adresse und Geburtsdatum gespeichert werden. Jeder Kunde kann mehrere Auftraege haben. Zu jedem Auftrag soll festgehalten werden, wann er erstellt wurde, fuer welchen Kunden er ist und welchen Status er hat, zum Beispiel offen, in Arbeit oder abgeholt. In einem Auftrag koennen mehrere Brillen erfasst werden. Fuer jede Brille sollen Art des Gestells, Glasstaerke links, Glasstaerke rechts, Farbe und Verkaufspreis gespeichert werden. Jede Brille gehoert immer genau zu einem Auftrag. Zusaetzlich soll es Mitarbeitende geben, von denen Vorname, Nachname, Rolle und Eintrittsdatum gespeichert werden. Jeder Auftrag wird genau von einer mitarbeitenden Person angelegt.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "glasses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "frame_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lens_strength_left",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lens_strength_right",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "sale_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse",
+            "Geburtsdatum"
+          ],
+          "beschreibung": "Kundin oder Kunde des Optikergeschäfts mit persönlichen Kontaktdaten"
+        },
+        {
+          "name": "Auftrag",
+          "attribute": [
+            "Erstellungsdatum",
+            "Status",
+            "Kunde",
+            "Mitarbeiter"
+          ],
+          "beschreibung": "Auftrag für einen Kunden mit Status (offen, in Arbeit, abgeholt) und Erstellungsdatum"
+        },
+        {
+          "name": "Brille",
+          "attribute": [
+            "Art des Gestells",
+            "Glasstärke links",
+            "Glasstärke rechts",
+            "Farbe",
+            "Verkaufspreis"
+          ],
+          "beschreibung": "Brille mit optischen und visuellen Eigenschaften sowie Preis"
+        },
+        {
+          "name": "Mitarbeiter",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Rolle",
+            "Eintrittsdatum"
+          ],
+          "beschreibung": "Mitarbeitende Person des Optikergeschäfts"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Aufträge haben"
+        },
+        {
+          "von": "Auftrag",
+          "zu": "Brille",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Auftrag kann mehrere Brillen enthalten"
+        },
+        {
+          "von": "Mitarbeiter",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Mitarbeiter kann mehrere Aufträge anlegen; jeder Auftrag wird von genau einem Mitarbeiter angelegt"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Unklar ist, ob ein Kunde eindeutig identifiziert werden kann (z.B. durch Kundennummer) oder ob Vorname und Nachname als Primärschlüssel ausreichen",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Glasstärke links und rechts numerische Werte sind und welche Einheit sie haben (z.B. Dioptrien)",
+          "betroffene_elemente": [
+            "Brille"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob der Status eines Auftrags ein vordefiniertes Enum (offen, in Arbeit, abgeholt) ist oder ob weitere Statuswerte möglich sind",
+          "betroffene_elemente": [
+            "Auftrag"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob eine Brille nach Abholung eines Auftrags gelöscht wird oder ob die Auftragshistorie mit allen Brillen erhalten bleibt",
+          "betroffene_elemente": [
+            "Brille",
+            "Auftrag"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "EmailAdresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Mitarbeiter",
+          "attribute": [
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Rolle",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Eintrittsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Auftrag",
+          "attribute": [
+            {
+              "name": "AuftragID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Erstellungsdatum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Brille",
+          "attribute": [
+            {
+              "name": "BrilleID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ArtDesGestells",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Glasstaerke_Links",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Glasstaerke_Rechts",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Farbe",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Verkaufspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "AuftragID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Mitarbeiter",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Auftrag",
+          "zu": "Brille",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    birthdate DATE,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    customer_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE glasses (\n    id INTEGER NOT NULL,\n    frame_type VARCHAR(255) NOT NULL,\n    lens_strength_left DECIMAL(18,2) NOT NULL,\n    lens_strength_right DECIMAL(18,2) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    sale_price DECIMAL(18,2) NOT NULL,\n    order_id INTEGER NOT NULL,\n    CONSTRAINT pk_glasses PRIMARY KEY (id),\n    CONSTRAINT fk_glasses_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7773,
+    "total_output_tokens": 3281,
+    "total_tokens": 11054,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1526,
+        "output_tokens": 918,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2497,
+        "output_tokens": 1206,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3750,
+        "output_tokens": 1157,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1526,
+        "output_tokens": 918,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2497,
+        "output_tokens": 1206,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3750,
+        "output_tokens": 1157,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

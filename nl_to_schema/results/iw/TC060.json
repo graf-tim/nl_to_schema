@@ -1,0 +1,541 @@
+{
+  "testfall_id": "TC060",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7636904761904763,
+  "score_gesamt": 0.8582142857142858,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.696969696969697,
+      "recall": 0.7419354838709677,
+      "f1": 0.71875,
+      "matched": 23,
+      "nur_in_referenz": 8,
+      "nur_in_generiert": 10
+    },
+    "beziehung": {
+      "recall": 0.7142857142857143,
+      "matched": 5,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "businesses_requests",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_trades.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.business_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.request_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.applied_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.estimated_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.message",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests → businesses",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests → requests",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Handwerksplattform sollen Kundinnen und Kunden Anfragen für Arbeiten rund ums Haus einstellen können, zum Beispiel für Malerarbeiten, Sanitärreparaturen oder kleine Elektroaufträge. Zu jeder Anfrage soll festgehalten werden, wer sie eingestellt hat, in welche fachliche Richtung sie fällt, wann sie erstellt wurde und was genau gemacht werden soll. Außerdem ist wichtig, ob der Auftrag noch offen ist oder schon vergeben wurde.\n\nBetriebe können sich auf der Plattform registrieren und mit Namen, Kontaktadresse, E-Mail und Telefonnummer sichtbar sein. Ein Betrieb kann mehrere Fachrichtungen abdecken, und in einer Fachrichtung können mehrere Betriebe tätig sein. Wenn eine passende Anfrage eingeht, können sich Betriebe darauf melden. Dabei soll erfasst werden, wann sie sich gemeldet haben, welcher Preis ungefähr angesetzt wird und ob noch eine Nachricht für die Kundin oder den Kunden mitgegeben wurde.\n\nSobald sich die Kundin oder der Kunde entschieden hat, soll nachvollziehbar sein, welcher Betrieb den Zuschlag erhalten hat. Pro Anfrage gibt es am Ende nur eine Vergabe, auch wenn sich vorher mehrere Betriebe gemeldet haben. Nicht jede Anfrage muss sofort einem Betrieb zugeordnet sein.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "trades",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "businesses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "business_trades",
+          "columns": [
+            {
+              "name": "business_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "trade_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "business_id",
+              "references_table": "businesses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "trade_id",
+              "references_table": "trades",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "requests",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "trade_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_open",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "awarded_business_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "awarded_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "trade_id",
+              "references_table": "trades",
+              "references_column": "id"
+            },
+            {
+              "from_column": "awarded_business_id",
+              "references_table": "businesses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "bids",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "request_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "business_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "message",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "request_id",
+              "references_table": "requests",
+              "references_column": "id"
+            },
+            {
+              "from_column": "business_id",
+              "references_table": "businesses",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich notwendigen Entitäten sind vorhanden: customers (Kundinnen/Kunden), businesses (Betriebe), trades (Fachrichtungen), requests (Anfragen), bids (Meldungen/Angebote), business_trades (M:N-Beziehung). Das Schema deckt alle Anforderungen ab.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Zentrale Attribute sind vorhanden: customers (Name, Email, Telefon, Erstellungszeit), businesses (Name, Adresse, Email, Telefon, Aktivstatus), requests (Titel, Beschreibung, Fachrichtung, Kundin/Kunde, Vergabeinformation, Erstellungszeit), bids (Preis, Nachricht, Zeitstempel). Alle Anforderungen sind abgedeckt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Kardinalitäten sind korrekt modelliert: 1:N (customers→requests, trades→requests, businesses→bids), M:N (businesses↔trades via business_trades), 1:1 (requests→awarded_business_id optional). Die Vergabe ist als optionale FK mit Zeitstempel korrekt implementiert (nullable awarded_business_id und awarded_at).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema ist in 3NF: Keine Redundanzen erkannt. Alle Attribute sind atomar, Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, keine transitiven Abhängigkeiten. Junction-Table business_trades ist korrekt aufgelöst.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 2,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE trades (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_trades PRIMARY KEY (id)\n);\n\nCREATE TABLE businesses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_businesses PRIMARY KEY (id)\n);\n\nCREATE TABLE requests (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    trade_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    is_open BOOLEAN NOT NULL,\n    awarded_business_id INTEGER,\n    awarded_at TIMESTAMP,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_requests PRIMARY KEY (id),\n    CONSTRAINT fk_requests_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_requests_trade_id FOREIGN KEY (trade_id) REFERENCES trades (id),\n    CONSTRAINT fk_requests_awarded_business_id FOREIGN KEY (awarded_business_id) REFERENCES businesses (id)\n);\n\nCREATE TABLE bids (\n    id INTEGER NOT NULL,\n    request_id INTEGER NOT NULL,\n    business_id INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    message TEXT,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_bids PRIMARY KEY (id),\n    CONSTRAINT fk_bids_request_id FOREIGN KEY (request_id) REFERENCES requests (id),\n    CONSTRAINT fk_bids_business_id FOREIGN KEY (business_id) REFERENCES businesses (id)\n);\n\nCREATE TABLE business_trades (\n    business_id INTEGER NOT NULL,\n    trade_id INTEGER NOT NULL,\n    CONSTRAINT pk_business_trades PRIMARY KEY (business_id, trade_id),\n    CONSTRAINT fk_business_trades_business_id FOREIGN KEY (business_id) REFERENCES businesses (id),\n    CONSTRAINT fk_business_trades_trade_id FOREIGN KEY (trade_id) REFERENCES trades (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich notwendigen Entitäten sind vorhanden: customers (Kundinnen/Kunden), businesses (Betriebe), trades (Fachrichtungen), requests (Anfragen), bids (Meldungen/Angebote), business_trades (M:N-Beziehung). Das Schema deckt alle Anforderungen ab.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Zentrale Attribute sind vorhanden: customers (Name, Email, Telefon, Erstellungszeit), businesses (Name, Adresse, Email, Telefon, Aktivstatus), requests (Titel, Beschreibung, Fachrichtung, Kundin/Kunde, Vergabeinformation, Erstellungszeit), bids (Preis, Nachricht, Zeitstempel). Alle Anforderungen sind abgedeckt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Kardinalitäten sind korrekt modelliert: 1:N (customers→requests, trades→requests, businesses→bids), M:N (businesses↔trades via business_trades), 1:1 (requests→awarded_business_id optional). Die Vergabe ist als optionale FK mit Zeitstempel korrekt implementiert (nullable awarded_business_id und awarded_at).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema ist in 3NF: Keine Redundanzen erkannt. Alle Attribute sind atomar, Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, keine transitiven Abhängigkeiten. Junction-Table business_trades ist korrekt aufgelöst.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 16894,
+    "total_output_tokens": 5722,
+    "total_tokens": 22616,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 2,
+        "input_tokens": 8186,
+        "output_tokens": 3390,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 2,
+        "input_tokens": 8708,
+        "output_tokens": 2332,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2446,
+        "output_tokens": 1630,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4406,
+        "output_tokens": 1435,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5740,
+        "output_tokens": 1760,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4302,
+        "output_tokens": 897,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "testfall_id": "TC005",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6019607843137255,
+  "score_gesamt": 0.7611764705882353,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.5882352941176471,
+      "recall": 0.5882352941176471,
+      "f1": 0.5882352941176471,
+      "matched": 10,
+      "nur_in_referenz": 7,
+      "nur_in_generiert": 7
+    },
+    "beziehung": {
+      "recall": 0.5,
+      "matched": 1,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles.license_plate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine Autowerkstatt möchte ihre Kundinnen und Kunden, deren Fahrzeuge und alle Werkstatttermine verwalten. Zu jeder Person sollen Vorname, Nachname, Telefonnummer und E-Mail-Adresse gespeichert werden. Von jedem Fahrzeug werden Kennzeichen, Marke, Modell und Baujahr festgehalten. Jedes Fahrzeug gehört genau einer Kundin oder genau einem Kunden, aber eine Person kann mehrere Fahrzeuge haben. Für jeden Werkstatttermin soll erfasst werden, zu welchem Fahrzeug er gehört, an welchem Tag er stattfindet, was gemacht werden soll, ob der Termin bereits abgeschlossen ist und welche Kosten am Ende berechnet wurden. Ein Fahrzeug kann viele Termine haben, aber jeder Termin bezieht sich immer nur auf genau ein Fahrzeug.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "vehicles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "licensplate",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "brand",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "builtyear",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "vehicle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointmentdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_completed",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "costs",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "vehicle_id",
+              "references_table": "vehicles",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    licensplate VARCHAR(255) NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    builtyear INTEGER,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    appointmentdate DATE NOT NULL,\n    description TEXT,\n    is_completed BOOLEAN NOT NULL,\n    costs DECIMAL(18,2),\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2296,
+    "total_output_tokens": 726,
+    "total_tokens": 3022,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2296,
+        "output_tokens": 726,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2296,
+        "output_tokens": 726,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

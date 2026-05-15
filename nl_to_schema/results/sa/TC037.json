@@ -1,0 +1,453 @@
+{
+  "testfall_id": "TC037",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8068493150684933,
+  "score_gesamt": 0.8841095890410959,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.875,
+      "recall": 0.875,
+      "f1": 0.875,
+      "matched": 7,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.8235294117647058,
+      "recall": 0.717948717948718,
+      "f1": 0.767123287671233,
+      "matched": 28,
+      "nur_in_referenz": 11,
+      "nur_in_generiert": 6
+    },
+    "beziehung": {
+      "recall": 0.75,
+      "matched": 6,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "patient_medications",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "doctors.specialty",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "doctors.employment_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointment_diagnoses.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "prescriptions.dosage_instruction",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments.scheduled_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments.notes",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.patient_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.medication_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.is_allergy",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications → medications",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications → patients",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Arztpraxis soll eine übersichtliche Verwaltung entstehen. Von den Patientinnen und Patienten sollen die üblichen Kontaktdaten sowie das Geburtsdatum festgehalten werden. Die Praxis beschäftigt mehrere Ärztinnen und Ärzte verschiedener Fachrichtungen. Zu jedem Arzt soll nachvollziehbar sein, seit wann er in der Praxis arbeitet und ob er aktuell im Dienst ist.\n\nPatienten kommen zu Terminen in die Praxis. Ein Termin findet immer bei genau einem Arzt statt und hat einen geplanten Zeitpunkt. Außerdem soll erkennbar sein, ob der Termin wahrgenommen, abgesagt oder verschoben wurde. Nicht jeder Besuch läuft gleich ab: Bei einem Termin können mehrere Diagnosen festgestellt werden, und dieselbe Diagnose kann natürlich bei vielen verschiedenen Patienten oder Besuchen vorkommen.\n\nNach einem Besuch können Medikamente verordnet werden. Dabei soll dokumentiert werden, welches Medikament gemeint ist, in welcher Menge und wie oft es eingenommen werden soll. Da manche Mittel in unterschiedlichen Formen oder Stärken vorkommen, sollen zu Medikamenten auch solche Angaben gepflegt werden. Zusätzlich möchte die Praxis notieren, welche Patienten bestimmte Medikamente wegen Unverträglichkeiten nicht bekommen dürfen.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "patients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "doctors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "specialization",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "doctor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "doctor_id",
+              "references_table": "doctors",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "diagnoses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointment_diagnoses",
+          "columns": [
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "medications",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "form",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "strength",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "prescriptions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medication_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "frequency",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medication_id",
+              "references_table": "medications",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "medication_intolerances",
+          "columns": [
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "medication_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medication_id",
+              "references_table": "medications",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    address VARCHAR(255),\n    birthdate DATE,\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE doctors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255),\n    start_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_doctors PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    doctor_id INTEGER NOT NULL,\n    appointment_datetime TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_appointments_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctors (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_diagnoses (\n    appointment_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointment_diagnoses PRIMARY KEY (appointment_id, diagnosis_id),\n    CONSTRAINT fk_appointment_diagnoses_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE medications (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    form VARCHAR(255),\n    strength VARCHAR(255),\n    CONSTRAINT pk_medications PRIMARY KEY (id)\n);\n\nCREATE TABLE medication_intolerances (\n    patient_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    CONSTRAINT pk_medication_intolerances PRIMARY KEY (patient_id, medication_id),\n    CONSTRAINT fk_medication_intolerances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_medication_intolerances_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n\nCREATE TABLE prescriptions (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_prescriptions PRIMARY KEY (id),\n    CONSTRAINT fk_prescriptions_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_prescriptions_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2456,
+    "total_output_tokens": 1679,
+    "total_tokens": 4135,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2456,
+        "output_tokens": 1679,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2456,
+        "output_tokens": 1679,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

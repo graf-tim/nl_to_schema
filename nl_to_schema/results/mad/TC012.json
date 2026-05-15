@@ -1,0 +1,465 @@
+{
+  "testfall_id": "TC012",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9478260869565218,
+  "score_gesamt": 0.9686956521739131,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.8695652173913043,
+      "recall": 0.8695652173913043,
+      "f1": 0.8695652173913043,
+      "matched": 20,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "glasses.lens_strength_left",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "glasses.lens_strength_right",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.entrydate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Optikergeschaeft moechte seine taeglichen Ablaeufe einfach verwalten. Fuer jede Kundin und jeden Kunden sollen Vorname, Nachname, Telefonnummer, E-Mail-Adresse und Geburtsdatum gespeichert werden. Jeder Kunde kann mehrere Auftraege haben. Zu jedem Auftrag soll festgehalten werden, wann er erstellt wurde, fuer welchen Kunden er ist und welchen Status er hat, zum Beispiel offen, in Arbeit oder abgeholt. In einem Auftrag koennen mehrere Brillen erfasst werden. Fuer jede Brille sollen Art des Gestells, Glasstaerke links, Glasstaerke rechts, Farbe und Verkaufspreis gespeichert werden. Jede Brille gehoert immer genau zu einem Auftrag. Zusaetzlich soll es Mitarbeitende geben, von denen Vorname, Nachname, Rolle und Eintrittsdatum gespeichert werden. Jeder Auftrag wird genau von einer mitarbeitenden Person angelegt.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "glasses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "frame_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "left_strength",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "right_strength",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "sale_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Entitäten sind vorhanden: customers, employees, orders, glasses. Die Anforderung ist vollständig abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Kunden (Vorname, Nachname, Telefon, E-Mail, Geburtsdatum), Mitarbeitende (Vorname, Nachname, Rolle, Eintrittsdatum), Aufträge (Erstellungszeit, Status, Kundenreferenz, Mitarbeiterreferenz), Brillen (Gestell, Glasstärke links/rechts, Farbe, Preis).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: 1:N (Kunden→Aufträge), 1:N (Mitarbeitende→Aufträge), 1:N (Aufträge→Brillen). Kardinalitäten entsprechen den Anforderungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema ist in 3NF normalisiert. Keine transitiven Abhängigkeiten, keine Redundanzen. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, und es gibt keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: customers, employees, orders, glasses. Keine fehlenden Entitäten identifiziert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Kunden (Vorname, Nachname, Telefon, E-Mail, Geburtsdatum), Mitarbeitende (Vorname, Nachname, Rolle, Eintrittsdatum), Aufträge (Erstellungsdatum, Status, Kundenzuordnung, Mitarbeiterzuordnung), Brillen (Gestell, Glasstärke links/rechts, Farbe, Verkaufspreis). Attributnamen folgen den Konventionen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: 1:N zwischen customers und orders (ein Kunde hat mehrere Aufträge), 1:N zwischen employees und orders (ein Mitarbeiter erstellt mehrere Aufträge), 1:N zwischen orders und glasses (ein Auftrag enthält mehrere Brillen). Kardinalitäten entsprechen den Anforderungen. Keine M:N-Beziehungen vorhanden, daher keine Brückentabellen erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema ist normalisiert: Keine Redundanzen, keine Anomalien erkennbar. Jede Tabelle hat einen eindeutigen Primärschlüssel, Fremdschlüssel sind korrekt gesetzt. Keine Denormalisierungen vorhanden.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    birthdate DATE,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    hiredate DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE glasses (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    frame_type VARCHAR(255) NOT NULL,\n    left_strength DECIMAL(18,2),\n    right_strength DECIMAL(18,2),\n    color VARCHAR(255),\n    sale_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_glasses PRIMARY KEY (id),\n    CONSTRAINT fk_glasses_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=1] C1: 0 unerfüllte Findings.",
+      "[iter=1] C2: 0 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=2] C1: 0 unerfüllte Findings.",
+      "[iter=2] C2: 0 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 4 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 31011,
+    "total_output_tokens": 7616,
+    "total_tokens": 38627,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 12454,
+        "output_tokens": 3288,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6812,
+        "output_tokens": 1544,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6724,
+        "output_tokens": 1631,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5021,
+        "output_tokens": 1153,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2344,
+        "output_tokens": 982,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3406,
+        "output_tokens": 774,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3362,
+        "output_tokens": 813,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5051,
+        "output_tokens": 1153,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3406,
+        "output_tokens": 770,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3362,
+        "output_tokens": 818,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5059,
+        "output_tokens": 1153,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5021,
+        "output_tokens": 1153,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

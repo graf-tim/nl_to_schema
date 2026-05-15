@@ -1,0 +1,277 @@
+{
+  "testfall_id": "TC007",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9833333333333334,
+  "score_gesamt": 0.99,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9583333333333334,
+      "recall": 0.9583333333333334,
+      "f1": 0.9583333333333334,
+      "matched": 23,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Fahrradverleih möchte seine täglichen Vermietungen übersichtlich festhalten. Für jedes Fahrrad soll gespeichert werden, um was für ein Modell es sich handelt, welche Rahmennummer es hat, welche Farbe es besitzt und ob es aktuell verfügbar ist. Jedes Fahrrad gehört genau zu einer Station. Zu jeder Station werden der Name, die Straße, die Hausnummer, die Postleitzahl und der Ort benötigt. Außerdem sollen die Kundinnen und Kunden erfasst werden, die Fahrräder ausleihen. Von ihnen werden Vorname, Nachname, E-Mail-Adresse, Telefonnummer und Geburtsdatum benötigt. Eine Ausleihe betrifft immer genau ein Fahrrad und genau eine Kundin oder einen Kunden. Zu jeder Ausleihe sollen Ausleihdatum, geplantes Rückgabedatum und das tatsächliche Rückgabedatum gespeichert werden.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "stations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "housenumber",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postalcode",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "bicycles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "station_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "framenumber",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "station_id",
+              "references_table": "stations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phonenumber",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "rentals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "bicycle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkoutdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_returndate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "actual_returndate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "bicycle_id",
+              "references_table": "bicycles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE stations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    housenumber VARCHAR(255) NOT NULL,\n    postalcode VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_stations PRIMARY KEY (id)\n);\n\nCREATE TABLE bicycles (\n    id INTEGER NOT NULL,\n    station_id INTEGER NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    framenumber VARCHAR(255) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    CONSTRAINT pk_bicycles PRIMARY KEY (id),\n    CONSTRAINT fk_bicycles_station_id FOREIGN KEY (station_id) REFERENCES stations (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phonenumber VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    bicycle_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    checkoutdate DATE NOT NULL,\n    planned_returndate DATE NOT NULL,\n    actual_returndate DATE,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_bicycle_id FOREIGN KEY (bicycle_id) REFERENCES bicycles (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2336,
+    "total_output_tokens": 1016,
+    "total_tokens": 3352,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2336,
+        "output_tokens": 1016,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2336,
+        "output_tokens": 1016,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

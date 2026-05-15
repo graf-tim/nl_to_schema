@@ -1,0 +1,1115 @@
+{
+  "testfall_id": "TC091",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7771944922547332,
+  "score_gesamt": 0.86631669535284,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 18,
+    "pk_tabellen_mit_pk": 18,
+    "fk_referenzen_gesamt": 22,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8823529411764706,
+      "f1": 0.8571428571428571,
+      "matched": 15,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.6555555555555556,
+      "recall": 0.7763157894736842,
+      "f1": 0.710843373493976,
+      "matched": 59,
+      "nur_in_referenz": 17,
+      "nur_in_generiert": 31
+    },
+    "beziehung": {
+      "recall": 0.75,
+      "matched": 12,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 2
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "series",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_sensors",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_documents.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "documents.title",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sensors.installed_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sensors.removed_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "models.series_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons_qualifications.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons_qualifications.valid_from",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons_qualifications.valid_to",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "series.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "series.manufacturer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "series.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "series.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_sensors.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_sensors.digital_twin_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_sensors.sensor_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_sensors.assignment_start_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_sensors.assignment_end_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_sensors → digital_twins",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "digital_twin_sensors → sensors",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "models → series",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "series → manufacturers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Unternehmen moechte seine digitalen Zwillinge fuer Anlagen und einzelne Betriebsmittel zentral verwalten. Zu jedem Zwilling sollen die wichtigsten Stammdaten gepflegt werden, etwa Bezeichnung, Beschreibung, Inbetriebnahmedatum und ob das reale Objekt noch aktiv im Einsatz ist. Ein Zwilling gehoert normalerweise zu einem Standort, allerdings werden manche mobilen Einheiten zeitweise an anderen Orten genutzt. Aus fachlicher Sicht waere auch wichtig zu wissen, zu welchem Hersteller und zu welcher Baureihe das reale Objekt gehoert. Nicht immer ist klar, ob jede Baureihe nur von genau einem Hersteller kommt, aber in der Praxis ist das meistens so.\n\nJeder Zwilling basiert auf einem Modell. Ein Modell beschreibt typischerweise Aufbau, Version und vorgesehene Sensorik. Manche sagen allerdings, dass sich Modelle im Laufe der Zeit aendern duerfen und alte Zwillinge dann automatisch die neue Fassung verwenden, andere wollen jede Version getrennt betrachten. Fuer Auswertungen sollen Messwerte aus Sensoren gespeichert werden. Sensoren haben einen Typ wie Temperatur, Vibration oder Energieaufnahme. Ein Sensor kann fest zu einem Zwilling gehoeren, es kommt aber auch vor, dass Sensoren umgebaut oder bei Wartungen ersetzt werden. Historische Nachvollziehbarkeit ist deshalb gewuenscht.\n\nAusserdem sollen Ereignisse wie Stoerung, Wartung, Kalibrierung oder Software-Update dokumentiert werden. Solche Ereignisse werden von Personen gemeldet oder durchgefuehrt; manchmal ist das dieselbe Person, manchmal nicht. Es waere gut, Qualifikationen dieser Personen zu kennen, weil bestimmte Arbeiten nur von geschultem Personal erledigt werden duerfen. Eine Person kann mehrere Qualifikationen besitzen, und dieselbe Qualifikation gilt fuer viele Personen.\n\nFuer jeden Zwilling sollen auch Dokumente wie Handbuch, Pruefprotokoll oder Zertifikat abgelegt werden. Ein Dokument kann sich auf einen einzelnen Zwilling beziehen, teilweise aber auch auf mehrere, zum Beispiel bei einer ganzen Serie. Zusaetzlich soll sichtbar sein, welche Zwillinge miteinander in Beziehung stehen, etwa weil ein Aggregat in eine groessere Anlage eingebaut ist oder weil Komponenten logisch voneinander abhaengen.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "product_series",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "models",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "version",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "sensor_specification",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "sensor_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "unit",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "digital_twins",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "model_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "product_series_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "primary_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "commissioning_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "model_id",
+              "references_table": "models",
+              "references_column": "id"
+            },
+            {
+              "from_column": "product_series_id",
+              "references_table": "product_series",
+              "references_column": "id"
+            },
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "primary_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "digital_twin_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "digital_twin_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_to",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "digital_twin_id",
+              "references_table": "digital_twins",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sensors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "serial_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "sensor_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "digital_twin_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "installation_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "removal_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sensor_type_id",
+              "references_table": "sensor_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "digital_twin_id",
+              "references_table": "digital_twins",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "measurements",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sensor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "value",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "measured_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sensor_id",
+              "references_table": "sensors",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "qualifications",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "person_qualifications",
+          "columns": [
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "qualification_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "acquired_at",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "qualification_id",
+              "references_table": "qualifications",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "event_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "events",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "digital_twin_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "event_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reported_by_person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "performed_by_person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "event_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "digital_twin_id",
+              "references_table": "digital_twins",
+              "references_column": "id"
+            },
+            {
+              "from_column": "event_type_id",
+              "references_table": "event_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "reported_by_person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "performed_by_person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "documents",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "document_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "file_path",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "digital_twin_documents",
+          "columns": [
+            {
+              "name": "digital_twin_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "document_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "digital_twin_id",
+              "references_table": "digital_twins",
+              "references_column": "id"
+            },
+            {
+              "from_column": "document_id",
+              "references_table": "documents",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "digital_twin_relationships",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "parent_digital_twin_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "child_digital_twin_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "relationship_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "parent_digital_twin_id",
+              "references_table": "digital_twins",
+              "references_column": "id"
+            },
+            {
+              "from_column": "child_digital_twin_id",
+              "references_table": "digital_twins",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "digital_twin_model_history",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "digital_twin_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_to",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "digital_twin_id",
+              "references_table": "digital_twins",
+              "references_column": "id"
+            },
+            {
+              "from_column": "model_id",
+              "references_table": "models",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Entität fehlt: 'sensor_history' oder 'sensor_assignments'. Der Anforderungstext fordert explizit: 'Ein Sensor kann fest zu einem Zwilling gehoeren, es kommt aber auch vor, dass Sensoren umgebaut oder bei Wartungen ersetzt werden. Historische Nachvollziehbarkeit ist deshalb gewuenscht.' Die aktuelle Tabelle 'sensors' mit installation_date und removal_date ermöglicht zwar eine Nachverfolgung, aber es fehlt eine explizite Zuordnungstabelle, die die Beziehung zwischen Sensor und Zwilling mit Gültigkeitszeiträumen dokumentiert (ähnlich wie 'digital_twin_locations'). Dies ist notwendig, um zu tracken, welcher Sensor zu welchem Zeitpunkt an welchem Zwilling installiert war.",
+          "korrekturanweisung": "Erstelle eine neue Tabelle 'sensor_assignments' mit Spalten: id (PK), sensor_id (FK zu sensors), digital_twin_id (FK zu digital_twins), valid_from (DATE NOT NULL), valid_to (DATE NULL). Dies ermöglicht die historische Nachverfolgung von Sensorwechseln und -umbauten."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere wichtige Attribute fehlen oder sind unzureichend modelliert: (1) In der Tabelle 'digital_twins' fehlt ein Attribut für die Baureihe (product_series_id ist vorhanden, aber die Anforderung erwähnt explizit 'zu welcher Baureihe das reale Objekt gehoert' als Stammdatum). Dies ist bereits vorhanden. (2) In der Tabelle 'sensors' fehlt ein Attribut für die Kalibrierungsdaten oder Kalibrierungsstatus, obwohl 'Kalibrierung' als Ereignistyp erwähnt wird. (3) Die Tabelle 'models' hat 'sensor_specification' als TEXT, aber keine strukturierte Beziehung zu 'sensor_types', die beschreiben würde, welche Sensoren zu einem Modell gehören. (4) In der Tabelle 'persons' fehlt ein Attribut für die Abteilung oder den Bereich, was für die Qualifikationsverwaltung hilfreich wäre.",
+          "korrekturanweisung": "Füge folgende Attribute hinzu: (1) In 'sensors': 'last_calibration_date' (DATE NULL) und 'next_calibration_date' (DATE NULL). (2) Erstelle eine neue Tabelle 'model_sensor_types' mit Spalten: id (PK), model_id (FK), sensor_type_id (FK), um die Beziehung zwischen Modellen und erwarteten Sensortypen zu dokumentieren. (3) Optional: Füge 'department' (VARCHAR NULL) zu 'persons' hinzu."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Kardinalitätsprobleme und fehlende Beziehungen: (1) Die Beziehung zwischen 'digital_twins' und 'product_series' ist optional (nullable: true), aber die Anforderung sagt 'Ein Zwilling gehoert normalerweise zu einem Standort' und 'zu welcher Baureihe das reale Objekt gehoert'. Dies deutet auf eine 1:N-Beziehung hin, die nicht optional sein sollte. (2) Die Beziehung zwischen 'product_series' und 'manufacturers' ist optional (nullable: true), aber die Anforderung sagt 'Nicht immer ist klar, ob jede Baureihe nur von genau einem Hersteller kommt, aber in der Praxis ist das meistens so.' Dies ist korrekt modelliert, aber die Semantik ist unklar: Sollte eine Baureihe mehrere Hersteller haben können (M:N)? (3) Es fehlt eine explizite Beziehung zwischen 'models' und 'product_series', obwohl ein Modell typischerweise zu einer Baureihe gehört. (4) Die Beziehung zwischen 'digital_twins' und 'manufacturers' ist redundant, da sie bereits über 'product_series' erreichbar ist.",
+          "korrekturanweisung": "Änderungen: (1) Setze 'product_series_id' in 'digital_twins' auf NOT NULL (nullable: false), da jeder Zwilling zu einer Baureihe gehören sollte. (2) Füge 'product_series_id' zu 'models' hinzu (FK zu product_series, NOT NULL), um die Beziehung zwischen Modellen und Baureihen zu dokumentieren. (3) Entferne 'manufacturer_id' aus 'digital_twins', da diese Information redundant über product_series → manufacturers erreichbar ist. (4) Wenn Baureihen mehrere Hersteller haben können, erstelle eine Junction-Table 'manufacturer_product_series' statt einer einfachen FK."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Normalisierungsprobleme erkannt: (1) Redundanz: 'digital_twins' hat sowohl 'manufacturer_id' als auch 'product_series_id', und 'product_series' hat bereits 'manufacturer_id'. Dies führt zu Redundanz und potenziellen Inkonsistenzen (z.B. wenn manufacturer_id in digital_twins nicht mit dem Hersteller der product_series übereinstimmt). (2) Fehlende Normalisierung in 'sensors': Die Spalte 'is_active' ist redundant, da 'removal_date' NULL bedeutet, dass der Sensor noch aktiv ist. Dies verstößt gegen 3NF. (3) In 'digital_twins': 'is_active' könnte durch ein Konzept wie 'decommissioning_date' ersetzt werden, um Redundanz zu vermeiden. (4) Die Tabelle 'documents' hat 'document_type' als VARCHAR, sollte aber eine FK zu einer 'document_types'-Tabelle sein.",
+          "korrekturanweisung": "Änderungen: (1) Entferne 'manufacturer_id' aus 'digital_twins' (redundant). (2) Entferne 'is_active' aus 'sensors' und nutze stattdessen die Logik: Sensor ist aktiv, wenn 'removal_date' IS NULL. (3) Ersetze 'is_active' in 'digital_twins' durch 'decommissioning_date' (DATE NULL), um Redundanz zu vermeiden. (4) Erstelle eine neue Tabelle 'document_types' mit id (PK) und name (VARCHAR), und ersetze 'document_type' in 'documents' durch 'document_type_id' (FK)."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE models (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    version VARCHAR(255),\n    description TEXT,\n    sensor_specification TEXT,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_models PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE product_series (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    manufacturer_id INTEGER,\n    description TEXT,\n    CONSTRAINT pk_product_series PRIMARY KEY (id),\n    CONSTRAINT fk_product_series_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    address VARCHAR(255),\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE digital_twins (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    model_id INTEGER NOT NULL,\n    product_series_id INTEGER,\n    manufacturer_id INTEGER,\n    primary_location_id INTEGER,\n    commissioning_date DATE,\n    is_active BOOLEAN NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_digital_twins PRIMARY KEY (id),\n    CONSTRAINT fk_digital_twins_model_id FOREIGN KEY (model_id) REFERENCES models (id),\n    CONSTRAINT fk_digital_twins_product_series_id FOREIGN KEY (product_series_id) REFERENCES product_series (id),\n    CONSTRAINT fk_digital_twins_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id),\n    CONSTRAINT fk_digital_twins_primary_location_id FOREIGN KEY (primary_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    document_type VARCHAR(255),\n    description TEXT,\n    file_path VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_documents PRIMARY KEY (id)\n);\n\nCREATE TABLE digital_twin_documents (\n    digital_twin_id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    CONSTRAINT pk_digital_twin_documents PRIMARY KEY (digital_twin_id, document_id),\n    CONSTRAINT fk_digital_twin_documents_digital_twin_id FOREIGN KEY (digital_twin_id) REFERENCES digital_twins (id),\n    CONSTRAINT fk_digital_twin_documents_document_id FOREIGN KEY (document_id) REFERENCES documents (id)\n);\n\nCREATE TABLE digital_twin_locations (\n    id INTEGER NOT NULL,\n    digital_twin_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_to DATE,\n    CONSTRAINT pk_digital_twin_locations PRIMARY KEY (id),\n    CONSTRAINT fk_digital_twin_locations_digital_twin_id FOREIGN KEY (digital_twin_id) REFERENCES digital_twins (id),\n    CONSTRAINT fk_digital_twin_locations_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE digital_twin_model_history (\n    id INTEGER NOT NULL,\n    digital_twin_id INTEGER NOT NULL,\n    model_id INTEGER NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_to DATE,\n    description TEXT,\n    CONSTRAINT pk_digital_twin_model_history PRIMARY KEY (id),\n    CONSTRAINT fk_digital_twin_model_history_digital_twin_id FOREIGN KEY (digital_twin_id) REFERENCES digital_twins (id),\n    CONSTRAINT fk_digital_twin_model_history_model_id FOREIGN KEY (model_id) REFERENCES models (id)\n);\n\nCREATE TABLE digital_twin_relationships (\n    id INTEGER NOT NULL,\n    parent_digital_twin_id INTEGER NOT NULL,\n    child_digital_twin_id INTEGER NOT NULL,\n    relationship_type VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_digital_twin_relationships PRIMARY KEY (id),\n    CONSTRAINT fk_digital_twin_relationships_parent_digital_twin_id FOREIGN KEY (parent_digital_twin_id) REFERENCES digital_twins (id),\n    CONSTRAINT fk_digital_twin_relationships_child_digital_twin_id FOREIGN KEY (child_digital_twin_id) REFERENCES digital_twins (id)\n);\n\nCREATE TABLE event_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_event_types PRIMARY KEY (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE events (\n    id INTEGER NOT NULL,\n    digital_twin_id INTEGER NOT NULL,\n    event_type_id INTEGER NOT NULL,\n    reported_by_person_id INTEGER,\n    performed_by_person_id INTEGER,\n    description TEXT,\n    event_date DATE NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_events PRIMARY KEY (id),\n    CONSTRAINT fk_events_digital_twin_id FOREIGN KEY (digital_twin_id) REFERENCES digital_twins (id),\n    CONSTRAINT fk_events_event_type_id FOREIGN KEY (event_type_id) REFERENCES event_types (id),\n    CONSTRAINT fk_events_reported_by_person_id FOREIGN KEY (reported_by_person_id) REFERENCES persons (id),\n    CONSTRAINT fk_events_performed_by_person_id FOREIGN KEY (performed_by_person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE sensor_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    unit VARCHAR(255),\n    CONSTRAINT pk_sensor_types PRIMARY KEY (id)\n);\n\nCREATE TABLE sensors (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    serial_number VARCHAR(255),\n    sensor_type_id INTEGER NOT NULL,\n    digital_twin_id INTEGER NOT NULL,\n    installation_date DATE,\n    removal_date DATE,\n    is_active BOOLEAN NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_sensors PRIMARY KEY (id),\n    CONSTRAINT fk_sensors_sensor_type_id FOREIGN KEY (sensor_type_id) REFERENCES sensor_types (id),\n    CONSTRAINT fk_sensors_digital_twin_id FOREIGN KEY (digital_twin_id) REFERENCES digital_twins (id)\n);\n\nCREATE TABLE measurements (\n    id INTEGER NOT NULL,\n    sensor_id INTEGER NOT NULL,\n    value DECIMAL(18,2) NOT NULL,\n    measured_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_measurements PRIMARY KEY (id),\n    CONSTRAINT fk_measurements_sensor_id FOREIGN KEY (sensor_id) REFERENCES sensors (id)\n);\n\nCREATE TABLE qualifications (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_qualifications PRIMARY KEY (id)\n);\n\nCREATE TABLE person_qualifications (\n    person_id INTEGER NOT NULL,\n    qualification_id INTEGER NOT NULL,\n    acquired_at DATE,\n    CONSTRAINT pk_person_qualifications PRIMARY KEY (person_id, qualification_id),\n    CONSTRAINT fk_person_qualifications_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_person_qualifications_qualification_id FOREIGN KEY (qualification_id) REFERENCES qualifications (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Entität fehlt: 'sensor_history' oder 'sensor_assignments'. Der Anforderungstext fordert explizit: 'Ein Sensor kann fest zu einem Zwilling gehoeren, es kommt aber auch vor, dass Sensoren umgebaut oder bei Wartungen ersetzt werden. Historische Nachvollziehbarkeit ist deshalb gewuenscht.' Die aktuelle Tabelle 'sensors' mit installation_date und removal_date ermöglicht zwar eine Nachverfolgung, aber es fehlt eine explizite Zuordnungstabelle, die die Beziehung zwischen Sensor und Zwilling mit Gültigkeitszeiträumen dokumentiert (ähnlich wie 'digital_twin_locations'). Dies ist notwendig, um zu tracken, welcher Sensor zu welchem Zeitpunkt an welchem Zwilling installiert war.",
+          "korrekturanweisung": "Erstelle eine neue Tabelle 'sensor_assignments' mit Spalten: id (PK), sensor_id (FK zu sensors), digital_twin_id (FK zu digital_twins), valid_from (DATE NOT NULL), valid_to (DATE NULL). Dies ermöglicht die historische Nachverfolgung von Sensorwechseln und -umbauten."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere wichtige Attribute fehlen oder sind unzureichend modelliert: (1) In der Tabelle 'digital_twins' fehlt ein Attribut für die Baureihe (product_series_id ist vorhanden, aber die Anforderung erwähnt explizit 'zu welcher Baureihe das reale Objekt gehoert' als Stammdatum). Dies ist bereits vorhanden. (2) In der Tabelle 'sensors' fehlt ein Attribut für die Kalibrierungsdaten oder Kalibrierungsstatus, obwohl 'Kalibrierung' als Ereignistyp erwähnt wird. (3) Die Tabelle 'models' hat 'sensor_specification' als TEXT, aber keine strukturierte Beziehung zu 'sensor_types', die beschreiben würde, welche Sensoren zu einem Modell gehören. (4) In der Tabelle 'persons' fehlt ein Attribut für die Abteilung oder den Bereich, was für die Qualifikationsverwaltung hilfreich wäre.",
+          "korrekturanweisung": "Füge folgende Attribute hinzu: (1) In 'sensors': 'last_calibration_date' (DATE NULL) und 'next_calibration_date' (DATE NULL). (2) Erstelle eine neue Tabelle 'model_sensor_types' mit Spalten: id (PK), model_id (FK), sensor_type_id (FK), um die Beziehung zwischen Modellen und erwarteten Sensortypen zu dokumentieren. (3) Optional: Füge 'department' (VARCHAR NULL) zu 'persons' hinzu."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Kardinalitätsprobleme und fehlende Beziehungen: (1) Die Beziehung zwischen 'digital_twins' und 'product_series' ist optional (nullable: true), aber die Anforderung sagt 'Ein Zwilling gehoert normalerweise zu einem Standort' und 'zu welcher Baureihe das reale Objekt gehoert'. Dies deutet auf eine 1:N-Beziehung hin, die nicht optional sein sollte. (2) Die Beziehung zwischen 'product_series' und 'manufacturers' ist optional (nullable: true), aber die Anforderung sagt 'Nicht immer ist klar, ob jede Baureihe nur von genau einem Hersteller kommt, aber in der Praxis ist das meistens so.' Dies ist korrekt modelliert, aber die Semantik ist unklar: Sollte eine Baureihe mehrere Hersteller haben können (M:N)? (3) Es fehlt eine explizite Beziehung zwischen 'models' und 'product_series', obwohl ein Modell typischerweise zu einer Baureihe gehört. (4) Die Beziehung zwischen 'digital_twins' und 'manufacturers' ist redundant, da sie bereits über 'product_series' erreichbar ist.",
+          "korrekturanweisung": "Änderungen: (1) Setze 'product_series_id' in 'digital_twins' auf NOT NULL (nullable: false), da jeder Zwilling zu einer Baureihe gehören sollte. (2) Füge 'product_series_id' zu 'models' hinzu (FK zu product_series, NOT NULL), um die Beziehung zwischen Modellen und Baureihen zu dokumentieren. (3) Entferne 'manufacturer_id' aus 'digital_twins', da diese Information redundant über product_series → manufacturers erreichbar ist. (4) Wenn Baureihen mehrere Hersteller haben können, erstelle eine Junction-Table 'manufacturer_product_series' statt einer einfachen FK."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Normalisierungsprobleme erkannt: (1) Redundanz: 'digital_twins' hat sowohl 'manufacturer_id' als auch 'product_series_id', und 'product_series' hat bereits 'manufacturer_id'. Dies führt zu Redundanz und potenziellen Inkonsistenzen (z.B. wenn manufacturer_id in digital_twins nicht mit dem Hersteller der product_series übereinstimmt). (2) Fehlende Normalisierung in 'sensors': Die Spalte 'is_active' ist redundant, da 'removal_date' NULL bedeutet, dass der Sensor noch aktiv ist. Dies verstößt gegen 3NF. (3) In 'digital_twins': 'is_active' könnte durch ein Konzept wie 'decommissioning_date' ersetzt werden, um Redundanz zu vermeiden. (4) Die Tabelle 'documents' hat 'document_type' als VARCHAR, sollte aber eine FK zu einer 'document_types'-Tabelle sein.",
+          "korrekturanweisung": "Änderungen: (1) Entferne 'manufacturer_id' aus 'digital_twins' (redundant). (2) Entferne 'is_active' aus 'sensors' und nutze stattdessen die Logik: Sensor ist aktiv, wenn 'removal_date' IS NULL. (3) Ersetze 'is_active' in 'digital_twins' durch 'decommissioning_date' (DATE NULL), um Redundanz zu vermeiden. (4) Erstelle eine neue Tabelle 'document_types' mit id (PK) und name (VARCHAR), und ersetze 'document_type' in 'documents' durch 'document_type_id' (FK)."
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 42344,
+    "total_output_tokens": 18280,
+    "total_tokens": 60624,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 20090,
+        "output_tokens": 13191,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 22254,
+        "output_tokens": 5089,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2748,
+        "output_tokens": 3728,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7103,
+        "output_tokens": 1106,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8294,
+        "output_tokens": 4457,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7301,
+        "output_tokens": 1858,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 9048,
+        "output_tokens": 5006,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7850,
+        "output_tokens": 2125,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

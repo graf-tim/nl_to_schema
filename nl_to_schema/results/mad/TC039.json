@@ -1,0 +1,715 @@
+{
+  "testfall_id": "TC039",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.676923076923077,
+  "score_gesamt": 0.8061538461538462,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 11,
+    "pk_tabellen_mit_pk": 11,
+    "fk_referenzen_gesamt": 11,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5454545454545454,
+      "recall": 0.8571428571428571,
+      "f1": 0.6666666666666665,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 5
+    },
+    "attribut": {
+      "precision": 0.5869565217391305,
+      "recall": 0.84375,
+      "f1": 0.6923076923076924,
+      "matched": 27,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 19
+    },
+    "beziehung": {
+      "recall": 0.6666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 1
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "partners",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "travelers.booking_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "destinations.country",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "partners.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "partners.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "partners.partner_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "partners_trips → partners",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "travelers → bookings",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Reisebüro möchte seine angebotenen Reisen und die dazugehörigen Buchungen übersichtlich verwalten. Zu jeder Reise sollen ein Name, eine kurze Beschreibung, ein Zeitraum und der Grundpreis festgehalten werden. Reisen gehen immer in genau ein Zielgebiet, etwa eine Stadt oder Region. Für das Zielgebiet soll auch das Land bekannt sein, damit man später leichter nach Reisezielen suchen kann. Kunden geben bei einer Buchung ihre Kontaktdaten an. Eine Buchung bezieht sich immer auf genau eine Reise, kann aber für mehrere Reisende gemacht werden, zum Beispiel für eine Familie. Für jeden Reisenden sollen Name und Geburtsdatum gespeichert werden, weil dies für manche Leistungen wichtig ist. \n\nAußerdem arbeitet das Reisebüro mit verschiedenen Leistungspartnern zusammen, etwa Hotels, Fluggesellschaften oder lokalen Veranstaltern. Eine Reise kann mehrere solcher Partner haben, und ein Partner kann an mehreren Reisen beteiligt sein. Dabei soll nachvollziehbar sein, welche Art von Beitrag der Partner zur jeweiligen Reise leistet. \n\nWenn ein Kunde bucht, soll auch festgehalten werden, wann die Buchung eingegangen ist und ob sie bereits bezahlt wurde. Nicht immer ist sofort klar, ob ein Reisender auch der buchende Kunde ist; das soll flexibel bleiben.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "countries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "destinations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "country_id",
+              "references_table": "countries",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "contribution_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "partner_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "travels",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "base_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "destination_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "destination_id",
+              "references_table": "destinations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "bookings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "travel_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "booking_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_paid",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "travel_id",
+              "references_table": "travels",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "travelers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "booking_travelers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "booking_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "traveler_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_primary_traveler",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "booking_id",
+              "references_table": "bookings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "traveler_id",
+              "references_table": "travelers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "service_partners",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "partner_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_info",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "partner_type_id",
+              "references_table": "partner_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "travel_service_partners",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "travel_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "service_partner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contribution_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "partner_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "travel_id",
+              "references_table": "travels",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_partner_id",
+              "references_table": "service_partners",
+              "references_column": "id"
+            },
+            {
+              "from_column": "contribution_type_id",
+              "references_table": "contribution_types",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'travelers' ist semantisch unterbestimmt. Reisende sollen unabhängig von Kunden existieren können (Anforderung: 'Eine Buchung kann für mehrere Reisende gemacht werden, zum Beispiel für eine Familie'). Das Feld 'customer_id' ist nullable, was impliziert, dass Reisende optional einem Kunden zugeordnet sind. Dies ist korrekt, aber die Tabelle fehlt eine Zuordnung zur Buchung selbst. Reisende sind nur über die Junction-Table 'booking_travelers' mit Buchungen verbunden, nicht direkt mit Kunden. Das ist zwar strukturell möglich, aber semantisch problematisch: Es gibt keine Garantie, dass ein Reisender, der über 'booking_travelers' mit einer Buchung verknüpft ist, auch zum buchenden Kunden gehört oder unabhängig ist. Die Anforderung 'Nicht immer ist sofort klar, ob ein Reisender auch der buchende Kunde ist' wird nicht explizit modelliert.",
+          "korrekturanweisung": "Erwägen Sie, die Semantik zu klären: Entweder (1) Reisende sind immer unabhängige Entitäten ohne Kundenbezug, oder (2) ein Reisender kann optional einem Kunden entsprechen (aktuell: customer_id nullable). Die aktuelle Lösung ist grenzwertig, da sie Mehrdeutigkeit zulässt. Empfehlung: Dokumentieren Sie explizit, dass 'customer_id' in 'travelers' nur gesetzt wird, wenn der Reisende identisch mit einem Kunden ist."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'travelers' fehlt eine eindeutige Identifikation. Zwei Reisende mit gleichem Namen und Geburtsdatum sind nicht unterscheidbar. Für eine Buchung mit mehreren Familienmitgliedern ist dies problematisch. Zusätzlich: Tabelle 'customers' hat kein eindeutiges Identifikationsmerkmal außer der E-Mail (die als NOT NULL definiert ist, aber nicht als UNIQUE). Dies kann zu Duplikaten führen. Tabelle 'service_partners' hat kein eindeutiges Merkmal außer dem Namen (nicht als UNIQUE definiert).",
+          "korrekturanweisung": "1. Fügen Sie 'UNIQUE' Constraint auf 'email' in 'customers' hinzu. 2. Erwägen Sie, 'name' in 'service_partners' als UNIQUE zu markieren oder ein separates eindeutiges Merkmal (z.B. Registrierungsnummer) einzuführen. 3. Für 'travelers': Die ID allein ist ausreichend, aber dokumentieren Sie, dass Duplikate durch Geschäftslogik vermieden werden müssen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen 'travelers' und 'bookings' ist nicht vollständig modelliert. Die Junction-Table 'booking_travelers' verbindet Reisende mit Buchungen, aber es gibt keine Garantie, dass die Reisenden zur Buchung gehören (z.B. dass sie vom buchenden Kunden autorisiert sind). Semantisch: Eine Buchung wird von einem Kunden gemacht, und dieser Kunde kann mehrere Reisende hinzufügen. Die aktuelle Struktur erlaubt, dass beliebige Reisende zu einer Buchung hinzugefügt werden, ohne dass eine Beziehung zum buchenden Kunden überprüft wird. Dies ist ein Integritätsproblem.",
+          "korrekturanweisung": "Erwägen Sie, 'booking_travelers' um ein Feld 'is_primary_traveler' (BOOLEAN) zu ergänzen, um zu kennzeichnen, ob ein Reisender der buchende Kunde ist. Alternativ: Dokumentieren Sie, dass die Geschäftslogik sicherstellen muss, dass nur autorisierte Reisende zu einer Buchung hinzugefügt werden."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'service_partners' verletzt die 3NF. Das Feld 'partner_type' (VARCHAR) ist ein Attribut, das eine Kategorie darstellt, aber nicht als Fremdschlüssel zu einer separaten Tabelle 'partner_types' modelliert ist. Dies führt zu Redundanz und Anomalien: Wenn ein Partner-Typ geändert wird (z.B. 'Hotel' → 'Accommodation'), müssen alle Einträge manuell aktualisiert werden. Zusätzlich: Tabelle 'travelers' speichert 'firstname' und 'lastname' separat, was korrekt ist, aber 'customers' macht das gleiche. Dies ist nicht redundant, sondern semantisch korrekt (unterschiedliche Entitäten). Jedoch: 'contribution_type_id' in 'travel_service_partners' ist ein Fremdschlüssel, aber 'contribution_types' ist eine Lookup-Tabelle. Dies ist korrekt normalisiert.",
+          "korrekturanweisung": "Erstellen Sie eine neue Tabelle 'partner_types' mit Feldern 'id' (INTEGER PRIMARY KEY) und 'name' (VARCHAR NOT NULL UNIQUE). Ersetzen Sie 'partner_type' (VARCHAR) in 'service_partners' durch 'partner_type_id' (INTEGER NOT NULL, FOREIGN KEY zu 'partner_types'). Dies eliminiert Redundanz und erzwingt referenzielle Integrität."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind modelliert: countries, destinations, travels, customers, travelers, bookings, service_partners, contribution_types. Die Struktur deckt alle fachlichen Bereiche ab (Reisen, Zielgebiete, Kunden, Reisende, Buchungen, Partner).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'travelers' hat ein kritisches Attribut-Defizit. Der Anforderungstext fordert explizit: 'Eine Buchung bezieht sich immer auf genau eine Reise, kann aber für mehrere Reisende gemacht werden, zum Beispiel für eine Familie. Für jeden Reisenden sollen Name und Geburtsdatum gespeichert werden.' Die Tabelle 'travelers' speichert Reisende mit Name und Geburtsdatum, aber es fehlt eine direkte Zuordnung zur Buchung. Die Junction-Table 'booking_travelers' verbindet zwar Buchungen und Reisende, aber es gibt keine Möglichkeit, zusätzliche buchungsspezifische Informationen zu speichern (z.B. Zimmertyp, Sitzplatzwunsch, Allergien). Noch kritischer: Der Anforderungstext sagt 'Nicht immer ist sofort klar, ob ein Reisender auch der buchende Kunde ist; das soll flexibel bleiben.' Das ist zwar durch die optionale customer_id in 'travelers' gelöst, aber die Struktur erlaubt nicht, dass ein Reisender ohne Kundendaten existiert und trotzdem einer Buchung zugeordnet wird – das ist fachlich notwendig für Familienbuchungen, wo nur ein Familienmitglied der Kunde ist.",
+          "korrekturanweisung": "Die Tabelle 'booking_travelers' sollte um ein Primärschlüssel-Feld (z.B. 'id') erweitert werden, um später buchungsspezifische Attribute hinzufügen zu können. Alternativ: Prüfen, ob 'travelers' unabhängig von 'customers' existieren kann (derzeit ist customer_id nullable, was gut ist, aber die Dokumentation sollte klarer sein). Empfehlung: 'booking_travelers' als echte Entität mit eigenem PK modellieren, nicht als reine Junction-Table."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'bookings' und 'travelers' ist unvollständig modelliert. Der Anforderungstext sagt: 'Eine Buchung bezieht sich immer auf genau eine Reise, kann aber für mehrere Reisende gemacht werden.' Das ist eine M:N-Beziehung (eine Buchung → mehrere Reisende, ein Reisender → mehrere Buchungen). Die Junction-Table 'booking_travelers' existiert, aber ihr Primärschlüssel ist zusammengesetzt aus (booking_id, traveler_id) ohne zusätzliches 'id'-Feld. Das ist zwar technisch korrekt für eine reine Verknüpfung, aber fachlich problematisch: Es gibt keine Möglichkeit, Informationen über die Zuordnung selbst zu speichern (z.B. 'Zimmer-Nummer für diesen Reisenden in dieser Buchung', 'Sitzplatz', 'Spezialwünsche'). Weiterhin: Die Kardinalität 'travels' → 'destinations' ist korrekt als 1:N (eine Reise → ein Zielgebiet), aber die Modellierung der Partner-Beziehung ist zu simpel: 'travel_service_partners' hat keinen Primärschlüssel-Feld und keine Möglichkeit, weitere Informationen zu speichern (z.B. 'Preis des Partners für diese Reise', 'Kontaktperson', 'Vertragsnummer').",
+          "korrekturanweisung": "1. 'booking_travelers' sollte ein eigenes 'id'-Feld als Primärschlüssel erhalten, damit später buchungsspezifische Attribute hinzugefügt werden können. 2. 'travel_service_partners' sollte ebenfalls ein 'id'-Feld als Primärschlüssel bekommen und um Attribute wie 'partner_price' oder 'notes' erweitert werden, um die Beziehung vollständig zu dokumentieren."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist normalisiert (3NF). Keine transitive Abhängigkeiten erkannt. Alle Fremdschlüssel sind korrekt gesetzt. Die Aufteilung in separate Tabellen (countries, destinations, contribution_types) ist angemessen und vermeidet Redundanz.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    address TEXT,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE countries (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_countries PRIMARY KEY (id)\n);\n\nCREATE TABLE destinations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    country_id INTEGER NOT NULL,\n    CONSTRAINT pk_destinations PRIMARY KEY (id),\n    CONSTRAINT fk_destinations_country_id FOREIGN KEY (country_id) REFERENCES countries (id)\n);\n\nCREATE TABLE travels (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    base_price DECIMAL(18,2) NOT NULL,\n    destination_id INTEGER NOT NULL,\n    CONSTRAINT pk_travels PRIMARY KEY (id),\n    CONSTRAINT fk_travels_destination_id FOREIGN KEY (destination_id) REFERENCES destinations (id)\n);\n\nCREATE TABLE bookings (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    travel_id INTEGER NOT NULL,\n    booking_date TIMESTAMP NOT NULL,\n    is_paid BOOLEAN NOT NULL,\n    CONSTRAINT pk_bookings PRIMARY KEY (id),\n    CONSTRAINT fk_bookings_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_bookings_travel_id FOREIGN KEY (travel_id) REFERENCES travels (id)\n);\n\nCREATE TABLE travelers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    customer_id INTEGER,\n    CONSTRAINT pk_travelers PRIMARY KEY (id),\n    CONSTRAINT fk_travelers_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE booking_travelers (\n    id INTEGER NOT NULL,\n    booking_id INTEGER NOT NULL,\n    traveler_id INTEGER NOT NULL,\n    is_primary_traveler BOOLEAN NOT NULL,\n    CONSTRAINT pk_booking_travelers PRIMARY KEY (id),\n    CONSTRAINT fk_booking_travelers_booking_id FOREIGN KEY (booking_id) REFERENCES bookings (id),\n    CONSTRAINT fk_booking_travelers_traveler_id FOREIGN KEY (traveler_id) REFERENCES travelers (id)\n);\n\nCREATE TABLE contribution_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_contribution_types PRIMARY KEY (id)\n);\n\nCREATE TABLE partner_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_partner_types PRIMARY KEY (id)\n);\n\nCREATE TABLE service_partners (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    partner_type_id INTEGER NOT NULL,\n    contact_info TEXT,\n    CONSTRAINT pk_service_partners PRIMARY KEY (id),\n    CONSTRAINT fk_service_partners_partner_type_id FOREIGN KEY (partner_type_id) REFERENCES partner_types (id)\n);\n\nCREATE TABLE travel_service_partners (\n    id INTEGER NOT NULL,\n    travel_id INTEGER NOT NULL,\n    service_partner_id INTEGER NOT NULL,\n    contribution_type_id INTEGER NOT NULL,\n    partner_price DECIMAL(18,2),\n    notes TEXT,\n    CONSTRAINT pk_travel_service_partners PRIMARY KEY (id),\n    CONSTRAINT fk_travel_service_partners_travel_id FOREIGN KEY (travel_id) REFERENCES travels (id),\n    CONSTRAINT fk_travel_service_partners_service_partner_id FOREIGN KEY (service_partner_id) REFERENCES service_partners (id),\n    CONSTRAINT fk_travel_service_partners_contribution_type_id FOREIGN KEY (contribution_type_id) REFERENCES contribution_types (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 10 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 2 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 11 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 11 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 43210,
+    "total_output_tokens": 14916,
+    "total_tokens": 58126,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 17444,
+        "output_tokens": 6382,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8733,
+        "output_tokens": 3401,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8645,
+        "output_tokens": 2535,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 8388,
+        "output_tokens": 2598,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2453,
+        "output_tokens": 1534,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4121,
+        "output_tokens": 1598,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4077,
+        "output_tokens": 938,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6913,
+        "output_tokens": 2250,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4612,
+        "output_tokens": 1803,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4568,
+        "output_tokens": 1597,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8078,
+        "output_tokens": 2598,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8388,
+        "output_tokens": 2598,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

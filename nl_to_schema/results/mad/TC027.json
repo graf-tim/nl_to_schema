@@ -1,0 +1,467 @@
+{
+  "testfall_id": "TC027",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9191919191919193,
+  "score_gesamt": 0.9515151515151516,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 5,
+    "pk_tabellen_mit_pk": 5,
+    "fk_referenzen_gesamt": 4,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.8333333333333334,
+      "recall": 1.0,
+      "f1": 0.9090909090909091,
+      "matched": 20,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 4
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [],
+  "state": {
+    "anforderungstext": "Für eine kleine Weinhandlung soll festgehalten werden, welche Weingüter die angebotenen Weine herstellen. Zu jedem Weingut werden der Name, das Land und der Ort gespeichert. Jeder Wein gehört genau zu einem Weingut. Für jeden Wein sollen der Name, die Farbe, der Jahrgang, der Verkaufspreis und eine kurze Beschreibung erfasst werden. Außerdem möchte die Weinhandlung ihre Kundinnen und Kunden mit Vorname, Nachname, E-Mail-Adresse und dem Datum der Registrierung verwalten. Eine Kundin oder ein Kunde kann mehrere Bestellungen aufgeben, aber jede Bestellung gehört immer genau zu einer Person. Für jede Bestellung werden das Bestelldatum und der aktuelle Status gespeichert.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "wineries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "wines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "winery_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "vintage",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "winery_id",
+              "references_table": "wineries",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "registrationdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_wines",
+          "columns": [
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "wine_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "wine_id",
+              "references_table": "wines",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle Entitäten aus der Anforderung sind modelliert: wineries, wines, customers, orders. Die Junction-Table order_wines ist korrekt für die N:M-Beziehung zwischen orders und wines.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Weingüter (name, country, city), Weine (name, color, vintage, price, description), Kunden (firstname, lastname, email, registrationdate), Bestellungen (orderdate, status), Bestellpositionen (quantity, unit_price).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: 1:N (wineries→wines), 1:N (customers→orders), N:M (orders↔wines via order_wines). Kardinalitäten entsprechen den Anforderungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema erfüllt 3NF: Keine transitiven Abhängigkeiten, keine Redundanzen. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. order_wines ist korrekt als Assoziationstabelle mit Zusatzattributen (quantity, unit_price) modelliert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind modelliert: Weingüter (wineries), Weine (wines), Kunden (customers) und Bestellungen (orders). Die Brückentabelle order_wines ist fachlich notwendig und vorhanden, um die M:N-Beziehung zwischen Bestellungen und Weinen abzubilden.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext explizit genannten Attribute sind vorhanden: Weingüter (name, country, city), Weine (name, color, vintage/jahrgang, price/verkaufspreis, description), Kunden (firstname/vorname, lastname/nachname, email, registrationdate), Bestellungen (orderdate/bestelldatum, status). Die Brückentabelle order_wines enthält sinnvoll quantity und unit_price zur Abbildung von Bestelldetails.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: 1:N zwischen wineries und wines (jeder Wein gehört zu genau einem Weingut), 1:N zwischen customers und orders (eine Person kann mehrere Bestellungen aufgeben), M:N zwischen orders und wines über order_wines-Brückentabelle (eine Bestellung kann mehrere Weine enthalten, ein Wein kann in mehreren Bestellungen vorkommen). Kardinalitäten entsprechen den Anforderungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist normalisiert: Keine Redundanzen erkennbar, Fremdschlüssel sind korrekt gesetzt, Brückentabelle für M:N-Beziehung vorhanden. Alle Tabellen befinden sich mindestens in 3. Normalform.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registrationdate DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE wineries (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_wineries PRIMARY KEY (id)\n);\n\nCREATE TABLE wines (\n    id INTEGER NOT NULL,\n    winery_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    vintage INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_wines PRIMARY KEY (id),\n    CONSTRAINT fk_wines_winery_id FOREIGN KEY (winery_id) REFERENCES wineries (id)\n);\n\nCREATE TABLE order_wines (\n    order_id INTEGER NOT NULL,\n    wine_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_wines PRIMARY KEY (order_id, wine_id),\n    CONSTRAINT fk_order_wines_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_wines_wine_id FOREIGN KEY (wine_id) REFERENCES wines (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=1] C1: 2 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 5 Tabelle(n).",
+      "[iter=2] C1: 0 unerfüllte Findings.",
+      "[iter=2] C2: 0 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 5 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 5 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 30900,
+    "total_output_tokens": 8053,
+    "total_tokens": 38953,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 12544,
+        "output_tokens": 3406,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6668,
+        "output_tokens": 1605,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6580,
+        "output_tokens": 1782,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5108,
+        "output_tokens": 1260,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2280,
+        "output_tokens": 849,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3182,
+        "output_tokens": 828,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3138,
+        "output_tokens": 983,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5081,
+        "output_tokens": 1297,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3486,
+        "output_tokens": 777,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3442,
+        "output_tokens": 799,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5183,
+        "output_tokens": 1260,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5108,
+        "output_tokens": 1260,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,908 @@
+{
+  "testfall_id": "TC065",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.4379487179487179,
+  "score_gesamt": 0.6627692307692308,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.42857142857142855,
+      "recall": 0.5,
+      "f1": 0.4615384615384615,
+      "matched": 3,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 4
+    },
+    "attribut": {
+      "precision": 0.4375,
+      "recall": 0.5,
+      "f1": 0.4666666666666667,
+      "matched": 14,
+      "nur_in_referenz": 14,
+      "nur_in_generiert": 18
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "warehouses.goods_category",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.unit",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.supplier_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.lead_time_days",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.order_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.quantity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products → orders",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products → suppliers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Unternehmen bezieht Waren von verschiedenen Lieferanten und möchte den Einkauf und die laufende Belieferung übersichtlich festhalten. Zu jedem Lieferanten sollen Name, Kontaktperson, E-Mail-Adresse und das Land bekannt sein. Das Unternehmen arbeitet mit mehreren Artikeln, die intern mit Bezeichnung, kurzer Beschreibung und einer Mengeneinheit wie Stück, Kilogramm oder Liter geführt werden. Ein Lieferant kann mehrere Artikel anbieten, und derselbe Artikel kann auch von verschiedenen Lieferanten kommen. Dabei soll erfasst werden, zu welchem Preis ein Artikel bei einem bestimmten Lieferanten aktuell bezogen werden kann und wie lange die übliche Lieferzeit ist.\n\nBestellungen werden an genau einen Lieferanten gerichtet. Für jede Bestellung soll nachvollziehbar sein, wann sie aufgegeben wurde, welchen Status sie hat und wann die Lieferung voraussichtlich eintreffen soll. In einer Bestellung können mehrere Artikel in unterschiedlichen Mengen enthalten sein. Außerdem soll festgehalten werden, in welchem Lager die Ware erwartet wird. Ein Lager hat einen Namen, einen Standort und kann für bestimmte Warengruppen vorgesehen sein. Ob diese Warengruppen fest vorgegeben sind oder frei beschrieben werden, bleibt dem System überlassen. Nicht jede Bestellung wird vollständig auf einmal geliefert; für den ersten Ausbauschritt reicht es aber, wenn pro Bestellung nur ein geplanter Wareneingang betrachtet wird.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "suppliers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "unit_of_measure",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "supplier_articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_time",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "warehouses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "product_categories",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "warehouse_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "order_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "expected_delivery_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "warehouse_id",
+              "references_table": "warehouses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_positions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "goods_receipts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "warehouse_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_receipt_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "warehouse_id",
+              "references_table": "warehouses",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Lieferant",
+          "attribute": [
+            "Name",
+            "Kontaktperson",
+            "E-Mail-Adresse",
+            "Land"
+          ],
+          "beschreibung": "Ein Lieferant, von dem das Unternehmen Waren bezieht. Kann mehrere Artikel anbieten."
+        },
+        {
+          "name": "Artikel",
+          "attribute": [
+            "Bezeichnung",
+            "Beschreibung",
+            "Mengeneinheit"
+          ],
+          "beschreibung": "Ein Artikel, den das Unternehmen bezieht. Kann von mehreren Lieferanten bezogen werden."
+        },
+        {
+          "name": "Lieferantenpreis",
+          "attribute": [
+            "Preis",
+            "Lieferzeit"
+          ],
+          "beschreibung": "Verknüpfung zwischen Lieferant und Artikel mit Preis und Lieferzeit für diese spezifische Kombination."
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            "Aufgabedatum",
+            "Status",
+            "Voraussichtliches Lieferdatum"
+          ],
+          "beschreibung": "Eine Bestellung an genau einen Lieferanten. Kann mehrere Artikel in unterschiedlichen Mengen enthalten."
+        },
+        {
+          "name": "Bestellposition",
+          "attribute": [
+            "Menge"
+          ],
+          "beschreibung": "Eine Position in einer Bestellung, die einen bestimmten Artikel in einer bestimmten Menge enthält."
+        },
+        {
+          "name": "Lager",
+          "attribute": [
+            "Name",
+            "Standort",
+            "Warengruppen"
+          ],
+          "beschreibung": "Ein Lager, in dem Waren erwartet werden. Kann für bestimmte Warengruppen vorgesehen sein."
+        },
+        {
+          "name": "Wareneingang",
+          "attribute": [
+            "Geplantes Eingangsdatum"
+          ],
+          "beschreibung": "Ein geplanter Wareneingang für eine Bestellung in ein bestimmtes Lager. Pro Bestellung wird zunächst nur ein Wareneingang betrachtet."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Lieferant",
+          "zu": "Artikel",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Lieferant kann mehrere Artikel anbieten, und derselbe Artikel kann von verschiedenen Lieferanten kommen. Diese Beziehung wird durch die Entität Lieferantenpreis realisiert."
+        },
+        {
+          "von": "Lieferant",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Lieferant erhält mehrere Bestellungen, eine Bestellung wird an genau einen Lieferanten gerichtet."
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Artikel",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Bestellung kann mehrere Artikel enthalten, ein Artikel kann in mehreren Bestellungen vorkommen. Diese Beziehung wird durch die Entität Bestellposition realisiert."
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Lager",
+          "kardinalitaet": "1:1",
+          "beschreibung": "Eine Bestellung wird in genau ein Lager erwartet, ein Lager kann mehrere Bestellungen erhalten (aber pro Bestellung nur ein Lager)."
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Wareneingang",
+          "kardinalitaet": "1:1",
+          "beschreibung": "Eine Bestellung hat einen geplanten Wareneingang. Pro Bestellung wird zunächst nur ein Wareneingang betrachtet."
+        },
+        {
+          "von": "Wareneingang",
+          "zu": "Lager",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Wareneingang erfolgt in genau ein Lager, ein Lager kann mehrere Wareneingänge erhalten."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Die Warengruppen im Lager sind nicht eindeutig definiert: Es ist unklar, ob diese fest vorgegeben sind (z.B. als separate Entität) oder frei als Text beschrieben werden. Dies beeinflusst die Datenbankstruktur.",
+          "betroffene_elemente": [
+            "Lager",
+            "Warengruppen"
+          ]
+        },
+        {
+          "beschreibung": "Die Beziehung zwischen Bestellposition und Lieferantenpreis ist nicht explizit geklärt: Soll die Menge in der Bestellposition mit dem Preis aus Lieferantenpreis multipliziert werden, oder gibt es eine separate Preiserfassung pro Bestellposition?",
+          "betroffene_elemente": [
+            "Bestellposition",
+            "Lieferantenpreis"
+          ]
+        },
+        {
+          "beschreibung": "Der Status einer Bestellung ist nicht näher spezifiziert: Welche Statuswerte sind möglich (z.B. 'offen', 'versendet', 'geliefert')? Ist dies eine Enumeration oder ein Freitextfeld?",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Die Kardinalität zwischen Bestellung und Lager ist mehrdeutig: Der Text sagt 'in welchem Lager die Ware erwartet wird' (Singular), aber es ist unklar, ob eine Bestellung auf mehrere Lager verteilt werden kann oder ob dies ausgeschlossen ist.",
+          "betroffene_elemente": [
+            "Bestellung",
+            "Lager"
+          ]
+        },
+        {
+          "beschreibung": "Die Rolle von Wareneingang ist unklar: Ist Wareneingang nur ein geplantes Datum oder auch eine Entität, die tatsächliche Eingänge erfasst? Der Text spricht von 'geplanter Wareneingang'.",
+          "betroffene_elemente": [
+            "Wareneingang"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Lieferant",
+          "attribute": [
+            {
+              "name": "lieferant_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktperson",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "land",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Artikel",
+          "attribute": [
+            {
+              "name": "artikel_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "mengeneinheit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Lieferantenpreis",
+          "attribute": [
+            {
+              "name": "lieferantenpreis_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lieferant_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "artikel_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lieferzeit",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Lager",
+          "attribute": [
+            {
+              "name": "lager_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "standort",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "warengruppen",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            {
+              "name": "bestellung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lieferant_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lager_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "aufgabedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "voraussichtliches_lieferdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellposition",
+          "attribute": [
+            {
+              "name": "bestellposition_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bestellung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "artikel_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "menge",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Wareneingang",
+          "attribute": [
+            {
+              "name": "wareneingang_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bestellung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lager_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geplantes_eingangsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Lieferant",
+          "zu": "Artikel",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "preis",
+            "lieferzeit"
+          ]
+        },
+        {
+          "von": "Lieferant",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Artikel",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "menge"
+          ]
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Lager",
+          "kardinalitaet": "1:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Wareneingang",
+          "kardinalitaet": "1:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Wareneingang",
+          "zu": "Lager",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    unit_of_measure VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE warehouses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    product_categories TEXT,\n    CONSTRAINT pk_warehouses PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    warehouse_id INTEGER NOT NULL,\n    order_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    expected_delivery_date DATE NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_orders_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)\n);\n\nCREATE TABLE goods_receipts (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    warehouse_id INTEGER NOT NULL,\n    planned_receipt_date DATE NOT NULL,\n    CONSTRAINT pk_goods_receipts PRIMARY KEY (id),\n    CONSTRAINT fk_goods_receipts_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_goods_receipts_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)\n);\n\nCREATE TABLE order_positions (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_positions PRIMARY KEY (id),\n    CONSTRAINT fk_order_positions_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_positions_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE supplier_articles (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    delivery_time INTEGER NOT NULL,\n    CONSTRAINT pk_supplier_articles PRIMARY KEY (id),\n    CONSTRAINT fk_supplier_articles_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_supplier_articles_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9663,
+    "total_output_tokens": 5226,
+    "total_tokens": 14889,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1672,
+        "output_tokens": 1676,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3421,
+        "output_tokens": 1750,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4570,
+        "output_tokens": 1800,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1672,
+        "output_tokens": 1676,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3421,
+        "output_tokens": 1750,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4570,
+        "output_tokens": 1800,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

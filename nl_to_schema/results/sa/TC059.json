@@ -1,0 +1,538 @@
+{
+  "testfall_id": "TC059",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5189560439560439,
+  "score_gesamt": 0.7113736263736263,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.5384615384615384,
+      "recall": 0.5384615384615384,
+      "f1": 0.5384615384615384,
+      "matched": 21,
+      "nur_in_referenz": 18,
+      "nur_in_generiert": 18
+    },
+    "beziehung": {
+      "recall": 0.375,
+      "matched": 3,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "apartment_interested_parties",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "viewings",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interested_party_viewings",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartments.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartments.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartments.rooms",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartments.is_available_now",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "feedbacks.created_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interested_parties.requested_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartment_interested_parties.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartment_interested_parties.apartment_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartment_interested_parties.interested_party_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartment_interested_parties.registered_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartment_interested_parties.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "viewings.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "viewings.apartment_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "viewings.scheduled_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "viewings.note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interested_party_viewings.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interested_party_viewings.interested_party_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interested_party_viewings.viewing_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartment_interested_parties → apartments",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "apartment_interested_parties → interested_parties",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interested_party_viewings → interested_parties",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interested_party_viewings → viewings",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "viewings → apartments",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Wohnungsvermittlung soll festgehalten werden, welche Wohnungen angeboten werden und wer sie besitzt. Zu jeder Wohnung sollen Lage, Größe, Miethöhe, Anzahl der Zimmer und eine kurze Beschreibung erfasst werden. Manche Wohnungen sind sofort frei, andere erst zu einem bestimmten Termin. Eigentümer können mehrere Wohnungen haben, und ihre Kontaktdaten sollen für Rückfragen vorliegen.\n\nInteressenten melden sich mit Namen, Kontaktmöglichkeiten und dem Zeitpunkt ihrer Anfrage. Sie können sich für mehrere Wohnungen vormerken lassen, und eine Wohnung kann natürlich bei mehreren Interessenten gefragt sein. Dabei soll auch sichtbar sein, wann die Vormerkung entstanden ist und welchen Stand sie aktuell hat, zum Beispiel offen, abgesagt oder bereits weitergeführt.\n\nAußerdem organisiert die Vermittlung Besichtigungstermine. Ein Termin bezieht sich auf genau eine Wohnung, aber es können mehrere Interessenten daran teilnehmen. Nicht immer ist im Voraus klar, ob ein Termin als Einzel- oder Sammelbesichtigung läuft. Zu jedem Termin sollen Datum und Uhrzeit sowie eine Notiz gespeichert werden. Nach einer Besichtigung kann zu einem Interessenten und einer Wohnung ein Feedback mit Bewertung und Kommentar hinterlegt werden, damit spätere Entscheidungen nachvollziehbar bleiben.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "owners",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "apartments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "owner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "size_sqm",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "room_count",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "rent_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "available_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "owner_id",
+              "references_table": "owners",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "interested_parties",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "inquiry_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "apartment_registrations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "apartment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "interested_party_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "registration_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "apartment_id",
+              "references_table": "apartments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "interested_party_id",
+              "references_table": "interested_parties",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "viewing_appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "apartment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "apartment_id",
+              "references_table": "apartments",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "viewing_participants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "viewing_appointment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "interested_party_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "viewing_appointment_id",
+              "references_table": "viewing_appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "interested_party_id",
+              "references_table": "interested_parties",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "feedbacks",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "apartment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "interested_party_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "rating",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "comment",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "feedback_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "apartment_id",
+              "references_table": "apartments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "interested_party_id",
+              "references_table": "interested_parties",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    address VARCHAR(255),\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE apartments (\n    id INTEGER NOT NULL,\n    owner_id INTEGER NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    size_sqm DECIMAL(18,2) NOT NULL,\n    room_count INTEGER NOT NULL,\n    rent_amount DECIMAL(18,2) NOT NULL,\n    description TEXT,\n    available_from DATE,\n    CONSTRAINT pk_apartments PRIMARY KEY (id),\n    CONSTRAINT fk_apartments_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE interested_parties (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    inquiry_date TIMESTAMP NOT NULL,\n    CONSTRAINT pk_interested_parties PRIMARY KEY (id)\n);\n\nCREATE TABLE apartment_registrations (\n    id INTEGER NOT NULL,\n    apartment_id INTEGER NOT NULL,\n    interested_party_id INTEGER NOT NULL,\n    registration_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_apartment_registrations PRIMARY KEY (id),\n    CONSTRAINT fk_apartment_registrations_apartment_id FOREIGN KEY (apartment_id) REFERENCES apartments (id),\n    CONSTRAINT fk_apartment_registrations_interested_party_id FOREIGN KEY (interested_party_id) REFERENCES interested_parties (id)\n);\n\nCREATE TABLE feedbacks (\n    id INTEGER NOT NULL,\n    apartment_id INTEGER NOT NULL,\n    interested_party_id INTEGER NOT NULL,\n    rating DECIMAL(18,2),\n    comment TEXT,\n    feedback_date TIMESTAMP NOT NULL,\n    CONSTRAINT pk_feedbacks PRIMARY KEY (id),\n    CONSTRAINT fk_feedbacks_apartment_id FOREIGN KEY (apartment_id) REFERENCES apartments (id),\n    CONSTRAINT fk_feedbacks_interested_party_id FOREIGN KEY (interested_party_id) REFERENCES interested_parties (id)\n);\n\nCREATE TABLE viewing_appointments (\n    id INTEGER NOT NULL,\n    apartment_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    notes TEXT,\n    CONSTRAINT pk_viewing_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_viewing_appointments_apartment_id FOREIGN KEY (apartment_id) REFERENCES apartments (id)\n);\n\nCREATE TABLE viewing_participants (\n    id INTEGER NOT NULL,\n    viewing_appointment_id INTEGER NOT NULL,\n    interested_party_id INTEGER NOT NULL,\n    CONSTRAINT pk_viewing_participants PRIMARY KEY (id),\n    CONSTRAINT fk_viewing_participants_viewing_appointment_id FOREIGN KEY (viewing_appointment_id) REFERENCES viewing_appointments (id),\n    CONSTRAINT fk_viewing_participants_interested_party_id FOREIGN KEY (interested_party_id) REFERENCES interested_parties (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2478,
+    "total_output_tokens": 1801,
+    "total_tokens": 4279,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2478,
+        "output_tokens": 1801,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2478,
+        "output_tokens": 1801,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,709 @@
+{
+  "testfall_id": "TC066",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.4421621621621622,
+  "score_gesamt": 0.6652972972972973,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5,
+      "recall": 0.5714285714285714,
+      "f1": 0.5333333333333333,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 4
+    },
+    "attribut": {
+      "precision": 0.35714285714285715,
+      "recall": 0.46875,
+      "f1": 0.40540540540540543,
+      "matched": 15,
+      "nur_in_referenz": 17,
+      "nur_in_generiert": 27
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.shipping_address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.category_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products → categories",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Bestellplattform sollen Kundinnen und Kunden ihre Einkäufe verwalten können. Zu jeder Person sollen die üblichen Kontaktdaten festgehalten werden, damit Bestätigungen verschickt und Rückfragen geklärt werden können. Das Sortiment besteht aus Artikeln mit Name, Beschreibung und aktuellem Verkaufspreis. Manche Artikel gehören gleichzeitig in mehrere Bereiche des Shops, damit sie bei der Suche leichter gefunden werden. \n\nWenn jemand etwas kauft, soll der Einkauf mit Datum, Bearbeitungsstand und einer Lieferanschrift gespeichert werden. Ein Einkauf kann aus mehreren Artikeln bestehen, und bei jedem Artikel muss nachvollziehbar bleiben, wie viele Stück bestellt wurden und zu welchem Einzelpreis der Kauf zustande kam, auch wenn sich der Preis im Sortiment später ändert. Zu einem Einkauf kann eine Zahlung erfasst werden; im Alltag kommt es aber vor, dass eine Bestellung noch offen ist oder zunächst nur vorgemerkt wird. \n\nAußerdem sollen Bereiche des Shops mit Bezeichnung und kurzer Erklärung gepflegt werden. Unklar ist fachlich zunächst, ob ein Artikel immer genau einem Bereich zugeordnet ist oder auch mehreren. Ebenso ist offen, ob pro Einkauf genau eine Zahlung existiert oder ob mehrere Zahlungsversuche relevant sein können. Das System soll Auswertungen über Bestellungen, Umsätze und beliebte Artikel ermöglichen.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "address_id",
+              "references_table": "addresses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "addresses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "housenumber",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postalcode",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "stock",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "article_categories",
+          "columns": [
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "updated_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "delivery_address_id",
+              "references_table": "addresses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "payments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "paymentdate",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "payment_method",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "updated_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung erwähnt explizit, dass Artikel in mehrere Bereiche gehören können und dass mehrere Zahlungsversuche pro Bestellung relevant sein können. Das Schema modelliert dies korrekt mit einer Junction-Table (article_categories) und einer 1:N-Beziehung (payments zu orders). Allerdings fehlt eine kritische Entität: Es gibt keine Tabelle für Rechnungsadressen oder Lieferadressen als separate Konzepte. Die Anforderung spricht von \"Lieferanschrift\" als Attribut des Einkaufs, was korrekt modelliert ist. Jedoch: Die Anforderung erwähnt \"Kontaktdaten\" für Personen und \"Lieferanschrift\" für Bestellungen. Das Schema bindet jede Person an genau eine Adresse (address_id NOT NULL in persons), was nicht der Realität entspricht: Eine Person kann mehrere Adressen haben (Rechnungsadresse, Lieferadresse, etc.). Dies ist eine Modellierungsschwäche, die zu Dateninkonsistenzen führt.",
+          "korrekturanweisung": "Entfernen Sie die NOT NULL-Constraint auf persons.address_id und modellieren Sie Adressen als optionales Attribut oder separate 1:N-Beziehung. Alternativ: Führen Sie eine Tabelle 'person_addresses' ein, um mehrere Adressen pro Person zu unterstützen, und unterscheiden Sie zwischen Rechnungs- und Lieferadresse."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unzureichend modelliert: (1) Die Tabelle 'articles' enthält ein 'stock'-Attribut, das in der Anforderung nicht erwähnt wird und für eine Bestellplattform nicht zentral ist. Stattdessen fehlt ein Attribut für die Verfügbarkeit oder den Status eines Artikels. (2) Die Tabelle 'orders' enthält 'total_amount', das redundant ist und aus order_items berechnet werden kann (Normalisierungsproblem). (3) Die Tabelle 'payments' hat 'paymentdate' als NULLABLE, aber 'status' ist NOT NULL. Logisch sollte 'paymentdate' nur gesetzt sein, wenn status='completed' oder ähnlich. (4) Fehlende Attribute: In 'persons' fehlt möglicherweise ein Feld für Kundennummer oder Registrierungsdatum. In 'orders' fehlt ein Feld für Notizen/Kommentare, die für Auswertungen relevant sein können.",
+          "korrekturanweisung": "Entfernen Sie 'stock' aus 'articles' oder dokumentieren Sie dessen Geschäftszweck. Entfernen Sie 'total_amount' aus 'orders' und berechnen Sie es stattdessen aus order_items. Überprüfen Sie die Konsistenz von 'paymentdate' und 'status' in 'payments' und dokumentieren Sie die Geschäftslogik. Erwägen Sie Hinzufügen von 'created_at' zu 'persons' und 'notes' zu 'orders'."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'persons' und 'addresses' ist fehlerhaft modelliert. Die Anforderung impliziert, dass eine Person mehrere Adressen haben kann (Rechnungsadresse, Lieferadresse), aber das Schema erzwingt eine 1:1-Beziehung mit NOT NULL. Dies ist eine harte Modellierungsfehler. Die Beziehung zwischen 'orders' und 'payments' ist korrekt als 1:N modelliert (mehrere Zahlungsversuche pro Bestellung sind möglich). Die Beziehung zwischen 'articles' und 'categories' ist korrekt als M:N modelliert. Allerdings: Die Anforderung sagt \"Unklar ist fachlich zunächst, ob ein Artikel immer genau einem Bereich zugeordnet ist oder auch mehreren.\" Das Schema entscheidet sich für M:N, was flexibel ist, aber die Anforderung hätte geklärt werden sollen.",
+          "korrekturanweisung": "Modellieren Sie die Beziehung zwischen 'persons' und 'addresses' als 1:N (eine Person kann mehrere Adressen haben). Entfernen Sie 'address_id' aus 'persons' und erstellen Sie stattdessen eine Tabelle 'person_addresses' mit Spalten: id (PK), person_id (FK), address_id (FK), address_type (VARCHAR, z.B. 'billing', 'shipping'). Dokumentieren Sie die Entscheidung für M:N bei article_categories."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Das Schema verletzt die 3NF in mehreren Punkten: (1) 'orders.total_amount' ist eine berechnete Spalte, die aus order_items abgeleitet werden kann (Transitive Abhängigkeit). Dies führt zu Redundanz und Inkonsistenzrisiken. (2) 'persons.address_id' mit NOT NULL erzwingt eine 1:1-Beziehung, die nicht normalisiert ist, wenn eine Person mehrere Adressen haben kann. (3) Die Tabelle 'payments' speichert 'order_id', aber es gibt keine Unique-Constraint, die sicherstellt, dass pro Bestellung nur eine Zahlung existiert (falls das gewünscht ist). Die aktuelle Struktur erlaubt mehrere Zahlungen pro Bestellung, was korrekt ist, aber 'paymentdate' als NULLABLE ist problematisch für die Konsistenz.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Redundanz und Inkonsistenzrisiken: (1) 'orders.total_amount' sollte nicht gespeichert werden, sondern als VIEW berechnet. (2) 'orders.created_at' und 'orders.updated_at' sind redundant, wenn 'orderdate' bereits vorhanden ist. (3) 'payments.created_at' und 'payments.updated_at' sind ebenfalls redundant und sollten auf 'paymentdate' reduziert werden.",
+          "korrekturanweisung": "Entfernen Sie 'total_amount' aus 'orders'. Entfernen Sie 'updated_at' aus 'orders' und 'payments' (oder dokumentieren Sie deren Geschäftszweck). Erstellen Sie stattdessen eine VIEW 'order_totals', die die Summe aus order_items berechnet. Vereinfachen Sie 'payments' auf: id, order_id, amount, paymentdate, status, payment_method, created_at."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE addresses (\n    id INTEGER NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    housenumber VARCHAR(255),\n    city VARCHAR(255) NOT NULL,\n    postalcode VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_addresses PRIMARY KEY (id)\n);\n\nCREATE TABLE articles (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    stock INTEGER NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE article_categories (\n    article_id INTEGER NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_article_categories PRIMARY KEY (article_id, category_id),\n    CONSTRAINT fk_article_categories_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    address_id INTEGER NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id),\n    CONSTRAINT fk_persons_address_id FOREIGN KEY (address_id) REFERENCES addresses (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    delivery_address_id INTEGER NOT NULL,\n    total_amount DECIMAL(18,2) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_orders_delivery_address_id FOREIGN KEY (delivery_address_id) REFERENCES addresses (id)\n);\n\nCREATE TABLE order_items (\n    order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (order_id, article_id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    paymentdate TIMESTAMP,\n    status VARCHAR(255) NOT NULL,\n    payment_method VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung erwähnt explizit, dass Artikel in mehrere Bereiche gehören können und dass mehrere Zahlungsversuche pro Bestellung relevant sein können. Das Schema modelliert dies korrekt mit einer Junction-Table (article_categories) und einer 1:N-Beziehung (payments zu orders). Allerdings fehlt eine kritische Entität: Es gibt keine Tabelle für Rechnungsadressen oder Lieferadressen als separate Konzepte. Die Anforderung spricht von \"Lieferanschrift\" als Attribut des Einkaufs, was korrekt modelliert ist. Jedoch: Die Anforderung erwähnt \"Kontaktdaten\" für Personen und \"Lieferanschrift\" für Bestellungen. Das Schema bindet jede Person an genau eine Adresse (address_id NOT NULL in persons), was nicht der Realität entspricht: Eine Person kann mehrere Adressen haben (Rechnungsadresse, Lieferadresse, etc.). Dies ist eine Modellierungsschwäche, die zu Dateninkonsistenzen führt.",
+          "korrekturanweisung": "Entfernen Sie die NOT NULL-Constraint auf persons.address_id und modellieren Sie Adressen als optionales Attribut oder separate 1:N-Beziehung. Alternativ: Führen Sie eine Tabelle 'person_addresses' ein, um mehrere Adressen pro Person zu unterstützen, und unterscheiden Sie zwischen Rechnungs- und Lieferadresse."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unzureichend modelliert: (1) Die Tabelle 'articles' enthält ein 'stock'-Attribut, das in der Anforderung nicht erwähnt wird und für eine Bestellplattform nicht zentral ist. Stattdessen fehlt ein Attribut für die Verfügbarkeit oder den Status eines Artikels. (2) Die Tabelle 'orders' enthält 'total_amount', das redundant ist und aus order_items berechnet werden kann (Normalisierungsproblem). (3) Die Tabelle 'payments' hat 'paymentdate' als NULLABLE, aber 'status' ist NOT NULL. Logisch sollte 'paymentdate' nur gesetzt sein, wenn status='completed' oder ähnlich. (4) Fehlende Attribute: In 'persons' fehlt möglicherweise ein Feld für Kundennummer oder Registrierungsdatum. In 'orders' fehlt ein Feld für Notizen/Kommentare, die für Auswertungen relevant sein können.",
+          "korrekturanweisung": "Entfernen Sie 'stock' aus 'articles' oder dokumentieren Sie dessen Geschäftszweck. Entfernen Sie 'total_amount' aus 'orders' und berechnen Sie es stattdessen aus order_items. Überprüfen Sie die Konsistenz von 'paymentdate' und 'status' in 'payments' und dokumentieren Sie die Geschäftslogik. Erwägen Sie Hinzufügen von 'created_at' zu 'persons' und 'notes' zu 'orders'."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'persons' und 'addresses' ist fehlerhaft modelliert. Die Anforderung impliziert, dass eine Person mehrere Adressen haben kann (Rechnungsadresse, Lieferadresse), aber das Schema erzwingt eine 1:1-Beziehung mit NOT NULL. Dies ist eine harte Modellierungsfehler. Die Beziehung zwischen 'orders' und 'payments' ist korrekt als 1:N modelliert (mehrere Zahlungsversuche pro Bestellung sind möglich). Die Beziehung zwischen 'articles' und 'categories' ist korrekt als M:N modelliert. Allerdings: Die Anforderung sagt \"Unklar ist fachlich zunächst, ob ein Artikel immer genau einem Bereich zugeordnet ist oder auch mehreren.\" Das Schema entscheidet sich für M:N, was flexibel ist, aber die Anforderung hätte geklärt werden sollen.",
+          "korrekturanweisung": "Modellieren Sie die Beziehung zwischen 'persons' und 'addresses' als 1:N (eine Person kann mehrere Adressen haben). Entfernen Sie 'address_id' aus 'persons' und erstellen Sie stattdessen eine Tabelle 'person_addresses' mit Spalten: id (PK), person_id (FK), address_id (FK), address_type (VARCHAR, z.B. 'billing', 'shipping'). Dokumentieren Sie die Entscheidung für M:N bei article_categories."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Das Schema verletzt die 3NF in mehreren Punkten: (1) 'orders.total_amount' ist eine berechnete Spalte, die aus order_items abgeleitet werden kann (Transitive Abhängigkeit). Dies führt zu Redundanz und Inkonsistenzrisiken. (2) 'persons.address_id' mit NOT NULL erzwingt eine 1:1-Beziehung, die nicht normalisiert ist, wenn eine Person mehrere Adressen haben kann. (3) Die Tabelle 'payments' speichert 'order_id', aber es gibt keine Unique-Constraint, die sicherstellt, dass pro Bestellung nur eine Zahlung existiert (falls das gewünscht ist). Die aktuelle Struktur erlaubt mehrere Zahlungen pro Bestellung, was korrekt ist, aber 'paymentdate' als NULLABLE ist problematisch für die Konsistenz.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Redundanz und Inkonsistenzrisiken: (1) 'orders.total_amount' sollte nicht gespeichert werden, sondern als VIEW berechnet. (2) 'orders.created_at' und 'orders.updated_at' sind redundant, wenn 'orderdate' bereits vorhanden ist. (3) 'payments.created_at' und 'payments.updated_at' sind ebenfalls redundant und sollten auf 'paymentdate' reduziert werden.",
+          "korrekturanweisung": "Entfernen Sie 'total_amount' aus 'orders'. Entfernen Sie 'updated_at' aus 'orders' und 'payments' (oder dokumentieren Sie deren Geschäftszweck). Erstellen Sie stattdessen eine VIEW 'order_totals', die die Summe aus order_items berechnet. Vereinfachen Sie 'payments' auf: id, order_id, amount, paymentdate, status, payment_method, created_at."
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 31696,
+    "total_output_tokens": 14653,
+    "total_tokens": 46349,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 18018,
+        "output_tokens": 5671,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 13678,
+        "output_tokens": 8982,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2489,
+        "output_tokens": 1608,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4445,
+        "output_tokens": 4938,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 9261,
+        "output_tokens": 1853,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4438,
+        "output_tokens": 1935,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6268,
+        "output_tokens": 2210,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4795,
+        "output_tokens": 2109,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

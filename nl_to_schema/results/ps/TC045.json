@@ -1,0 +1,959 @@
+{
+  "testfall_id": "TC045",
+  "workflow": "ps",
+  "score_strukturell": 0.0,
+  "score_semantisch": 0.7384873949579833,
+  "score_gesamt": 0.44309243697479,
+  "detail_strukturell": {
+    "syntax_gate": 0,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.8571428571428571,
+      "f1": 0.7999999999999999,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.5675675675675675,
+      "recall": 0.6774193548387096,
+      "f1": 0.6176470588235294,
+      "matched": 21,
+      "nur_in_referenz": 10,
+      "nur_in_generiert": 16
+    },
+    "beziehung": {
+      "recall": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "job_roles",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.hiredate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.job_role_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "trainings.title",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_projects.role_in_project",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_projects.assignment_startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "job_roles.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "job_roles.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "job_roles.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees → job_roles",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein mittelständisches Unternehmen soll eine Übersicht über die Belegschaft aufgebaut werden. Von allen Mitarbeitenden sollen die üblichen persönlichen Angaben und das Eintrittsdatum festgehalten werden. Jede Person gehört organisatorisch zu genau einem Bereich, wobei für jeden Bereich nachvollziehbar sein soll, wer ihn leitet. Da Stellen im Unternehmen unterschiedlich ausgestaltet sein können, soll außerdem hinterlegt werden, welche Funktion jemand grundsätzlich hat, etwa in Verwaltung, Technik oder Vertrieb.\n\nMitarbeitende können im Laufe der Zeit an mehreren Projekten mitwirken, und in einem Projekt arbeiten in der Regel mehrere Personen zusammen. Dabei soll sichtbar sein, seit wann jemand in einem Projekt dabei ist und welche Aufgabe er dort übernimmt. Die Aufgabe kann je nach Projekt unterschiedlich sein. Projekte selbst sollen mit Bezeichnung, geplanter Laufzeit und Budget erfasst werden.\n\nZusätzlich soll dokumentiert werden, welche Fortbildungen angeboten werden und welche Mitarbeitenden daran teilnehmen. Nicht jede Schulung ist für jede Funktion gleich relevant, aber es soll zumindest festgehalten werden, wer wann an welcher Fortbildung teilgenommen hat. Bereiche sollen einerseits als organisatorische Einheiten sichtbar sein, andererseits auch für Auswertungen nach Verantwortungsbereich dienen.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "department_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "function_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "department_id",
+              "references_table": "departments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "function_id",
+              "references_table": "functions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "departments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manager_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manager_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "functions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "projects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "budget",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employee_projects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "task",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "trainings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employee_trainings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "training_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "participation_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "training_id",
+              "references_table": "trainings",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "function_trainings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "function_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "training_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "relevance",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "function_id",
+              "references_table": "functions",
+              "references_column": "id"
+            },
+            {
+              "from_column": "training_id",
+              "references_table": "trainings",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Mitarbeitende",
+          "attribute": [
+            "Mitarbeiter-ID",
+            "Name",
+            "Persönliche Angaben",
+            "Eintrittsdatum",
+            "Bereich-ID (FK)",
+            "Funktion-ID (FK)"
+          ],
+          "beschreibung": "Personen, die im Unternehmen beschäftigt sind. Jeder Mitarbeiter gehört zu genau einem Bereich und hat eine Funktion."
+        },
+        {
+          "name": "Bereich",
+          "attribute": [
+            "Bereich-ID",
+            "Bezeichnung",
+            "Leiter-ID (FK zu Mitarbeitende)"
+          ],
+          "beschreibung": "Organisatorische Einheiten des Unternehmens. Jeder Bereich hat einen Leiter (Mitarbeiter) und dient als Verantwortungsbereich für Auswertungen."
+        },
+        {
+          "name": "Funktion",
+          "attribute": [
+            "Funktion-ID",
+            "Bezeichnung",
+            "Beschreibung"
+          ],
+          "beschreibung": "Funktionstypen wie Verwaltung, Technik oder Vertrieb. Definiert die grundsätzliche Rolle eines Mitarbeiters."
+        },
+        {
+          "name": "Projekt",
+          "attribute": [
+            "Projekt-ID",
+            "Bezeichnung",
+            "Geplante Laufzeit",
+            "Budget"
+          ],
+          "beschreibung": "Projekte, an denen Mitarbeitende mitwirken. Jedes Projekt hat eine Bezeichnung, geplante Laufzeit und ein Budget."
+        },
+        {
+          "name": "Projektbeteiligung",
+          "attribute": [
+            "Projektbeteiligung-ID",
+            "Mitarbeiter-ID (FK)",
+            "Projekt-ID (FK)",
+            "Startdatum",
+            "Aufgabe"
+          ],
+          "beschreibung": "Dokumentiert die Teilnahme von Mitarbeitenden an Projekten mit Startdatum und Aufgabe. Die Aufgabe kann je nach Projekt unterschiedlich sein."
+        },
+        {
+          "name": "Fortbildung",
+          "attribute": [
+            "Fortbildung-ID",
+            "Bezeichnung",
+            "Beschreibung"
+          ],
+          "beschreibung": "Schulungs- und Fortbildungsangebote des Unternehmens."
+        },
+        {
+          "name": "Fortbildungsteilnahme",
+          "attribute": [
+            "Teilnahme-ID",
+            "Mitarbeiter-ID (FK)",
+            "Fortbildung-ID (FK)",
+            "Teilnahmedatum"
+          ],
+          "beschreibung": "Dokumentiert, welche Mitarbeitenden an welchen Fortbildungen teilgenommen haben und wann."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Mitarbeitende",
+          "zu": "Bereich",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Mitarbeiter gehört organisatorisch zu genau einem Bereich."
+        },
+        {
+          "von": "Mitarbeitende",
+          "zu": "Funktion",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Mitarbeiter hat eine Funktion (Verwaltung, Technik, Vertrieb, etc.)."
+        },
+        {
+          "von": "Bereich",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "1:1",
+          "beschreibung": "Jeder Bereich wird von genau einem Mitarbeiter geleitet (Leiter-Beziehung)."
+        },
+        {
+          "von": "Mitarbeitende",
+          "zu": "Projekt",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Mitarbeitende können an mehreren Projekten mitwirken, und in einem Projekt arbeiten mehrere Personen zusammen. Vermittelt durch Projektbeteiligung."
+        },
+        {
+          "von": "Mitarbeitende",
+          "zu": "Fortbildung",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Mitarbeitende können an mehreren Fortbildungen teilnehmen, und mehrere Mitarbeitende können an einer Fortbildung teilnehmen. Vermittelt durch Fortbildungsteilnahme."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Was genau sind 'übliche persönliche Angaben'? Es ist unklar, welche spezifischen Attribute (z.B. Adresse, Telefon, E-Mail, Geburtsdatum, Geschlecht) erfasst werden sollen.",
+          "betroffene_elemente": [
+            "Mitarbeitende"
+          ]
+        },
+        {
+          "beschreibung": "Kann ein Bereich von mehreren Mitarbeitenden geleitet werden oder nur von einer Person? Der Text sagt 'wer ihn leitet' (Singular), aber es ist nicht eindeutig, ob dies eine 1:1-Beziehung ist.",
+          "betroffene_elemente": [
+            "Bereich",
+            "Mitarbeitende"
+          ]
+        },
+        {
+          "beschreibung": "Kann ein Mitarbeiter mehrere Funktionen haben oder nur eine? Der Text deutet auf eine Funktion hin, aber dies ist nicht explizit festgehalten.",
+          "betroffene_elemente": [
+            "Mitarbeitende",
+            "Funktion"
+          ]
+        },
+        {
+          "beschreibung": "Was bedeutet 'geplante Laufzeit' genau? Ist dies ein Startdatum und Enddatum, eine Dauer in Tagen/Monaten, oder beides?",
+          "betroffene_elemente": [
+            "Projekt"
+          ]
+        },
+        {
+          "beschreibung": "Soll das Enddatum einer Projektbeteiligung erfasst werden, oder nur das Startdatum? Der Text erwähnt nur 'seit wann'.",
+          "betroffene_elemente": [
+            "Projektbeteiligung"
+          ]
+        },
+        {
+          "beschreibung": "Der Text sagt 'Nicht jede Schulung ist für jede Funktion gleich relevant'. Soll eine Beziehung zwischen Fortbildung und Funktion modelliert werden, um Relevanz abzubilden?",
+          "betroffene_elemente": [
+            "Fortbildung",
+            "Funktion"
+          ]
+        },
+        {
+          "beschreibung": "Können Bereiche hierarchisch verschachtelt sein (z.B. Unterbereiche), oder sind sie alle auf der gleichen Ebene?",
+          "betroffene_elemente": [
+            "Bereich"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Mitarbeitende",
+          "attribute": [
+            {
+              "name": "mitarbeiter_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "eintrittsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bereich_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "funktion_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bereich",
+          "attribute": [
+            {
+              "name": "bereich_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leiter_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Funktion",
+          "attribute": [
+            {
+              "name": "funktion_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Projekt",
+          "attribute": [
+            {
+              "name": "projekt_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "budget",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Projektbeteiligung",
+          "attribute": [
+            {
+              "name": "projektbeteiligung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "mitarbeiter_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "projekt_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "aufgabe",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Fortbildung",
+          "attribute": [
+            {
+              "name": "fortbildung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Fortbildungsteilnahme",
+          "attribute": [
+            {
+              "name": "teilnahme_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "mitarbeiter_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fortbildung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "teilnahmedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Fortbildung_Funktion",
+          "attribute": [
+            {
+              "name": "fortbildung_funktion_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fortbildung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "funktion_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "relevanz",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Mitarbeitende",
+          "zu": "Bereich",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Mitarbeitende",
+          "zu": "Funktion",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bereich",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "1:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Mitarbeitende",
+          "zu": "Projekt",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "startdatum",
+            "aufgabe"
+          ]
+        },
+        {
+          "von": "Mitarbeitende",
+          "zu": "Fortbildung",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "teilnahmedatum"
+          ]
+        },
+        {
+          "von": "Fortbildung",
+          "zu": "Funktion",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "relevanz"
+          ]
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "",
+    "final_critic_report": null,
+    "error": "ddl_generation_failed: Zirkelreferenz im Schema entdeckt: departments -> employees -> departments. Topologische Sortierung nicht möglich.",
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 10009,
+    "total_output_tokens": 5898,
+    "total_tokens": 15907,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1650,
+        "output_tokens": 1857,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3530,
+        "output_tokens": 1988,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4829,
+        "output_tokens": 2053,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1650,
+        "output_tokens": 1857,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3530,
+        "output_tokens": 1988,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4829,
+        "output_tokens": 2053,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

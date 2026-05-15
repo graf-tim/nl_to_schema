@@ -1,0 +1,642 @@
+{
+  "testfall_id": "TC060",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6765234765234767,
+  "score_gesamt": 0.8059140859140861,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.7142857142857143,
+      "recall": 0.8333333333333334,
+      "f1": 0.7692307692307692,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.6,
+      "recall": 0.6774193548387096,
+      "f1": 0.6363636363636364,
+      "matched": 21,
+      "nur_in_referenz": 10,
+      "nur_in_generiert": 14
+    },
+    "beziehung": {
+      "recall": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "businesses_requests",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "requests.is_open",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "requests.awarded_business_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_trades.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.business_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.request_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.applied_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.estimated_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests.message",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests → businesses",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "businesses_requests → requests",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "requests → businesses",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Handwerksplattform sollen Kundinnen und Kunden Anfragen für Arbeiten rund ums Haus einstellen können, zum Beispiel für Malerarbeiten, Sanitärreparaturen oder kleine Elektroaufträge. Zu jeder Anfrage soll festgehalten werden, wer sie eingestellt hat, in welche fachliche Richtung sie fällt, wann sie erstellt wurde und was genau gemacht werden soll. Außerdem ist wichtig, ob der Auftrag noch offen ist oder schon vergeben wurde.\n\nBetriebe können sich auf der Plattform registrieren und mit Namen, Kontaktadresse, E-Mail und Telefonnummer sichtbar sein. Ein Betrieb kann mehrere Fachrichtungen abdecken, und in einer Fachrichtung können mehrere Betriebe tätig sein. Wenn eine passende Anfrage eingeht, können sich Betriebe darauf melden. Dabei soll erfasst werden, wann sie sich gemeldet haben, welcher Preis ungefähr angesetzt wird und ob noch eine Nachricht für die Kundin oder den Kunden mitgegeben wurde.\n\nSobald sich die Kundin oder der Kunde entschieden hat, soll nachvollziehbar sein, welcher Betrieb den Zuschlag erhalten hat. Pro Anfrage gibt es am Ende nur eine Vergabe, auch wenn sich vorher mehrere Betriebe gemeldet haben. Nicht jede Anfrage muss sofort einem Betrieb zugeordnet sein.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "trades",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "businesses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "business_trades",
+          "columns": [
+            {
+              "name": "business_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "trade_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "business_id",
+              "references_table": "businesses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "trade_id",
+              "references_table": "trades",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "requests",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "trade_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "trade_id",
+              "references_table": "trades",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "bids",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "request_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "business_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "message",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "withdrawn_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "request_id",
+              "references_table": "requests",
+              "references_column": "id"
+            },
+            {
+              "from_column": "business_id",
+              "references_table": "businesses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "awards",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "request_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "business_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "bid_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "awarded_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "request_id",
+              "references_table": "requests",
+              "references_column": "id"
+            },
+            {
+              "from_column": "business_id",
+              "references_table": "businesses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "bid_id",
+              "references_table": "bids",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'awards' modelliert eine 1:1-Beziehung zwischen Anfrage und Betrieb (Vergabe), speichert aber nur bid_id. Dies führt zu Redundanz und Integritätsproblemen: (1) Eine Anfrage kann mehrere Bids haben, aber nur eine Vergabe. Die Constraint 'pro Anfrage max. 1 Award' ist nicht erzwingbar. (2) Wenn ein Bid zurückgezogen wird (withdrawn_at), bleibt das Award bestehen und referenziert einen ungültigen Zustand. (3) Die Semantik 'welcher Betrieb hat den Zuschlag' ist nicht direkt abfragbar ohne Join über bids. LÖSUNG: awards sollte request_id und business_id direkt speichern und eine UNIQUE-Constraint auf request_id haben, um 1:1 zu erzwingen.",
+          "korrekturanweisung": "Tabelle 'awards' umstrukturieren: Spalten hinzufügen: request_id INTEGER NOT NULL UNIQUE, business_id INTEGER NOT NULL. Foreign Keys auf requests und businesses. bid_id kann optional bleiben für Audit-Trail, aber die Kernbeziehung muss direkt modelliert sein. Alternativ: bid_id als UNIQUE setzen und request_id aus bids ableiten (aber weniger explizit)."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'requests' hat ein Attribut 'status' (VARCHAR), aber keine Constraints oder Dokumentation für erlaubte Werte (z.B. 'open', 'awarded', 'closed'). Dies führt zu Datenqualitätsproblemen und erschwert Abfragen. WEICH: Tabelle 'bids' hat 'withdrawn_at' zur Markierung zurückgezogener Gebote, aber kein explizites 'is_withdrawn' BOOLEAN oder CHECK-Constraint. Dies ist funktional, aber weniger robust.",
+          "korrekturanweisung": "HART: 'status' in requests mit CHECK-Constraint oder ENUM definieren: CHECK (status IN ('open', 'awarded', 'closed')). WEICH: Erwägen Sie, 'withdrawn_at' durch ein explizites 'is_withdrawn' BOOLEAN zu ergänzen oder ein CHECK (withdrawn_at IS NULL OR withdrawn_at > created_at) hinzuzufügen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen 'requests' und 'awards' ist nicht explizit modelliert. 'awards' referenziert nur 'bids', nicht direkt 'requests'. Dies führt zu: (1) Keine Constraint, dass pro Anfrage max. 1 Award existiert. (2) Keine Constraint, dass ein Award nur für einen aktiven (nicht zurückgezogenen) Bid vergeben werden kann. (3) Abfrage 'welche Anfrage hat einen Zuschlag' erfordert Join über bids. WEICH: 'business_trades' ist korrekt als N:M-Junction-Tabelle modelliert, aber es gibt keine Constraint, dass ein Bid nur für einen Betrieb mit passender Fachrichtung (trade_id in request) möglich ist.",
+          "korrekturanweisung": "HART: awards.request_id hinzufügen mit UNIQUE-Constraint und FK zu requests. CHECK-Constraint hinzufügen, dass withdrawn_at IS NULL für den Award-Bid. WEICH: Trigger oder Applikationslogik, um zu prüfen, dass business_id in business_trades mit request.trade_id kompatibel ist."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Tabelle 'awards' verletzt die 3NF durch unvollständige Modellierung einer funktionalen Abhängigkeit. Die Beziehung 'request → business' (Vergabe) ist nicht direkt modelliert, sondern nur indirekt über 'bid'. Dies führt zu: (1) Transitive Abhängigkeit: request → bid → business statt direkt request → business. (2) Redundanz: Wenn mehrere Bids für eine Anfrage existieren, ist unklar, welcher der 'Award' ist, ohne zusätzliche Constraints. (3) Update-Anomalie: Wenn ein Bid zurückgezogen wird, bleibt das Award bestehen und wird semantisch ungültig. WEICH: 'requests.status' als VARCHAR statt ENUM/CHECK ist nicht normalisiert (implizite Domäne).",
+          "korrekturanweisung": "HART: awards-Tabelle redesignen: (id, request_id UNIQUE, business_id, bid_id, awarded_at). Dies macht die 1:1-Beziehung request→business explizit und normalisiert. WEICH: requests.status mit CHECK-Constraint oder separater 'request_statuses' Lookup-Tabelle normalisieren."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich notwendigen Entitäten sind vorhanden: customers, businesses, trades, requests, bids, awards. Die Plattform-Kernentitäten sind vollständig modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'requests' hat ein Attribut 'status' (VARCHAR), das nur zwei Werte annehmen kann (offen/vergeben). Dies ist eine unzureichende Modellierung. Der Status sollte durch die Existenz eines Awards-Eintrags bestimmt werden (1:0..1 Beziehung). Alternativ: Wenn 'status' beibehalten wird, muss es ein ENUM oder CHECK-Constraint sein, nicht VARCHAR. Aktuell ist unklar, welche Werte erlaubt sind und wie Konsistenz mit der 'awards'-Tabelle gewährleistet wird.",
+          "korrekturanweisung": "Option A (empfohlen): 'status'-Spalte aus 'requests' entfernen; Status wird durch Existenz eines Awards-Eintrags abgeleitet. Option B: 'status' als ENUM definieren mit Werten ('open', 'awarded') und Trigger/Constraint zur Konsistenzwahrung mit awards-Tabelle."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'requests' und 'awards' ist nicht explizit modelliert. Die 'awards'-Tabelle referenziert 'bids', nicht direkt 'requests'. Dies führt zu einer indirekten 1:0..1-Beziehung (eine Anfrage kann maximal einen Award haben). Allerdings fehlt eine Constraint, die sicherstellt, dass pro Request nur ein Award existiert. Ohne UNIQUE-Constraint auf (request_id) in einer Hilfssicht oder expliziter Modellierung ist die Geschäftsregel 'Pro Anfrage gibt es am Ende nur eine Vergabe' nicht erzwingbar.",
+          "korrekturanweisung": "Entweder: (1) 'awards'-Tabelle um 'request_id' erweitern und UNIQUE-Constraint auf request_id setzen, ODER (2) 'awards'-Tabelle umstrukturieren: request_id + bid_id mit UNIQUE(request_id). Dies macht die 1:0..1-Beziehung explizit und erzwingbar."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform. Keine transitive Abhängigkeiten, keine Redundanzen erkannt. Junction-Table 'business_trades' ist korrekt für M:N-Beziehung modelliert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE trades (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_trades PRIMARY KEY (id)\n);\n\nCREATE TABLE requests (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    trade_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_requests PRIMARY KEY (id),\n    CONSTRAINT fk_requests_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_requests_trade_id FOREIGN KEY (trade_id) REFERENCES trades (id)\n);\n\nCREATE TABLE businesses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_businesses PRIMARY KEY (id)\n);\n\nCREATE TABLE bids (\n    id INTEGER NOT NULL,\n    request_id INTEGER NOT NULL,\n    business_id INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    message TEXT,\n    created_at TIMESTAMP NOT NULL,\n    withdrawn_at TIMESTAMP,\n    CONSTRAINT pk_bids PRIMARY KEY (id),\n    CONSTRAINT fk_bids_request_id FOREIGN KEY (request_id) REFERENCES requests (id),\n    CONSTRAINT fk_bids_business_id FOREIGN KEY (business_id) REFERENCES businesses (id)\n);\n\nCREATE TABLE awards (\n    id INTEGER NOT NULL,\n    request_id INTEGER NOT NULL,\n    business_id INTEGER NOT NULL,\n    bid_id INTEGER NOT NULL,\n    awarded_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_awards PRIMARY KEY (id),\n    CONSTRAINT fk_awards_request_id FOREIGN KEY (request_id) REFERENCES requests (id),\n    CONSTRAINT fk_awards_business_id FOREIGN KEY (business_id) REFERENCES businesses (id),\n    CONSTRAINT fk_awards_bid_id FOREIGN KEY (bid_id) REFERENCES bids (id)\n);\n\nCREATE TABLE business_trades (\n    business_id INTEGER NOT NULL,\n    trade_id INTEGER NOT NULL,\n    CONSTRAINT pk_business_trades PRIMARY KEY (business_id, trade_id),\n    CONSTRAINT fk_business_trades_business_id FOREIGN KEY (business_id) REFERENCES businesses (id),\n    CONSTRAINT fk_business_trades_trade_id FOREIGN KEY (trade_id) REFERENCES trades (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 2 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 7 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 39986,
+    "total_output_tokens": 12011,
+    "total_tokens": 51997,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 16266,
+        "output_tokens": 5154,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8399,
+        "output_tokens": 2900,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8311,
+        "output_tokens": 2015,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 7010,
+        "output_tokens": 1942,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2446,
+        "output_tokens": 1630,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4219,
+        "output_tokens": 1266,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4175,
+        "output_tokens": 1139,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6889,
+        "output_tokens": 1825,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4180,
+        "output_tokens": 1634,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4136,
+        "output_tokens": 876,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6931,
+        "output_tokens": 1699,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7010,
+        "output_tokens": 1942,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

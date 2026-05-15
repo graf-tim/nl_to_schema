@@ -1,0 +1,603 @@
+{
+  "testfall_id": "TC008",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.44666666666666666,
+  "score_gesamt": 0.6679999999999999,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5,
+      "matched": 2,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.45,
+      "recall": 0.45,
+      "f1": 0.45,
+      "matched": 9,
+      "nur_in_referenz": 11,
+      "nur_in_generiert": 11
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 1,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments.service_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dogs.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments → services",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dogs → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Hundesalon möchte seine Kundschaft und die Termine übersichtlich verwalten. Von jeder Person sollen Vorname, Nachname, Telefonnummer und optional die E-Mail-Adresse festgehalten werden. Jede Person kann mehrere Hunde haben, aber jeder Hund gehört genau einer Person. Zu jedem Hund sollen Name, Geburtsdatum, Rasse und besondere Hinweise zur Pflege gespeichert werden. Für den Salon werden verschiedene Behandlungsarten angeboten, zum Beispiel Baden, Schneiden oder Krallenpflege. Zu jeder Behandlungsart sollen Bezeichnung, kurze Beschreibung und Preis hinterlegt werden. Wenn ein Termin vereinbart wird, soll festgehalten werden, für welchen Hund er ist, welche Behandlungsart gebucht wurde, an welchem Tag der Termin stattfindet und ob der Termin bereits erledigt wurde.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dogs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "breed",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "care_notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "treatments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_completed",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dog_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "treatment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "dog_id",
+              "references_table": "dogs",
+              "references_column": "id"
+            },
+            {
+              "from_column": "treatment_id",
+              "references_table": "treatments",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Person",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse"
+          ],
+          "beschreibung": "Kunde des Hundesalons mit Kontaktinformationen"
+        },
+        {
+          "name": "Hund",
+          "attribute": [
+            "Name",
+            "Geburtsdatum",
+            "Rasse",
+            "Pflegehinweise"
+          ],
+          "beschreibung": "Hund, der zum Hundesalon gebracht wird und einer Person gehört"
+        },
+        {
+          "name": "Behandlungsart",
+          "attribute": [
+            "Bezeichnung",
+            "Beschreibung",
+            "Preis"
+          ],
+          "beschreibung": "Angebotene Dienstleistung im Hundesalon wie Baden, Schneiden oder Krallenpflege"
+        },
+        {
+          "name": "Termin",
+          "attribute": [
+            "Datum",
+            "Erledigt"
+          ],
+          "beschreibung": "Vereinbarter Termin für einen Hund mit einer bestimmten Behandlungsart"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Person",
+          "zu": "Hund",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Person kann mehrere Hunde haben, jeder Hund gehört genau einer Person"
+        },
+        {
+          "von": "Hund",
+          "zu": "Termin",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Hund kann mehrere Termine haben, jeder Termin ist für genau einen Hund"
+        },
+        {
+          "von": "Behandlungsart",
+          "zu": "Termin",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Behandlungsart kann in mehreren Terminen gebucht werden, jeder Termin hat genau eine Behandlungsart"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Unklar ist, ob die E-Mail-Adresse wirklich optional ist oder ob sie als Pflichtfeld behandelt werden soll. Der Text sagt 'optional', aber es ist nicht definiert, wie mit fehlenden E-Mail-Adressen umzugehen ist.",
+          "betroffene_elemente": [
+            "Person"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob ein Termin nur eine Behandlungsart enthalten kann oder ob mehrere Behandlungsarten in einem Termin kombiniert werden können.",
+          "betroffene_elemente": [
+            "Termin",
+            "Behandlungsart"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Uhrzeit des Termins gespeichert werden soll. Der Text erwähnt nur 'an welchem Tag', nicht aber die genaue Uhrzeit.",
+          "betroffene_elemente": [
+            "Termin"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob ein Termin storniert oder nur als 'erledigt' markiert werden kann, oder ob es weitere Terminstatus gibt.",
+          "betroffene_elemente": [
+            "Termin"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Person",
+          "attribute": [
+            {
+              "name": "PersonID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Hund",
+          "attribute": [
+            {
+              "name": "HundID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Rasse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Pflegehinweise",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "PersonID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Behandlungsart",
+          "attribute": [
+            {
+              "name": "BehandlungsartID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Termin",
+          "attribute": [
+            {
+              "name": "TerminID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Erledigt",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "HundID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BehandlungsartID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Person",
+          "zu": "Hund",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Hund",
+          "zu": "Termin",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Behandlungsart",
+          "zu": "Termin",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE dogs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    breed VARCHAR(255) NOT NULL,\n    care_notes TEXT,\n    person_id INTEGER NOT NULL,\n    CONSTRAINT pk_dogs PRIMARY KEY (id),\n    CONSTRAINT fk_dogs_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE treatments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_treatments PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    dog_id INTEGER NOT NULL,\n    treatment_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_dog_id FOREIGN KEY (dog_id) REFERENCES dogs (id),\n    CONSTRAINT fk_appointments_treatment_id FOREIGN KEY (treatment_id) REFERENCES treatments (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7458,
+    "total_output_tokens": 2979,
+    "total_tokens": 10437,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1485,
+        "output_tokens": 906,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2434,
+        "output_tokens": 1039,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3539,
+        "output_tokens": 1034,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1485,
+        "output_tokens": 906,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2434,
+        "output_tokens": 1039,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3539,
+        "output_tokens": 1034,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

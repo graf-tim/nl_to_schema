@@ -1,0 +1,276 @@
+{
+  "testfall_id": "TC012",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9652173913043478,
+  "score_gesamt": 0.9791304347826086,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9130434782608695,
+      "recall": 0.9130434782608695,
+      "f1": 0.9130434782608695,
+      "matched": 21,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "employees.entrydate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.created_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Optikergeschaeft moechte seine taeglichen Ablaeufe einfach verwalten. Fuer jede Kundin und jeden Kunden sollen Vorname, Nachname, Telefonnummer, E-Mail-Adresse und Geburtsdatum gespeichert werden. Jeder Kunde kann mehrere Auftraege haben. Zu jedem Auftrag soll festgehalten werden, wann er erstellt wurde, fuer welchen Kunden er ist und welchen Status er hat, zum Beispiel offen, in Arbeit oder abgeholt. In einem Auftrag koennen mehrere Brillen erfasst werden. Fuer jede Brille sollen Art des Gestells, Glasstaerke links, Glasstaerke rechts, Farbe und Verkaufspreis gespeichert werden. Jede Brille gehoert immer genau zu einem Auftrag. Zusaetzlich soll es Mitarbeitende geben, von denen Vorname, Nachname, Rolle und Eintrittsdatum gespeichert werden. Jeder Auftrag wird genau von einer mitarbeitenden Person angelegt.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "createddate",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "glasses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "frame_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lens_strength_left",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lens_strength_right",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "sale_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    birthdate DATE,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    hiredate DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    createddate TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE glasses (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    frame_type VARCHAR(255) NOT NULL,\n    lens_strength_left DECIMAL(18,2) NOT NULL,\n    lens_strength_right DECIMAL(18,2) NOT NULL,\n    color VARCHAR(255),\n    sale_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_glasses PRIMARY KEY (id),\n    CONSTRAINT fk_glasses_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2348,
+    "total_output_tokens": 986,
+    "total_tokens": 3334,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2348,
+        "output_tokens": 986,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2348,
+        "output_tokens": 986,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

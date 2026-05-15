@@ -1,0 +1,383 @@
+{
+  "testfall_id": "TC001",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9692307692307693,
+  "score_gesamt": 0.9815384615384616,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9230769230769231,
+      "recall": 0.9230769230769231,
+      "f1": 0.9230769230769231,
+      "matched": 12,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "shelves.label",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Bibliothek soll festgehalten werden, welche Bücher vorhanden sind, von wem sie geschrieben wurden und in welchem Regal sie stehen. Zu jedem Buch werden der Titel, das Erscheinungsjahr und eine kurze Beschreibung benötigt. Jedes Buch stammt genau von einer Autorin oder einem Autor, aber eine Autorin oder ein Autor kann mehrere Bücher geschrieben haben. Außerdem steht jedes Buch genau in einem Regal, während in einem Regal mehrere Bücher stehen können. Für Autorinnen und Autoren sollen Vorname, Nachname und Geburtsdatum gespeichert werden. Für Regale werden eine Bezeichnung und der Standortbereich in der Bibliothek benötigt. Es sollen nur aktuell vorhandene Bücher erfasst werden, keine Ausleihen oder Reservierungen.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "authors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "shelves",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_area",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "books",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publicationyear",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "author_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "shelf_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "author_id",
+              "references_table": "authors",
+              "references_column": "id"
+            },
+            {
+              "from_column": "shelf_id",
+              "references_table": "shelves",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Entitäten sind vorhanden: authors (mit firstname, lastname, birthdate), shelves (mit designation, location_area), books (mit title, publicationyear, description). Die Anforderung 'nur aktuell vorhandene Bücher' ist durch die Tabellenstruktur erfüllt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt typisiert. Optionale Felder (birthdate, publicationyear, description) sind nullable=true, Pflichtfelder sind nullable=false.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: 1:N zwischen authors und books (ein Autor → mehrere Bücher), 1:N zwischen shelves und books (ein Regal → mehrere Bücher). Beide Fremdschlüssel sind NOT NULL, was die Anforderung 'genau ein Autor' und 'genau ein Regal' pro Buch korrekt abbildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3NF: (1) Alle Attribute sind atomar (keine Wiederholungsgruppen). (2) Keine partiellen Abhängigkeiten von Nicht-Schlüssel-Attributen vom PK. (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Jede Tabelle hat einen klaren Zweck ohne Redundanz.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: authors, shelves, books. Keine fehlenden Entitäten identifiziert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: authors (firstname, lastname, birthdate), shelves (designation, location_area), books (title, publicationyear, description). Keine Attribute fehlen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Beziehungen sind korrekt modelliert: 1:N zwischen authors und books (ein Autor → mehrere Bücher), 1:N zwischen shelves und books (ein Regal → mehrere Bücher). Kardinalitäten entsprechen den Anforderungen. Keine M:N-Beziehungen vorhanden, daher keine Brückentabellen nötig.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema ist normalisiert (mindestens 3NF). Keine Redundanzen, keine Anomalien erkennbar. Fremdschlüssel sind korrekt gesetzt.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE authors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    CONSTRAINT pk_authors PRIMARY KEY (id)\n);\n\nCREATE TABLE shelves (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    location_area VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_shelves PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publicationyear INTEGER,\n    description TEXT,\n    author_id INTEGER NOT NULL,\n    shelf_id INTEGER NOT NULL,\n    CONSTRAINT pk_books PRIMARY KEY (id),\n    CONSTRAINT fk_books_author_id FOREIGN KEY (author_id) REFERENCES authors (id),\n    CONSTRAINT fk_books_shelf_id FOREIGN KEY (shelf_id) REFERENCES shelves (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=1] C1: 0 unerfüllte Findings.",
+      "[iter=1] C2: 0 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=2] C1: 0 unerfüllte Findings.",
+      "[iter=2] C2: 0 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 3 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 27084,
+    "total_output_tokens": 5733,
+    "total_tokens": 32817,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 11168,
+        "output_tokens": 2010,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 5804,
+        "output_tokens": 1662,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 5716,
+        "output_tokens": 1361,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 4396,
+        "output_tokens": 700,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2293,
+        "output_tokens": 610,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2902,
+        "output_tokens": 835,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2858,
+        "output_tokens": 680,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4441,
+        "output_tokens": 700,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2902,
+        "output_tokens": 827,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2858,
+        "output_tokens": 681,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4434,
+        "output_tokens": 700,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4396,
+        "output_tokens": 700,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,437 @@
+{
+  "testfall_id": "TC020",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6166666666666666,
+  "score_gesamt": 0.77,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.625,
+      "recall": 0.625,
+      "f1": 0.625,
+      "matched": 10,
+      "nur_in_referenz": 6,
+      "nur_in_generiert": 6
+    },
+    "beziehung": {
+      "recall": 0.5,
+      "matched": 1,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "photo_orders",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.appointment_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.shooting_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders.completion_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "photo_orders → appointments",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Fotoatelier moechte seine Kunden, Termine und gebuchten Fotoauftraege verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und E-Mail-Adresse festgehalten werden. Ein Kunde kann mehrere Termine vereinbaren, aber jeder Termin gehoert immer genau zu einem Kunden. Zu jedem Termin sollen Datum, Uhrzeit und ein Status wie geplant, abgeschlossen oder abgesagt gespeichert werden. Aus einem Termin kann genau ein Fotoauftrag entstehen, manchmal aber auch keiner, zum Beispiel wenn der Termin abgesagt wurde. Fuer jeden Fotoauftrag sollen die Art des Shootings, eine kurze Beschreibung, der vereinbarte Preis und das Datum der Fertigstellung erfasst werden. Jeder Fotoauftrag gehoert genau zu dem Termin, aus dem er entstanden ist.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "photo_assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "shooting_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "agreed_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "completion_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Anforderung besagt 'Aus einem Termin kann genau ein Fotoauftrag entstehen, manchmal aber auch keiner'. Das bedeutet, dass ein Termin optional mit einem Fotoauftrag verknüpft ist (0..1 Beziehung). Das Schema modelliert dies jedoch nicht korrekt: Die Spalte 'appointment_id' in 'photo_assignments' ist NOT NULL, was bedeutet, dass JEDER Fotoauftrag einen Termin haben MUSS. Dies ist korrekt. ABER: Es gibt keine Constraint, die sicherstellt, dass ein Termin höchstens EINEN Fotoauftrag hat. Ein Termin könnte mehrfach in 'photo_assignments' vorkommen, was der Anforderung widerspricht.",
+          "korrekturanweisung": "Füge einen UNIQUE-Constraint auf 'appointment_id' in der Tabelle 'photo_assignments' hinzu, um sicherzustellen, dass jeder Termin höchstens einen Fotoauftrag hat: UNIQUE(appointment_id)"
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "WEICHER FEHLER: Die Spalte 'appointment_time' ist vom Typ VARCHAR. Dies ist suboptimal, da Uhrzeiten strukturiert als TIME-Datentyp gespeichert werden sollten. VARCHAR erlaubt beliebige Strings und verhindert Validierung und effiziente Abfragen (z.B. 'Alle Termine nach 14:00 Uhr').",
+          "korrekturanweisung": "Ändere den Datentyp von 'appointment_time' von VARCHAR zu TIME für strukturierte Zeitverwaltung und bessere Abfragbarkeit."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'appointments' und 'photo_assignments' ist nicht korrekt modelliert. Die Anforderung sagt 'manchmal aber auch keiner' Fotoauftrag aus einem Termin. Das bedeutet, dass 'appointment_id' in 'photo_assignments' NULL sein darf. Aktuell ist es NOT NULL, was bedeutet, dass ein Fotoauftrag immer einen Termin haben muss. Dies ist zwar logisch sinnvoll, aber die Umkehrung ist nicht erzwungen: Ein Termin kann mehrere Fotoaufträge haben, obwohl die Anforderung 'genau ein' sagt.",
+          "korrekturanweisung": "Ergänze einen UNIQUE-Constraint auf 'appointment_id' in 'photo_assignments': UNIQUE(appointment_id). Dies erzwingt die 1:0..1 Beziehung korrekt."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine transitiven Abhängigkeiten, keine Redundanzen, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: customers, appointments, photo_assignments. Keine fehlenden Entitäten identifiziert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der Tabelle 'appointments' ist das Attribut 'appointment_time' vom Typ VARCHAR definiert. Für eine Uhrzeit sollte der Typ TIME verwendet werden, nicht VARCHAR. Dies ist eine fachliche Ungenauigkeit, die zu Datenkonsistenzproblemen führt (z.B. ungültige Zeitformate könnten gespeichert werden).",
+          "korrekturanweisung": "Ändern Sie 'appointment_time' in der Tabelle 'appointments' von VARCHAR zu TIME."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'appointments' und 'photo_assignments' ist nicht korrekt modelliert. Der Anforderungstext besagt: 'Aus einem Termin kann genau ein Fotoauftrag entstehen, manchmal aber auch keiner'. Dies ist eine 1:0..1-Beziehung (optional). Aktuell ist 'appointment_id' in 'photo_assignments' als NOT NULL definiert, was bedeutet, dass jeder Fotoauftrag einen Termin haben MUSS. Das ist korrekt. ABER: Es gibt keine Constraint, die sicherstellt, dass aus einem Termin maximal ein Fotoauftrag entstehen kann. Ein Termin könnte mehrere Fotoaufträge haben, was der Anforderung widerspricht.",
+          "korrekturanweisung": "Fügen Sie einen UNIQUE-Constraint auf 'appointment_id' in der Tabelle 'photo_assignments' hinzu, um sicherzustellen, dass jeder Termin höchstens einen Fotoauftrag hat. Alternativ: Machen Sie 'appointment_id' nullable (true), um zu reflektieren, dass ein Fotoauftrag optional aus einem Termin entstehen kann (falls die Modellierung anders interpretiert wird)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist normalisiert. Keine Redundanzen oder Anomalien erkannt. Alle Tabellen sind in mindestens 3NF.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE photo_assignments (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER NOT NULL,\n    shooting_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    agreed_price DECIMAL(18,2) NOT NULL,\n    completion_date DATE,\n    CONSTRAINT pk_photo_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_photo_assignments_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=1] C1: 2 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=2] C1: 3 unerfüllte Findings.",
+      "[iter=2] C2: 2 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 3 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 29617,
+    "total_output_tokens": 6965,
+    "total_tokens": 36582,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 12424,
+        "output_tokens": 2340,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6060,
+        "output_tokens": 1961,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 5972,
+        "output_tokens": 1845,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5161,
+        "output_tokens": 819,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2302,
+        "output_tokens": 702,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3030,
+        "output_tokens": 835,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2986,
+        "output_tokens": 924,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4923,
+        "output_tokens": 819,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3030,
+        "output_tokens": 1126,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2986,
+        "output_tokens": 921,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5199,
+        "output_tokens": 819,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5161,
+        "output_tokens": 819,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

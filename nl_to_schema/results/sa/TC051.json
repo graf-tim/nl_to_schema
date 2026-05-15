@@ -1,0 +1,510 @@
+{
+  "testfall_id": "TC051",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.49805499664654596,
+  "score_gesamt": 0.6988329979879275,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.4864864864864865,
+      "recall": 0.5294117647058824,
+      "f1": 0.5070422535211269,
+      "matched": 18,
+      "nur_in_referenz": 16,
+      "nur_in_generiert": 19
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "freelancers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications.freelancer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications.proposed_amount",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.profile_text",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.hourly_rate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.freelancer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.skill_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.application_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.start_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.end_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications → freelancers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → applications",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills → freelancers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills → skills",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Plattform, auf der Unternehmen externe Fachleute für befristete Arbeiten finden, sollen die wichtigsten Abläufe festgehalten werden. Jedes Unternehmen legt ein Profil mit Name, Branche und einer Kontaktadresse an. Externe Fachleute registrieren sich ebenfalls mit ihren Kontaktdaten, einer kurzen Vorstellung und ihrem üblichen Stundensatz. Unternehmen veröffentlichen Ausschreibungen, in denen beschrieben wird, welche Aufgabe erledigt werden soll, in welchem Zeitraum der Einsatz geplant ist und welches Budget ungefähr vorgesehen ist. Eine Ausschreibung gehört immer zu genau einem Unternehmen.\n\nFachleute können sich auf passende Ausschreibungen melden. Dabei soll nachvollziehbar sein, wann die Meldung eingegangen ist, welchen Preis die Person anbietet und ob daraus später tatsächlich eine Zusammenarbeit geworden ist. Zusätzlich können Fachleute mehrere Kenntnisse angeben, etwa Programmiersprachen, Design oder Beratung. Dieselbe Kenntnis kann natürlich bei vielen Personen vorkommen.\n\nWenn es zu einer Zusammenarbeit kommt, soll auch gespeichert werden, in welchem Zeitraum gearbeitet wurde und ob der Auftrag noch läuft. Offen bleibt, ob eine Zusammenarbeit direkt aus genau einer Meldung entsteht oder auch auf anderem Weg zustande kommen kann. Ebenso ist nicht ganz eindeutig, ob das in einer Ausschreibung genannte Budget verbindlich ist oder nur zur Orientierung dient.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "companies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "industry",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "professionals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "introduction",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hourly_rate",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "skills",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "professional_skills",
+          "columns": [
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "skill_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "skill_id",
+              "references_table": "skills",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "job_postings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "budget",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "company_id",
+              "references_table": "companies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "applications",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "job_posting_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "applied_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "offered_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_accepted",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "job_posting_id",
+              "references_table": "job_postings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "collaborations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "application_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_ongoing",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "company_id",
+              "references_table": "companies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "application_id",
+              "references_table": "applications",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE companies (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255) NOT NULL,\n    contact_address TEXT NOT NULL,\n    CONSTRAINT pk_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE job_postings (\n    id INTEGER NOT NULL,\n    company_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(18,2),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_job_postings PRIMARY KEY (id),\n    CONSTRAINT fk_job_postings_company_id FOREIGN KEY (company_id) REFERENCES companies (id)\n);\n\nCREATE TABLE professionals (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    introduction TEXT,\n    hourly_rate DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_professionals PRIMARY KEY (id)\n);\n\nCREATE TABLE applications (\n    id INTEGER NOT NULL,\n    job_posting_id INTEGER NOT NULL,\n    professional_id INTEGER NOT NULL,\n    applied_at TIMESTAMP NOT NULL,\n    offered_price DECIMAL(18,2) NOT NULL,\n    is_accepted BOOLEAN,\n    CONSTRAINT pk_applications PRIMARY KEY (id),\n    CONSTRAINT fk_applications_job_posting_id FOREIGN KEY (job_posting_id) REFERENCES job_postings (id),\n    CONSTRAINT fk_applications_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id)\n);\n\nCREATE TABLE collaborations (\n    id INTEGER NOT NULL,\n    company_id INTEGER NOT NULL,\n    professional_id INTEGER NOT NULL,\n    application_id INTEGER,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    is_ongoing BOOLEAN NOT NULL,\n    CONSTRAINT pk_collaborations PRIMARY KEY (id),\n    CONSTRAINT fk_collaborations_company_id FOREIGN KEY (company_id) REFERENCES companies (id),\n    CONSTRAINT fk_collaborations_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id),\n    CONSTRAINT fk_collaborations_application_id FOREIGN KEY (application_id) REFERENCES applications (id)\n);\n\nCREATE TABLE skills (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_skills PRIMARY KEY (id)\n);\n\nCREATE TABLE professional_skills (\n    professional_id INTEGER NOT NULL,\n    skill_id INTEGER NOT NULL,\n    CONSTRAINT pk_professional_skills PRIMARY KEY (professional_id, skill_id),\n    CONSTRAINT fk_professional_skills_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id),\n    CONSTRAINT fk_professional_skills_skill_id FOREIGN KEY (skill_id) REFERENCES skills (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2515,
+    "total_output_tokens": 1735,
+    "total_tokens": 4250,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2515,
+        "output_tokens": 1735,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2515,
+        "output_tokens": 1735,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

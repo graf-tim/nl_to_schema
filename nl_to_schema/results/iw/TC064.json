@@ -1,0 +1,842 @@
+{
+  "testfall_id": "TC064",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.621,
+  "score_gesamt": 0.7726,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 12,
+    "pk_tabellen_mit_pk": 12,
+    "fk_referenzen_gesamt": 13,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5833333333333334,
+      "recall": 0.875,
+      "f1": 0.7000000000000001,
+      "matched": 7,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 5
+    },
+    "attribut": {
+      "precision": 0.4909090909090909,
+      "recall": 0.6,
+      "f1": 0.54,
+      "matched": 27,
+      "nur_in_referenz": 18,
+      "nur_in_generiert": 28
+    },
+    "beziehung": {
+      "recall": 0.625,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "service_locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tariffs.energy_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tariffs.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.service_location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_service_packages.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_packages.monthly_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_packages.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.customer_since",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contract_tariffs.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.street",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.postal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.meter_number",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.energy_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → service_locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein regionaler Energieversorger möchte seine Verträge und die Versorgung von Privat- und Gewerbekunden übersichtlich verwalten. Zu jedem Kunden sollen die üblichen Kontaktdaten und seit wann er betreut wird festgehalten werden. Ein Kunde kann mehrere Abnahmestellen haben, zum Beispiel die Wohnung, ein Ladenlokal oder eine Werkstatt. Für jede Abnahmestelle soll erkennbar sein, wo sie liegt, welche Zählernummer dort verwendet wird und ob dort Strom oder Gas geliefert wird. Da Tarife sich je nach Produkt unterscheiden können, sollen die angebotenen Modelle mit Bezeichnung, Grundpreis und Arbeitspreis gepflegt werden. Kunden schließen für einzelne Abnahmestellen Verträge ab; dabei sind Beginn, geplantes Ende und Status wichtig. Es soll außerdem nachvollziehbar bleiben, welche Tarife zu einem Vertrag gehören, weil es in der Praxis vorkommen kann, dass ein Vertrag aus mehreren Bausteinen besteht. Rechnungen werden zu Verträgen erstellt und sollen mit Datum, Zeitraum, Betrag und Zahlungsstand erfasst werden. Offene Posten müssen erkennbar sein. Außerdem soll dokumentiert werden, welche Servicepakete ein Kunde nutzt, etwa Wartung oder Ökostromoptionen. Ein Paket kann von vielen Kunden genutzt werden, und manche Kunden wechseln solche Zusatzangebote im Laufe der Zeit.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "care_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "private_customers",
+          "columns": [
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "business_customers",
+          "columns": [
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "tax_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "products",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "consumption_points",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "meter_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "product_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "product_id",
+              "references_table": "products",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "tariffs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "product_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "base_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "product_id",
+              "references_table": "products",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "contracts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "consumption_point_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "consumption_point_id",
+              "references_table": "consumption_points",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "contract_tariffs",
+          "columns": [
+            {
+              "name": "contract_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "tariff_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "tariff_id",
+              "references_table": "tariffs",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "invoices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contract_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "invoice_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "period_start",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "period_end",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "payment_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "paid_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "payment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "service_packages",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "customer_service_packages",
+          "columns": [
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_package_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_package_id",
+              "references_table": "service_packages",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Abnahmestelle' (consumption_point) ist unvollständig. Laut Anforderung soll für jede Abnahmestelle erkennbar sein, 'wo sie liegt, welche Zählernummer dort verwendet wird und ob dort Strom oder Gas geliefert wird'. Das Schema speichert zwar location_id und meter_number, aber das Attribut 'ob dort Strom oder Gas geliefert wird' ist nicht direkt in consumption_points vorhanden. Stattdessen wird dies indirekt über product_id gelöst, was semantisch unklar ist: products.type könnte 'Strom' oder 'Gas' sein, aber dies ist nicht explizit dokumentiert und führt zu Verwirrung, ob products eine Entität für Tarife oder für Energietypen ist.",
+          "korrekturanweisung": "Fügen Sie in der Tabelle 'consumption_points' ein Attribut 'energy_type' (VARCHAR, NOT NULL) hinzu, das explizit 'Strom' oder 'Gas' speichert. Alternativ: Klären Sie die Semantik von 'products' – ist es eine Entität für Energietypen oder für Tarifmodelle? Derzeit ist dies mehrdeutig. Empfehlung: Trennen Sie 'products' in 'energy_types' (mit Werten wie 'Strom', 'Gas') und behalten Sie 'tariffs' für Tarifmodelle."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'customers' speichert die Kontaktadresse über location_id, aber laut Anforderung sollen 'übliche Kontaktdaten' erfasst werden. Das Schema hat email und phone, aber es fehlt ein Name-Attribut in der Basis-Tabelle 'customers'. Namen sind nur in den Spezialisierungstabellen 'private_customers' (firstname, lastname) und 'business_customers' (company_name) vorhanden. Dies ist zwar durch Vererbung gelöst, aber für Abfragen und Reporting unpraktisch. Zusätzlich fehlt ein Attribut für die Rechnungsadresse, die von der Betriebsstätte (location) abweichen kann.",
+          "korrekturanweisung": "Erwägen Sie, ein generisches 'name' oder 'display_name' Attribut in 'customers' hinzuzufügen, das für beide Kundentypen befüllt wird (z.B. 'Vorname Nachname' oder 'Unternehmensname'). Fügen Sie optional ein 'billing_location_id' Attribut hinzu, um eine separate Rechnungsadresse zu ermöglichen, falls diese von der Betriebsstätte abweicht."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'customers' und 'locations' ist fehlerhaft modelliert. Laut Anforderung 'Ein Kunde kann mehrere Abnahmestellen haben' – dies wird korrekt durch consumption_points modelliert. Aber 'customers' hat ein Pflichtfeld 'location_id', das eine 1:1-Beziehung zu einer Adresse suggeriert. Dies ist semantisch falsch: Die location_id in customers sollte optional sein oder ganz entfernt werden, da die tatsächliche Adresse einer Abnahmestelle über consumption_points.location_id definiert wird. Die location_id in customers ist redundant und verwirrend.",
+          "korrekturanweisung": "Entfernen Sie das Attribut 'location_id' aus der Tabelle 'customers'. Falls eine Rechnungsadresse oder Kontaktadresse für den Kunden selbst nötig ist, fügen Sie stattdessen ein optionales 'billing_location_id' oder 'contact_location_id' Attribut hinzu. Die Betriebsstätten-Adressen werden korrekt über consumption_points.location_id verwaltet."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Semantik der Tabelle 'products' ist unklar und führt zu Modellierungsfehlern. Laut Anforderung sollen 'angebotene Modelle mit Bezeichnung, Grundpreis und Arbeitspreis gepflegt werden' – dies sind Tarife, nicht Produkte. Aber 'products' hat nur 'name' und 'type', ohne Preisattribute. Die Preisattribute sind in 'tariffs' (base_price, unit_price). Gleichzeitig wird 'products' in 'consumption_points' verwendet, um den Energietyp (Strom/Gas) zu speichern. Dies ist eine Vermischung von zwei verschiedenen Konzepten: Energietypen und Tarifmodelle.",
+          "korrekturanweisung": "Klären Sie die Semantik: (1) Erstellen Sie eine separate Tabelle 'energy_types' mit id und name ('Strom', 'Gas'). (2) Ersetzen Sie 'product_id' in 'consumption_points' durch 'energy_type_id'. (3) Umbenennen Sie 'products' in 'tariff_models' oder entfernen Sie sie, wenn 'tariffs' bereits alle Tarifmodelle abdeckt. (4) Stellen Sie sicher, dass 'tariffs' ein Attribut hat, das den Energietyp angibt (z.B. 'energy_type_id')."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'invoices' enthält redundante Informationen, die zu Anomalien führen können. Das Attribut 'paid_amount' ist redundant: Es sollte aus 'amount' und 'payment_status' ableitbar sein oder durch eine separate Zahlungstabelle modelliert werden. Wenn ein Kunde eine Rechnung teilweise bezahlt, ist unklar, wie dies dokumentiert wird (paid_amount < amount, aber payment_status = 'paid'?). Dies verstößt gegen die 3NF, da 'paid_amount' funktional von anderen Attributen abhängt.",
+          "korrekturanweisung": "Erstellen Sie eine separate Tabelle 'payments' mit Spalten: id (PK), invoice_id (FK), payment_date (DATE), paid_amount (DECIMAL). Entfernen Sie 'paid_amount' und 'payment_date' aus 'invoices'. Halten Sie nur 'payment_status' in 'invoices' (z.B. 'open', 'partially_paid', 'paid'). Dies ermöglicht auch mehrere Zahlungen pro Rechnung und verhindert Redundanzen."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Die Spezialisierung von 'customers' in 'private_customers' und 'business_customers' ist korrekt modelliert (Single Table Inheritance oder Class Table Inheritance). Allerdings könnte eine Überprüfung sicherstellen, dass jeder customer_id in genau einer der beiden Spezialisierungstabellen vorkommt. Dies ist eine Optimierung, keine Normalisierungsverletzung.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE locations (\n    id INTEGER NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    customer_type VARCHAR(255) NOT NULL,\n    location_id INTEGER NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id),\n    CONSTRAINT fk_customers_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE business_customers (\n    customer_id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    tax_number VARCHAR(255),\n    contact_person VARCHAR(255),\n    CONSTRAINT pk_business_customers PRIMARY KEY (customer_id),\n    CONSTRAINT fk_business_customers_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_products PRIMARY KEY (id)\n);\n\nCREATE TABLE consumption_points (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    meter_number VARCHAR(255) NOT NULL,\n    product_id INTEGER NOT NULL,\n    CONSTRAINT pk_consumption_points PRIMARY KEY (id),\n    CONSTRAINT fk_consumption_points_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_consumption_points_location_id FOREIGN KEY (location_id) REFERENCES locations (id),\n    CONSTRAINT fk_consumption_points_product_id FOREIGN KEY (product_id) REFERENCES products (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    consumption_point_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    planned_end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_consumption_point_id FOREIGN KEY (consumption_point_id) REFERENCES consumption_points (id)\n);\n\nCREATE TABLE tariffs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    product_id INTEGER NOT NULL,\n    base_price DECIMAL(18,2) NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_tariffs PRIMARY KEY (id),\n    CONSTRAINT fk_tariffs_product_id FOREIGN KEY (product_id) REFERENCES products (id)\n);\n\nCREATE TABLE contract_tariffs (\n    contract_id INTEGER NOT NULL,\n    tariff_id INTEGER NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_contract_tariffs PRIMARY KEY (contract_id, tariff_id),\n    CONSTRAINT fk_contract_tariffs_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_contract_tariffs_tariff_id FOREIGN KEY (tariff_id) REFERENCES tariffs (id)\n);\n\nCREATE TABLE service_packages (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_service_packages PRIMARY KEY (id)\n);\n\nCREATE TABLE customer_service_packages (\n    customer_id INTEGER NOT NULL,\n    service_package_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_customer_service_packages PRIMARY KEY (customer_id, service_package_id),\n    CONSTRAINT fk_customer_service_packages_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_customer_service_packages_service_package_id FOREIGN KEY (service_package_id) REFERENCES service_packages (id)\n);\n\nCREATE TABLE invoices (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    invoice_date DATE NOT NULL,\n    period_start DATE NOT NULL,\n    period_end DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    payment_status VARCHAR(255) NOT NULL,\n    paid_amount DECIMAL(18,2),\n    payment_date DATE,\n    CONSTRAINT pk_invoices PRIMARY KEY (id),\n    CONSTRAINT fk_invoices_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id)\n);\n\nCREATE TABLE private_customers (\n    customer_id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_private_customers PRIMARY KEY (customer_id),\n    CONSTRAINT fk_private_customers_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Abnahmestelle' (consumption_point) ist unvollständig. Laut Anforderung soll für jede Abnahmestelle erkennbar sein, 'wo sie liegt, welche Zählernummer dort verwendet wird und ob dort Strom oder Gas geliefert wird'. Das Schema speichert zwar location_id und meter_number, aber das Attribut 'ob dort Strom oder Gas geliefert wird' ist nicht direkt in consumption_points vorhanden. Stattdessen wird dies indirekt über product_id gelöst, was semantisch unklar ist: products.type könnte 'Strom' oder 'Gas' sein, aber dies ist nicht explizit dokumentiert und führt zu Verwirrung, ob products eine Entität für Tarife oder für Energietypen ist.",
+          "korrekturanweisung": "Fügen Sie in der Tabelle 'consumption_points' ein Attribut 'energy_type' (VARCHAR, NOT NULL) hinzu, das explizit 'Strom' oder 'Gas' speichert. Alternativ: Klären Sie die Semantik von 'products' – ist es eine Entität für Energietypen oder für Tarifmodelle? Derzeit ist dies mehrdeutig. Empfehlung: Trennen Sie 'products' in 'energy_types' (mit Werten wie 'Strom', 'Gas') und behalten Sie 'tariffs' für Tarifmodelle."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'customers' speichert die Kontaktadresse über location_id, aber laut Anforderung sollen 'übliche Kontaktdaten' erfasst werden. Das Schema hat email und phone, aber es fehlt ein Name-Attribut in der Basis-Tabelle 'customers'. Namen sind nur in den Spezialisierungstabellen 'private_customers' (firstname, lastname) und 'business_customers' (company_name) vorhanden. Dies ist zwar durch Vererbung gelöst, aber für Abfragen und Reporting unpraktisch. Zusätzlich fehlt ein Attribut für die Rechnungsadresse, die von der Betriebsstätte (location) abweichen kann.",
+          "korrekturanweisung": "Erwägen Sie, ein generisches 'name' oder 'display_name' Attribut in 'customers' hinzuzufügen, das für beide Kundentypen befüllt wird (z.B. 'Vorname Nachname' oder 'Unternehmensname'). Fügen Sie optional ein 'billing_location_id' Attribut hinzu, um eine separate Rechnungsadresse zu ermöglichen, falls diese von der Betriebsstätte abweicht."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'customers' und 'locations' ist fehlerhaft modelliert. Laut Anforderung 'Ein Kunde kann mehrere Abnahmestellen haben' – dies wird korrekt durch consumption_points modelliert. Aber 'customers' hat ein Pflichtfeld 'location_id', das eine 1:1-Beziehung zu einer Adresse suggeriert. Dies ist semantisch falsch: Die location_id in customers sollte optional sein oder ganz entfernt werden, da die tatsächliche Adresse einer Abnahmestelle über consumption_points.location_id definiert wird. Die location_id in customers ist redundant und verwirrend.",
+          "korrekturanweisung": "Entfernen Sie das Attribut 'location_id' aus der Tabelle 'customers'. Falls eine Rechnungsadresse oder Kontaktadresse für den Kunden selbst nötig ist, fügen Sie stattdessen ein optionales 'billing_location_id' oder 'contact_location_id' Attribut hinzu. Die Betriebsstätten-Adressen werden korrekt über consumption_points.location_id verwaltet."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Semantik der Tabelle 'products' ist unklar und führt zu Modellierungsfehlern. Laut Anforderung sollen 'angebotene Modelle mit Bezeichnung, Grundpreis und Arbeitspreis gepflegt werden' – dies sind Tarife, nicht Produkte. Aber 'products' hat nur 'name' und 'type', ohne Preisattribute. Die Preisattribute sind in 'tariffs' (base_price, unit_price). Gleichzeitig wird 'products' in 'consumption_points' verwendet, um den Energietyp (Strom/Gas) zu speichern. Dies ist eine Vermischung von zwei verschiedenen Konzepten: Energietypen und Tarifmodelle.",
+          "korrekturanweisung": "Klären Sie die Semantik: (1) Erstellen Sie eine separate Tabelle 'energy_types' mit id und name ('Strom', 'Gas'). (2) Ersetzen Sie 'product_id' in 'consumption_points' durch 'energy_type_id'. (3) Umbenennen Sie 'products' in 'tariff_models' oder entfernen Sie sie, wenn 'tariffs' bereits alle Tarifmodelle abdeckt. (4) Stellen Sie sicher, dass 'tariffs' ein Attribut hat, das den Energietyp angibt (z.B. 'energy_type_id')."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'invoices' enthält redundante Informationen, die zu Anomalien führen können. Das Attribut 'paid_amount' ist redundant: Es sollte aus 'amount' und 'payment_status' ableitbar sein oder durch eine separate Zahlungstabelle modelliert werden. Wenn ein Kunde eine Rechnung teilweise bezahlt, ist unklar, wie dies dokumentiert wird (paid_amount < amount, aber payment_status = 'paid'?). Dies verstößt gegen die 3NF, da 'paid_amount' funktional von anderen Attributen abhängt.",
+          "korrekturanweisung": "Erstellen Sie eine separate Tabelle 'payments' mit Spalten: id (PK), invoice_id (FK), payment_date (DATE), paid_amount (DECIMAL). Entfernen Sie 'paid_amount' und 'payment_date' aus 'invoices'. Halten Sie nur 'payment_status' in 'invoices' (z.B. 'open', 'partially_paid', 'paid'). Dies ermöglicht auch mehrere Zahlungen pro Rechnung und verhindert Redundanzen."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Die Spezialisierung von 'customers' in 'private_customers' und 'business_customers' ist korrekt modelliert (Single Table Inheritance oder Class Table Inheritance). Allerdings könnte eine Überprüfung sicherstellen, dass jeder customer_id in genau einer der beiden Spezialisierungstabellen vorkommt. Dies ist eine Optimierung, keine Normalisierungsverletzung.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 33310,
+    "total_output_tokens": 14505,
+    "total_tokens": 47815,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 17068,
+        "output_tokens": 8229,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 16242,
+        "output_tokens": 6276,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2476,
+        "output_tokens": 1941,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4810,
+        "output_tokens": 1696,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6385,
+        "output_tokens": 3217,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5789,
+        "output_tokens": 2533,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8207,
+        "output_tokens": 3071,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5643,
+        "output_tokens": 2047,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

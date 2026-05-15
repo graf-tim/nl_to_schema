@@ -1,0 +1,555 @@
+{
+  "testfall_id": "TC026",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7190476190476192,
+  "score_gesamt": 0.8314285714285715,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "matched": 3,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.7142857142857143,
+      "recall": 0.7142857142857143,
+      "f1": 0.7142857142857143,
+      "matched": 15,
+      "nur_in_referenz": 6,
+      "nur_in_generiert": 6
+    },
+    "beziehung": {
+      "recall": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "order_notes",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.activity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.orderdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_notes.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_notes.order_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_notes.created_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_notes.note_text",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_notes → orders",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine kleine Schlosserei möchte ihre täglichen Aufträge übersichtlich verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und E-Mail-Adresse festgehalten werden. Ein Kunde kann mehrere Aufträge erteilen, aber jeder Auftrag gehört immer genau zu einem Kunden. Zu jedem Auftrag werden das Annahmedatum, eine kurze Beschreibung, der vereinbarte Gesamtpreis und der aktuelle Status gespeichert. Die Arbeiten werden von den Beschäftigten der Schlosserei ausgeführt. Von jedem Beschäftigten werden Vorname, Nachname, Telefonnummer und die Tätigkeit erfasst. Jeder Auftrag wird genau einem Beschäftigten zugewiesen, ein Beschäftigter kann aber mehrere Aufträge bearbeiten. Zusätzlich sollen zu jedem Auftrag beliebig viele interne Notizen mit Zeitpunkt und Text gespeichert werden.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "job_title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reception_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "notes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "timestamp",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "text",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse"
+          ],
+          "beschreibung": "Ein Kunde der Schlosserei, der Aufträge erteilen kann."
+        },
+        {
+          "name": "Auftrag",
+          "attribute": [
+            "Annahmedatum",
+            "Beschreibung",
+            "Gesamtpreis",
+            "Status"
+          ],
+          "beschreibung": "Ein Auftrag, der von einem Kunden erteilt und von einem Beschäftigten ausgeführt wird."
+        },
+        {
+          "name": "Beschäftigter",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "Tätigkeit"
+          ],
+          "beschreibung": "Ein Mitarbeiter der Schlosserei, der Aufträge bearbeitet."
+        },
+        {
+          "name": "Notiz",
+          "attribute": [
+            "Zeitpunkt",
+            "Text"
+          ],
+          "beschreibung": "Eine interne Notiz zu einem Auftrag mit Zeitstempel und Textinhalt."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Aufträge erteilen, aber jeder Auftrag gehört genau zu einem Kunden."
+        },
+        {
+          "von": "Beschäftigter",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Beschäftigter kann mehrere Aufträge bearbeiten, aber jeder Auftrag wird genau einem Beschäftigten zugewiesen."
+        },
+        {
+          "von": "Auftrag",
+          "zu": "Notiz",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Zu jedem Auftrag können beliebig viele interne Notizen gespeichert werden."
+        }
+      ],
+      "unklarheiten": []
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "emailAdresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Beschäftigter",
+          "attribute": [
+            {
+              "name": "beschaeftigterId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "taetigkeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Auftrag",
+          "attribute": [
+            {
+              "name": "auftragId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschaeftigterId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "annahmedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gesamtpreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Notiz",
+          "attribute": [
+            {
+              "name": "notizId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "auftragId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zeitpunkt",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "text",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Beschäftigter",
+          "zu": "Auftrag",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Auftrag",
+          "zu": "Notiz",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    job_title VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    reception_date DATE NOT NULL,\n    description TEXT NOT NULL,\n    total_price DECIMAL(18,2) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE notes (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    text TEXT NOT NULL,\n    CONSTRAINT pk_notes PRIMARY KEY (id),\n    CONSTRAINT fk_notes_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7252,
+    "total_output_tokens": 2762,
+    "total_tokens": 10014,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1505,
+        "output_tokens": 616,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2139,
+        "output_tokens": 1076,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3608,
+        "output_tokens": 1070,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1505,
+        "output_tokens": 616,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2139,
+        "output_tokens": 1076,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3608,
+        "output_tokens": 1070,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

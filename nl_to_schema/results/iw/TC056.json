@@ -1,0 +1,680 @@
+{
+  "testfall_id": "TC056",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6900176366843034,
+  "score_gesamt": 0.8140105820105821,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.8571428571428571,
+      "f1": 0.7999999999999999,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.5111111111111111,
+      "recall": 0.6388888888888888,
+      "f1": 0.5679012345679012,
+      "matched": 23,
+      "nur_in_referenz": 13,
+      "nur_in_generiert": 22
+    },
+    "beziehung": {
+      "recall": 0.7142857142857143,
+      "matched": 5,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "participants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.age_group",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_staff_members.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "event_participants.participant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "event_participants.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_participants.participant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_participants.joined_on",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staff_members.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.birthdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.contact_info",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.registration_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "event_participants → participants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_participants → participants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Jugendzentrum möchte seine regelmäßigen Angebote und die Teilnahme der Jugendlichen übersichtlich festhalten. Es gibt verschiedene Kurse und offene Treffs, die an bestimmten Wochentagen stattfinden und von Mitarbeitenden begleitet werden. Manche Angebote werden von einer Person betreut, bei anderen helfen mehrere Mitarbeitende zusammen. Für jedes Angebot soll erkennbar sein, für welche Altersgruppe es gedacht ist, wie viele Plätze es ungefähr gibt und ob eine Anmeldung nötig ist. \n\nVon den Jugendlichen sollen Name, Geburtsdatum, Kontaktmöglichkeit und der Tag der ersten Anmeldung im Jugendzentrum bekannt sein. Oft nehmen dieselben Jugendlichen an mehreren Angeboten teil, und bei einem Angebot sind natürlich meist viele Jugendliche dabei. Dabei soll man auch sehen können, seit wann jemand bei einem Angebot dabei ist und ob die Teilnahme gerade aktiv ist. \n\nZusätzlich organisiert das Jugendzentrum gelegentlich besondere Veranstaltungen wie Ausflüge oder Ferienaktionen. Solche Termine finden an einem bestimmten Datum statt, haben einen Titel, eine kurze Beschreibung und eine verantwortliche Person aus dem Team. Auch hier können mehrere Jugendliche mitmachen. Nicht immer ist sofort klar, ob jemand nur Interesse hatte oder wirklich fest eingeplant war; für die Übersicht soll der jeweilige Stand trotzdem festgehalten werden.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "youths",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "registration_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "staff",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "offers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "offer_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "weekday",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "min_age",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "max_age",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "registration_required",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "offer_staff",
+          "columns": [
+            {
+              "name": "offer_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "staff_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "offer_id",
+              "references_table": "offers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "staff_id",
+              "references_table": "staff",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "offer_participations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "youth_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "offer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "youth_id",
+              "references_table": "youths",
+              "references_column": "id"
+            },
+            {
+              "from_column": "offer_id",
+              "references_table": "offers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "events",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "event_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "end_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "responsible_staff_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "responsible_staff_id",
+              "references_table": "staff",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "event_staff",
+          "columns": [
+            {
+              "name": "event_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "staff_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "event_id",
+              "references_table": "events",
+              "references_column": "id"
+            },
+            {
+              "from_column": "staff_id",
+              "references_table": "staff",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "event_participations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "youth_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "event_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "participation_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "youth_id",
+              "references_table": "youths",
+              "references_column": "id"
+            },
+            {
+              "from_column": "event_id",
+              "references_table": "events",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung erwähnt explizit, dass Angebote (Kurse und offene Treffs) von Mitarbeitenden begleitet werden und dass 'Manche Angebote von einer Person betreut, bei anderen helfen mehrere Mitarbeitende zusammen'. Das Schema modelliert dies korrekt über offer_staff. JEDOCH: Die Anforderung sagt auch, dass es 'verschiedene Kurse und offene Treffs' gibt, die sich in ihrer Art unterscheiden. Das Feld 'offer_type' existiert, aber es ist unklar, ob dies ausreichend ist. Kritischer: Die Anforderung erwähnt, dass Angebote 'an bestimmten Wochentagen stattfinden' – das ist modelliert. ABER: Es fehlt eine explizite Entität oder Attribut für die Unterscheidung zwischen regelmäßigen Angeboten (Kurse/Treffs) und einmaligen Veranstaltungen. Das Schema trennt diese zwar in 'offers' und 'events', aber die Anforderung deutet an, dass regelmäßige Angebote wiederkehrend sind (Wochentag), während events einmalig sind (Datum). Dies ist korrekt modelliert. JEDOCH: Es fehlt eine Entität für 'Altersgruppen' oder eine Referenztabelle, die Altersgruppen standardisiert. Stattdessen werden min_age und max_age als Attribute gespeichert, was zu Redundanz führt. Dies ist eine Schwachstelle in der Entitätsvollständigkeit.",
+          "korrekturanweisung": "Erstelle eine neue Tabelle 'age_groups' mit Spalten: id (INTEGER PRIMARY KEY), name (VARCHAR), min_age (INTEGER), max_age (INTEGER). Ersetze min_age und max_age in der 'offers'-Tabelle durch ein Fremdschlüssel-Attribut 'age_group_id' (INTEGER, nullable=true, FK zu age_groups.id). Dies standardisiert die Altersgruppen und vermeidet Redundanz."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung verlangt für Jugendliche: Name, Geburtsdatum, Kontaktmöglichkeit und Tag der ersten Anmeldung. Die Tabelle 'youths' hat alle diese Attribute (firstname, lastname, birthdate, contact, registration_date). ✓ Für Angebote: Titel, Altersgruppe, Platzanzahl, Anmeldungspflicht, Wochentag, Betreuung. Das ist vorhanden. ✓ Für Veranstaltungen: Titel, Beschreibung, Datum, verantwortliche Person. Das ist vorhanden. ✓ JEDOCH: Die Anforderung sagt 'Dabei soll man auch sehen können, seit wann jemand bei einem Angebot dabei ist und ob die Teilnahme gerade aktiv ist.' Die Tabelle 'offer_participations' hat start_date und is_active. ✓ ABER: Es fehlt ein Attribut für die Uhrzeit der Angebote. Die Tabelle 'offers' hat start_time und end_time als VARCHAR, was problematisch ist (sollte TIME sein). Zusätzlich: Die Anforderung sagt 'Nicht immer ist sofort klar, ob jemand nur Interesse hatte oder wirklich fest eingeplant war; für die Übersicht soll der jeweilige Stand trotzdem festgehalten werden.' Die Tabelle 'event_participations' hat 'participation_status' (VARCHAR), was dies abdeckt. ✓ ABER: Es fehlt ein Attribut in 'event_participations' für den Zeitstempel, wann diese Anmeldung erfolgt ist (analog zu offer_participations.start_date). Dies ist eine Lücke.",
+          "korrekturanweisung": "1. Ändere start_time und end_time in der 'offers'-Tabelle von VARCHAR zu TIME. 2. Füge in der 'event_participations'-Tabelle ein Attribut 'registration_date' (DATE, nullable=false) hinzu, um zu dokumentieren, wann die Anmeldung zur Veranstaltung erfolgt ist. Dies entspricht der Anforderung, den Stand festzuhalten."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung modelliert mehrere Beziehungen: 1. Jugendliche ↔ Angebote (M:N): Korrekt über offer_participations. ✓ 2. Mitarbeitende ↔ Angebote (M:N): Korrekt über offer_staff. ✓ 3. Jugendliche ↔ Veranstaltungen (M:N): Korrekt über event_participations. ✓ 4. Mitarbeitende ↔ Veranstaltungen (M:N): Korrekt über event_staff. ✓ 5. Veranstaltungen ↔ Mitarbeitende (1:1 für verantwortliche Person): Modelliert als responsible_staff_id in events. ✓ JEDOCH: Die Anforderung sagt 'Manche Angebote werden von einer Person betreut, bei anderen helfen mehrere Mitarbeitende zusammen.' Dies impliziert, dass es auch Angebote geben kann, die von KEINER Person betreut werden (optional). Das Schema hat keine Einschränkung, dass mindestens eine Person ein Angebot betreuen muss. Das ist korrekt (nullable). ABER: Die Anforderung sagt auch 'Solche Termine finden an einem bestimmten Datum statt' für Veranstaltungen und 'an bestimmten Wochentagen stattfinden' für Angebote. Das ist korrekt modelliert. JEDOCH: Es gibt ein kardinalitätsproblem: Die Anforderung sagt 'eine verantwortliche Person aus dem Team' für Veranstaltungen. Das ist 1:N (eine Person kann mehrere Veranstaltungen verantworten). Das ist korrekt modelliert. ABER: Es fehlt eine Überprüfung, ob responsible_staff_id NOT NULL sein sollte (da jede Veranstaltung eine verantwortliche Person haben muss). Das ist korrekt (nullable=false). ✓ KRITISCH: Die Anforderung sagt 'Dabei soll man auch sehen können, seit wann jemand bei einem Angebot dabei ist und ob die Teilnahme gerade aktiv ist.' Die Tabelle offer_participations hat start_date und is_active. ABER: Es fehlt ein end_date-Attribut, um zu dokumentieren, wann die Teilnahme endet. Das ist vorhanden (end_date, nullable=true). ✓ ABER: Die Logik ist problematisch: Wenn is_active=false und end_date=NULL, ist unklar, wann die Teilnahme endete. Dies ist eine Konsistenzproblematik, keine Kardinalitätsproblematik, aber es deutet auf ein Design-Problem hin.",
+          "korrekturanweisung": "Füge in der 'offer_participations'-Tabelle eine CHECK-Constraint hinzu (oder dokumentiere in der Anwendungslogik): Wenn is_active=false, dann muss end_date NOT NULL sein. Dies stellt sicher, dass inaktive Teilnahmen ein Enddatum haben. Alternativ: Ändere is_active zu einem berechneten Feld (end_date IS NULL) oder verwende ein Trigger/Constraint in der Datenbank."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Das Schema ist grundsätzlich in 3NF, da keine offensichtlichen Transitivabhängigkeiten oder Redundanzen vorhanden sind. JEDOCH: 1. Die Attribute min_age und max_age in der 'offers'-Tabelle sind redundant, wenn mehrere Angebote die gleiche Altersgruppe haben. Dies führt zu Redundanz und Anomalien (Update-Anomalie: Wenn die Altersgruppe '10-14' geändert werden soll, müssen alle Angebote mit dieser Gruppe aktualisiert werden). 2. Die Attribute start_time und end_time in der 'offers'-Tabelle sind als VARCHAR gespeichert, was zu Inkonsistenzen führen kann (z.B. '14:30' vs '14.30' vs '2:30 PM'). 3. Die Attribute start_time und end_time in der 'events'-Tabelle sind optional (nullable=true), aber wenn ein Event stattfindet, sollten diese Zeiten bekannt sein. Dies ist eine Design-Schwachstelle. 4. Das Attribut 'offer_type' in der 'offers'-Tabelle ist ein VARCHAR ohne Referenz zu einer Lookup-Tabelle. Dies führt zu Redundanz und Inkonsistenzen (z.B. 'Kurs' vs 'kurs' vs 'KURS'). 5. Das Attribut 'participation_status' in der 'event_participations'-Tabelle ist ein VARCHAR ohne Referenz zu einer Lookup-Tabelle. Dies führt zu Redundanz und Inkonsistenzen.",
+          "korrekturanweisung": "1. Erstelle eine Lookup-Tabelle 'offer_types' mit Spalten: id (INTEGER PRIMARY KEY), name (VARCHAR UNIQUE). Ersetze offer_type in 'offers' durch offer_type_id (INTEGER, FK zu offer_types.id). 2. Erstelle eine Lookup-Tabelle 'participation_statuses' mit Spalten: id (INTEGER PRIMARY KEY), name (VARCHAR UNIQUE). Ersetze participation_status in 'event_participations' durch participation_status_id (INTEGER, FK zu participation_statuses.id). 3. Ändere start_time und end_time in 'offers' und 'events' von VARCHAR zu TIME. 4. Erstelle eine Lookup-Tabelle 'age_groups' (siehe entitaets_vollstaendigkeit) und ersetze min_age/max_age in 'offers' durch age_group_id (FK). Dies reduziert Redundanz und verhindert Anomalien."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE youths (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    contact VARCHAR(255),\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_youths PRIMARY KEY (id)\n);\n\nCREATE TABLE staff (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_staff PRIMARY KEY (id)\n);\n\nCREATE TABLE events (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    event_date DATE NOT NULL,\n    start_time VARCHAR(255),\n    end_time VARCHAR(255),\n    responsible_staff_id INTEGER NOT NULL,\n    CONSTRAINT pk_events PRIMARY KEY (id),\n    CONSTRAINT fk_events_responsible_staff_id FOREIGN KEY (responsible_staff_id) REFERENCES staff (id)\n);\n\nCREATE TABLE event_participations (\n    id INTEGER NOT NULL,\n    youth_id INTEGER NOT NULL,\n    event_id INTEGER NOT NULL,\n    participation_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_event_participations PRIMARY KEY (id),\n    CONSTRAINT fk_event_participations_youth_id FOREIGN KEY (youth_id) REFERENCES youths (id),\n    CONSTRAINT fk_event_participations_event_id FOREIGN KEY (event_id) REFERENCES events (id)\n);\n\nCREATE TABLE event_staff (\n    event_id INTEGER NOT NULL,\n    staff_id INTEGER NOT NULL,\n    role VARCHAR(255),\n    CONSTRAINT pk_event_staff PRIMARY KEY (event_id, staff_id),\n    CONSTRAINT fk_event_staff_event_id FOREIGN KEY (event_id) REFERENCES events (id),\n    CONSTRAINT fk_event_staff_staff_id FOREIGN KEY (staff_id) REFERENCES staff (id)\n);\n\nCREATE TABLE offers (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    offer_type VARCHAR(255) NOT NULL,\n    weekday VARCHAR(255) NOT NULL,\n    start_time VARCHAR(255) NOT NULL,\n    end_time VARCHAR(255) NOT NULL,\n    min_age INTEGER,\n    max_age INTEGER,\n    capacity INTEGER,\n    registration_required BOOLEAN NOT NULL,\n    CONSTRAINT pk_offers PRIMARY KEY (id)\n);\n\nCREATE TABLE offer_participations (\n    id INTEGER NOT NULL,\n    youth_id INTEGER NOT NULL,\n    offer_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_offer_participations PRIMARY KEY (id),\n    CONSTRAINT fk_offer_participations_youth_id FOREIGN KEY (youth_id) REFERENCES youths (id),\n    CONSTRAINT fk_offer_participations_offer_id FOREIGN KEY (offer_id) REFERENCES offers (id)\n);\n\nCREATE TABLE offer_staff (\n    offer_id INTEGER NOT NULL,\n    staff_id INTEGER NOT NULL,\n    role VARCHAR(255),\n    CONSTRAINT pk_offer_staff PRIMARY KEY (offer_id, staff_id),\n    CONSTRAINT fk_offer_staff_offer_id FOREIGN KEY (offer_id) REFERENCES offers (id),\n    CONSTRAINT fk_offer_staff_staff_id FOREIGN KEY (staff_id) REFERENCES staff (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung erwähnt explizit, dass Angebote (Kurse und offene Treffs) von Mitarbeitenden begleitet werden und dass 'Manche Angebote von einer Person betreut, bei anderen helfen mehrere Mitarbeitende zusammen'. Das Schema modelliert dies korrekt über offer_staff. JEDOCH: Die Anforderung sagt auch, dass es 'verschiedene Kurse und offene Treffs' gibt, die sich in ihrer Art unterscheiden. Das Feld 'offer_type' existiert, aber es ist unklar, ob dies ausreichend ist. Kritischer: Die Anforderung erwähnt, dass Angebote 'an bestimmten Wochentagen stattfinden' – das ist modelliert. ABER: Es fehlt eine explizite Entität oder Attribut für die Unterscheidung zwischen regelmäßigen Angeboten (Kurse/Treffs) und einmaligen Veranstaltungen. Das Schema trennt diese zwar in 'offers' und 'events', aber die Anforderung deutet an, dass regelmäßige Angebote wiederkehrend sind (Wochentag), während events einmalig sind (Datum). Dies ist korrekt modelliert. JEDOCH: Es fehlt eine Entität für 'Altersgruppen' oder eine Referenztabelle, die Altersgruppen standardisiert. Stattdessen werden min_age und max_age als Attribute gespeichert, was zu Redundanz führt. Dies ist eine Schwachstelle in der Entitätsvollständigkeit.",
+          "korrekturanweisung": "Erstelle eine neue Tabelle 'age_groups' mit Spalten: id (INTEGER PRIMARY KEY), name (VARCHAR), min_age (INTEGER), max_age (INTEGER). Ersetze min_age und max_age in der 'offers'-Tabelle durch ein Fremdschlüssel-Attribut 'age_group_id' (INTEGER, nullable=true, FK zu age_groups.id). Dies standardisiert die Altersgruppen und vermeidet Redundanz."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung verlangt für Jugendliche: Name, Geburtsdatum, Kontaktmöglichkeit und Tag der ersten Anmeldung. Die Tabelle 'youths' hat alle diese Attribute (firstname, lastname, birthdate, contact, registration_date). ✓ Für Angebote: Titel, Altersgruppe, Platzanzahl, Anmeldungspflicht, Wochentag, Betreuung. Das ist vorhanden. ✓ Für Veranstaltungen: Titel, Beschreibung, Datum, verantwortliche Person. Das ist vorhanden. ✓ JEDOCH: Die Anforderung sagt 'Dabei soll man auch sehen können, seit wann jemand bei einem Angebot dabei ist und ob die Teilnahme gerade aktiv ist.' Die Tabelle 'offer_participations' hat start_date und is_active. ✓ ABER: Es fehlt ein Attribut für die Uhrzeit der Angebote. Die Tabelle 'offers' hat start_time und end_time als VARCHAR, was problematisch ist (sollte TIME sein). Zusätzlich: Die Anforderung sagt 'Nicht immer ist sofort klar, ob jemand nur Interesse hatte oder wirklich fest eingeplant war; für die Übersicht soll der jeweilige Stand trotzdem festgehalten werden.' Die Tabelle 'event_participations' hat 'participation_status' (VARCHAR), was dies abdeckt. ✓ ABER: Es fehlt ein Attribut in 'event_participations' für den Zeitstempel, wann diese Anmeldung erfolgt ist (analog zu offer_participations.start_date). Dies ist eine Lücke.",
+          "korrekturanweisung": "1. Ändere start_time und end_time in der 'offers'-Tabelle von VARCHAR zu TIME. 2. Füge in der 'event_participations'-Tabelle ein Attribut 'registration_date' (DATE, nullable=false) hinzu, um zu dokumentieren, wann die Anmeldung zur Veranstaltung erfolgt ist. Dies entspricht der Anforderung, den Stand festzuhalten."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung modelliert mehrere Beziehungen: 1. Jugendliche ↔ Angebote (M:N): Korrekt über offer_participations. ✓ 2. Mitarbeitende ↔ Angebote (M:N): Korrekt über offer_staff. ✓ 3. Jugendliche ↔ Veranstaltungen (M:N): Korrekt über event_participations. ✓ 4. Mitarbeitende ↔ Veranstaltungen (M:N): Korrekt über event_staff. ✓ 5. Veranstaltungen ↔ Mitarbeitende (1:1 für verantwortliche Person): Modelliert als responsible_staff_id in events. ✓ JEDOCH: Die Anforderung sagt 'Manche Angebote werden von einer Person betreut, bei anderen helfen mehrere Mitarbeitende zusammen.' Dies impliziert, dass es auch Angebote geben kann, die von KEINER Person betreut werden (optional). Das Schema hat keine Einschränkung, dass mindestens eine Person ein Angebot betreuen muss. Das ist korrekt (nullable). ABER: Die Anforderung sagt auch 'Solche Termine finden an einem bestimmten Datum statt' für Veranstaltungen und 'an bestimmten Wochentagen stattfinden' für Angebote. Das ist korrekt modelliert. JEDOCH: Es gibt ein kardinalitätsproblem: Die Anforderung sagt 'eine verantwortliche Person aus dem Team' für Veranstaltungen. Das ist 1:N (eine Person kann mehrere Veranstaltungen verantworten). Das ist korrekt modelliert. ABER: Es fehlt eine Überprüfung, ob responsible_staff_id NOT NULL sein sollte (da jede Veranstaltung eine verantwortliche Person haben muss). Das ist korrekt (nullable=false). ✓ KRITISCH: Die Anforderung sagt 'Dabei soll man auch sehen können, seit wann jemand bei einem Angebot dabei ist und ob die Teilnahme gerade aktiv ist.' Die Tabelle offer_participations hat start_date und is_active. ABER: Es fehlt ein end_date-Attribut, um zu dokumentieren, wann die Teilnahme endet. Das ist vorhanden (end_date, nullable=true). ✓ ABER: Die Logik ist problematisch: Wenn is_active=false und end_date=NULL, ist unklar, wann die Teilnahme endete. Dies ist eine Konsistenzproblematik, keine Kardinalitätsproblematik, aber es deutet auf ein Design-Problem hin.",
+          "korrekturanweisung": "Füge in der 'offer_participations'-Tabelle eine CHECK-Constraint hinzu (oder dokumentiere in der Anwendungslogik): Wenn is_active=false, dann muss end_date NOT NULL sein. Dies stellt sicher, dass inaktive Teilnahmen ein Enddatum haben. Alternativ: Ändere is_active zu einem berechneten Feld (end_date IS NULL) oder verwende ein Trigger/Constraint in der Datenbank."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Das Schema ist grundsätzlich in 3NF, da keine offensichtlichen Transitivabhängigkeiten oder Redundanzen vorhanden sind. JEDOCH: 1. Die Attribute min_age und max_age in der 'offers'-Tabelle sind redundant, wenn mehrere Angebote die gleiche Altersgruppe haben. Dies führt zu Redundanz und Anomalien (Update-Anomalie: Wenn die Altersgruppe '10-14' geändert werden soll, müssen alle Angebote mit dieser Gruppe aktualisiert werden). 2. Die Attribute start_time und end_time in der 'offers'-Tabelle sind als VARCHAR gespeichert, was zu Inkonsistenzen führen kann (z.B. '14:30' vs '14.30' vs '2:30 PM'). 3. Die Attribute start_time und end_time in der 'events'-Tabelle sind optional (nullable=true), aber wenn ein Event stattfindet, sollten diese Zeiten bekannt sein. Dies ist eine Design-Schwachstelle. 4. Das Attribut 'offer_type' in der 'offers'-Tabelle ist ein VARCHAR ohne Referenz zu einer Lookup-Tabelle. Dies führt zu Redundanz und Inkonsistenzen (z.B. 'Kurs' vs 'kurs' vs 'KURS'). 5. Das Attribut 'participation_status' in der 'event_participations'-Tabelle ist ein VARCHAR ohne Referenz zu einer Lookup-Tabelle. Dies führt zu Redundanz und Inkonsistenzen.",
+          "korrekturanweisung": "1. Erstelle eine Lookup-Tabelle 'offer_types' mit Spalten: id (INTEGER PRIMARY KEY), name (VARCHAR UNIQUE). Ersetze offer_type in 'offers' durch offer_type_id (INTEGER, FK zu offer_types.id). 2. Erstelle eine Lookup-Tabelle 'participation_statuses' mit Spalten: id (INTEGER PRIMARY KEY), name (VARCHAR UNIQUE). Ersetze participation_status in 'event_participations' durch participation_status_id (INTEGER, FK zu participation_statuses.id). 3. Ändere start_time und end_time in 'offers' und 'events' von VARCHAR zu TIME. 4. Erstelle eine Lookup-Tabelle 'age_groups' (siehe entitaets_vollstaendigkeit) und ersetze min_age/max_age in 'offers' durch age_group_id (FK). Dies reduziert Redundanz und verhindert Anomalien."
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 28532,
+    "total_output_tokens": 11902,
+    "total_tokens": 40434,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 14294,
+        "output_tokens": 6219,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 14238,
+        "output_tokens": 5683,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2485,
+        "output_tokens": 1637,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4494,
+        "output_tokens": 1234,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5644,
+        "output_tokens": 2210,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4791,
+        "output_tokens": 1470,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6165,
+        "output_tokens": 2372,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4953,
+        "output_tokens": 2979,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

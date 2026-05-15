@@ -1,0 +1,584 @@
+{
+  "testfall_id": "TC028",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 1.0,
+  "score_gesamt": 1.0,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 18,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [],
+  "state": {
+    "anforderungstext": "Für einen Coffeeshop soll festgehalten werden, welche Mitarbeitenden dort arbeiten, welche Getränke angeboten werden und welche Bestellungen aufgenommen wurden. Von Mitarbeitenden werden Vorname, Nachname, E-Mail-Adresse, Einstellungsdatum und ob sie aktuell tätig sind benötigt. Jedes Getränk hat einen Namen, gehört genau zu einer Kategorie und hat einen festen Verkaufspreis. Für Kategorien sollen Bezeichnung und Beschreibung gespeichert werden. Zu jeder Bestellung soll erfasst werden, wann sie aufgenommen wurde, wie viele Einheiten bestellt wurden und welches Getränk verkauft wurde. Außerdem soll zu jeder Bestellung gespeichert werden, welcher Mitarbeitende sie aufgenommen hat. Eine Bestellung bezieht sich immer genau auf ein Getränk und genau auf eine mitarbeitende Person.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "beverages",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_timestamp",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "beverage_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "beverage_id",
+              "references_table": "beverages",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Mitarbeitende",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "E-Mail-Adresse",
+            "Einstellungsdatum",
+            "Tätig"
+          ],
+          "beschreibung": "Personen, die im Coffeeshop arbeiten"
+        },
+        {
+          "name": "Getränk",
+          "attribute": [
+            "Name",
+            "Verkaufspreis"
+          ],
+          "beschreibung": "Getränke, die im Coffeeshop angeboten werden"
+        },
+        {
+          "name": "Kategorie",
+          "attribute": [
+            "Bezeichnung",
+            "Beschreibung"
+          ],
+          "beschreibung": "Kategorien, zu denen Getränke gehören"
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            "Aufnahmezeitpunkt",
+            "Menge"
+          ],
+          "beschreibung": "Bestellungen, die im Coffeeshop aufgenommen wurden"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Getränk",
+          "zu": "Kategorie",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Getränk gehört genau zu einer Kategorie"
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Getränk",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jede Bestellung bezieht sich auf genau ein Getränk"
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jede Bestellung wird von genau einer mitarbeitenden Person aufgenommen"
+        }
+      ],
+      "unklarheiten": []
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Mitarbeitende",
+          "attribute": [
+            {
+              "name": "MitarbeitendeID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Einstellungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Tätig",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kategorie",
+          "attribute": [
+            {
+              "name": "KategorieID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Getränk",
+          "attribute": [
+            {
+              "name": "GetränkID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Verkaufspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KategorieID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            {
+              "name": "BestellungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Aufnahmezeitpunkt",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Menge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "GetränkID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MitarbeitendeID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Getränk",
+          "zu": "Kategorie",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Getränk",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle vier Entitäten aus dem Anforderungstext und RequirementsReport sind im LogicalSchema vorhanden: employees, categories, beverages, orders. Keine Entität fehlt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: employees (firstname, lastname, email, hiredate, is_active), categories (name, description), beverages (name, price, category_id), orders (order_timestamp, quantity, beverage_id, employee_id). Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle drei Beziehungen aus dem ERModell sind korrekt implementiert: (1) Getränk N:1 Kategorie via beverages.category_id, (2) Bestellung N:1 Getränk via orders.beverage_id, (3) Bestellung N:1 Mitarbeitende via orders.employee_id. Kardinalitäten und Fremdschlüssel sind konsistent.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar, (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Die Struktur ist optimal für die gegebenen Anforderungen.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE beverages (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_beverages PRIMARY KEY (id),\n    CONSTRAINT fk_beverages_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    hiredate DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    order_timestamp TIMESTAMP NOT NULL,\n    quantity INTEGER NOT NULL,\n    beverage_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_beverage_id FOREIGN KEY (beverage_id) REFERENCES beverages (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle vier Entitäten aus dem Anforderungstext und RequirementsReport sind im LogicalSchema vorhanden: employees, categories, beverages, orders. Keine Entität fehlt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: employees (firstname, lastname, email, hiredate, is_active), categories (name, description), beverages (name, price, category_id), orders (order_timestamp, quantity, beverage_id, employee_id). Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle drei Beziehungen aus dem ERModell sind korrekt implementiert: (1) Getränk N:1 Kategorie via beverages.category_id, (2) Bestellung N:1 Getränk via orders.beverage_id, (3) Bestellung N:1 Mitarbeitende via orders.employee_id. Kardinalitäten und Fremdschlüssel sind konsistent.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar, (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Die Struktur ist optimal für die gegebenen Anforderungen.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 11955,
+    "total_output_tokens": 3318,
+    "total_tokens": 15273,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1483,
+        "output_tokens": 533,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2028,
+        "output_tokens": 989,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3463,
+        "output_tokens": 964,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 1,
+        "input_tokens": 4981,
+        "output_tokens": 832,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1483,
+        "output_tokens": 533,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2028,
+        "output_tokens": 989,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3463,
+        "output_tokens": 964,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4981,
+        "output_tokens": 832,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

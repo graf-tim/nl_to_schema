@@ -1,0 +1,500 @@
+{
+  "testfall_id": "TC009",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.26666666666666666,
+  "score_gesamt": 0.56,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.3333333333333333,
+      "recall": 0.3333333333333333,
+      "f1": 0.3333333333333333,
+      "matched": 1,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.3333333333333333,
+      "recall": 0.3333333333333333,
+      "f1": 0.3333333333333333,
+      "matched": 5,
+      "nur_in_referenz": 10,
+      "nur_in_generiert": 10
+    },
+    "beziehung": {
+      "recall": 0.0,
+      "matched": 0,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.label",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.access_note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.job_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.team_note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs → locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Reinigungsbetrieb möchte seine regelmäßigen Einsätze übersichtlich verwalten. Für jeden Kunden sollen der Name, die Telefonnummer, die E-Mail-Adresse und die Anschrift gespeichert werden. Jeder Kunde kann mehrere Einsatzorte haben, zum Beispiel Wohnung, Büro oder Praxis. Zu jedem Einsatzort sollen eine Bezeichnung, die genaue Adresse und ein Hinweis zur Zugänglichkeit festgehalten werden. Für jeden durchgeführten Reinigungseinsatz soll dokumentiert werden, an welchem Tag er stattgefunden hat, zu welchem Einsatzort er gehörte, welcher Status vorliegt und welche Notizen das Reinigungsteam hinterlassen hat. Jeder Reinigungseinsatz gehört immer genau zu einem Einsatzort, und jeder Einsatzort gehört immer genau zu einem Kunden.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "service_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "accessibility_note",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "cleaning_services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "service_location_id",
+              "references_table": "service_locations",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Name",
+            "Telefonnummer",
+            "E-Mail-Adresse",
+            "Anschrift"
+          ],
+          "beschreibung": "Repräsentiert einen Kunden des Reinigungsbetriebs mit Kontaktinformationen und Adresse."
+        },
+        {
+          "name": "Einsatzort",
+          "attribute": [
+            "Bezeichnung",
+            "Adresse",
+            "Zugänglichkeitshinweis"
+          ],
+          "beschreibung": "Repräsentiert einen Ort, an dem Reinigungseinsätze durchgeführt werden (z.B. Wohnung, Büro, Praxis). Gehört immer zu genau einem Kunden."
+        },
+        {
+          "name": "Reinigungseinsatz",
+          "attribute": [
+            "Datum",
+            "Status",
+            "Notizen"
+          ],
+          "beschreibung": "Dokumentiert einen durchgeführten Reinigungseinsatz mit Datum, Status und Anmerkungen des Reinigungsteams. Gehört immer zu genau einem Einsatzort."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Einsatzort",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Einsatzorte haben. Jeder Einsatzort gehört zu genau einem Kunden."
+        },
+        {
+          "von": "Einsatzort",
+          "zu": "Reinigungseinsatz",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Einsatzort kann mehrere Reinigungseinsätze haben. Jeder Reinigungseinsatz gehört zu genau einem Einsatzort."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist unklar, ob das Attribut 'Datum' des Reinigungseinsatzes nur das Durchführungsdatum oder auch Uhrzeit/Zeitraum umfassen soll.",
+          "betroffene_elemente": [
+            "Reinigungseinsatz"
+          ]
+        },
+        {
+          "beschreibung": "Die möglichen Werte für das Attribut 'Status' sind nicht spezifiziert (z.B. 'abgeschlossen', 'geplant', 'in Bearbeitung').",
+          "betroffene_elemente": [
+            "Reinigungseinsatz"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob Einsatzorte eindeutig identifizierbar sein müssen oder ob mehrere Einsatzorte die gleiche Adresse haben können.",
+          "betroffene_elemente": [
+            "Einsatzort"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht definiert, ob Kunden eindeutig sein müssen (z.B. ob zwei Kunden den gleichen Namen haben können).",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "emailAdresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "anschrift",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Einsatzort",
+          "attribute": [
+            {
+              "name": "einsatzortId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zugaenglichkeitshinweis",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Reinigungseinsatz",
+          "attribute": [
+            {
+              "name": "einsatzId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "einsatzortId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "notizen",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Einsatzort",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Einsatzort",
+          "zu": "Reinigungseinsatz",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE service_locations (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    accessibility_note TEXT,\n    CONSTRAINT pk_service_locations PRIMARY KEY (id),\n    CONSTRAINT fk_service_locations_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE cleaning_services (\n    id INTEGER NOT NULL,\n    service_location_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    notes TEXT,\n    CONSTRAINT pk_cleaning_services PRIMARY KEY (id),\n    CONSTRAINT fk_cleaning_services_service_location_id FOREIGN KEY (service_location_id) REFERENCES service_locations (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7107,
+    "total_output_tokens": 2419,
+    "total_tokens": 9526,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1494,
+        "output_tokens": 848,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2373,
+        "output_tokens": 790,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3240,
+        "output_tokens": 781,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1494,
+        "output_tokens": 848,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2373,
+        "output_tokens": 790,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3240,
+        "output_tokens": 781,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

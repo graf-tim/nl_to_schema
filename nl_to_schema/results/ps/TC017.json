@@ -1,0 +1,503 @@
+{
+  "testfall_id": "TC017",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.44166666666666665,
+  "score_gesamt": 0.665,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.4375,
+      "recall": 0.4375,
+      "f1": 0.4375,
+      "matched": 7,
+      "nur_in_referenz": 9,
+      "nur_in_generiert": 9
+    },
+    "beziehung": {
+      "recall": 0.0,
+      "matched": 0,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "suppliers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.product_category_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.supplier_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.stock_quantity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products → product_categories",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products → suppliers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Gartenmarkt möchte seine Artikel, Lieferanten und Warengruppen übersichtlich verwalten. Zu jedem Artikel sollen der Name, eine kurze Beschreibung, der Verkaufspreis und der aktuelle Lagerbestand festgehalten werden. Jeder Artikel gehört genau einer Warengruppe an, zum Beispiel Erde, Samen oder Werkzeug. Außerdem wird jeder Artikel genau von einem Lieferanten bezogen. Von jedem Lieferanten sollen der Firmenname, eine Ansprechperson, eine Telefonnummer und die E-Mail-Adresse gespeichert werden. Für jede Warengruppe soll es eine Bezeichnung und eine kurze Beschreibung geben. Es soll möglich sein, alle Artikel einer Warengruppe sowie alle Artikel eines bestimmten Lieferanten anzuzeigen. Nicht mehr geführte Artikel sollen im System als inaktiv markiert werden können.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "selling_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "stock_quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "product_category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "product_category_id",
+              "references_table": "product_categories",
+              "references_column": "id"
+            },
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "product_categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "suppliers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Artikel",
+          "attribute": [
+            "Name",
+            "Beschreibung",
+            "Verkaufspreis",
+            "Lagerbestand",
+            "Status (aktiv/inaktiv)"
+          ],
+          "beschreibung": "Repräsentiert die Artikel des Gartenmarkts mit ihren Eigenschaften und Verfügbarkeitsstatus."
+        },
+        {
+          "name": "Warengruppe",
+          "attribute": [
+            "Bezeichnung",
+            "Beschreibung"
+          ],
+          "beschreibung": "Kategorisiert Artikel in Gruppen wie Erde, Samen oder Werkzeug."
+        },
+        {
+          "name": "Lieferant",
+          "attribute": [
+            "Firmenname",
+            "Ansprechperson",
+            "Telefonnummer",
+            "E-Mail-Adresse"
+          ],
+          "beschreibung": "Speichert Informationen über die Lieferanten, von denen Artikel bezogen werden."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Artikel",
+          "zu": "Warengruppe",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Artikel gehört genau einer Warengruppe an. Eine Warengruppe kann mehrere Artikel enthalten."
+        },
+        {
+          "von": "Artikel",
+          "zu": "Lieferant",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Artikel wird genau von einem Lieferanten bezogen. Ein Lieferant kann mehrere Artikel liefern."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist unklar, ob ein Lieferant mehrere Warengruppen beliefern kann oder ob es eine direkte Beziehung zwischen Lieferant und Warengruppe gibt.",
+          "betroffene_elemente": [
+            "Lieferant",
+            "Warengruppe"
+          ]
+        },
+        {
+          "beschreibung": "Der Anforderungstext erwähnt, dass Artikel als 'inaktiv markiert' werden können, aber es ist unklar, ob inaktive Artikel gelöscht oder nur versteckt werden sollen und wie lange sie im System verbleiben.",
+          "betroffene_elemente": [
+            "Artikel"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht spezifiziert, ob der Lagerbestand ein Integer oder ein Dezimalwert sein soll und ob negative Bestände möglich sind.",
+          "betroffene_elemente": [
+            "Artikel"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob der Verkaufspreis in einer bestimmten Währung gespeichert wird und wie viele Dezimalstellen erforderlich sind.",
+          "betroffene_elemente": [
+            "Artikel"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Artikel",
+          "attribute": [
+            {
+              "name": "artikel_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "verkaufspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lagerbestand",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "warengruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lieferant_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Warengruppe",
+          "attribute": [
+            {
+              "name": "warengruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Lieferant",
+          "attribute": [
+            {
+              "name": "lieferant_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "firmenname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ansprechperson",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "email_adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Artikel",
+          "zu": "Warengruppe",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Artikel",
+          "zu": "Lieferant",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE product_categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_product_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    phone_number VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE articles (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    selling_price DECIMAL(18,2) NOT NULL,\n    stock_quantity INTEGER NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    product_category_id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id),\n    CONSTRAINT fk_articles_product_category_id FOREIGN KEY (product_category_id) REFERENCES product_categories (id),\n    CONSTRAINT fk_articles_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7068,
+    "total_output_tokens": 2676,
+    "total_tokens": 9744,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1484,
+        "output_tokens": 848,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2307,
+        "output_tokens": 1003,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3277,
+        "output_tokens": 825,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1484,
+        "output_tokens": 848,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2307,
+        "output_tokens": 1003,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3277,
+        "output_tokens": 825,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

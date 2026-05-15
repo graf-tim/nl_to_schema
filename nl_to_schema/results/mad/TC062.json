@@ -1,0 +1,608 @@
+{
+  "testfall_id": "TC062",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6763369963369963,
+  "score_gesamt": 0.8058021978021979,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.75,
+      "recall": 0.7272727272727273,
+      "f1": 0.7384615384615384,
+      "matched": 24,
+      "nur_in_referenz": 9,
+      "nur_in_generiert": 8
+    },
+    "beziehung": {
+      "recall": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "clients",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees_projects",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "projects.client_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.company_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.contact_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees_projects.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees_projects.employee_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees_projects.project_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees_projects.role",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees_projects → employees",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees_projects → projects",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "projects → clients",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein kleines Projektmanagementtool sollen laufende Vorhaben einer Firma übersichtlich verwaltet werden. Zu jedem Vorhaben möchte man festhalten, wie es heißt, worum es geht, wann es geplant startet und endet und ob es gerade aktiv ist. Ein Vorhaben gehört immer zu genau einem Kunden, denn die Firma arbeitet im Auftrag verschiedener Unternehmen. Von den Kunden soll man den Firmennamen, eine Ansprechperson und eine E-Mail-Adresse sehen können.\n\nAußerdem arbeiten mehrere Mitarbeitende an den Vorhaben mit. Eine Person kann an mehreren Vorhaben beteiligt sein, und bei jedem Einsatz soll erkennbar sein, welche Aufgabe oder Funktion die Person dort übernimmt. Zu den Mitarbeitenden werden Vorname, Nachname, E-Mail-Adresse und Eintrittsdatum benötigt.\n\nInnerhalb eines Vorhabens fallen einzelne Aufgaben an. Für jede Aufgabe braucht man einen Titel, eine genauere Beschreibung, ein Fälligkeitsdatum und den aktuellen Stand. Aufgaben werden in der Regel einer verantwortlichen Person zugeordnet, damit klar ist, wer sich kümmert. Zusätzlich sollen Mitarbeitende Zeiten auf Aufgaben buchen können, damit man später den Aufwand je Vorhaben auswerten kann. Dabei reicht es, Datum, Dauer und ein kurzer Kommentar. Es soll nachvollziehbar bleiben, wer woran gearbeitet hat.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "projects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "planned_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "planned_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "project_assignments",
+          "columns": [
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "tasks",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "due_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "responsible_employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "responsible_employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "time_entries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "task_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "entry_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duration_hours",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "comment",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "task_id",
+              "references_table": "tasks",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Anforderung besagt 'Aufgaben werden in der Regel einer verantwortlichen Person zugeordnet'. Das Schema hat dafür die Spalten 'project_assignment_project_id' und 'project_assignment_employee_id' in tasks, was eine indirekte Referenzierung über project_assignments darstellt. Dies ist semantisch verwirrend und nicht intuitiv. Besser: Eine direkte Spalte 'responsible_employee_id' in tasks, die auf employees verweist. Die aktuelle Lösung vermischt zwei konzeptionell unterschiedliche Beziehungen: (1) Wer arbeitet generell an einem Projekt? (project_assignments) und (2) Wer ist für diese spezifische Aufgabe verantwortlich? (sollte direkt in tasks sein).",
+          "korrekturanweisung": "Ersetze 'project_assignment_project_id' und 'project_assignment_employee_id' in tasks durch eine einzelne Spalte 'responsible_employee_id INTEGER NOT NULL REFERENCES employees(id)'. Dies modelliert die Verantwortlichkeit korrekt und ist wartbar."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Kunden (Firmennamen, Ansprechperson, E-Mail), Projekte (Name, Beschreibung, Start/End-Datum, Aktivstatus), Mitarbeitende (Vor-/Nachname, E-Mail, Eintrittsdatum), Aufgaben (Titel, Beschreibung, Fälligkeitsdatum, Status), Zeiteintrag (Datum, Dauer, Kommentar).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Beziehung zwischen tasks und der verantwortlichen Person ist fehlerhaft modelliert. Die Spalten 'project_assignment_project_id' und 'project_assignment_employee_id' in tasks sollen auf project_assignments verweisen, aber: (1) Sie sind nicht als Composite FK definiert (siehe fk_integritaet), (2) Sie vermischen zwei semantisch unterschiedliche Konzepte (Projektbeteiligung vs. Aufgabenverantwortlichkeit), (3) Sie erzwingen, dass jede Aufgabe nur einer Person zugeordnet werden kann, die auch am Projekt beteiligt ist — das ist eine unnötige Einschränkung. Korrekt: Direkte FK 'responsible_employee_id' in tasks auf employees.",
+          "korrekturanweisung": "Ersetze die beiden project_assignment_*-Spalten durch 'responsible_employee_id INTEGER NOT NULL REFERENCES employees(id)'. Dies modelliert die 1:N-Beziehung (Task → verantwortliche Person) korrekt."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die tasks-Tabelle verletzt die 3NF durch eine unnötige und fehlerhafte Modellierung der Aufgabenverantwortlichkeit. Die Spalten 'project_assignment_project_id' und 'project_assignment_employee_id' sind eine indirekte Referenzierung auf project_assignments, die nicht dem Primärschlüssel von tasks entspricht und semantisch verwirrend ist. Dies führt zu Redundanz und Anomalien: (1) Wenn ein Mitarbeitender die Rolle in project_assignments ändert, ist unklar, ob die Aufgabenzuweisung noch gültig ist, (2) Die Struktur erlaubt keine direkte Abfrage 'Wer ist verantwortlich für diese Aufgabe?' ohne Join über project_assignments. Zusätzlich: Die Spalte 'role' in project_assignments ist optional (nullable: true), aber semantisch sollte jede Projektbeteiligung eine Rolle haben. NORMALISIERUNGSFEHLER: Transitive Abhängigkeit und unnötige Komplexität.",
+          "korrekturanweisung": "1. Ersetze 'project_assignment_project_id' und 'project_assignment_employee_id' in tasks durch 'responsible_employee_id INTEGER NOT NULL REFERENCES employees(id)'. 2. Mache 'role' in project_assignments NOT NULL (nullable: false), da jede Projektbeteiligung eine Rolle haben sollte. 3. Stelle sicher, dass tasks nur über project_id und responsible_employee_id modelliert wird, nicht über project_assignments."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: customers, projects, employees, tasks, time_entries. Die Brückentabelle project_assignments für die M:N-Beziehung zwischen projects und employees ist korrekt modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der Tabelle 'tasks' fehlt ein direkter Fremdschlüssel auf einen verantwortlichen Mitarbeiter. Der Anforderungstext fordert explizit: 'Aufgaben werden in der Regel einer verantwortlichen Person zugeordnet, damit klar ist, wer sich kümmert.' Die aktuellen Spalten 'project_assignment_project_id' und 'project_assignment_employee_id' sind ein fehlerhafter Versuch, dies über die Brückentabelle zu modellieren, was semantisch falsch ist und zu Dateninkonsistenzen führt.",
+          "korrekturanweisung": "Ersetze die beiden Spalten 'project_assignment_project_id' und 'project_assignment_employee_id' durch eine einzelne Spalte 'responsible_employee_id INTEGER NOT NULL' mit Fremdschlüssel auf employees(id). Dies modelliert die 1:N-Beziehung 'eine Aufgabe hat einen verantwortlichen Mitarbeiter' korrekt."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Modellierung der Aufgabenzuweisung in der tasks-Tabelle ist fehlerhaft. Die Spalten 'project_assignment_project_id' und 'project_assignment_employee_id' versuchen, auf die Brückentabelle project_assignments zu referenzieren, aber: (1) Sie referenzieren zwei separate Spalten statt eines echten Fremdschlüssels auf einen zusammengesetzten Schlüssel, (2) Die Semantik ist unklar – es ist nicht erkennbar, ob dies die Aufgabenzuweisung oder nur eine Referenz zur Projektbeteiligung darstellt, (3) Dies verletzt das Prinzip der referenziellen Integrität, da die Kombination dieser beiden Werte nicht eindeutig auf einen Datensatz in project_assignments verweist.",
+          "korrekturanweisung": "Entferne die fehlerhaften Spalten und ersetze sie durch 'responsible_employee_id INTEGER NOT NULL REFERENCES employees(id)'. Die Beziehung zwischen Aufgaben und Projektbeteiligung wird implizit durch die gemeinsame project_id und responsible_employee_id hergestellt."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "WEICHER FEHLER (Normalisierungsverletzung): Die Spalten 'project_assignment_project_id' und 'project_assignment_employee_id' in der tasks-Tabelle verstoßen gegen die 3. Normalform. Sie speichern redundante Informationen, die bereits durch project_id und responsible_employee_id ausgedrückt werden können. Dies führt zu Anomalien bei Updates und Deletes.",
+          "korrekturanweisung": "Siehe Korrektur bei beziehungs_korrektheit – Entfernung dieser redundanten Spalten stellt die 3NF wieder her."
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE projects (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    planned_start_date DATE,\n    planned_end_date DATE,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_projects PRIMARY KEY (id),\n    CONSTRAINT fk_projects_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE project_assignments (\n    project_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_project_assignments PRIMARY KEY (project_id, employee_id),\n    CONSTRAINT fk_project_assignments_project_id FOREIGN KEY (project_id) REFERENCES projects (id),\n    CONSTRAINT fk_project_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE tasks (\n    id INTEGER NOT NULL,\n    project_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    due_date DATE,\n    status VARCHAR(255) NOT NULL,\n    responsible_employee_id INTEGER NOT NULL,\n    CONSTRAINT pk_tasks PRIMARY KEY (id),\n    CONSTRAINT fk_tasks_project_id FOREIGN KEY (project_id) REFERENCES projects (id),\n    CONSTRAINT fk_tasks_responsible_employee_id FOREIGN KEY (responsible_employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE time_entries (\n    id INTEGER NOT NULL,\n    task_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    entry_date DATE NOT NULL,\n    duration_hours DECIMAL(18,2) NOT NULL,\n    comment TEXT,\n    CONSTRAINT pk_time_entries PRIMARY KEY (id),\n    CONSTRAINT fk_time_entries_task_id FOREIGN KEY (task_id) REFERENCES tasks (id),\n    CONSTRAINT fk_time_entries_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 6 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 0 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 6 Tabelle(n).",
+      "[iter=2] C1: 3 unerfüllte Findings.",
+      "[iter=2] C2: 3 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 6 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 6 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 39844,
+    "total_output_tokens": 11997,
+    "total_tokens": 51841,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 16311,
+        "output_tokens": 5078,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8384,
+        "output_tokens": 3597,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8296,
+        "output_tokens": 1593,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 6853,
+        "output_tokens": 1729,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2487,
+        "output_tokens": 1523,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4162,
+        "output_tokens": 1818,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4118,
+        "output_tokens": 573,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6836,
+        "output_tokens": 1826,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4222,
+        "output_tokens": 1779,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4178,
+        "output_tokens": 1020,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6988,
+        "output_tokens": 1729,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6853,
+        "output_tokens": 1729,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

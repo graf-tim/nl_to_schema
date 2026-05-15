@@ -1,0 +1,724 @@
+{
+  "testfall_id": "TC042",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5333333333333333,
+  "score_gesamt": 0.72,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 9,
+    "pk_tabellen_mit_pk": 9,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.4444444444444444,
+      "recall": 0.6666666666666666,
+      "f1": 0.5333333333333333,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 5
+    },
+    "attribut": {
+      "precision": 0.43902439024390244,
+      "recall": 0.5806451612903226,
+      "f1": 0.5,
+      "matched": 18,
+      "nur_in_referenz": 13,
+      "nur_in_generiert": 23
+    },
+    "beziehung": {
+      "recall": 0.6,
+      "matched": 3,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "companies",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_providers.provider_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_providers.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events.location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events_service_providers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events_service_providers.task",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "companies.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "companies.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "companies.industry",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "companies.billing_address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.capacity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contacts → companies",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events → locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine Agentur organisiert Veranstaltungen für Firmenkunden und möchte den Überblick über kommende und vergangene Termine behalten. Zu jeder Veranstaltung sollen ein Titel, eine kurze Beschreibung, Datum und Uhrzeit, der aktuelle Planungsstand sowie die erwarteten Kosten festgehalten werden. Jede Veranstaltung findet an genau einem Ort statt. Von jedem Ort sollen Name, Adresse und die maximale Personenzahl bekannt sein, weil die Kapazität für die Planung wichtig ist.\n\nFür die Durchführung arbeiten verschiedene Dienstleister mit, zum Beispiel Caterer, Technikfirmen oder Sicherheitsdienste. Ein Dienstleister kann bei mehreren Veranstaltungen eingesetzt werden, und bei einer Veranstaltung können mehrere Dienstleister beteiligt sein. Dabei soll festgehalten werden, welche Aufgabe der jeweilige Dienstleister bei der Veranstaltung übernimmt.\n\nAußerdem gibt es Ansprechpersonen auf Kundenseite. Eine Veranstaltung hat eine Ansprechperson, und eine Ansprechperson kann mehrere Veranstaltungen begleiten. Zu den Ansprechpersonen sollen Name, E-Mail und Telefonnummer gespeichert werden. Sie gehören jeweils zu genau einer Firma. Von den Firmen werden Name, Branche und Rechnungsadresse benötigt.\n\nFalls eine Veranstaltung abgesagt wird, soll das System das ebenfalls abbilden können. Nicht jeder Dienstleister ist für jede Art von Veranstaltung geeignet.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customer_companies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "industry",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "billing_address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "contacts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_company_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_company_id",
+              "references_table": "customer_companies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "event_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "service_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "venues",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "max_capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "service_providers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "service_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "service_type_id",
+              "references_table": "service_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "events",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "event_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planning_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "expected_costs",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_cancelled",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "cancellation_reason",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "cancellation_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "event_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "venue_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "event_type_id",
+              "references_table": "event_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "venue_id",
+              "references_table": "venues",
+              "references_column": "id"
+            },
+            {
+              "from_column": "contact_id",
+              "references_table": "contacts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "event_service_providers",
+          "columns": [
+            {
+              "name": "event_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_provider_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "task_description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "event_id",
+              "references_table": "events",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_provider_id",
+              "references_table": "service_providers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "service_provider_event_types",
+          "columns": [
+            {
+              "name": "service_provider_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "event_type_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "service_provider_id",
+              "references_table": "service_providers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "event_type_id",
+              "references_table": "event_types",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'service_provider_contacts' ist semantisch fehlerhaft. Sie verbindet Dienstleister mit Kontakten aus der 'contacts'-Tabelle, die aber ausschließlich Kundenkontakte (mit company_id) sind. Dienstleister benötigen eigene Kontaktinformationen (Name, E-Mail, Telefon), nicht eine Referenz zu Kundenkontakten. Dies ist ein konzeptioneller Fehler.",
+          "korrekturanweisung": "Entfernen Sie die Tabelle 'service_provider_contacts'. Fügen Sie stattdessen direkt in 'service_providers' die Spalten 'contact_name', 'email', 'phone' ein, oder erstellen Sie eine separate Tabelle 'service_provider_contacts' mit eigenem id und direkten Attributen (nicht als Junction Table zu 'contacts')."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung 'Falls eine Veranstaltung abgesagt wird, soll das System das ebenfalls abbilden können' ist nur teilweise erfüllt. Das Feld 'is_cancelled' (BOOLEAN) ist vorhanden, aber es fehlt ein Feld für den Abbruchgrund oder das Abbruchdatum. Zudem ist 'is_cancelled' auf false initialisiert, aber es gibt keine Dokumentation, wie Abbruchgründe oder Zeitpunkte erfasst werden.",
+          "korrekturanweisung": "Fügen Sie in der Tabelle 'events' die Spalten 'cancellation_reason' (TEXT, nullable: true) und 'cancellation_date' (DATE, nullable: true) hinzu, um Abbruchgründe und -zeitpunkte zu dokumentieren."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen 'service_providers' und 'contacts' über die Junction Table 'service_provider_contacts' ist semantisch falsch. Die 'contacts'-Tabelle ist für Kundenkontakte konzipiert (mit company_id), nicht für Dienstleisterkontakte. Dies führt zu einer logischen Inkonsistenz: Ein Dienstleister könnte über diese Tabelle mit einem Kundenkontakt verknüpft werden, was keinen Sinn macht.",
+          "korrekturanweisung": "Redesign: Entweder (A) Dienstleister-Kontaktinformationen direkt in 'service_providers' speichern, oder (B) eine separate 'service_provider_contacts'-Tabelle mit eigenem id und direkten Attributen (contact_name, email, phone) erstellen, ohne Referenz zur 'contacts'-Tabelle."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Verstoß gegen 3NF in der Tabelle 'service_providers'. Das Attribut 'service_type' (VARCHAR) ist eine kategorische Klassifizierung, die redundant ist und besser als separate Entität 'service_types' mit einer 1:N-Beziehung modelliert werden sollte. Dies ermöglicht Konsistenz und Wartbarkeit. Zusätzlich: Die Tabelle 'service_provider_contacts' ist eine fehlerhafte Junction Table, die zwei konzeptionell inkompatible Entitäten verbindet (Dienstleister und Kundenkontakte).",
+          "korrekturanweisung": "Erstellen Sie eine Tabelle 'service_types' mit (id, name). Ersetzen Sie 'service_type' in 'service_providers' durch 'service_type_id' (INTEGER, FK zu 'service_types'). Redesign Sie 'service_provider_contacts' oder ersetzen Sie sie durch direkte Attribute in 'service_providers'."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Firma' (customer company) fehlt. Der Anforderungstext unterscheidet klar zwischen Kundenfirmen (mit Ansprechpersonen) und Dienstleistern. Das Schema modelliert 'companies' als generische Entität, die beide Rollen vermischt. Ansprechpersonen gehören zu Kundenfirmen, nicht zu Dienstleistern. Die Tabelle 'service_provider_contacts' ist semantisch falsch: Dienstleister sind Unternehmen, keine Personen.",
+          "korrekturanweisung": "Aufteilen in zwei separate Entitäten: (1) 'customer_companies' mit Attributen name, industry, billing_address für Kundenfirmen; (2) 'service_providers' bleibt als eigenständige Entität (Dienstleister-Unternehmen). 'contacts' sollte nur zu customer_companies gehören (1:N). Die Tabelle 'service_provider_contacts' muss gelöscht werden."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Dienstleister-Entität ist unvollständig. Der Anforderungstext sagt: 'Ein Dienstleister kann bei mehreren Veranstaltungen eingesetzt werden, und bei einer Veranstaltung können mehrere Dienstleister beteiligt sein.' Es fehlt aber eine Kontaktmöglichkeit für Dienstleister (z.B. email, phone, contact_person). Praktisch unmöglich, einen Caterer oder Sicherheitsdienst ohne Kontaktdaten zu verwalten.",
+          "korrekturanweisung": "Tabelle 'service_providers' um Attribute erweitern: email (VARCHAR, nullable=true), phone (VARCHAR, nullable=true), contact_person (VARCHAR, nullable=true). Alternativ: Separate Tabelle 'service_provider_contacts' mit 1:N-Beziehung zu service_providers (nicht zu contacts)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'contacts' und 'service_providers' ist semantisch falsch modelliert. Die Tabelle 'service_provider_contacts' verbindet Kontaktpersonen (Kundenseite) mit Dienstleistern. Das ist inhaltlich inkorrekt: Kontaktpersonen gehören zu Kundenfirmen, nicht zu Dienstleistern. Dienstleister sind selbst Unternehmen und sollten eigene Kontaktdaten haben.",
+          "korrekturanweisung": "Tabelle 'service_provider_contacts' löschen. Stattdessen: (1) 'contacts' nur zu 'customer_companies' (1:N via company_id); (2) Dienstleister-Kontaktdaten direkt in 'service_providers' oder in separater 1:N-Tabelle 'service_provider_contacts' (mit service_provider_id, name, email, phone)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die M:N-Beziehung zwischen 'events' und 'service_providers' ist korrekt modelliert via 'event_service_providers' mit task_description. Die M:N-Beziehung zwischen 'service_providers' und 'event_types' ist korrekt modelliert via 'service_provider_event_types'.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Kernentitäten sind vorhanden: events, venues, contacts, companies, service_providers, event_types. (Hinweis: Die Unterscheidung customer_companies vs. service_providers ist ein Modellierungsfehler, nicht ein Fehler der Vollständigkeit.)",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute für Veranstaltungen, Orte, Ansprechpersonen und Kundenfirmen sind vorhanden: title, description, event_datetime, planning_status, expected_costs, is_cancelled (für Absagen), venue name/address/max_capacity, contact firstname/lastname/email/phone, company name/industry/billing_address.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Junction-Tabellen sind korrekt strukturiert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customer_companies (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255),\n    billing_address TEXT NOT NULL,\n    CONSTRAINT pk_customer_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    customer_company_id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_contacts_customer_company_id FOREIGN KEY (customer_company_id) REFERENCES customer_companies (id)\n);\n\nCREATE TABLE event_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_event_types PRIMARY KEY (id)\n);\n\nCREATE TABLE venues (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address TEXT NOT NULL,\n    max_capacity INTEGER NOT NULL,\n    CONSTRAINT pk_venues PRIMARY KEY (id)\n);\n\nCREATE TABLE events (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    event_datetime TIMESTAMP NOT NULL,\n    planning_status VARCHAR(255) NOT NULL,\n    expected_costs DECIMAL(18,2),\n    is_cancelled BOOLEAN NOT NULL,\n    cancellation_reason TEXT,\n    cancellation_date DATE,\n    event_type_id INTEGER NOT NULL,\n    venue_id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    CONSTRAINT pk_events PRIMARY KEY (id),\n    CONSTRAINT fk_events_event_type_id FOREIGN KEY (event_type_id) REFERENCES event_types (id),\n    CONSTRAINT fk_events_venue_id FOREIGN KEY (venue_id) REFERENCES venues (id),\n    CONSTRAINT fk_events_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id)\n);\n\nCREATE TABLE service_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_service_types PRIMARY KEY (id)\n);\n\nCREATE TABLE service_providers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    service_type_id INTEGER NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    contact_person VARCHAR(255),\n    CONSTRAINT pk_service_providers PRIMARY KEY (id),\n    CONSTRAINT fk_service_providers_service_type_id FOREIGN KEY (service_type_id) REFERENCES service_types (id)\n);\n\nCREATE TABLE event_service_providers (\n    event_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    task_description TEXT,\n    CONSTRAINT pk_event_service_providers PRIMARY KEY (event_id, service_provider_id),\n    CONSTRAINT fk_event_service_providers_event_id FOREIGN KEY (event_id) REFERENCES events (id),\n    CONSTRAINT fk_event_service_providers_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE service_provider_event_types (\n    service_provider_id INTEGER NOT NULL,\n    event_type_id INTEGER NOT NULL,\n    CONSTRAINT pk_service_provider_event_types PRIMARY KEY (service_provider_id, event_type_id),\n    CONSTRAINT fk_service_provider_event_types_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id),\n    CONSTRAINT fk_service_provider_event_types_event_type_id FOREIGN KEY (event_type_id) REFERENCES event_types (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 3 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 9 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 3 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 9 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 9 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 42080,
+    "total_output_tokens": 13702,
+    "total_tokens": 55782,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 17021,
+        "output_tokens": 5997,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8761,
+        "output_tokens": 2654,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8673,
+        "output_tokens": 2766,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 7625,
+        "output_tokens": 2285,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2503,
+        "output_tokens": 1584,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4221,
+        "output_tokens": 1312,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4177,
+        "output_tokens": 1218,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7012,
+        "output_tokens": 2128,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4540,
+        "output_tokens": 1342,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4496,
+        "output_tokens": 1548,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7506,
+        "output_tokens": 2285,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7625,
+        "output_tokens": 2285,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,386 @@
+{
+  "testfall_id": "TC025",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9333333333333333,
+  "score_gesamt": 0.96,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.7894736842105263,
+      "recall": 0.8823529411764706,
+      "f1": 0.8333333333333333,
+      "matched": 15,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 4
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "repair_orders.accepted_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "repair_orders.requested_work",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Schuhreparaturbetrieb moechte seine Kunden, die abgegebenen Schuhe und die dazugehoerigen Reparaturauftraege verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und auf Wunsch auch die E-Mail-Adresse gespeichert werden. Zu jedem abgegebenen Schuhpaar sollen Marke, Modell, Farbe und die Schuhgroesse festgehalten werden. Jedes Schuhpaar gehoert genau einem Kunden. Fuer jeden Reparaturauftrag soll erfasst werden, wann der Auftrag angenommen wurde, welche Arbeiten gewuenscht sind, ob der Auftrag bereits abgeschlossen ist und welcher Preis berechnet wird. Jeder Reparaturauftrag bezieht sich genau auf ein Schuhpaar. Ein Schuhpaar kann im Laufe der Zeit mehrere Reparaturauftraege haben.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "shoes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "brand",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "size",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "repair_orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "shoe_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "acceptance_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "work_description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_completed",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "completion_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "pickup_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "shoe_id",
+              "references_table": "shoes",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: customers (Kunden), shoes (Schuhe), repair_orders (Reparaturaufträge).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Spalte 'completion_date' in repair_orders ist als NOT NULL definiert, obwohl ein Reparaturauftrag noch nicht abgeschlossen sein kann (is_completed = false). Ein Abschlussdatum kann nur existieren, wenn der Auftrag tatsächlich abgeschlossen ist. Dies ist ein logischer Fehler: completion_date sollte nullable: true sein.",
+          "korrekturanweisung": "Ändern Sie in der Tabelle repair_orders die Spalte 'completion_date' von nullable: false zu nullable: true, da das Abschlussdatum nur bei abgeschlossenen Aufträgen vorhanden sein darf."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Kardinalitäten sind korrekt modelliert: 1:N zwischen customers und shoes (ein Kunde hat mehrere Schuhe), 1:N zwischen shoes und repair_orders (ein Schuhpaar hat mehrere Reparaturaufträge). Keine M:N-Beziehungen vorhanden.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Die Spalten 'completion_date' und 'pickup_date' in repair_orders sind redundant und widersprechen sich semantisch. Wenn is_completed = true, sollte completion_date gesetzt sein. pickup_date ist eine separate Information, die nicht automatisch aus is_completed ableitbar ist. Allerdings ist die Unterscheidung zwischen 'completion_date' (Reparatur fertig) und 'pickup_date' (Kunde holt ab) fachlich sinnvoll. Das Hauptproblem ist die Constraint-Verletzung: completion_date sollte optional sein, um die Datenintegrität zu wahren. Zusätzlich: Die Spalte 'work_description' könnte bei mehreren Reparaturaufträgen für dasselbe Schuhpaar zu Redundanzen führen, wenn ähnliche Arbeiten wiederholt werden. Dies ist jedoch eine schwache Redundanz und nicht normalisierungsverletzend.",
+          "korrekturanweisung": "Ändern Sie completion_date zu nullable: true. Erwägen Sie zusätzlich, eine Constraint-Regel zu dokumentieren: completion_date darf nur gesetzt sein, wenn is_completed = true. Dies kann durch Trigger oder Anwendungslogik durchgesetzt werden."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE shoes (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    size VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_shoes PRIMARY KEY (id),\n    CONSTRAINT fk_shoes_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE repair_orders (\n    id INTEGER NOT NULL,\n    shoe_id INTEGER NOT NULL,\n    acceptance_date DATE NOT NULL,\n    work_description TEXT NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    completion_date DATE NOT NULL,\n    pickup_date DATE,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_repair_orders PRIMARY KEY (id),\n    CONSTRAINT fk_repair_orders_shoe_id FOREIGN KEY (shoe_id) REFERENCES shoes (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: customers (Kunden), shoes (Schuhe), repair_orders (Reparaturaufträge).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Spalte 'completion_date' in repair_orders ist als NOT NULL definiert, obwohl ein Reparaturauftrag noch nicht abgeschlossen sein kann (is_completed = false). Ein Abschlussdatum kann nur existieren, wenn der Auftrag tatsächlich abgeschlossen ist. Dies ist ein logischer Fehler: completion_date sollte nullable: true sein.",
+          "korrekturanweisung": "Ändern Sie in der Tabelle repair_orders die Spalte 'completion_date' von nullable: false zu nullable: true, da das Abschlussdatum nur bei abgeschlossenen Aufträgen vorhanden sein darf."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Kardinalitäten sind korrekt modelliert: 1:N zwischen customers und shoes (ein Kunde hat mehrere Schuhe), 1:N zwischen shoes und repair_orders (ein Schuhpaar hat mehrere Reparaturaufträge). Keine M:N-Beziehungen vorhanden.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Die Spalten 'completion_date' und 'pickup_date' in repair_orders sind redundant und widersprechen sich semantisch. Wenn is_completed = true, sollte completion_date gesetzt sein. pickup_date ist eine separate Information, die nicht automatisch aus is_completed ableitbar ist. Allerdings ist die Unterscheidung zwischen 'completion_date' (Reparatur fertig) und 'pickup_date' (Kunde holt ab) fachlich sinnvoll. Das Hauptproblem ist die Constraint-Verletzung: completion_date sollte optional sein, um die Datenintegrität zu wahren. Zusätzlich: Die Spalte 'work_description' könnte bei mehreren Reparaturaufträgen für dasselbe Schuhpaar zu Redundanzen führen, wenn ähnliche Arbeiten wiederholt werden. Dies ist jedoch eine schwache Redundanz und nicht normalisierungsverletzend.",
+          "korrekturanweisung": "Ändern Sie completion_date zu nullable: true. Erwägen Sie zusätzlich, eine Constraint-Regel zu dokumentieren: completion_date darf nur gesetzt sein, wenn is_completed = true. Dies kann durch Trigger oder Anwendungslogik durchgesetzt werden."
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 20463,
+    "total_output_tokens": 5479,
+    "total_tokens": 25942,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 10563,
+        "output_tokens": 2550,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 9900,
+        "output_tokens": 2929,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2312,
+        "output_tokens": 727,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3261,
+        "output_tokens": 966,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4120,
+        "output_tokens": 892,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3300,
+        "output_tokens": 938,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4131,
+        "output_tokens": 931,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3339,
+        "output_tokens": 1025,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

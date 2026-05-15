@@ -1,0 +1,422 @@
+{
+  "testfall_id": "TC042",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7384615384615385,
+  "score_gesamt": 0.8430769230769231,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.7142857142857143,
+      "recall": 0.8333333333333334,
+      "f1": 0.7692307692307692,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.6470588235294118,
+      "recall": 0.7096774193548387,
+      "f1": 0.6769230769230768,
+      "matched": 22,
+      "nur_in_referenz": 9,
+      "nur_in_generiert": 12
+    },
+    "beziehung": {
+      "recall": 0.8,
+      "matched": 4,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_providers.provider_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_providers.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events.location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events_service_providers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events_service_providers.task",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.capacity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events → locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine Agentur organisiert Veranstaltungen für Firmenkunden und möchte den Überblick über kommende und vergangene Termine behalten. Zu jeder Veranstaltung sollen ein Titel, eine kurze Beschreibung, Datum und Uhrzeit, der aktuelle Planungsstand sowie die erwarteten Kosten festgehalten werden. Jede Veranstaltung findet an genau einem Ort statt. Von jedem Ort sollen Name, Adresse und die maximale Personenzahl bekannt sein, weil die Kapazität für die Planung wichtig ist.\n\nFür die Durchführung arbeiten verschiedene Dienstleister mit, zum Beispiel Caterer, Technikfirmen oder Sicherheitsdienste. Ein Dienstleister kann bei mehreren Veranstaltungen eingesetzt werden, und bei einer Veranstaltung können mehrere Dienstleister beteiligt sein. Dabei soll festgehalten werden, welche Aufgabe der jeweilige Dienstleister bei der Veranstaltung übernimmt.\n\nAußerdem gibt es Ansprechpersonen auf Kundenseite. Eine Veranstaltung hat eine Ansprechperson, und eine Ansprechperson kann mehrere Veranstaltungen begleiten. Zu den Ansprechpersonen sollen Name, E-Mail und Telefonnummer gespeichert werden. Sie gehören jeweils zu genau einer Firma. Von den Firmen werden Name, Branche und Rechnungsadresse benötigt.\n\nFalls eine Veranstaltung abgesagt wird, soll das System das ebenfalls abbilden können. Nicht jeder Dienstleister ist für jede Art von Veranstaltung geeignet.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "companies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "industry",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "billing_address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "contacts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "company_id",
+              "references_table": "companies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "venues",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "max_capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "events",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "event_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planning_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "expected_costs",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "venue_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_cancelled",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "venue_id",
+              "references_table": "venues",
+              "references_column": "id"
+            },
+            {
+              "from_column": "contact_id",
+              "references_table": "contacts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "service_providers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "service_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "event_service_providers",
+          "columns": [
+            {
+              "name": "event_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_provider_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "task_description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "event_id",
+              "references_table": "events",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_provider_id",
+              "references_table": "service_providers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "service_provider_event_types",
+          "columns": [
+            {
+              "name": "service_provider_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "event_type",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "service_provider_id",
+              "references_table": "service_providers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE companies (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255),\n    billing_address TEXT,\n    CONSTRAINT pk_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    company_id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_contacts_company_id FOREIGN KEY (company_id) REFERENCES companies (id)\n);\n\nCREATE TABLE venues (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address TEXT NOT NULL,\n    max_capacity INTEGER NOT NULL,\n    CONSTRAINT pk_venues PRIMARY KEY (id)\n);\n\nCREATE TABLE events (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    event_datetime TIMESTAMP NOT NULL,\n    planning_status VARCHAR(255) NOT NULL,\n    expected_costs DECIMAL(18,2),\n    venue_id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    is_cancelled BOOLEAN NOT NULL,\n    CONSTRAINT pk_events PRIMARY KEY (id),\n    CONSTRAINT fk_events_venue_id FOREIGN KEY (venue_id) REFERENCES venues (id),\n    CONSTRAINT fk_events_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id)\n);\n\nCREATE TABLE service_providers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    service_type VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_service_providers PRIMARY KEY (id)\n);\n\nCREATE TABLE event_service_providers (\n    event_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    task_description TEXT,\n    CONSTRAINT pk_event_service_providers PRIMARY KEY (event_id, service_provider_id),\n    CONSTRAINT fk_event_service_providers_event_id FOREIGN KEY (event_id) REFERENCES events (id),\n    CONSTRAINT fk_event_service_providers_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE service_provider_event_types (\n    service_provider_id INTEGER NOT NULL,\n    event_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_service_provider_event_types PRIMARY KEY (service_provider_id, event_type),\n    CONSTRAINT fk_service_provider_event_types_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2507,
+    "total_output_tokens": 1584,
+    "total_tokens": 4091,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2507,
+        "output_tokens": 1584,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2507,
+        "output_tokens": 1584,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

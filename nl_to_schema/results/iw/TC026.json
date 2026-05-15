@@ -1,0 +1,378 @@
+{
+  "testfall_id": "TC026",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9428571428571428,
+  "score_gesamt": 0.9657142857142857,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.8571428571428571,
+      "recall": 0.8571428571428571,
+      "f1": 0.8571428571428571,
+      "matched": 18,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "orders.orderdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.activity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_notes.created_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine kleine Schlosserei möchte ihre täglichen Aufträge übersichtlich verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und E-Mail-Adresse festgehalten werden. Ein Kunde kann mehrere Aufträge erteilen, aber jeder Auftrag gehört immer genau zu einem Kunden. Zu jedem Auftrag werden das Annahmedatum, eine kurze Beschreibung, der vereinbarte Gesamtpreis und der aktuelle Status gespeichert. Die Arbeiten werden von den Beschäftigten der Schlosserei ausgeführt. Von jedem Beschäftigten werden Vorname, Nachname, Telefonnummer und die Tätigkeit erfasst. Jeder Auftrag wird genau einem Beschäftigten zugewiesen, ein Beschäftigter kann aber mehrere Aufträge bearbeiten. Zusätzlich sollen zu jedem Auftrag beliebig viele interne Notizen mit Zeitpunkt und Text gespeichert werden.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "job_title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reception_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "total_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_notes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "note_timestamp",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "note_text",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: customers (Kunden), employees (Beschäftigte), orders (Aufträge), order_notes (interne Notizen). Das Schema deckt alle im Anforderungstext genannten Geschäftsobjekte ab.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle zentralen Attribute sind vorhanden: Kunden (Vorname, Nachname, Telefon, E-Mail), Beschäftigte (Vorname, Nachname, Telefon, Tätigkeit), Aufträge (Annahmedatum, Beschreibung, Gesamtpreis, Status), Notizen (Zeitpunkt, Text). Keine fachlich erforderlichen Attribute fehlen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Kardinalitäten sind korrekt modelliert: 1:N zwischen customers und orders (ein Kunde → mehrere Aufträge), 1:N zwischen employees und orders (ein Beschäftigter → mehrere Aufträge), 1:N zwischen orders und order_notes (ein Auftrag → mehrere Notizen). Keine M:N-Beziehungen vorhanden, daher keine Junction-Tables erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen erkennbar, alle Attribute sind atomar, keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist normalisiert und frei von offensichtlichen Anomalien.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    job_title VARCHAR(255),\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    reception_date DATE NOT NULL,\n    description TEXT,\n    total_price DECIMAL(18,2) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE order_notes (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    note_timestamp TIMESTAMP NOT NULL,\n    note_text TEXT NOT NULL,\n    CONSTRAINT pk_order_notes PRIMARY KEY (id),\n    CONSTRAINT fk_order_notes_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: customers (Kunden), employees (Beschäftigte), orders (Aufträge), order_notes (interne Notizen). Das Schema deckt alle im Anforderungstext genannten Geschäftsobjekte ab.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle zentralen Attribute sind vorhanden: Kunden (Vorname, Nachname, Telefon, E-Mail), Beschäftigte (Vorname, Nachname, Telefon, Tätigkeit), Aufträge (Annahmedatum, Beschreibung, Gesamtpreis, Status), Notizen (Zeitpunkt, Text). Keine fachlich erforderlichen Attribute fehlen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Kardinalitäten sind korrekt modelliert: 1:N zwischen customers und orders (ein Kunde → mehrere Aufträge), 1:N zwischen employees und orders (ein Beschäftigter → mehrere Aufträge), 1:N zwischen orders und order_notes (ein Auftrag → mehrere Notizen). Keine M:N-Beziehungen vorhanden, daher keine Junction-Tables erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen erkennbar, alle Attribute sind atomar, keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist normalisiert und frei von offensichtlichen Anomalien.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 2,
+    "total_input_tokens": 5818,
+    "total_output_tokens": 1782,
+    "total_tokens": 7600,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 1,
+        "input_tokens": 2323,
+        "output_tokens": 923,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 1,
+        "input_tokens": 3495,
+        "output_tokens": 859,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2323,
+        "output_tokens": 923,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3495,
+        "output_tokens": 859,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

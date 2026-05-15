@@ -1,0 +1,242 @@
+{
+  "testfall_id": "TC016",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.98,
+  "score_gesamt": 0.988,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.95,
+      "recall": 0.95,
+      "f1": 0.9500000000000001,
+      "matched": 19,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "members.entrydate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Sportverein möchte seine Mitglieder, die angebotenen Trainingsgruppen und die Trainer übersichtlich verwalten. Von jedem Mitglied sollen Vorname, Nachname, Geburtsdatum, Eintrittsdatum, E-Mail-Adresse und Telefonnummer gespeichert werden. Jedes Mitglied gehört genau einer Trainingsgruppe an. Zu jeder Trainingsgruppe sollen Name, Wochentag, Uhrzeit und der Ort festgehalten werden. Jede Trainingsgruppe wird von genau einem Trainer geleitet, ein Trainer kann aber mehrere Trainingsgruppen betreuen. Von jedem Trainer sollen Vorname, Nachname, E-Mail-Adresse und Telefonnummer gespeichert werden. Zusätzlich soll nachvollziehbar sein, ob ein Mitglied aktuell aktiv ist. Frühere Gruppenwechsel müssen nicht gespeichert werden.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "members",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "joindate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "training_group_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "training_group_id",
+              "references_table": "training_groups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "trainers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "training_groups",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "weekday",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "trainer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "trainer_id",
+              "references_table": "trainers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE trainers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_trainers PRIMARY KEY (id)\n);\n\nCREATE TABLE training_groups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    weekday VARCHAR(255) NOT NULL,\n    time VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    trainer_id INTEGER NOT NULL,\n    CONSTRAINT pk_training_groups PRIMARY KEY (id),\n    CONSTRAINT fk_training_groups_trainer_id FOREIGN KEY (trainer_id) REFERENCES trainers (id)\n);\n\nCREATE TABLE members (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    joindate DATE NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    is_active BOOLEAN NOT NULL,\n    training_group_id INTEGER NOT NULL,\n    CONSTRAINT pk_members PRIMARY KEY (id),\n    CONSTRAINT fk_members_training_group_id FOREIGN KEY (training_group_id) REFERENCES training_groups (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2309,
+    "total_output_tokens": 817,
+    "total_tokens": 3126,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2309,
+        "output_tokens": 817,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2309,
+        "output_tokens": 817,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

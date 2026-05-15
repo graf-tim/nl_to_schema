@@ -1,0 +1,491 @@
+{
+  "testfall_id": "TC041",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5838095238095238,
+  "score_gesamt": 0.7502857142857142,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.625,
+      "recall": 0.7142857142857143,
+      "f1": 0.6666666666666666,
+      "matched": 5,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.5135135135135135,
+      "recall": 0.5757575757575758,
+      "f1": 0.5428571428571428,
+      "matched": 19,
+      "nur_in_referenz": 14,
+      "nur_in_generiert": 18
+    },
+    "beziehung": {
+      "recall": 0.5,
+      "matched": 3,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "course_offerings",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "instructors.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.birthdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.course_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.enddate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.location",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.capacity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.is_open_for_registration",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.participant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.course_offering_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.registration_timestamp",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings → courses",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations → course_offerings",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations → participants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein Weiterbildungsinstitut soll eine Lösung entstehen, mit der die angebotenen Kurse und ihre Durchführung organisiert werden können. Zu jedem Kurs sollen Titel, kurze Beschreibung, Fachbereich und die reguläre Dauer festgehalten werden. Ein Kurs kann mehrmals im Jahr stattfinden, oft mit unterschiedlichen Startterminen und gelegentlich auch an verschiedenen Orten. Für jede konkrete Durchführung soll sichtbar sein, wann sie beginnt und endet, wie viele Plätze vorgesehen sind und ob sie bereits zur Anmeldung freigegeben ist.\n\nTeilnehmende melden sich für einzelne Durchführungen an. Dabei soll nachvollziehbar bleiben, wann die Anmeldung eingegangen ist und welchen Stand sie hat, etwa vorgemerkt, bestätigt oder storniert. Manche Teilnehmende besuchen im Laufe der Zeit mehrere Kurse, und natürlich sitzen in einer Durchführung mehrere Personen.\n\nDie Kurse werden von Lehrkräften betreut. Eine Lehrkraft kann mehrere Kurse übernehmen, und ein Kurs kann je nach Planung auch von mehreren Lehrkräften begleitet werden. Außerdem gehört jeder Kurs zu einem Fachbereich, damit das Institut sein Angebot thematisch ordnen kann. Nicht ganz klar geregelt ist bisher, ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Termine; für die Verwaltung soll zunächst die übliche Planung des Instituts abgebildet werden.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "departments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "courses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "department_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duration_hours",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "department_id",
+              "references_table": "departments",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "instructors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "course_instructors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "course_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "instructor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "course_id",
+              "references_table": "courses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "instructor_id",
+              "references_table": "instructors",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "course_sessions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "course_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_published",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "course_id",
+              "references_table": "courses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "participants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "enrollments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "participant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "course_session_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enrollment_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "participant_id",
+              "references_table": "participants",
+              "references_column": "id"
+            },
+            {
+              "from_column": "course_session_id",
+              "references_table": "course_sessions",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE departments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_departments PRIMARY KEY (id)\n);\n\nCREATE TABLE courses (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    department_id INTEGER NOT NULL,\n    duration_hours INTEGER NOT NULL,\n    CONSTRAINT pk_courses PRIMARY KEY (id),\n    CONSTRAINT fk_courses_department_id FOREIGN KEY (department_id) REFERENCES departments (id)\n);\n\nCREATE TABLE instructors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_instructors PRIMARY KEY (id)\n);\n\nCREATE TABLE course_instructors (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    instructor_id INTEGER NOT NULL,\n    CONSTRAINT pk_course_instructors PRIMARY KEY (id),\n    CONSTRAINT fk_course_instructors_course_id FOREIGN KEY (course_id) REFERENCES courses (id),\n    CONSTRAINT fk_course_instructors_instructor_id FOREIGN KEY (instructor_id) REFERENCES instructors (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    city VARCHAR(255),\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE course_sessions (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    location_id INTEGER,\n    startdate DATE NOT NULL,\n    enddate DATE NOT NULL,\n    capacity INTEGER NOT NULL,\n    is_published BOOLEAN NOT NULL,\n    CONSTRAINT pk_course_sessions PRIMARY KEY (id),\n    CONSTRAINT fk_course_sessions_course_id FOREIGN KEY (course_id) REFERENCES courses (id),\n    CONSTRAINT fk_course_sessions_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE participants (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_participants PRIMARY KEY (id)\n);\n\nCREATE TABLE enrollments (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    course_session_id INTEGER NOT NULL,\n    enrollment_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_enrollments PRIMARY KEY (id),\n    CONSTRAINT fk_enrollments_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_enrollments_course_session_id FOREIGN KEY (course_session_id) REFERENCES course_sessions (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2494,
+    "total_output_tokens": 1707,
+    "total_tokens": 4201,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2494,
+        "output_tokens": 1707,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2494,
+        "output_tokens": 1707,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

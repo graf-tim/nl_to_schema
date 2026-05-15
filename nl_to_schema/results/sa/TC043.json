@@ -1,0 +1,363 @@
+{
+  "testfall_id": "TC043",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9612903225806453,
+  "score_gesamt": 0.9767741935483871,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 7,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9032258064516129,
+      "recall": 0.9032258064516129,
+      "f1": 0.9032258064516129,
+      "matched": 28,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 6,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "manufacturers.headquarters",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "medications.is_prescription_only",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "doctor_practices.specialty",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Apotheke soll festgehalten werden, welche Arzneimittel im Sortiment sind und von welchen Herstellern sie kommen. Zu jedem Mittel braucht man den Namen, die Darreichungsform wie Tabletten oder Salbe, die Packungsgröße, den Verkaufspreis und ob es rezeptpflichtig ist. Manche Mittel haben mehrere Wirkstoffe, und derselbe Wirkstoff kann in verschiedenen Mitteln vorkommen. Bei Wirkstoffen soll auch die Stärke mit erfasst werden, weil dieselben Stoffe je nach Mittel unterschiedlich dosiert sein können.\n\nAußerdem möchte die Apotheke dokumentieren, welche Kundinnen und Kunden Medikamente erhalten haben. Dabei soll nachvollziehbar bleiben, wann etwas ausgegeben wurde und in welcher Menge. Falls ein Rezept vorlag, soll auch die ausstellende Arztpraxis bekannt sein. Nicht jede Abgabe läuft aber über ein Rezept.\n\nVon Kundinnen und Kunden werden Name, Geburtsdatum und Kontaktmöglichkeit benötigt. Bei Arztpraxen reichen Name, Fachrichtung und Anschrift. Bei Herstellern sollen Name und Sitz hinterlegt werden. Es kommt vor, dass ein Mittel von genau einem Hersteller stammt, ein Hersteller aber viele Mittel liefert. Für Auswertungen soll später erkennbar sein, welche Wirkstoffe häufig in abgegebenen Mitteln enthalten waren.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medicines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dosage_form",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "package_size",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "requires_prescription",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "active_ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medicine_ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "medicine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "active_ingredient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "strength",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "medicine_id",
+              "references_table": "medicines",
+              "references_column": "id"
+            },
+            {
+              "from_column": "active_ingredient_id",
+              "references_table": "active_ingredients",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medical_practices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "specialization",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dispensations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medicine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dispensation_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medical_practice_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medicine_id",
+              "references_table": "medicines",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medical_practice_id",
+              "references_table": "medical_practices",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE active_ingredients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_active_ingredients PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    contact VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE medicines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    dosage_form VARCHAR(255) NOT NULL,\n    package_size VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    requires_prescription BOOLEAN NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_medicines PRIMARY KEY (id),\n    CONSTRAINT fk_medicines_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE medical_practices (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255),\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medical_practices PRIMARY KEY (id)\n);\n\nCREATE TABLE dispensations (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    medicine_id INTEGER NOT NULL,\n    dispensation_date TIMESTAMP NOT NULL,\n    quantity INTEGER NOT NULL,\n    medical_practice_id INTEGER,\n    CONSTRAINT pk_dispensations PRIMARY KEY (id),\n    CONSTRAINT fk_dispensations_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_dispensations_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_dispensations_medical_practice_id FOREIGN KEY (medical_practice_id) REFERENCES medical_practices (id)\n);\n\nCREATE TABLE medicine_ingredients (\n    id INTEGER NOT NULL,\n    medicine_id INTEGER NOT NULL,\n    active_ingredient_id INTEGER NOT NULL,\n    strength VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medicine_ingredients PRIMARY KEY (id),\n    CONSTRAINT fk_medicine_ingredients_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_medicine_ingredients_active_ingredient_id FOREIGN KEY (active_ingredient_id) REFERENCES active_ingredients (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2477,
+    "total_output_tokens": 1466,
+    "total_tokens": 3943,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2477,
+        "output_tokens": 1466,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2477,
+        "output_tokens": 1466,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

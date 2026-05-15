@@ -1,0 +1,858 @@
+{
+  "testfall_id": "TC041",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.529976580796253,
+  "score_gesamt": 0.7179859484777518,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.7142857142857143,
+      "recall": 0.7142857142857143,
+      "f1": 0.7142857142857143,
+      "matched": 5,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.39285714285714285,
+      "recall": 0.3333333333333333,
+      "f1": 0.360655737704918,
+      "matched": 11,
+      "nur_in_referenz": 22,
+      "nur_in_generiert": 17
+    },
+    "beziehung": {
+      "recall": 0.5,
+      "matched": 3,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "course_offerings",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "instructors.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "instructors.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "instructors.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "instructors.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "participants.birthdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_instructors.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "courses.duration_days",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.course_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.enddate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.location",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.capacity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings.is_open_for_registration",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.participant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.course_offering_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.registration_timestamp",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_offerings → courses",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations → course_offerings",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations → participants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein Weiterbildungsinstitut soll eine Lösung entstehen, mit der die angebotenen Kurse und ihre Durchführung organisiert werden können. Zu jedem Kurs sollen Titel, kurze Beschreibung, Fachbereich und die reguläre Dauer festgehalten werden. Ein Kurs kann mehrmals im Jahr stattfinden, oft mit unterschiedlichen Startterminen und gelegentlich auch an verschiedenen Orten. Für jede konkrete Durchführung soll sichtbar sein, wann sie beginnt und endet, wie viele Plätze vorgesehen sind und ob sie bereits zur Anmeldung freigegeben ist.\n\nTeilnehmende melden sich für einzelne Durchführungen an. Dabei soll nachvollziehbar bleiben, wann die Anmeldung eingegangen ist und welchen Stand sie hat, etwa vorgemerkt, bestätigt oder storniert. Manche Teilnehmende besuchen im Laufe der Zeit mehrere Kurse, und natürlich sitzen in einer Durchführung mehrere Personen.\n\nDie Kurse werden von Lehrkräften betreut. Eine Lehrkraft kann mehrere Kurse übernehmen, und ein Kurs kann je nach Planung auch von mehreren Lehrkräften begleitet werden. Außerdem gehört jeder Kurs zu einem Fachbereich, damit das Institut sein Angebot thematisch ordnen kann. Nicht ganz klar geregelt ist bisher, ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Termine; für die Verwaltung soll zunächst die übliche Planung des Instituts abgebildet werden.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "departments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "courses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duration",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "department_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "department_id",
+              "references_table": "departments",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "course_instances",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "course_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "seats",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_released",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "course_id",
+              "references_table": "courses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "instructors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "participants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "enrollments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "participant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "course_instance_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enrollment_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "participant_id",
+              "references_table": "participants",
+              "references_column": "id"
+            },
+            {
+              "from_column": "course_instance_id",
+              "references_table": "course_instances",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "course_instructors",
+          "columns": [
+            {
+              "name": "course_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "instructor_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "course_id",
+              "references_table": "courses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "instructor_id",
+              "references_table": "instructors",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kurs",
+          "attribute": [
+            "Titel",
+            "Beschreibung",
+            "Fachbereich",
+            "Dauer"
+          ],
+          "beschreibung": "Ein Kurs ist ein Weiterbildungsangebot mit grundlegenden Informationen wie Titel, Beschreibung, Fachbereich und regulärer Dauer."
+        },
+        {
+          "name": "Kursdurchführung",
+          "attribute": [
+            "Startdatum",
+            "Enddatum",
+            "Ort",
+            "Plätze",
+            "Freigabestatus"
+          ],
+          "beschreibung": "Eine konkrete Durchführung eines Kurses mit spezifischem Startdatum, Enddatum, Ort, Anzahl der Plätze und Freigabestatus für Anmeldungen."
+        },
+        {
+          "name": "Teilnehmender",
+          "attribute": [
+            "Name",
+            "Kontaktdaten"
+          ],
+          "beschreibung": "Eine Person, die sich für Kursdurchführungen anmelden kann und mehrere Kurse besuchen kann."
+        },
+        {
+          "name": "Anmeldung",
+          "attribute": [
+            "Anmeldedatum",
+            "Status"
+          ],
+          "beschreibung": "Die Anmeldung eines Teilnehmenden zu einer Kursdurchführung mit Anmeldedatum und Status (vorgemerkt, bestätigt, storniert)."
+        },
+        {
+          "name": "Lehrkraft",
+          "attribute": [
+            "Name",
+            "Kontaktdaten"
+          ],
+          "beschreibung": "Eine Person, die Kurse betreut und mehrere Kurse übernehmen kann."
+        },
+        {
+          "name": "Fachbereich",
+          "attribute": [
+            "Name",
+            "Beschreibung"
+          ],
+          "beschreibung": "Eine thematische Kategorie, der Kurse zugeordnet werden, um das Angebot des Instituts zu ordnen."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kurs",
+          "zu": "Kursdurchführung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kurs kann mehrmals im Jahr stattfinden, d.h. mehrere Kursdurchführungen haben."
+        },
+        {
+          "von": "Kursdurchführung",
+          "zu": "Teilnehmender",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Kursdurchführung hat mehrere Teilnehmende, und ein Teilnehmender kann sich für mehrere Kursdurchführungen anmelden."
+        },
+        {
+          "von": "Teilnehmender",
+          "zu": "Anmeldung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Teilnehmender kann mehrere Anmeldungen haben (für verschiedene Kursdurchführungen)."
+        },
+        {
+          "von": "Kursdurchführung",
+          "zu": "Anmeldung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Kursdurchführung hat mehrere Anmeldungen von verschiedenen Teilnehmenden."
+        },
+        {
+          "von": "Kurs",
+          "zu": "Lehrkraft",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Kurs kann von mehreren Lehrkräften begleitet werden, und eine Lehrkraft kann mehrere Kurse übernehmen."
+        },
+        {
+          "von": "Kurs",
+          "zu": "Fachbereich",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Jeder Kurs gehört zu einem Fachbereich; ein Fachbereich kann mehrere Kurse enthalten."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Unklar ist, ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Termine (Kursdurchführungen). Der Text sagt, dass dies 'nicht ganz klar geregelt' ist und zunächst die 'übliche Planung des Instituts' abgebildet werden soll. Die Beziehung zwischen Lehrkraft und Kursdurchführung ist daher nicht explizit modelliert.",
+          "betroffene_elemente": [
+            "Lehrkraft",
+            "Kurs",
+            "Kursdurchführung"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob der Ort (Durchführungsort) ein Attribut der Kursdurchführung ist oder ob es eine separate Entität 'Ort' mit eigenen Attributen gibt, die mit Kursdurchführungen verknüpft ist.",
+          "betroffene_elemente": [
+            "Kursdurchführung",
+            "Ort"
+          ]
+        },
+        {
+          "beschreibung": "Die Attribute 'Name' und 'Kontaktdaten' für Teilnehmender und Lehrkraft sind impliziert, aber nicht explizit im Text genannt. Es ist unklar, welche konkreten Kontaktdaten erfasst werden sollen.",
+          "betroffene_elemente": [
+            "Teilnehmender",
+            "Lehrkraft"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Fachbereich",
+          "attribute": [
+            {
+              "name": "fachbereich_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Kurs",
+          "attribute": [
+            {
+              "name": "kurs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "titel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "dauer",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fachbereich_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kursdurchführung",
+          "attribute": [
+            {
+              "name": "durchfuehrung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kurs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ort",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "plaetze",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "freigabestatus",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Lehrkraft",
+          "attribute": [
+            {
+              "name": "lehrkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktdaten",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Teilnehmender",
+          "attribute": [
+            {
+              "name": "teilnehmender_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktdaten",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Anmeldung",
+          "attribute": [
+            {
+              "name": "anmeldung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "teilnehmender_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "durchfuehrung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "anmeldedatum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kurs_Lehrkraft",
+          "attribute": [
+            {
+              "name": "kurs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lehrkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Fachbereich",
+          "zu": "Kurs",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kurs",
+          "zu": "Kursdurchführung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Teilnehmender",
+          "zu": "Anmeldung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kursdurchführung",
+          "zu": "Anmeldung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kurs",
+          "zu": "Kurs_Lehrkraft",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Lehrkraft",
+          "zu": "Kurs_Lehrkraft",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE departments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_departments PRIMARY KEY (id)\n);\n\nCREATE TABLE courses (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    duration INTEGER NOT NULL,\n    department_id INTEGER NOT NULL,\n    CONSTRAINT pk_courses PRIMARY KEY (id),\n    CONSTRAINT fk_courses_department_id FOREIGN KEY (department_id) REFERENCES departments (id)\n);\n\nCREATE TABLE course_instances (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE NOT NULL,\n    location VARCHAR(255),\n    seats INTEGER NOT NULL,\n    is_released BOOLEAN NOT NULL,\n    CONSTRAINT pk_course_instances PRIMARY KEY (id),\n    CONSTRAINT fk_course_instances_course_id FOREIGN KEY (course_id) REFERENCES courses (id)\n);\n\nCREATE TABLE instructors (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact VARCHAR(255),\n    CONSTRAINT pk_instructors PRIMARY KEY (id)\n);\n\nCREATE TABLE course_instructors (\n    course_id INTEGER NOT NULL,\n    instructor_id INTEGER NOT NULL,\n    CONSTRAINT pk_course_instructors PRIMARY KEY (course_id, instructor_id),\n    CONSTRAINT fk_course_instructors_course_id FOREIGN KEY (course_id) REFERENCES courses (id),\n    CONSTRAINT fk_course_instructors_instructor_id FOREIGN KEY (instructor_id) REFERENCES instructors (id)\n);\n\nCREATE TABLE participants (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact VARCHAR(255),\n    CONSTRAINT pk_participants PRIMARY KEY (id)\n);\n\nCREATE TABLE enrollments (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    course_instance_id INTEGER NOT NULL,\n    enrollment_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_enrollments PRIMARY KEY (id),\n    CONSTRAINT fk_enrollments_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_enrollments_course_instance_id FOREIGN KEY (course_instance_id) REFERENCES course_instances (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9225,
+    "total_output_tokens": 4616,
+    "total_tokens": 13841,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1672,
+        "output_tokens": 1437,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3168,
+        "output_tokens": 1617,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4385,
+        "output_tokens": 1562,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1672,
+        "output_tokens": 1437,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3168,
+        "output_tokens": 1617,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4385,
+        "output_tokens": 1562,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

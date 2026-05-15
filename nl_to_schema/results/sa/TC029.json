@@ -1,0 +1,206 @@
+{
+  "testfall_id": "TC029",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 1.0,
+  "score_gesamt": 1.0,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 15,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [],
+  "state": {
+    "anforderungstext": "Ein kleiner Fischhandel möchte seine täglichen Verkäufe ordentlich festhalten. Für jeden Lieferanten soll gespeichert werden, wie er heißt, aus welchem Ort er kommt und ob die Zusammenarbeit aktuell noch besteht. Jeder Fisch, der verkauft wird, gehört genau zu einem Lieferanten. Zu jedem Fisch sollen die Bezeichnung, die Warengruppe, der Preis pro Kilogramm und die Angabe erfasst werden, ob er frisch oder tiefgekühlt angeboten wird. Außerdem sollen Verkäufe dokumentiert werden. Zu jedem Verkauf wird das Verkaufsdatum, die verkaufte Menge in Kilogramm und der tatsächlich berechnete Gesamtpreis festgehalten. Jeder Verkauf bezieht sich immer auf genau einen Fisch. Ein Fisch kann im Laufe der Zeit in vielen einzelnen Verkäufen vorkommen.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "suppliers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "fish",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "product_group",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price_per_kg",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_fresh",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sales",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "fish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "sale_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity_kg",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "fish_id",
+              "references_table": "fish",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE fish (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    product_group VARCHAR(255) NOT NULL,\n    price_per_kg DECIMAL(18,2) NOT NULL,\n    is_fresh BOOLEAN NOT NULL,\n    CONSTRAINT pk_fish PRIMARY KEY (id),\n    CONSTRAINT fk_fish_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n\nCREATE TABLE sales (\n    id INTEGER NOT NULL,\n    fish_id INTEGER NOT NULL,\n    sale_date DATE NOT NULL,\n    quantity_kg DECIMAL(18,2) NOT NULL,\n    total_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_sales PRIMARY KEY (id),\n    CONSTRAINT fk_sales_fish_id FOREIGN KEY (fish_id) REFERENCES fish (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2319,
+    "total_output_tokens": 682,
+    "total_tokens": 3001,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2319,
+        "output_tokens": 682,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2319,
+        "output_tokens": 682,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

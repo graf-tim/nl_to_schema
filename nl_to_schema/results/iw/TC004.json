@@ -1,0 +1,357 @@
+{
+  "testfall_id": "TC004",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9733333333333334,
+  "score_gesamt": 0.984,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9333333333333333,
+      "recall": 0.9333333333333333,
+      "f1": 0.9333333333333333,
+      "matched": 14,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "books.stock_quantity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Buchhandlung soll festgehalten werden, welche Verlage die angebotenen Bücher herausgeben. Zu jedem Verlag werden der Name, die E-Mail-Adresse und die Telefonnummer gespeichert. Zu jedem Buch sollen der Titel, die internationale Buchnummer, das Erscheinungsdatum, der Verkaufspreis und der aktuelle Lagerbestand erfasst werden. Jedes Buch gehört genau zu einem Verlag, ein Verlag kann aber viele Bücher herausgeben. Außerdem möchte die Buchhandlung Bestellungen von Kundinnen und Kunden dokumentieren. Für jede Bestellung werden das Bestelldatum und der aktuelle Status notiert. Jede Bestellung gehört genau zu einem Buch, und ein Buch kann in vielen Bestellungen vorkommen. Weitere Informationen werden nicht benötigt.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "publishers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "books",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "isbn",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publicationdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "stock",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publisher_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "publisher_id",
+              "references_table": "publishers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "book_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "book_id",
+              "references_table": "books",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung erwähnt explizit 'Bestellungen von Kundinnen und Kunden', was impliziert, dass Kundeninformationen erfasst werden müssen. Die aktuelle Struktur hat keine customers/persons-Tabelle. Jede Bestellung sollte zu einem Kunden gehören, was derzeit nicht modelliert ist.",
+          "korrekturanweisung": "Erstelle eine neue Tabelle 'customers' mit Spalten: id (INTEGER PRIMARY KEY), firstname (VARCHAR NOT NULL), lastname (VARCHAR NOT NULL), email (VARCHAR, nullable), phone (VARCHAR, nullable). Füge in der 'orders'-Tabelle eine Spalte 'customer_id' (INTEGER NOT NULL) hinzu und definiere einen Fremdschlüssel auf customers.id."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "In der 'orders'-Tabelle fehlt die Menge/Anzahl der bestellten Bücher. Der Anforderungstext sagt 'Jede Bestellung gehört genau zu einem Buch', aber nicht, in welcher Menge. Eine realistische Buchhandlung benötigt diese Information zur Bestandsverwaltung.",
+          "korrekturanweisung": "Füge in der 'orders'-Tabelle eine Spalte 'quantity' (INTEGER NOT NULL DEFAULT 1) hinzu, um die Anzahl der bestellten Exemplare zu erfassen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Kardinalitäten sind korrekt modelliert: 1:N zwischen publishers und books, sowie 1:N zwischen books und orders. Keine M:N-Beziehungen vorhanden, die eine Junction-Table erfordern würden.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen erkennbar, alle Attribute sind atomar, keine transitiven Abhängigkeiten vorhanden.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE publishers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_publishers PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    isbn VARCHAR(255) NOT NULL,\n    publicationdate DATE,\n    price DECIMAL(18,2) NOT NULL,\n    stock INTEGER NOT NULL,\n    publisher_id INTEGER NOT NULL,\n    CONSTRAINT pk_books PRIMARY KEY (id),\n    CONSTRAINT fk_books_publisher_id FOREIGN KEY (publisher_id) REFERENCES publishers (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    book_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_book_id FOREIGN KEY (book_id) REFERENCES books (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung erwähnt explizit 'Bestellungen von Kundinnen und Kunden', was impliziert, dass Kundeninformationen erfasst werden müssen. Die aktuelle Struktur hat keine customers/persons-Tabelle. Jede Bestellung sollte zu einem Kunden gehören, was derzeit nicht modelliert ist.",
+          "korrekturanweisung": "Erstelle eine neue Tabelle 'customers' mit Spalten: id (INTEGER PRIMARY KEY), firstname (VARCHAR NOT NULL), lastname (VARCHAR NOT NULL), email (VARCHAR, nullable), phone (VARCHAR, nullable). Füge in der 'orders'-Tabelle eine Spalte 'customer_id' (INTEGER NOT NULL) hinzu und definiere einen Fremdschlüssel auf customers.id."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "In der 'orders'-Tabelle fehlt die Menge/Anzahl der bestellten Bücher. Der Anforderungstext sagt 'Jede Bestellung gehört genau zu einem Buch', aber nicht, in welcher Menge. Eine realistische Buchhandlung benötigt diese Information zur Bestandsverwaltung.",
+          "korrekturanweisung": "Füge in der 'orders'-Tabelle eine Spalte 'quantity' (INTEGER NOT NULL DEFAULT 1) hinzu, um die Anzahl der bestellten Exemplare zu erfassen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Kardinalitäten sind korrekt modelliert: 1:N zwischen publishers und books, sowie 1:N zwischen books und orders. Keine M:N-Beziehungen vorhanden, die eine Junction-Table erfordern würden.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen erkennbar, alle Attribute sind atomar, keine transitiven Abhängigkeiten vorhanden.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 20332,
+    "total_output_tokens": 5218,
+    "total_tokens": 25550,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 10556,
+        "output_tokens": 2504,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 9776,
+        "output_tokens": 2714,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2292,
+        "output_tokens": 665,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3161,
+        "output_tokens": 937,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4006,
+        "output_tokens": 1066,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3454,
+        "output_tokens": 912,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4258,
+        "output_tokens": 773,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3161,
+        "output_tokens": 865,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

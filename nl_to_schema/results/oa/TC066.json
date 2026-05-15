@@ -1,0 +1,942 @@
+{
+  "testfall_id": "TC066",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5050741608118657,
+  "score_gesamt": 0.7030444964871194,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.5517241379310345,
+      "recall": 0.5,
+      "f1": 0.5245901639344263,
+      "matched": 16,
+      "nur_in_referenz": 16,
+      "nur_in_generiert": 13
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "payments.payment_method",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.category_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products → categories",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Bestellplattform sollen Kundinnen und Kunden ihre Einkäufe verwalten können. Zu jeder Person sollen die üblichen Kontaktdaten festgehalten werden, damit Bestätigungen verschickt und Rückfragen geklärt werden können. Das Sortiment besteht aus Artikeln mit Name, Beschreibung und aktuellem Verkaufspreis. Manche Artikel gehören gleichzeitig in mehrere Bereiche des Shops, damit sie bei der Suche leichter gefunden werden. \n\nWenn jemand etwas kauft, soll der Einkauf mit Datum, Bearbeitungsstand und einer Lieferanschrift gespeichert werden. Ein Einkauf kann aus mehreren Artikeln bestehen, und bei jedem Artikel muss nachvollziehbar bleiben, wie viele Stück bestellt wurden und zu welchem Einzelpreis der Kauf zustande kam, auch wenn sich der Preis im Sortiment später ändert. Zu einem Einkauf kann eine Zahlung erfasst werden; im Alltag kommt es aber vor, dass eine Bestellung noch offen ist oder zunächst nur vorgemerkt wird. \n\nAußerdem sollen Bereiche des Shops mit Bezeichnung und kurzer Erklärung gepflegt werden. Unklar ist fachlich zunächst, ob ein Artikel immer genau einem Bereich zugeordnet ist oder auch mehreren. Ebenso ist offen, ob pro Einkauf genau eine Zahlung existiert oder ob mehrere Zahlungsversuche relevant sein können. Das System soll Auswertungen über Bestellungen, Umsätze und beliebte Artikel ermöglichen.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "article_categories",
+          "columns": [
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "payments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "paymentdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Person",
+          "attribute": [
+            "PersonenID",
+            "Name",
+            "Kontaktdaten",
+            "Email",
+            "Telefon",
+            "Adresse"
+          ],
+          "beschreibung": "Kundinnen und Kunden der Bestellplattform mit Kontaktdaten für Bestätigungen und Rückfragen"
+        },
+        {
+          "name": "Artikel",
+          "attribute": [
+            "ArtikelID",
+            "Name",
+            "Beschreibung",
+            "Verkaufspreis"
+          ],
+          "beschreibung": "Produkte im Sortiment mit Name, Beschreibung und aktuellem Verkaufspreis"
+        },
+        {
+          "name": "Bereich",
+          "attribute": [
+            "BereichID",
+            "Bezeichnung",
+            "Erklärung"
+          ],
+          "beschreibung": "Kategorien oder Bereiche des Shops zur Strukturierung und Suche von Artikeln"
+        },
+        {
+          "name": "Einkauf",
+          "attribute": [
+            "EinkaufID",
+            "Datum",
+            "Bearbeitungsstand",
+            "Lieferanschrift"
+          ],
+          "beschreibung": "Bestellung einer Person mit Datum, Status und Lieferadresse"
+        },
+        {
+          "name": "Einkaufposition",
+          "attribute": [
+            "EinkaufspositionID",
+            "Menge",
+            "Einzelpreis"
+          ],
+          "beschreibung": "Einzelne Artikel innerhalb eines Einkaufs mit bestellter Menge und historischem Einzelpreis"
+        },
+        {
+          "name": "Zahlung",
+          "attribute": [
+            "ZahlungsID",
+            "Betrag",
+            "Datum",
+            "Status"
+          ],
+          "beschreibung": "Zahlungsinformation zu einem Einkauf; kann offen, vorgemerkt oder abgeschlossen sein"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Person",
+          "zu": "Einkauf",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Person kann mehrere Einkäufe tätigen"
+        },
+        {
+          "von": "Einkauf",
+          "zu": "Einkaufposition",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Einkauf besteht aus mehreren Einkaufspositionen (Artikeln)"
+        },
+        {
+          "von": "Artikel",
+          "zu": "Einkaufposition",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Artikel kann in mehreren Einkaufspositionen vorkommen"
+        },
+        {
+          "von": "Artikel",
+          "zu": "Bereich",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Artikel können mehreren Bereichen zugeordnet sein; Bereiche enthalten mehrere Artikel"
+        },
+        {
+          "von": "Einkauf",
+          "zu": "Zahlung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Einkauf kann mehrere Zahlungen haben oder keine (offen/vorgemerkt)"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Kardinalität der Zuordnung Artikel-Bereich: Unklar, ob ein Artikel immer genau einem Bereich zugeordnet ist (1:N) oder mehreren Bereichen gleichzeitig (M:N)",
+          "betroffene_elemente": [
+            "Artikel",
+            "Bereich"
+          ]
+        },
+        {
+          "beschreibung": "Kardinalität der Beziehung Einkauf-Zahlung: Offen, ob pro Einkauf genau eine Zahlung existiert (1:1) oder mehrere Zahlungsversuche relevant sein können (1:N)",
+          "betroffene_elemente": [
+            "Einkauf",
+            "Zahlung"
+          ]
+        },
+        {
+          "beschreibung": "Zahlungsstatus: Der Text erwähnt, dass Bestellungen offen sein können oder vorgemerkt werden, aber es ist unklar, ob dies ein Attribut der Zahlung oder des Einkaufs ist",
+          "betroffene_elemente": [
+            "Einkauf",
+            "Zahlung"
+          ]
+        },
+        {
+          "beschreibung": "Kontaktdaten: Nicht spezifiziert, welche konkreten Kontaktdaten (Email, Telefon, Adresse, etc.) erfasst werden sollen",
+          "betroffene_elemente": [
+            "Person"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Person",
+          "attribute": [
+            {
+              "name": "PersonenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Artikel",
+          "attribute": [
+            {
+              "name": "ArtikelID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Verkaufspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bereich",
+          "attribute": [
+            {
+              "name": "BereichID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Erklärung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Einkauf",
+          "attribute": [
+            {
+              "name": "EinkaufID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "PersonenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bearbeitungsstand",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Lieferanschrift",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Einkaufposition",
+          "attribute": [
+            {
+              "name": "EinkaufspositionID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EinkaufID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ArtikelID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Menge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Einzelpreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Zahlung",
+          "attribute": [
+            {
+              "name": "ZahlungsID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EinkaufID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Betrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Person",
+          "zu": "Einkauf",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Einkauf",
+          "zu": "Einkaufposition",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Artikel",
+          "zu": "Einkaufposition",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Artikel",
+          "zu": "Bereich",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Einkauf",
+          "zu": "Zahlung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: persons, articles, categories, orders, order_items, payments. Die Zuordnung ist korrekt (Person→persons, Artikel→articles, Bereich→categories, Einkauf→orders, Einkaufposition→order_items, Zahlung→payments).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: persons (id, name, email, phone, address), articles (id, name, description, price), categories (id, name, description), orders (id, person_id, orderdate, status, delivery_address), order_items (id, order_id, article_id, quantity, unit_price), payments (id, order_id, amount, paymentdate, status). Nullable-Markierungen entsprechen den Pflichtfeld-Definitionen des ER-Modells.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Person→Einkauf (1:N via person_id in orders), (2) Einkauf→Einkaufposition (1:N via order_id in order_items), (3) Artikel→Einkaufposition (1:N via article_id in order_items), (4) Artikel↔Bereich (M:N via Junction-Table article_categories), (5) Einkauf→Zahlung (1:N via order_id in payments). Alle Fremdschlüssel sind NOT NULL, was die Kardinalitäten korrekt abbildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Wiederholungsgruppen (1NF erfüllt), (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln (2NF erfüllt), (3) Keine transitiven Abhängigkeiten (3NF erfüllt). Die Junction-Table article_categories ist korrekt für die M:N-Beziehung modelliert. order_items speichert unit_price historisch, was korrekt ist und keine Anomalie darstellt.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE article_categories (\n    article_id INTEGER NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_article_categories PRIMARY KEY (article_id, category_id),\n    CONSTRAINT fk_article_categories_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    delivery_address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    paymentdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: persons, articles, categories, orders, order_items, payments. Die Zuordnung ist korrekt (Person→persons, Artikel→articles, Bereich→categories, Einkauf→orders, Einkaufposition→order_items, Zahlung→payments).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: persons (id, name, email, phone, address), articles (id, name, description, price), categories (id, name, description), orders (id, person_id, orderdate, status, delivery_address), order_items (id, order_id, article_id, quantity, unit_price), payments (id, order_id, amount, paymentdate, status). Nullable-Markierungen entsprechen den Pflichtfeld-Definitionen des ER-Modells.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Person→Einkauf (1:N via person_id in orders), (2) Einkauf→Einkaufposition (1:N via order_id in order_items), (3) Artikel→Einkaufposition (1:N via article_id in order_items), (4) Artikel↔Bereich (M:N via Junction-Table article_categories), (5) Einkauf→Zahlung (1:N via order_id in payments). Alle Fremdschlüssel sind NOT NULL, was die Kardinalitäten korrekt abbildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Wiederholungsgruppen (1NF erfüllt), (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln (2NF erfüllt), (3) Keine transitiven Abhängigkeiten (3NF erfüllt). Die Junction-Table article_categories ist korrekt für die M:N-Beziehung modelliert. order_items speichert unit_price historisch, was korrekt ist und keine Anomalie darstellt.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 16006,
+    "total_output_tokens": 5288,
+    "total_tokens": 21294,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1671,
+        "output_tokens": 1241,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2989,
+        "output_tokens": 1457,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4214,
+        "output_tokens": 1591,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 1,
+        "input_tokens": 7132,
+        "output_tokens": 999,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1671,
+        "output_tokens": 1241,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2989,
+        "output_tokens": 1457,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4214,
+        "output_tokens": 1591,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7132,
+        "output_tokens": 999,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

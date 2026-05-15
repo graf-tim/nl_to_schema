@@ -1,0 +1,386 @@
+{
+  "testfall_id": "TC024",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7280701754385965,
+  "score_gesamt": 0.8368421052631579,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "matched": 3,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.7368421052631579,
+      "recall": 0.7368421052631579,
+      "f1": 0.7368421052631579,
+      "matched": 14,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 5
+    },
+    "beziehung": {
+      "recall": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "flower_types",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_items.unit_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "flower_types.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "flower_types.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "flower_types.color",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "flower_types.unit_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_items → flower_types",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Blumenladen moechte seine Bestellungen uebersichtlich verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und E-Mail-Adresse gespeichert werden. Ein Kunde kann mehrere Bestellungen aufgeben, aber jede Bestellung gehoert immer genau zu einem Kunden. Zu jeder Bestellung sollen das Bestelldatum, ein geplanter Liefertermin und ein Status festgehalten werden. Ausserdem soll gespeichert werden, welche Blumenarten in einer Bestellung enthalten sind. Fuer jede Blumenart werden Name, Farbe und Einzelpreis benoetigt. Eine Bestellung kann mehrere Positionen enthalten, und jede Position bezieht sich immer auf genau eine Blumenart. Pro Position sollen die bestellte Menge und der Preis zum Zeitpunkt der Bestellung gespeichert werden.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "deliverydate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "flowers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "flower_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "flower_id",
+              "references_table": "flowers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: Kunden (customers), Bestellungen (orders), Blumenarten (flowers) und Bestellpositionen (order_items). Die M:N-Beziehung zwischen Bestellungen und Blumenarten ist korrekt über order_items aufgelöst.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Kunden (firstname, lastname, phone, email), Bestellungen (orderdate, deliverydate, status), Blumenarten (name, color, price), Bestellpositionen (quantity, price zum Zeitpunkt der Bestellung). Die Anforderung, den Preis zum Zeitpunkt der Bestellung zu speichern, ist durch das price-Attribut in order_items erfüllt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Kardinalitäten sind korrekt modelliert: 1:N zwischen customers und orders (ein Kunde → mehrere Bestellungen), 1:N zwischen orders und order_items (eine Bestellung → mehrere Positionen), 1:N zwischen flowers und order_items (eine Blumenart → mehrere Positionen in verschiedenen Bestellungen). Die M:N-Beziehung zwischen orders und flowers ist über die Junction-Table order_items korrekt aufgelöst.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Anomalien durch Redundanzen erkennbar. Der Preis in order_items ist eine berechtigte Denormalisierung (historischer Preis zum Bestellzeitpunkt), nicht eine Redundanz. Alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom Primärschlüssel ihrer Tabelle.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE flowers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    color VARCHAR(255),\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_flowers PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    deliverydate DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    flower_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_flower_id FOREIGN KEY (flower_id) REFERENCES flowers (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: Kunden (customers), Bestellungen (orders), Blumenarten (flowers) und Bestellpositionen (order_items). Die M:N-Beziehung zwischen Bestellungen und Blumenarten ist korrekt über order_items aufgelöst.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Kunden (firstname, lastname, phone, email), Bestellungen (orderdate, deliverydate, status), Blumenarten (name, color, price), Bestellpositionen (quantity, price zum Zeitpunkt der Bestellung). Die Anforderung, den Preis zum Zeitpunkt der Bestellung zu speichern, ist durch das price-Attribut in order_items erfüllt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Kardinalitäten sind korrekt modelliert: 1:N zwischen customers und orders (ein Kunde → mehrere Bestellungen), 1:N zwischen orders und order_items (eine Bestellung → mehrere Positionen), 1:N zwischen flowers und order_items (eine Blumenart → mehrere Positionen in verschiedenen Bestellungen). Die M:N-Beziehung zwischen orders und flowers ist über die Junction-Table order_items korrekt aufgelöst.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Anomalien durch Redundanzen erkennbar. Der Preis in order_items ist eine berechtigte Denormalisierung (historischer Preis zum Bestellzeitpunkt), nicht eine Redundanz. Alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom Primärschlüssel ihrer Tabelle.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 2,
+    "total_input_tokens": 5677,
+    "total_output_tokens": 1774,
+    "total_tokens": 7451,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 1,
+        "input_tokens": 2293,
+        "output_tokens": 860,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 1,
+        "input_tokens": 3384,
+        "output_tokens": 914,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2293,
+        "output_tokens": 860,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3384,
+        "output_tokens": 914,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

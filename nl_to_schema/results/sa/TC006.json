@@ -1,0 +1,230 @@
+{
+  "testfall_id": "TC006",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 1.0,
+  "score_gesamt": 1.0,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 19,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [],
+  "state": {
+    "anforderungstext": "Eine Musikschule möchte ihre Schüler, Lehrkräfte und den Unterricht verwalten. Von jedem Schüler sollen Vorname, Nachname, Geburtsdatum, Telefonnummer und das Anmeldedatum gespeichert werden. Von jeder Lehrkraft sollen Vorname, Nachname, E-Mail-Adresse, Telefonnummer und das Einstellungsdatum festgehalten werden. Die Schule bietet einzelne Unterrichtsfächer wie Klavier, Gitarre oder Gesang an. Zu jedem Fach sollen der Name, eine kurze Beschreibung und die monatliche Gebühr erfasst werden. Jeder Schüler ist genau einem Fach zugeordnet. Jedes Fach wird genau von einer Lehrkraft unterrichtet, eine Lehrkraft kann aber mehrere Fächer unterrichten. Außerdem soll gespeichert werden, ob ein Schüler aktuell aktiv ist.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "students",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "enrollmentdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subject_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subject_id",
+              "references_table": "subjects",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "teachers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "subjects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "monthly_fee",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "teacher_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "teacher_id",
+              "references_table": "teachers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE teachers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    hiredate DATE NOT NULL,\n    CONSTRAINT pk_teachers PRIMARY KEY (id)\n);\n\nCREATE TABLE subjects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    monthly_fee DECIMAL(18,2) NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    CONSTRAINT pk_subjects PRIMARY KEY (id),\n    CONSTRAINT fk_subjects_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id)\n);\n\nCREATE TABLE students (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone VARCHAR(255),\n    enrollmentdate DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    subject_id INTEGER NOT NULL,\n    CONSTRAINT pk_students PRIMARY KEY (id),\n    CONSTRAINT fk_students_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2311,
+    "total_output_tokens": 784,
+    "total_tokens": 3095,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2311,
+        "output_tokens": 784,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2311,
+        "output_tokens": 784,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

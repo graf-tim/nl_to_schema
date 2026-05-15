@@ -1,0 +1,683 @@
+{
+  "testfall_id": "TC031",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9272727272727272,
+  "score_gesamt": 0.9563636363636363,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.8181818181818182,
+      "recall": 0.8181818181818182,
+      "f1": 0.8181818181818182,
+      "matched": 18,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 4
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "rentals.startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "rentals.planned_enddate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "stations.capacity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "bikes.condition",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für einen kleinen Mietfahrrad-Anbieter soll festgehalten werden, welche Fahrräder vorhanden sind, welche Kundinnen und Kunden registriert sind und welche Ausleihen stattfinden. Zu jedem Fahrrad werden eine interne Nummer, Marke, Modell, Fahrradtyp und der aktuelle Zustand gespeichert. Jedes Fahrrad gehört genau zu einer Station, an der es normalerweise geführt wird. Für jede Station sollen Name, Adresse und die Zahl der verfügbaren Stellplätze bekannt sein. Von Kundinnen und Kunden werden Vorname, Nachname, E-Mail-Adresse, Telefonnummer und Registrierungsdatum benötigt. Bei jeder Ausleihe wird festgehalten, welches Fahrrad von welcher Person ausgeliehen wurde, wann die Ausleihe begonnen hat und wann sie planmäßig enden soll. Eine Ausleihe betrifft immer genau ein Fahrrad und genau eine Person.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "stations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "available_parking_spaces",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "bicycles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "internal_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "brand",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "bicycle_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "current_condition",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "station_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "station_id",
+              "references_table": "stations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "registration_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "rentals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "bicycle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "rental_start",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "rental_end_planned",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "bicycle_id",
+              "references_table": "bicycles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Fahrrad",
+          "attribute": [
+            "interne Nummer",
+            "Marke",
+            "Modell",
+            "Fahrradtyp",
+            "aktueller Zustand"
+          ],
+          "beschreibung": "Repräsentiert ein Mietfahrrad mit seinen technischen Eigenschaften und aktuellem Status."
+        },
+        {
+          "name": "Station",
+          "attribute": [
+            "Name",
+            "Adresse",
+            "Zahl der verfügbaren Stellplätze"
+          ],
+          "beschreibung": "Repräsentiert eine Ausleihstation, an der Fahrräder normalerweise geführt werden."
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "E-Mail-Adresse",
+            "Telefonnummer",
+            "Registrierungsdatum"
+          ],
+          "beschreibung": "Repräsentiert eine registrierte Kundin oder einen registrierten Kunden des Mietfahrrad-Anbieters."
+        },
+        {
+          "name": "Ausleihe",
+          "attribute": [
+            "Ausleihbeginn",
+            "planmäßiges Ausleihende"
+          ],
+          "beschreibung": "Repräsentiert einen Ausleihvorgang eines Fahrrads durch einen Kunden."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Fahrrad",
+          "zu": "Station",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Fahrrad gehört genau zu einer Station, an der es normalerweise geführt wird."
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Fahrrad",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Ausleihe betrifft immer genau ein Fahrrad."
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Ausleihe betrifft immer genau eine Person (Kunde)."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Der Attribut 'aktueller Zustand' bei Fahrrad ist nicht näher spezifiziert. Unklar ist, ob dies ein einfacher Status (z.B. 'verfügbar', 'ausgeliehen', 'in Wartung') oder eine detaillierte Zustandsbeschreibung ist.",
+          "betroffene_elemente": [
+            "Fahrrad"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob eine Ausleihe auch ein tatsächliches Rückgabedatum speichern soll oder nur das planmäßige Ausleihende. Die Anforderung erwähnt nur das planmäßige Ende.",
+          "betroffene_elemente": [
+            "Ausleihe"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob ein Kunde mehrere Ausleihen gleichzeitig haben kann oder ob es Beschränkungen gibt.",
+          "betroffene_elemente": [
+            "Kunde",
+            "Ausleihe"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die 'Zahl der verfügbaren Stellplätze' eine statische Kapazität oder eine dynamisch aktualisierte Verfügbarkeit darstellt.",
+          "betroffene_elemente": [
+            "Station"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Station",
+          "attribute": [
+            {
+              "name": "stationsId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "verfuegbareStellplaetze",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Fahrrad",
+          "attribute": [
+            {
+              "name": "fahrradId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "interneNummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "marke",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "modell",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fahrradtyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "aktuellerZustand",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "stationsId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kundeId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "emailAdresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "registrierungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Ausleihe",
+          "attribute": [
+            {
+              "name": "ausleihId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fahrradId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundeId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ausleihbeginn",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "planmaessigesAusleihende",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Fahrrad",
+          "zu": "Station",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Fahrrad",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Ausleihe",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: stations, bicycles, customers, rentals. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: stations (name, address, available_parking_spaces), bicycles (internal_number, brand, model, bicycle_type, current_condition, station_id), customers (firstname, lastname, email, phone, registration_date), rentals (bicycle_id, customer_id, rental_start, rental_end_planned). Attributnamen folgen der Konvention (snake_case, englisch, Umlaute ersetzt).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle drei Beziehungen aus dem RequirementsReport und ERModell sind korrekt im LogicalSchema implementiert: (1) Fahrrad N:1 Station via bicycles.station_id, (2) Ausleihe N:1 Fahrrad via rentals.bicycle_id, (3) Ausleihe N:1 Kunde via rentals.customer_id. Kardinalitäten und Fremdschlüssel sind konsistent.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF): (1) Alle Tabellen haben einen Primärschlüssel, (2) Alle Nicht-Schlüssel-Attribute sind atomar und funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen, (4) N:M-Beziehungen sind nicht vorhanden (alle Beziehungen sind N:1), (5) Keine redundanten Daten. Das Schema ist gut normalisiert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE stations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    available_parking_spaces INTEGER NOT NULL,\n    CONSTRAINT pk_stations PRIMARY KEY (id)\n);\n\nCREATE TABLE bicycles (\n    id INTEGER NOT NULL,\n    internal_number VARCHAR(255) NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    bicycle_type VARCHAR(255) NOT NULL,\n    current_condition VARCHAR(255) NOT NULL,\n    station_id INTEGER NOT NULL,\n    CONSTRAINT pk_bicycles PRIMARY KEY (id),\n    CONSTRAINT fk_bicycles_station_id FOREIGN KEY (station_id) REFERENCES stations (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    bicycle_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    rental_start TIMESTAMP NOT NULL,\n    rental_end_planned TIMESTAMP NOT NULL,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_bicycle_id FOREIGN KEY (bicycle_id) REFERENCES bicycles (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: stations, bicycles, customers, rentals. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: stations (name, address, available_parking_spaces), bicycles (internal_number, brand, model, bicycle_type, current_condition, station_id), customers (firstname, lastname, email, phone, registration_date), rentals (bicycle_id, customer_id, rental_start, rental_end_planned). Attributnamen folgen der Konvention (snake_case, englisch, Umlaute ersetzt).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle drei Beziehungen aus dem RequirementsReport und ERModell sind korrekt im LogicalSchema implementiert: (1) Fahrrad N:1 Station via bicycles.station_id, (2) Ausleihe N:1 Fahrrad via rentals.bicycle_id, (3) Ausleihe N:1 Kunde via rentals.customer_id. Kardinalitäten und Fremdschlüssel sind konsistent.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF): (1) Alle Tabellen haben einen Primärschlüssel, (2) Alle Nicht-Schlüssel-Attribute sind atomar und funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen, (4) N:M-Beziehungen sind nicht vorhanden (alle Beziehungen sind N:1), (5) Keine redundanten Daten. Das Schema ist gut normalisiert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 13585,
+    "total_output_tokens": 4524,
+    "total_tokens": 18109,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1518,
+        "output_tokens": 1052,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2545,
+        "output_tokens": 1374,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3682,
+        "output_tokens": 1122,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 1,
+        "input_tokens": 5840,
+        "output_tokens": 976,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1518,
+        "output_tokens": 1052,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2545,
+        "output_tokens": 1374,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3682,
+        "output_tokens": 1122,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5840,
+        "output_tokens": 976,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

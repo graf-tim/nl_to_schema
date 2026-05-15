@@ -1,0 +1,772 @@
+{
+  "testfall_id": "TC066",
+  "workflow": "mad",
+  "score_strukturell": 0.0,
+  "score_semantisch": 0.45777777777777784,
+  "score_gesamt": 0.27466666666666667,
+  "detail_strukturell": {
+    "syntax_gate": 0,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5,
+      "recall": 0.5714285714285714,
+      "f1": 0.5333333333333333,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 4
+    },
+    "attribut": {
+      "precision": 0.4,
+      "recall": 0.5,
+      "f1": 0.4444444444444445,
+      "matched": 16,
+      "nur_in_referenz": 16,
+      "nur_in_generiert": 24
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.shipping_address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.category_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products → categories",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "category_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Bestellplattform sollen Kundinnen und Kunden ihre Einkäufe verwalten können. Zu jeder Person sollen die üblichen Kontaktdaten festgehalten werden, damit Bestätigungen verschickt und Rückfragen geklärt werden können. Das Sortiment besteht aus Artikeln mit Name, Beschreibung und aktuellem Verkaufspreis. Manche Artikel gehören gleichzeitig in mehrere Bereiche des Shops, damit sie bei der Suche leichter gefunden werden. \n\nWenn jemand etwas kauft, soll der Einkauf mit Datum, Bearbeitungsstand und einer Lieferanschrift gespeichert werden. Ein Einkauf kann aus mehreren Artikeln bestehen, und bei jedem Artikel muss nachvollziehbar bleiben, wie viele Stück bestellt wurden und zu welchem Einzelpreis der Kauf zustande kam, auch wenn sich der Preis im Sortiment später ändert. Zu einem Einkauf kann eine Zahlung erfasst werden; im Alltag kommt es aber vor, dass eine Bestellung noch offen ist oder zunächst nur vorgemerkt wird. \n\nAußerdem sollen Bereiche des Shops mit Bezeichnung und kurzer Erklärung gepflegt werden. Unklar ist fachlich zunächst, ob ein Artikel immer genau einem Bereich zugeordnet ist oder auch mehreren. Ebenso ist offen, ob pro Einkauf genau eine Zahlung existiert oder ob mehrere Zahlungsversuche relevant sein können. Das System soll Auswertungen über Bestellungen, Umsätze und beliebte Artikel ermöglichen.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "default_address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "default_address_id",
+              "references_table": "addresses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "addresses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postalcode",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "article_categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "updated_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "delivery_address_id",
+              "references_table": "addresses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "payments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "paymentdate",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "payment_method",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'persons' enthält Adressfelder (street, city, postalcode, country), die redundant zur separaten 'addresses'-Tabelle sind. Dies führt zu Dateninkonsistenzen: Eine Person kann unterschiedliche Adressen in 'persons' und 'addresses' haben. Fachlich ist unklar, ob die Adresse in 'persons' die Rechnungsadresse oder nur eine Standardadresse darstellt. Die Anforderung spricht von 'Lieferanschrift' pro Einkauf, nicht von einer Standardadresse pro Person.",
+          "korrekturanweisung": "Entfernen Sie die Adressfelder (street, city, postalcode, country) aus der Tabelle 'persons'. Verwenden Sie ausschließlich die 'addresses'-Tabelle. Falls eine Standardadresse pro Person erforderlich ist, fügen Sie ein Feld 'default_address_id' in 'persons' ein und referenzieren Sie 'addresses'."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'addresses' fehlt ein Fremdschlüssel zu 'persons'. Adressen sind derzeit nicht an Personen gebunden und können orphan-Einträge werden. Fachlich ist unklar: Sind Adressen nur Lieferadressen zu Bestellungen, oder können Personen mehrere Adressen haben (z.B. Rechnungs- und Lieferadresse)?",
+          "korrekturanweisung": "Klären Sie die Anforderung: (1) Falls Adressen nur zu Bestellungen gehören, ist die separate 'addresses'-Tabelle überflüssig – nutzen Sie stattdessen Adressfelder direkt in 'orders'. (2) Falls Personen mehrere Adressen haben können, fügen Sie 'person_id INTEGER NOT NULL' zu 'addresses' hinzu und erstellen Sie einen FK zu 'persons'."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die N:M-Beziehung 'article_categories' hat einen zusammengesetzten Primärschlüssel (article_id, category_id), aber es fehlt ein separates 'id'-Feld. Dies ist zwar funktional korrekt, aber die Konvention sieht vor, dass Junction Tables ein 'id INTEGER PRIMARY KEY' haben, um sie als eigenständige Entität zu behandeln und zukünftige Erweiterungen (z.B. Sortierungsreihenfolge, Gültigkeitsdatum) zu ermöglichen.",
+          "korrekturanweisung": "Fügen Sie ein 'id INTEGER PRIMARY KEY' als erste Spalte in 'article_categories' ein und ändern Sie den zusammengesetzten Schlüssel zu einem UNIQUE-Constraint: UNIQUE(article_id, category_id)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Verstoß gegen 3NF in der Tabelle 'orders': Das Feld 'total_amount' ist eine berechnete Spalte (Summe aller order_items.quantity * order_items.unit_price) und stellt eine transitive Abhängigkeit dar. Es ist redundant und kann zu Inkonsistenzen führen, wenn order_items geändert werden, ohne 'total_amount' zu aktualisieren. Zudem ist 'total_amount' optional (nullable: true), was semantisch widersprüchlich ist – entweder ist es berechenbar oder es sollte nicht existieren.",
+          "korrekturanweisung": "Entfernen Sie 'total_amount' aus 'orders'. Berechnen Sie die Gesamtsumme bei Bedarf durch eine Aggregationsabfrage (SUM(quantity * unit_price) FROM order_items WHERE order_id = ?)."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich notwendigen Entitäten sind vorhanden: persons, categories, articles, addresses, orders, order_items, payments. Die Anforderung erwähnt Kundinnen/Kunden (persons), Artikel (articles), Bereiche (categories), Einkäufe (orders), Zahlungen (payments) und Lieferadressen (addresses). Alle sind modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'persons' enthält Adressfelder (street, city, postalcode, country), die redundant sind und nicht normalisiert gehören. Laut Anforderung sollen 'übliche Kontaktdaten' festgehalten werden (Name, E-Mail, Telefon), aber die Adresse ist eine separate Entität 'addresses'. Die Adressfelder in 'persons' sollten entfernt werden, da Adressen über die 'addresses'-Tabelle verwaltet werden. Dies führt zu Anomalien: Eine Person kann mehrere Lieferadressen haben, aber die Tabelle 'persons' speichert nur eine. WEICHE OPTIMIERUNG: Die Tabelle 'orders' könnte ein 'person_id' für Rechnungsadresse benötigen (derzeit nur delivery_address_id), falls Rechnungs- und Lieferadresse unterschiedlich sein können.",
+          "korrekturanweisung": "Entfernen Sie die Spalten 'street', 'city', 'postalcode', 'country' aus der Tabelle 'persons'. Falls eine Standardadresse pro Person gespeichert werden soll, fügen Sie stattdessen ein optionales Feld 'default_address_id' hinzu, das auf 'addresses' verweist."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'persons' und 'addresses' ist nicht modelliert. Laut Anforderung sollen Lieferadressen zu Einkäufen gespeichert werden, aber es gibt keine Beziehung, die eine Person mit ihren Adressen verbindet. Dies ist problematisch für: (1) Verwaltung von Standardadressen, (2) Adresshistorie, (3) Auswertungen über Kundenstandorte. Die 'addresses'-Tabelle ist derzeit isoliert und wird nur über 'orders.delivery_address_id' referenziert. Es fehlt eine 1:N-Beziehung 'persons' → 'addresses'. WEICHE OPTIMIERUNG: Unklar bleibt, ob pro Einkauf genau eine Zahlung existiert oder mehrere. Das Schema erlaubt mehrere Zahlungen pro Bestellung (1:N), was der Anforderung entspricht ('mehrere Zahlungsversuche relevant sein können'). Dies ist korrekt modelliert.",
+          "korrekturanweisung": "Fügen Sie ein Fremdschlüsselfeld 'person_id' in die Tabelle 'addresses' ein (NOT NULL oder nullable, je nach Anforderung). Dies ermöglicht die Verwaltung mehrerer Adressen pro Person und die Nachverfolgung von Kundenstandorten."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'persons' verletzt die Normalisierung (3NF). Die Adressfelder (street, city, postalcode, country) sind funktional abhängig von einer separaten Entität 'addresses', nicht von der Person selbst. Dies führt zu: (1) Redundanz (Adressen können mehrfach gespeichert werden), (2) Update-Anomalien (Adressänderungen müssen an mehreren Stellen erfolgen), (3) Inkonsistenzen (eine Person kann mehrere Adressen haben, aber nur eine wird in 'persons' gespeichert). Die Normalisierung erfordert, dass diese Felder in die 'addresses'-Tabelle gehören und über einen Fremdschlüssel verknüpft werden.",
+          "korrekturanweisung": "Entfernen Sie alle Adressfelder aus 'persons'. Verwenden Sie stattdessen eine 1:N-Beziehung über 'person_id' in der 'addresses'-Tabelle."
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "DDL nicht erzeugbar/parsebar: Zirkelreferenz im Schema entdeckt: addresses -> persons -> addresses. Topologische Sortierung nicht möglich.",
+          "korrekturanweisung": "Stelle sicher, dass jede Tabelle Spalten hat und keine Zirkelreferenzen vorliegen."
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'persons' enthält Adressfelder (street, city, postalcode, country), die redundant zur separaten 'addresses'-Tabelle sind. Dies führt zu Dateninkonsistenzen: Eine Person kann unterschiedliche Adressen in 'persons' und 'addresses' haben. Fachlich ist unklar, ob die Adresse in 'persons' die Rechnungsadresse oder nur eine Standardadresse darstellt. Die Anforderung spricht von 'Lieferanschrift' pro Einkauf, nicht von einer Standardadresse pro Person.",
+          "korrekturanweisung": "Entfernen Sie die Adressfelder (street, city, postalcode, country) aus der Tabelle 'persons'. Verwenden Sie ausschließlich die 'addresses'-Tabelle. Falls eine Standardadresse pro Person erforderlich ist, fügen Sie ein Feld 'default_address_id' in 'persons' ein und referenzieren Sie 'addresses'."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'addresses' fehlt ein Fremdschlüssel zu 'persons'. Adressen sind derzeit nicht an Personen gebunden und können orphan-Einträge werden. Fachlich ist unklar: Sind Adressen nur Lieferadressen zu Bestellungen, oder können Personen mehrere Adressen haben (z.B. Rechnungs- und Lieferadresse)?",
+          "korrekturanweisung": "Klären Sie die Anforderung: (1) Falls Adressen nur zu Bestellungen gehören, ist die separate 'addresses'-Tabelle überflüssig – nutzen Sie stattdessen Adressfelder direkt in 'orders'. (2) Falls Personen mehrere Adressen haben können, fügen Sie 'person_id INTEGER NOT NULL' zu 'addresses' hinzu und erstellen Sie einen FK zu 'persons'."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die N:M-Beziehung 'article_categories' hat einen zusammengesetzten Primärschlüssel (article_id, category_id), aber es fehlt ein separates 'id'-Feld. Dies ist zwar funktional korrekt, aber die Konvention sieht vor, dass Junction Tables ein 'id INTEGER PRIMARY KEY' haben, um sie als eigenständige Entität zu behandeln und zukünftige Erweiterungen (z.B. Sortierungsreihenfolge, Gültigkeitsdatum) zu ermöglichen.",
+          "korrekturanweisung": "Fügen Sie ein 'id INTEGER PRIMARY KEY' als erste Spalte in 'article_categories' ein und ändern Sie den zusammengesetzten Schlüssel zu einem UNIQUE-Constraint: UNIQUE(article_id, category_id)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Verstoß gegen 3NF in der Tabelle 'orders': Das Feld 'total_amount' ist eine berechnete Spalte (Summe aller order_items.quantity * order_items.unit_price) und stellt eine transitive Abhängigkeit dar. Es ist redundant und kann zu Inkonsistenzen führen, wenn order_items geändert werden, ohne 'total_amount' zu aktualisieren. Zudem ist 'total_amount' optional (nullable: true), was semantisch widersprüchlich ist – entweder ist es berechenbar oder es sollte nicht existieren.",
+          "korrekturanweisung": "Entfernen Sie 'total_amount' aus 'orders'. Berechnen Sie die Gesamtsumme bei Bedarf durch eine Aggregationsabfrage (SUM(quantity * unit_price) FROM order_items WHERE order_id = ?)."
+        }
+      ],
+      "origin_step": null
+    },
+    "error": "ddl_generation_failed: Zirkelreferenz im Schema entdeckt: addresses -> persons -> addresses. Topologische Sortierung nicht möglich.",
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 4 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 3 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 8 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 42515,
+    "total_output_tokens": 14097,
+    "total_tokens": 56612,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 17602,
+        "output_tokens": 5941,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8817,
+        "output_tokens": 3001,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8729,
+        "output_tokens": 2983,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 7367,
+        "output_tokens": 2172,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2489,
+        "output_tokens": 1608,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4258,
+        "output_tokens": 1656,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4214,
+        "output_tokens": 1713,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7719,
+        "output_tokens": 2161,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4559,
+        "output_tokens": 1345,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4515,
+        "output_tokens": 1270,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7394,
+        "output_tokens": 2172,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7367,
+        "output_tokens": 2172,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,1035 @@
+{
+  "testfall_id": "TC064",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.675,
+  "score_gesamt": 0.805,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.875,
+      "recall": 0.875,
+      "f1": 0.875,
+      "matched": 7,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.5384615384615384,
+      "recall": 0.4666666666666667,
+      "f1": 0.5,
+      "matched": 21,
+      "nur_in_referenz": 24,
+      "nur_in_generiert": 18
+    },
+    "beziehung": {
+      "recall": 0.625,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "service_locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.service_location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tariffs.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tariffs.energy_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tariffs.unit_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tariffs.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_service_packages.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_service_packages.start_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_service_packages.end_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_packages.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_packages.monthly_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_packages.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "invoices.is_paid",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.customer_since",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contract_tariffs.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.street",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.postal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.meter_number",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations.energy_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → service_locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "service_locations → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein regionaler Energieversorger möchte seine Verträge und die Versorgung von Privat- und Gewerbekunden übersichtlich verwalten. Zu jedem Kunden sollen die üblichen Kontaktdaten und seit wann er betreut wird festgehalten werden. Ein Kunde kann mehrere Abnahmestellen haben, zum Beispiel die Wohnung, ein Ladenlokal oder eine Werkstatt. Für jede Abnahmestelle soll erkennbar sein, wo sie liegt, welche Zählernummer dort verwendet wird und ob dort Strom oder Gas geliefert wird. Da Tarife sich je nach Produkt unterscheiden können, sollen die angebotenen Modelle mit Bezeichnung, Grundpreis und Arbeitspreis gepflegt werden. Kunden schließen für einzelne Abnahmestellen Verträge ab; dabei sind Beginn, geplantes Ende und Status wichtig. Es soll außerdem nachvollziehbar bleiben, welche Tarife zu einem Vertrag gehören, weil es in der Praxis vorkommen kann, dass ein Vertrag aus mehreren Bausteinen besteht. Rechnungen werden zu Verträgen erstellt und sollen mit Datum, Zeitraum, Betrag und Zahlungsstand erfasst werden. Offene Posten müssen erkennbar sein. Außerdem soll dokumentiert werden, welche Servicepakete ein Kunde nutzt, etwa Wartung oder Ökostromoptionen. Ein Paket kann von vielen Kunden genutzt werden, und manche Kunden wechseln solche Zusatzangebote im Laufe der Zeit.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "care_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "consumption_points",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "meter_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "energy_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "tariffs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "base_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "work_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "product",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "contracts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "consumption_point_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "consumption_point_id",
+              "references_table": "consumption_points",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "contract_tariffs",
+          "columns": [
+            {
+              "name": "contract_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "tariff_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "tariff_id",
+              "references_table": "tariffs",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "invoices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contract_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "invoice_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "period_start",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "period_end",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "payment_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "service_packages",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "customer_service_packages",
+          "columns": [
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_package_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_package_id",
+              "references_table": "service_packages",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Kundennummer",
+            "Name",
+            "Kontaktdaten",
+            "Kundentyp (Privat/Gewerbe)",
+            "Betreuungsbeginn"
+          ],
+          "beschreibung": "Privat- oder Gewerbekunde des Energieversorgers mit Kontaktinformationen und Betreuungszeitraum"
+        },
+        {
+          "name": "Abnahmestelle",
+          "attribute": [
+            "Abnahmestellen-ID",
+            "Adresse",
+            "Zählernummer",
+            "Energietyp (Strom/Gas)"
+          ],
+          "beschreibung": "Physischer Ort, an dem ein Kunde Energie abnimmt (z.B. Wohnung, Ladenlokal, Werkstatt)"
+        },
+        {
+          "name": "Tarif",
+          "attribute": [
+            "Tarif-ID",
+            "Bezeichnung",
+            "Grundpreis",
+            "Arbeitspreis",
+            "Produkt"
+          ],
+          "beschreibung": "Tarifmodell mit Preiskomponenten, das für Verträge verwendet wird"
+        },
+        {
+          "name": "Vertrag",
+          "attribute": [
+            "Vertrags-ID",
+            "Beginn",
+            "Geplantes Ende",
+            "Status"
+          ],
+          "beschreibung": "Vertrag zwischen Kunde und Versorger für eine Abnahmestelle mit Laufzeit und Status"
+        },
+        {
+          "name": "Rechnung",
+          "attribute": [
+            "Rechnungs-ID",
+            "Datum",
+            "Zeitraum",
+            "Betrag",
+            "Zahlungsstand"
+          ],
+          "beschreibung": "Rechnung zu einem Vertrag mit Zahlungsinformationen und Zahlungsstand"
+        },
+        {
+          "name": "Servicepaket",
+          "attribute": [
+            "Paket-ID",
+            "Bezeichnung",
+            "Beschreibung"
+          ],
+          "beschreibung": "Zusatzangebot wie Wartung oder Ökostromoptionen, das Kunden nutzen können"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Abnahmestelle",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Abnahmestellen haben"
+        },
+        {
+          "von": "Abnahmestelle",
+          "zu": "Vertrag",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Abnahmestelle kann mehrere Verträge haben (zeitlich nacheinander oder parallel)"
+        },
+        {
+          "von": "Vertrag",
+          "zu": "Tarif",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Vertrag kann aus mehreren Tarifbausteinen bestehen; ein Tarif kann in mehreren Verträgen verwendet werden"
+        },
+        {
+          "von": "Vertrag",
+          "zu": "Rechnung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Zu einem Vertrag werden mehrere Rechnungen erstellt"
+        },
+        {
+          "von": "Kunde",
+          "zu": "Servicepaket",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Kunde kann mehrere Servicepakete nutzen; ein Servicepaket kann von vielen Kunden genutzt werden"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Zeitliche Gültigkeit der Servicepaket-Nutzung: Der Text erwähnt, dass Kunden Zusatzangebote 'im Laufe der Zeit' wechseln, aber es ist unklar, ob Gültigkeitszeiträume (von/bis) für die Zuordnung Kunde-Servicepaket erfasst werden sollen.",
+          "betroffene_elemente": [
+            "Kunde",
+            "Servicepaket"
+          ]
+        },
+        {
+          "beschreibung": "Mehrfachverträge pro Abnahmestelle: Es ist nicht eindeutig, ob eine Abnahmestelle zeitlich parallel mehrere aktive Verträge haben kann oder ob nur zeitlich aufeinanderfolgende Verträge möglich sind.",
+          "betroffene_elemente": [
+            "Abnahmestelle",
+            "Vertrag"
+          ]
+        },
+        {
+          "beschreibung": "Definition von 'Kontaktdaten': Der Text nennt 'übliche Kontaktdaten', ohne zu spezifizieren, welche Felder konkret gemeint sind (z.B. Telefon, E-Mail, Adresse, Ansprechpartner).",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Rechnungszeitraum vs. Vertragslaufzeit: Unklar ist, ob der 'Zeitraum' einer Rechnung immer dem Vertragszeitraum entspricht oder ob Rechnungen auch für Teilzeiträume erstellt werden können.",
+          "betroffene_elemente": [
+            "Rechnung",
+            "Vertrag"
+          ]
+        },
+        {
+          "beschreibung": "Offene Posten: Der Text erwähnt, dass 'offene Posten erkennbar sein' sollen, aber es ist unklar, ob dies durch den Zahlungsstand in der Rechnung abgebildet wird oder ob eine separate Entität 'Offene Posten' nötig ist.",
+          "betroffene_elemente": [
+            "Rechnung"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Kundennummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Kundentyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Betreuungsbeginn",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Abnahmestelle",
+          "attribute": [
+            {
+              "name": "Abnahmestellen_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Zählernummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Energietyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Tarif",
+          "attribute": [
+            {
+              "name": "Tarif_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Grundpreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Arbeitspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Produkt",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Vertrag",
+          "attribute": [
+            {
+              "name": "Vertrags_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Abnahmestellen_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beginn",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Geplantes_Ende",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Vertrag_Tarif",
+          "attribute": [
+            {
+              "name": "Vertrag_Tarif_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vertrags_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Tarif_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Rechnung",
+          "attribute": [
+            {
+              "name": "Rechnungs_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vertrags_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Zeitraum_Von",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Zeitraum_Bis",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Betrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Zahlungsstand",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Servicepaket",
+          "attribute": [
+            {
+              "name": "Paket_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Kunde_Servicepaket",
+          "attribute": [
+            {
+              "name": "Kunde_Servicepaket_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Paket_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Gueltig_Von",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Gueltig_Bis",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Abnahmestelle",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Abnahmestelle",
+          "zu": "Vertrag",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Vertrag",
+          "zu": "Tarif",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Vertrag",
+          "zu": "Rechnung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kunde",
+          "zu": "Servicepaket",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "Gueltig_Von",
+            "Gueltig_Bis"
+          ]
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    customer_number VARCHAR(255) NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    customer_type VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE consumption_points (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    meter_number VARCHAR(255) NOT NULL,\n    energy_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_consumption_points PRIMARY KEY (id),\n    CONSTRAINT fk_consumption_points_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    consumption_point_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    planned_end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_consumption_point_id FOREIGN KEY (consumption_point_id) REFERENCES consumption_points (id)\n);\n\nCREATE TABLE tariffs (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    base_price DECIMAL(18,2) NOT NULL,\n    work_price DECIMAL(18,2) NOT NULL,\n    product VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_tariffs PRIMARY KEY (id)\n);\n\nCREATE TABLE contract_tariffs (\n    contract_id INTEGER NOT NULL,\n    tariff_id INTEGER NOT NULL,\n    CONSTRAINT pk_contract_tariffs PRIMARY KEY (contract_id, tariff_id),\n    CONSTRAINT fk_contract_tariffs_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_contract_tariffs_tariff_id FOREIGN KEY (tariff_id) REFERENCES tariffs (id)\n);\n\nCREATE TABLE service_packages (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_service_packages PRIMARY KEY (id)\n);\n\nCREATE TABLE customer_service_packages (\n    customer_id INTEGER NOT NULL,\n    service_package_id INTEGER NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_customer_service_packages PRIMARY KEY (customer_id, service_package_id),\n    CONSTRAINT fk_customer_service_packages_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_customer_service_packages_service_package_id FOREIGN KEY (service_package_id) REFERENCES service_packages (id)\n);\n\nCREATE TABLE invoices (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    invoice_date DATE NOT NULL,\n    period_start DATE NOT NULL,\n    period_end DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    payment_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_invoices PRIMARY KEY (id),\n    CONSTRAINT fk_invoices_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9916,
+    "total_output_tokens": 6142,
+    "total_tokens": 16058,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1658,
+        "output_tokens": 1506,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3250,
+        "output_tokens": 2550,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 5008,
+        "output_tokens": 2086,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1658,
+        "output_tokens": 1506,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3250,
+        "output_tokens": 2550,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5008,
+        "output_tokens": 2086,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

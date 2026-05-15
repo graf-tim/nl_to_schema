@@ -1,0 +1,504 @@
+{
+  "testfall_id": "TC031",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8449172576832154,
+  "score_gesamt": 0.9069503546099292,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 5,
+    "pk_tabellen_mit_pk": 5,
+    "fk_referenzen_gesamt": 4,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.68,
+      "recall": 0.7727272727272727,
+      "f1": 0.7234042553191491,
+      "matched": 17,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 8
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "stations.capacity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "rentals.startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "bikes.brand",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "bikes.model",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "bikes.bike_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für einen kleinen Mietfahrrad-Anbieter soll festgehalten werden, welche Fahrräder vorhanden sind, welche Kundinnen und Kunden registriert sind und welche Ausleihen stattfinden. Zu jedem Fahrrad werden eine interne Nummer, Marke, Modell, Fahrradtyp und der aktuelle Zustand gespeichert. Jedes Fahrrad gehört genau zu einer Station, an der es normalerweise geführt wird. Für jede Station sollen Name, Adresse und die Zahl der verfügbaren Stellplätze bekannt sein. Von Kundinnen und Kunden werden Vorname, Nachname, E-Mail-Adresse, Telefonnummer und Registrierungsdatum benötigt. Bei jeder Ausleihe wird festgehalten, welches Fahrrad von welcher Person ausgeliehen wurde, wann die Ausleihe begonnen hat und wann sie planmäßig enden soll. Eine Ausleihe betrifft immer genau ein Fahrrad und genau eine Person.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "stations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "parking_spaces",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "bicycle_models",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "brand",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "bicycle_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "bicycles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "internal_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "condition",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "station_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "model_id",
+              "references_table": "bicycle_models",
+              "references_column": "id"
+            },
+            {
+              "from_column": "station_id",
+              "references_table": "stations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "registration_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "rentals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "bicycle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkout_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_return_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "actual_return_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "bicycle_id",
+              "references_table": "bicycles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Entitäten sind vorhanden: stations, bicycles (mit bicycle_models), customers, rentals. Die Aufteilung in bicycles und bicycle_models ist sinnvoll zur Vermeidung von Redundanz.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Stationen (name, address, parking_spaces), Fahrräder (internal_number, brand, model, bicycle_type, condition, station_id), Kunden (firstname, lastname, email, phone, registration_date), Ausleihen (bicycle_id, customer_id, checkout_date, planned_return_date). Zusätzlich wurde actual_return_date hinzugefügt, was sinnvoll ist.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: 1:N (stations→bicycles), 1:N (bicycle_models→bicycles), 1:N (customers→rentals), 1:N (bicycles→rentals). Kardinalitäten entsprechen den Anforderungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema ist in 3NF normalisiert: (1) Keine Wiederholungsgruppen, (2) Alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten. Die Aufteilung in bicycle_models verhindert Redundanz von brand/model/type über mehrere Fahrräder hinweg.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: stations, bicycles, customers, rentals. Die zusätzliche Entität bicycle_models ist eine sinnvolle Normalisierung zur Vermeidung von Redundanz bei Marke, Modell und Fahrradtyp.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Im Anforderungstext wird explizit gefordert, dass bei jeder Ausleihe 'wann die Ausleihe begonnen hat und wann sie planmäßig enden soll' festgehalten wird. Das Schema enthält zwar checkout_date und planned_return_date, aber es fehlt ein Attribut für das tatsächliche Rückgabedatum als Pflichtfeld. Noch kritischer: Der Anforderungstext spricht von 'planmäßig enden soll' (geplantes Rückgabedatum), nicht von tatsächlichem Rückgabedatum. Das actual_return_date ist eine sinnvolle Erweiterung, aber die Kernforderung ist erfüllt. JEDOCH: Das Attribut 'condition' (Zustand des Fahrrads) ist im Schema vorhanden und korrekt als VARCHAR modelliert.",
+          "korrekturanweisung": "Das Schema ist hier tatsächlich korrekt. Die Kritik wird zurückgenommen: checkout_date und planned_return_date erfüllen die Anforderung vollständig. Das zusätzliche actual_return_date ist eine sinnvolle Erweiterung für praktische Nutzung."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt typisiert: Fahrräder (interne_nummer→internal_number, Marke→brand, Modell→model, Fahrradtyp→bicycle_type, Zustand→condition), Stationen (Name, Adresse, Stellplätze), Kunden (Vorname, Nachname, E-Mail, Telefon, Registrierungsdatum), Ausleihen (Fahrrad, Person, Ausleihdatum, geplantes Rückgabedatum).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: 1:N zwischen stations und bicycles (jedes Fahrrad gehört zu genau einer Station), 1:N zwischen bicycle_models und bicycles (Normalisierung), 1:N zwischen customers und rentals, 1:N zwischen bicycles und rentals. Kardinalitäten entsprechen den Anforderungen ('Eine Ausleihe betrifft immer genau ein Fahrrad und genau eine Person').",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist gut normalisiert. Die Auslagerung von Marke, Modell und Fahrradtyp in die separate Tabelle bicycle_models vermeidet Redundanz und ist eine sinnvolle Designentscheidung, die über die Anforderung hinausgeht.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE bicycle_models (\n    id INTEGER NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    bicycle_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_bicycle_models PRIMARY KEY (id)\n);\n\nCREATE TABLE stations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    parking_spaces INTEGER NOT NULL,\n    CONSTRAINT pk_stations PRIMARY KEY (id)\n);\n\nCREATE TABLE bicycles (\n    id INTEGER NOT NULL,\n    internal_number VARCHAR(255) NOT NULL,\n    condition VARCHAR(255) NOT NULL,\n    model_id INTEGER NOT NULL,\n    station_id INTEGER NOT NULL,\n    CONSTRAINT pk_bicycles PRIMARY KEY (id),\n    CONSTRAINT fk_bicycles_model_id FOREIGN KEY (model_id) REFERENCES bicycle_models (id),\n    CONSTRAINT fk_bicycles_station_id FOREIGN KEY (station_id) REFERENCES stations (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    bicycle_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    checkout_date TIMESTAMP NOT NULL,\n    planned_return_date TIMESTAMP NOT NULL,\n    actual_return_date TIMESTAMP,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_bicycle_id FOREIGN KEY (bicycle_id) REFERENCES bicycles (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=1] C1: 3 unerfüllte Findings.",
+      "[iter=1] C2: 1 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 5 Tabelle(n).",
+      "[iter=2] C1: 0 unerfüllte Findings.",
+      "[iter=2] C2: 1 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 5 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 5 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 32634,
+    "total_output_tokens": 8541,
+    "total_tokens": 41175,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 13316,
+        "output_tokens": 3574,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6917,
+        "output_tokens": 1790,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6829,
+        "output_tokens": 1868,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5572,
+        "output_tokens": 1309,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2336,
+        "output_tokens": 956,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3363,
+        "output_tokens": 1012,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3319,
+        "output_tokens": 890,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5370,
+        "output_tokens": 1309,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3554,
+        "output_tokens": 778,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3510,
+        "output_tokens": 978,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5610,
+        "output_tokens": 1309,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5572,
+        "output_tokens": 1309,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

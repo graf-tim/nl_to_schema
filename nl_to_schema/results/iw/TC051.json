@@ -1,0 +1,685 @@
+{
+  "testfall_id": "TC051",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.48471177944862154,
+  "score_gesamt": 0.690827067669173,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.42857142857142855,
+      "recall": 0.5294117647058824,
+      "f1": 0.4736842105263158,
+      "matched": 18,
+      "nur_in_referenz": 16,
+      "nur_in_generiert": 24
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "freelancers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications.freelancer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications.proposed_amount",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.profile_text",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.hourly_rate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.freelancer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.skill_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.application_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.start_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.end_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications → freelancers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → applications",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills → freelancers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills → skills",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Plattform, auf der Unternehmen externe Fachleute für befristete Arbeiten finden, sollen die wichtigsten Abläufe festgehalten werden. Jedes Unternehmen legt ein Profil mit Name, Branche und einer Kontaktadresse an. Externe Fachleute registrieren sich ebenfalls mit ihren Kontaktdaten, einer kurzen Vorstellung und ihrem üblichen Stundensatz. Unternehmen veröffentlichen Ausschreibungen, in denen beschrieben wird, welche Aufgabe erledigt werden soll, in welchem Zeitraum der Einsatz geplant ist und welches Budget ungefähr vorgesehen ist. Eine Ausschreibung gehört immer zu genau einem Unternehmen.\n\nFachleute können sich auf passende Ausschreibungen melden. Dabei soll nachvollziehbar sein, wann die Meldung eingegangen ist, welchen Preis die Person anbietet und ob daraus später tatsächlich eine Zusammenarbeit geworden ist. Zusätzlich können Fachleute mehrere Kenntnisse angeben, etwa Programmiersprachen, Design oder Beratung. Dieselbe Kenntnis kann natürlich bei vielen Personen vorkommen.\n\nWenn es zu einer Zusammenarbeit kommt, soll auch gespeichert werden, in welchem Zeitraum gearbeitet wurde und ob der Auftrag noch läuft. Offen bleibt, ob eine Zusammenarbeit direkt aus genau einer Meldung entsteht oder auch auf anderem Weg zustande kommen kann. Ebenso ist nicht ganz eindeutig, ob das in einer Ausschreibung genannte Budget verbindlich ist oder nur zur Orientierung dient.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "companies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "industry",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "professionals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "contact_address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "introduction",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hourly_rate",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "skills",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "professional_skills",
+          "columns": [
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "skill_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "skill_id",
+              "references_table": "skills",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "job_postings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "budget",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "company_id",
+              "references_table": "companies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "applications",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "job_posting_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "applied_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "offered_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_accepted",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "job_posting_id",
+              "references_table": "job_postings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "collaborations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "application_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "job_posting_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_ongoing",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "agreed_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "application_id",
+              "references_table": "applications",
+              "references_column": "id"
+            },
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "job_posting_id",
+              "references_table": "job_postings",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung erwähnt, dass Fachleute sich auf Ausschreibungen melden und dabei nachvollziehbar sein soll, ob daraus eine Zusammenarbeit geworden ist. Das Schema modelliert dies über die 'applications'-Tabelle mit dem Feld 'is_accepted'. Allerdings ist die Semantik unklar: 'is_accepted' kann NULL sein, was mehrdeutig ist (noch nicht entschieden vs. abgelehnt). Zudem wird in der 'collaborations'-Tabelle eine optionale Referenz zu 'application_id' erlaubt (nullable: true), was bedeutet, dass Zusammenarbeit auch ohne Meldung entstehen kann. Dies ist zwar in der Anforderung als Unsicherheit erwähnt ('Offen bleibt, ob eine Zusammenarbeit direkt aus genau einer Meldung entsteht'), aber das Schema modelliert dies nicht explizit. Die Entität 'collaborations' ist semantisch unterbestimmt: Ist sie eine Spezialisierung von 'applications' oder eine unabhängige Entität? Dies sollte klarer modelliert werden.",
+          "korrekturanweisung": "Klären Sie die Semantik von 'is_accepted' in der 'applications'-Tabelle: Nutzen Sie BOOLEAN NOT NULL mit expliziten Werten (true=akzeptiert, false=abgelehnt) oder führen Sie einen Status-Enum ein (z.B. 'pending', 'accepted', 'rejected'). Dokumentieren Sie explizit, ob 'collaborations' immer aus einer 'application' entstehen muss oder auch unabhängig davon. Falls unabhängig: Machen Sie 'application_id' in 'collaborations' NOT NULL und fügen Sie eine Constraint hinzu, die sicherstellt, dass entweder eine Meldung akzeptiert wurde oder die Zusammenarbeit auf anderem Weg zustande kam (z.B. durch ein Kommentar-Feld)."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere zentrale Attribute fehlen oder sind unzureichend modelliert: (1) In 'job_postings' fehlt ein eindeutiger Titel/Name für die Ausschreibung (vorhanden als 'title', aber keine Eindeutigkeit). (2) Die Anforderung erwähnt 'Zeitraum des Einsatzes' in der Ausschreibung (start_date, end_date vorhanden), aber es ist unklar, ob diese Felder verpflichtend sind (nullable: true). (3) In 'collaborations' fehlt ein Feld für die tatsächlich geleisteten Stunden oder die finale Abrechnung, um den Unterschied zwischen 'agreed_price' und tatsächlicher Bezahlung zu dokumentieren. (4) Die 'applications'-Tabelle hat kein Feld für Feedback oder Begründung der Ablehnung. (5) In 'professionals' fehlt ein Feld für die Verfügbarkeit oder den Status (aktiv/inaktiv).",
+          "korrekturanweisung": "Ergänzen Sie folgende Attribute: (1) Machen Sie 'start_date' und 'end_date' in 'job_postings' NOT NULL, um die Anforderung 'Zeitraum des Einsatzes' zu erfüllen. (2) Fügen Sie in 'collaborations' ein Feld 'actual_hours' (DECIMAL, nullable: true) hinzu, um tatsächlich geleistete Stunden zu dokumentieren. (3) Fügen Sie in 'applications' ein optionales Feld 'rejection_reason' (TEXT, nullable: true) hinzu. (4) Fügen Sie in 'professionals' ein Feld 'is_active' (BOOLEAN, NOT NULL, default: true) hinzu."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'applications' und 'collaborations' ist semantisch problematisch: (1) Eine Anwendung kann zu 0 oder 1 Zusammenarbeit führen (1:0..1 Beziehung), aber das Schema erlaubt mehrere 'collaborations' für dieselbe 'application_id'. (2) Umgekehrt kann eine 'collaboration' ohne 'application' entstehen (application_id nullable), was die Kardinalität unklar macht. (3) Die Anforderung sagt 'Fachleute können sich auf passende Ausschreibungen melden' und 'Wenn es zu einer Zusammenarbeit kommt', was impliziert, dass eine Zusammenarbeit aus einer Meldung entsteht. Das Schema modelliert dies nicht als strikte 1:1-Beziehung. (4) Es gibt keine Constraint, die sicherstellt, dass eine akzeptierte Anwendung zu genau einer Zusammenarbeit führt.",
+          "korrekturanweisung": "Definieren Sie explizit: Kann eine 'application' zu mehreren 'collaborations' führen oder nur zu einer? Falls 1:1: Fügen Sie einen UNIQUE-Constraint auf 'application_id' in 'collaborations' hinzu und machen Sie 'application_id' NOT NULL. Falls eine Zusammenarbeit auch ohne Meldung entstehen kann: Dokumentieren Sie dies und fügen Sie ein Feld 'collaboration_source' (VARCHAR, z.B. 'application', 'direct_contact') hinzu, um die Herkunft zu tracken."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Alle Tabellen haben einen Primärschlüssel. (2) Keine nicht-Schlüssel-Attribute sind von nur einem Teil eines zusammengesetzten Schlüssels abhängig. (3) Keine Transitivabhängigkeiten zwischen Nicht-Schlüssel-Attributen. (4) Die Junction-Table 'professional_skills' ist korrekt normalisiert. (5) Keine offensichtlichen Redundanzen (z.B. Duplikation von Daten über Tabellengrenzen hinweg). Allerdings könnte 'agreed_price' in 'collaborations' als Redundanz zu 'offered_price' in 'applications' betrachtet werden, aber dies ist semantisch gerechtfertigt, da der vereinbarte Preis vom angebotenen Preis abweichen kann.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE companies (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255) NOT NULL,\n    contact_address TEXT NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE job_postings (\n    id INTEGER NOT NULL,\n    company_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    budget DECIMAL(18,2),\n    status VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_job_postings PRIMARY KEY (id),\n    CONSTRAINT fk_job_postings_company_id FOREIGN KEY (company_id) REFERENCES companies (id)\n);\n\nCREATE TABLE professionals (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    contact_address TEXT,\n    introduction TEXT,\n    hourly_rate DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_professionals PRIMARY KEY (id)\n);\n\nCREATE TABLE applications (\n    id INTEGER NOT NULL,\n    job_posting_id INTEGER NOT NULL,\n    professional_id INTEGER NOT NULL,\n    applied_at TIMESTAMP NOT NULL,\n    offered_price DECIMAL(18,2) NOT NULL,\n    is_accepted BOOLEAN,\n    CONSTRAINT pk_applications PRIMARY KEY (id),\n    CONSTRAINT fk_applications_job_posting_id FOREIGN KEY (job_posting_id) REFERENCES job_postings (id),\n    CONSTRAINT fk_applications_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id)\n);\n\nCREATE TABLE collaborations (\n    id INTEGER NOT NULL,\n    application_id INTEGER,\n    professional_id INTEGER NOT NULL,\n    job_posting_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    is_ongoing BOOLEAN NOT NULL,\n    agreed_price DECIMAL(18,2),\n    CONSTRAINT pk_collaborations PRIMARY KEY (id),\n    CONSTRAINT fk_collaborations_application_id FOREIGN KEY (application_id) REFERENCES applications (id),\n    CONSTRAINT fk_collaborations_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id),\n    CONSTRAINT fk_collaborations_job_posting_id FOREIGN KEY (job_posting_id) REFERENCES job_postings (id)\n);\n\nCREATE TABLE skills (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_skills PRIMARY KEY (id)\n);\n\nCREATE TABLE professional_skills (\n    professional_id INTEGER NOT NULL,\n    skill_id INTEGER NOT NULL,\n    CONSTRAINT pk_professional_skills PRIMARY KEY (professional_id, skill_id),\n    CONSTRAINT fk_professional_skills_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id),\n    CONSTRAINT fk_professional_skills_skill_id FOREIGN KEY (skill_id) REFERENCES skills (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung erwähnt, dass Fachleute sich auf Ausschreibungen melden und dabei nachvollziehbar sein soll, ob daraus eine Zusammenarbeit geworden ist. Das Schema modelliert dies über die 'applications'-Tabelle mit dem Feld 'is_accepted'. Allerdings ist die Semantik unklar: 'is_accepted' kann NULL sein, was mehrdeutig ist (noch nicht entschieden vs. abgelehnt). Zudem wird in der 'collaborations'-Tabelle eine optionale Referenz zu 'application_id' erlaubt (nullable: true), was bedeutet, dass Zusammenarbeit auch ohne Meldung entstehen kann. Dies ist zwar in der Anforderung als Unsicherheit erwähnt ('Offen bleibt, ob eine Zusammenarbeit direkt aus genau einer Meldung entsteht'), aber das Schema modelliert dies nicht explizit. Die Entität 'collaborations' ist semantisch unterbestimmt: Ist sie eine Spezialisierung von 'applications' oder eine unabhängige Entität? Dies sollte klarer modelliert werden.",
+          "korrekturanweisung": "Klären Sie die Semantik von 'is_accepted' in der 'applications'-Tabelle: Nutzen Sie BOOLEAN NOT NULL mit expliziten Werten (true=akzeptiert, false=abgelehnt) oder führen Sie einen Status-Enum ein (z.B. 'pending', 'accepted', 'rejected'). Dokumentieren Sie explizit, ob 'collaborations' immer aus einer 'application' entstehen muss oder auch unabhängig davon. Falls unabhängig: Machen Sie 'application_id' in 'collaborations' NOT NULL und fügen Sie eine Constraint hinzu, die sicherstellt, dass entweder eine Meldung akzeptiert wurde oder die Zusammenarbeit auf anderem Weg zustande kam (z.B. durch ein Kommentar-Feld)."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere zentrale Attribute fehlen oder sind unzureichend modelliert: (1) In 'job_postings' fehlt ein eindeutiger Titel/Name für die Ausschreibung (vorhanden als 'title', aber keine Eindeutigkeit). (2) Die Anforderung erwähnt 'Zeitraum des Einsatzes' in der Ausschreibung (start_date, end_date vorhanden), aber es ist unklar, ob diese Felder verpflichtend sind (nullable: true). (3) In 'collaborations' fehlt ein Feld für die tatsächlich geleisteten Stunden oder die finale Abrechnung, um den Unterschied zwischen 'agreed_price' und tatsächlicher Bezahlung zu dokumentieren. (4) Die 'applications'-Tabelle hat kein Feld für Feedback oder Begründung der Ablehnung. (5) In 'professionals' fehlt ein Feld für die Verfügbarkeit oder den Status (aktiv/inaktiv).",
+          "korrekturanweisung": "Ergänzen Sie folgende Attribute: (1) Machen Sie 'start_date' und 'end_date' in 'job_postings' NOT NULL, um die Anforderung 'Zeitraum des Einsatzes' zu erfüllen. (2) Fügen Sie in 'collaborations' ein Feld 'actual_hours' (DECIMAL, nullable: true) hinzu, um tatsächlich geleistete Stunden zu dokumentieren. (3) Fügen Sie in 'applications' ein optionales Feld 'rejection_reason' (TEXT, nullable: true) hinzu. (4) Fügen Sie in 'professionals' ein Feld 'is_active' (BOOLEAN, NOT NULL, default: true) hinzu."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'applications' und 'collaborations' ist semantisch problematisch: (1) Eine Anwendung kann zu 0 oder 1 Zusammenarbeit führen (1:0..1 Beziehung), aber das Schema erlaubt mehrere 'collaborations' für dieselbe 'application_id'. (2) Umgekehrt kann eine 'collaboration' ohne 'application' entstehen (application_id nullable), was die Kardinalität unklar macht. (3) Die Anforderung sagt 'Fachleute können sich auf passende Ausschreibungen melden' und 'Wenn es zu einer Zusammenarbeit kommt', was impliziert, dass eine Zusammenarbeit aus einer Meldung entsteht. Das Schema modelliert dies nicht als strikte 1:1-Beziehung. (4) Es gibt keine Constraint, die sicherstellt, dass eine akzeptierte Anwendung zu genau einer Zusammenarbeit führt.",
+          "korrekturanweisung": "Definieren Sie explizit: Kann eine 'application' zu mehreren 'collaborations' führen oder nur zu einer? Falls 1:1: Fügen Sie einen UNIQUE-Constraint auf 'application_id' in 'collaborations' hinzu und machen Sie 'application_id' NOT NULL. Falls eine Zusammenarbeit auch ohne Meldung entstehen kann: Dokumentieren Sie dies und fügen Sie ein Feld 'collaboration_source' (VARCHAR, z.B. 'application', 'direct_contact') hinzu, um die Herkunft zu tracken."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Alle Tabellen haben einen Primärschlüssel. (2) Keine nicht-Schlüssel-Attribute sind von nur einem Teil eines zusammengesetzten Schlüssels abhängig. (3) Keine Transitivabhängigkeiten zwischen Nicht-Schlüssel-Attributen. (4) Die Junction-Table 'professional_skills' ist korrekt normalisiert. (5) Keine offensichtlichen Redundanzen (z.B. Duplikation von Daten über Tabellengrenzen hinweg). Allerdings könnte 'agreed_price' in 'collaborations' als Redundanz zu 'offered_price' in 'applications' betrachtet werden, aber dies ist semantisch gerechtfertigt, da der vereinbarte Preis vom angebotenen Preis abweichen kann.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 28762,
+    "total_output_tokens": 11244,
+    "total_tokens": 40006,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 14797,
+        "output_tokens": 5883,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 13965,
+        "output_tokens": 5361,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2511,
+        "output_tokens": 1735,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4603,
+        "output_tokens": 1458,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5941,
+        "output_tokens": 1955,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4562,
+        "output_tokens": 1879,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6345,
+        "output_tokens": 2193,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4800,
+        "output_tokens": 2024,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

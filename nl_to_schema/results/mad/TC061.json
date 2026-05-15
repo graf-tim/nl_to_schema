@@ -1,0 +1,730 @@
+{
+  "testfall_id": "TC061",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.4599597585513079,
+  "score_gesamt": 0.6759758551307847,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 9,
+    "pk_tabellen_mit_pk": 9,
+    "fk_referenzen_gesamt": 11,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.4444444444444444,
+      "recall": 0.5714285714285714,
+      "f1": 0.5,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 5
+    },
+    "attribut": {
+      "precision": 0.46153846153846156,
+      "recall": 0.5625,
+      "f1": 0.5070422535211268,
+      "matched": 18,
+      "nur_in_referenz": 14,
+      "nur_in_generiert": 21
+    },
+    "beziehung": {
+      "recall": 0.2857142857142857,
+      "matched": 2,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "subscription_plans",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions.promotion_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "magazines.publication_frequency",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.magazine_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.plan_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.duration_months",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.enddate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.promotion_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.subscription_plan_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans → promotions",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans → subscription_plans",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans → magazines",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions → promotions",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions → subscription_plans",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Verlag bietet verschiedene Abos fuer seine Zeitschriften an. Jede Zeitschrift hat einen Titel und erscheint in einem bestimmten Rhythmus, zum Beispiel monatlich oder vierteljaehrlich. Zu jeder Zeitschrift koennen mehrere Abo-Varianten angeboten werden, etwa Print, Digital oder eine Kombination daraus. Die Preise koennen sich je nach Laufzeit unterscheiden, zum Beispiel monatlich oder fuer ein ganzes Jahr.\n\nKundinnen und Kunden sollen mit Namen, E-Mail-Adresse und dem Datum ihrer Registrierung verwaltet werden. Eine Person kann mehrere Abos gleichzeitig haben, auch fuer unterschiedliche Zeitschriften. Wenn jemand ein Abo abschliesst, soll festgehalten werden, ab wann es gilt und ob es bereits beendet wurde. Ausserdem soll nachvollziehbar sein, ueber welchen Weg das Abo zustande kam, etwa online, telefonisch oder im Rahmen einer Aktion.\n\nFuer Werbeaktionen koennen mehrere Abo-Varianten vorgesehen sein, und dieselbe Abo-Variante kann auch in verschiedenen Aktionen vorkommen. Nicht jede Aktion ist unbegrenzt gueltig; manche laufen nur in einem bestimmten Zeitraum. Wenn ein Kunde ein Abo nutzt, sollen die zugehoerigen Zahlungen gespeichert werden. Dabei ist wichtig, wann bezahlt wurde, welcher Betrag eingegangen ist und ob die Zahlung erfolgreich war.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "registrationdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "magazines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "frequency",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "subscription_variants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "magazine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "magazine_id",
+              "references_table": "magazines",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "subscription_prices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "subscription_variant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duration",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subscription_variant_id",
+              "references_table": "subscription_variants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "acquisition_channels",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "campaigns",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "acquisition_channel_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "acquisition_channel_id",
+              "references_table": "acquisition_channels",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "campaign_subscription_variants",
+          "columns": [
+            {
+              "name": "campaign_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "subscription_variant_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "campaign_id",
+              "references_table": "campaigns",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subscription_variant_id",
+              "references_table": "subscription_variants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "subscriptions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subscription_variant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subscription_price_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "acquisition_channel_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "campaign_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subscription_variant_id",
+              "references_table": "subscription_variants",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subscription_price_id",
+              "references_table": "subscription_prices",
+              "references_column": "id"
+            },
+            {
+              "from_column": "acquisition_channel_id",
+              "references_table": "acquisition_channels",
+              "references_column": "id"
+            },
+            {
+              "from_column": "campaign_id",
+              "references_table": "campaigns",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "payments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "subscription_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "paymentdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_successful",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subscription_id",
+              "references_table": "subscriptions",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle Entitäten aus der Anforderung sind modelliert: Kunden, Zeitschriften, Abo-Varianten, Preise, Akquisitionskanäle, Kampagnen, Abos und Zahlungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Anforderung besagt 'Wenn jemand ein Abo abschliesst, soll festgehalten werden, ab wann es gilt und ob es bereits beendet wurde.' Die Tabelle 'subscriptions' hat 'startdate' und 'enddate', aber 'enddate' ist nullable. Dies ist semantisch problematisch: Ein aktives Abo hat enddate=NULL, ein beendetes Abo hat enddate=<Datum>. Dies ist zwar funktional, aber es fehlt ein explizites Attribut wie 'is_active' oder 'status', das den Zustand eindeutig dokumentiert. Ohne zusätzliche Logik ist unklar, ob NULL bedeutet 'noch nicht beendet' oder 'Fehler bei der Dateneingabe'. EMPFEHLUNG: Ein Attribut 'status' (ENUM: 'active', 'ended', 'cancelled') hinzufügen oder ein CHECK-Constraint, das enddate >= startdate erzwingt.",
+          "korrekturanweisung": "Spalte 'status' vom Typ VARCHAR (oder ENUM) hinzufügen mit Werten wie 'active', 'ended', 'cancelled'. Oder: Ein CHECK-Constraint hinzufügen: enddate IS NULL OR enddate >= startdate."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'acquisition_channels' und 'campaigns' ist nicht explizit modelliert. Die Anforderung sagt: 'Wenn jemand ein Abo abschliesst, soll festgehalten werden, über welchen Weg das Abo zustande kam, etwa online, telefonisch oder im Rahmen einer Aktion.' Dies bedeutet: Ein Akquisitionskanal kann mit einer Kampagne verbunden sein (z.B. 'Aktion X über Online-Kanal'), aber die Tabelle 'subscriptions' hat nur 'acquisition_channel_id' und 'campaign_id' als separate Felder. Es ist unklar, ob ein Abo mit Kanal 'online' und Kampagne 'Aktion Y' semantisch korrekt ist oder nicht. DESIGN-PROBLEM: Die Beziehung zwischen Kanal und Kampagne sollte explizit modelliert werden (z.B. durch eine Junction-Table 'acquisition_channel_campaigns' oder durch ein Feld in 'campaigns', das den Kanal referenziert).",
+          "korrekturanweisung": "Entweder: (1) Eine Junction-Table 'acquisition_channel_campaigns' anlegen mit (acquisition_channel_id, campaign_id) als Composite-PK, ODER (2) Ein Feld 'acquisition_channel_id' in der Tabelle 'campaigns' hinzufügen, um die Beziehung explizit zu machen. Dann in 'subscriptions' nur 'campaign_id' speichern und den Kanal über die Kampagne ableiten."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "WEICHER FEHLER (3NF-Verstoß): In der Tabelle 'subscriptions' gibt es eine transitive Abhängigkeit: subscription_variant_id → magazine_id (über subscription_variants.magazine_id). Die Tabelle 'subscriptions' speichert 'subscription_variant_id', aber nicht 'magazine_id'. Dies ist korrekt für 3NF. ABER: Die Tabelle 'subscription_prices' hat 'subscription_variant_id', und jede subscription_variant gehört zu genau einer magazine. Dies ist auch korrekt. JEDOCH: In 'subscriptions' wird 'subscription_price_id' gespeichert, was redundant ist, da 'subscription_variant_id' bereits vorhanden ist. Ein Abo hat eine Variante und eine Laufzeit (duration), aber die Laufzeit ist in 'subscription_prices' gespeichert. Dies führt zu einer impliziten Abhängigkeit: subscription_price_id bestimmt eindeutig subscription_variant_id und duration. Dies ist eine schwache Form von Redundanz, aber nicht kritisch, da subscription_price_id ein echter Fremdschlüssel ist. EMPFEHLUNG: Überprüfen, ob 'subscription_price_id' wirklich notwendig ist oder ob 'subscription_variant_id' + 'duration' ausreichen würde.",
+          "korrekturanweisung": "Optional: Statt 'subscription_price_id' in 'subscriptions' zu speichern, könnten 'subscription_variant_id' und 'duration' gespeichert werden, und der Preis würde über einen JOIN mit 'subscription_prices' ermittelt. Dies würde die Redundanz reduzieren, ist aber nicht zwingend erforderlich."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: Kunden (customers), Zeitschriften (magazines), Abo-Varianten (subscription_variants), Preise (subscription_prices), Akquisitionskanäle (acquisition_channels), Kampagnen (campaigns), Abos (subscriptions) und Zahlungen (payments). Die Brückentabelle campaign_subscription_variants für die M:N-Beziehung zwischen Kampagnen und Abo-Varianten ist korrekt modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'subscriptions' fehlt ein kritisches Attribut zur Erfassung der Abschlussart. Der Anforderungstext fordert explizit: 'Ausserdem soll nachvollziehbar sein, ueber welchen Weg das Abo zustande kam, etwa online, telefonisch oder im Rahmen einer Aktion.' Das Feld 'acquisition_channel_id' erfasst zwar den Kanal, aber nicht, ob das Abo im Rahmen einer Kampagne abgeschlossen wurde. Das Feld 'campaign_id' ist optional (nullable: true), was bedeutet, dass nicht alle Abos einer Kampagne zugeordnet werden können. Es fehlt ein Attribut wie 'is_campaign_based' oder eine Constraint, die sicherstellt, dass bestimmte Kanäle (z.B. 'campaign') immer eine campaign_id erfordern. Alternativ: Die Tabelle 'acquisition_channels' hat ein Feld 'requires_campaign', das aber nicht erzwungen wird.",
+          "korrekturanweisung": "Entweder: (1) Füge ein Attribut 'is_campaign_based BOOLEAN NOT NULL' zur Tabelle 'subscriptions' hinzu, oder (2) Implementiere eine Constraint, die sicherstellt, dass wenn acquisition_channel_id auf einen Kanal verweist, der requires_campaign=true hat, dann muss campaign_id NOT NULL sein. Oder (3) Modelliere Kampagnen-Abos als separate Entität mit expliziter Beziehung."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'subscriptions' und 'campaigns' ist semantisch unterbestimmt. Der Anforderungstext sagt: 'Werbeaktionen koennen mehrere Abo-Varianten vorgesehen sein' (M:N, korrekt modelliert via campaign_subscription_variants) UND 'Wenn ein Kunde ein Abo nutzt, sollen die zugehoerigen Zahlungen gespeichert werden.' Allerdings ist unklar, ob ein Abo IMMER über eine Kampagne abgeschlossen wird oder nur MANCHMAL. Das Feld 'campaign_id' in 'subscriptions' ist optional (nullable: true), was impliziert, dass Abos auch ohne Kampagne existieren können. Dies ist fachlich sinnvoll, aber die Tabelle 'acquisition_channels' hat ein Feld 'requires_campaign', das nicht erzwungen wird. Wenn ein Kanal 'requires_campaign=true' hat (z.B. 'campaign'), dann MUSS das entsprechende Abo eine campaign_id haben. Diese Constraint ist nicht modelliert.",
+          "korrekturanweisung": "Implementiere eine Integritätsregel: Wenn acquisition_channel.requires_campaign=true, dann muss subscriptions.campaign_id NOT NULL sein. Dies kann durch eine CHECK-Constraint oder Trigger realisiert werden. Alternativ: Entferne das Feld 'requires_campaign' aus 'acquisition_channels' und modelliere die Beziehung expliziter (z.B. durch separate Tabellen für kampagnenbasierte vs. nicht-kampagnenbasierte Abos)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, Fremdschlüssel verweisen auf Primärschlüssel, und es gibt keine transitive Abhängigkeiten. Die Brückentabelle 'campaign_subscription_variants' ist korrekt für die M:N-Beziehung modelliert. Keine Anomalien erkannt.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE acquisition_channels (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_acquisition_channels PRIMARY KEY (id)\n);\n\nCREATE TABLE campaigns (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    acquisition_channel_id INTEGER,\n    startdate DATE,\n    enddate DATE,\n    CONSTRAINT pk_campaigns PRIMARY KEY (id),\n    CONSTRAINT fk_campaigns_acquisition_channel_id FOREIGN KEY (acquisition_channel_id) REFERENCES acquisition_channels (id)\n);\n\nCREATE TABLE magazines (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_magazines PRIMARY KEY (id)\n);\n\nCREATE TABLE subscription_variants (\n    id INTEGER NOT NULL,\n    magazine_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_subscription_variants PRIMARY KEY (id),\n    CONSTRAINT fk_subscription_variants_magazine_id FOREIGN KEY (magazine_id) REFERENCES magazines (id)\n);\n\nCREATE TABLE campaign_subscription_variants (\n    campaign_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    CONSTRAINT pk_campaign_subscription_variants PRIMARY KEY (campaign_id, subscription_variant_id),\n    CONSTRAINT fk_campaign_subscription_variants_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id),\n    CONSTRAINT fk_campaign_subscription_variants_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registrationdate DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE subscription_prices (\n    id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    duration VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_subscription_prices PRIMARY KEY (id),\n    CONSTRAINT fk_subscription_prices_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id)\n);\n\nCREATE TABLE subscriptions (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    subscription_price_id INTEGER NOT NULL,\n    acquisition_channel_id INTEGER NOT NULL,\n    campaign_id INTEGER,\n    startdate DATE NOT NULL,\n    enddate DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_subscriptions PRIMARY KEY (id),\n    CONSTRAINT fk_subscriptions_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_subscriptions_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id),\n    CONSTRAINT fk_subscriptions_subscription_price_id FOREIGN KEY (subscription_price_id) REFERENCES subscription_prices (id),\n    CONSTRAINT fk_subscriptions_acquisition_channel_id FOREIGN KEY (acquisition_channel_id) REFERENCES acquisition_channels (id),\n    CONSTRAINT fk_subscriptions_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    subscription_id INTEGER NOT NULL,\n    paymentdate DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    is_successful BOOLEAN NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_subscription_id FOREIGN KEY (subscription_id) REFERENCES subscriptions (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 9 Tabelle(n).",
+      "[iter=2] C1: 3 unerfüllte Findings.",
+      "[iter=2] C2: 2 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 9 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 9 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 42624,
+    "total_output_tokens": 14523,
+    "total_tokens": 57147,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 17269,
+        "output_tokens": 6077,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8866,
+        "output_tokens": 3559,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8778,
+        "output_tokens": 2611,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 7711,
+        "output_tokens": 2276,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2468,
+        "output_tokens": 1694,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4296,
+        "output_tokens": 1579,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4252,
+        "output_tokens": 1141,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7049,
+        "output_tokens": 2193,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4570,
+        "output_tokens": 1980,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4526,
+        "output_tokens": 1470,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7752,
+        "output_tokens": 2190,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7711,
+        "output_tokens": 2276,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

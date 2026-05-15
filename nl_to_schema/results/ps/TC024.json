@@ -1,0 +1,546 @@
+{
+  "testfall_id": "TC024",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7280701754385965,
+  "score_gesamt": 0.8368421052631579,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "matched": 3,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.7368421052631579,
+      "recall": 0.7368421052631579,
+      "f1": 0.7368421052631579,
+      "matched": 14,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 5
+    },
+    "beziehung": {
+      "recall": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "flower_types",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_items.unit_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "flower_types.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "flower_types.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "flower_types.color",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "flower_types.unit_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_items → flower_types",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Blumenladen moechte seine Bestellungen uebersichtlich verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und E-Mail-Adresse gespeichert werden. Ein Kunde kann mehrere Bestellungen aufgeben, aber jede Bestellung gehoert immer genau zu einem Kunden. Zu jeder Bestellung sollen das Bestelldatum, ein geplanter Liefertermin und ein Status festgehalten werden. Ausserdem soll gespeichert werden, welche Blumenarten in einer Bestellung enthalten sind. Fuer jede Blumenart werden Name, Farbe und Einzelpreis benoetigt. Eine Bestellung kann mehrere Positionen enthalten, und jede Position bezieht sich immer auf genau eine Blumenart. Pro Position sollen die bestellte Menge und der Preis zum Zeitpunkt der Bestellung gespeichert werden.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "deliverydate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "flowers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "flower_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "flower_id",
+              "references_table": "flowers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse"
+          ],
+          "beschreibung": "Repräsentiert einen Kunden des Blumenladens mit seinen Kontaktdaten."
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            "Bestelldatum",
+            "Liefertermin",
+            "Status"
+          ],
+          "beschreibung": "Repräsentiert eine Bestellung eines Kunden mit Zeitangaben und aktuellem Status."
+        },
+        {
+          "name": "Blumenart",
+          "attribute": [
+            "Name",
+            "Farbe",
+            "Einzelpreis"
+          ],
+          "beschreibung": "Repräsentiert eine verfügbare Blumenart mit ihren Eigenschaften und dem Preis."
+        },
+        {
+          "name": "Bestellposition",
+          "attribute": [
+            "Menge",
+            "Preis"
+          ],
+          "beschreibung": "Repräsentiert eine Position innerhalb einer Bestellung mit Menge und historischem Preis zum Bestellzeitpunkt."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Bestellungen aufgeben, aber jede Bestellung gehört genau zu einem Kunden."
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Bestellposition",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Bestellung kann mehrere Positionen enthalten, jede Position gehört zu genau einer Bestellung."
+        },
+        {
+          "von": "Bestellposition",
+          "zu": "Blumenart",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Jede Position bezieht sich auf genau eine Blumenart, eine Blumenart kann in mehreren Positionen vorkommen."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist unklar, ob der 'Einzelpreis' der Blumenart ein fester Preis ist oder sich im Laufe der Zeit ändern kann. Der Text speichert den 'Preis zum Zeitpunkt der Bestellung' in der Bestellposition, was auf historische Preisänderungen hindeutet.",
+          "betroffene_elemente": [
+            "Blumenart",
+            "Bestellposition"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht spezifiziert, welche Werte der Status einer Bestellung annehmen kann (z.B. 'offen', 'versendet', 'geliefert', etc.).",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob eine Blumenart mehrfach in derselben Bestellung vorkommen kann (z.B. zwei Positionen mit roten Rosen unterschiedlicher Mengen).",
+          "betroffene_elemente": [
+            "Bestellung",
+            "Blumenart",
+            "Bestellposition"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            {
+              "name": "BestellungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bestelldatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Liefertermin",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Blumenart",
+          "attribute": [
+            {
+              "name": "BlumenartID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Farbe",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Einzelpreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellposition",
+          "attribute": [
+            {
+              "name": "BestellpositionID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BestellungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BlumenartID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Menge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Bestellposition",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellposition",
+          "zu": "Blumenart",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE flowers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_flowers PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    deliverydate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    flower_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_flower_id FOREIGN KEY (flower_id) REFERENCES flowers (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7369,
+    "total_output_tokens": 2930,
+    "total_tokens": 10299,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1475,
+        "output_tokens": 895,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2409,
+        "output_tokens": 1040,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3485,
+        "output_tokens": 995,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1475,
+        "output_tokens": 895,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2409,
+        "output_tokens": 1040,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3485,
+        "output_tokens": 995,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

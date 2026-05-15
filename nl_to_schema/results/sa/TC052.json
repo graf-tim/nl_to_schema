@@ -1,0 +1,470 @@
+{
+  "testfall_id": "TC052",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6876865671641792,
+  "score_gesamt": 0.8126119402985075,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "matched": 6,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.6285714285714286,
+      "recall": 0.6875,
+      "f1": 0.6567164179104478,
+      "matched": 22,
+      "nur_in_referenz": 10,
+      "nur_in_generiert": 13
+    },
+    "beziehung": {
+      "recall": 0.625,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "offers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "booking_spaces.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "location_offers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services.offer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services.service_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "location_offers → offers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services → offers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spaces → offers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Coworking-Space möchte seine laufenden Buchungen und Angebote übersichtlich verwalten. Es gibt verschiedene Standorte, und an jedem Standort werden unterschiedliche Plätze angeboten, zum Beispiel flexible Arbeitsplätze, feste Schreibtische oder Besprechungsräume. Für jeden Platz soll festgehalten werden, zu welchem Standort er gehört, wie er heißt und wie viele Personen ihn höchstens nutzen können. Manche Angebote können an mehreren Standorten verfügbar sein.\n\nKundinnen und Kunden sollen mit ihren Kontaktdaten erfasst werden. Eine Person kann im Laufe der Zeit mehrere Buchungen haben. Bei jeder Buchung soll nachvollziehbar sein, wann sie beginnt, wann sie endet und in welchem Zustand sie gerade ist, etwa angefragt, bestätigt oder storniert. Zusätzlich soll sichtbar sein, welche Plätze zu einer Buchung gehören, weil zum Beispiel ein Team gleichzeitig mehrere Arbeitsplätze oder einen Besprechungsraum mitbuchen kann.\n\nAußerdem bietet der Coworking-Space Zusatzleistungen wie Kaffee-Flatrate, Schließfach oder Druckpakete an. Solche Leistungen können je nach Angebot unterschiedlich vorgesehen sein. Für Auswertungen möchte man auch den Preis eines Angebots kennen sowie festhalten, ob es aktuell überhaupt noch buchbar ist. Nicht eindeutig geregelt ist bislang, ob Preise standortabhängig sind oder überall gleich gelten.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "offerings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "spaces",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "offering_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "max_capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_bookable",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "offering_id",
+              "references_table": "offerings",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "offering_locations",
+          "columns": [
+            {
+              "name": "offering_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "offering_id",
+              "references_table": "offerings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "company",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "bookings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "booking_spaces",
+          "columns": [
+            {
+              "name": "booking_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "space_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "booking_id",
+              "references_table": "bookings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "space_id",
+              "references_table": "spaces",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "booking_offerings",
+          "columns": [
+            {
+              "name": "booking_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "offering_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "booking_id",
+              "references_table": "bookings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "offering_id",
+              "references_table": "offerings",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    company VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE bookings (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    start_date TIMESTAMP NOT NULL,\n    end_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_bookings PRIMARY KEY (id),\n    CONSTRAINT fk_bookings_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE offerings (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_offerings PRIMARY KEY (id)\n);\n\nCREATE TABLE booking_offerings (\n    booking_id INTEGER NOT NULL,\n    offering_id INTEGER NOT NULL,\n    CONSTRAINT pk_booking_offerings PRIMARY KEY (booking_id, offering_id),\n    CONSTRAINT fk_booking_offerings_booking_id FOREIGN KEY (booking_id) REFERENCES bookings (id),\n    CONSTRAINT fk_booking_offerings_offering_id FOREIGN KEY (offering_id) REFERENCES offerings (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    city VARCHAR(255),\n    postal_code VARCHAR(255),\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE spaces (\n    id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    offering_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    max_capacity INTEGER NOT NULL,\n    is_bookable BOOLEAN NOT NULL,\n    CONSTRAINT pk_spaces PRIMARY KEY (id),\n    CONSTRAINT fk_spaces_location_id FOREIGN KEY (location_id) REFERENCES locations (id),\n    CONSTRAINT fk_spaces_offering_id FOREIGN KEY (offering_id) REFERENCES offerings (id)\n);\n\nCREATE TABLE booking_spaces (\n    booking_id INTEGER NOT NULL,\n    space_id INTEGER NOT NULL,\n    CONSTRAINT pk_booking_spaces PRIMARY KEY (booking_id, space_id),\n    CONSTRAINT fk_booking_spaces_booking_id FOREIGN KEY (booking_id) REFERENCES bookings (id),\n    CONSTRAINT fk_booking_spaces_space_id FOREIGN KEY (space_id) REFERENCES spaces (id)\n);\n\nCREATE TABLE offering_locations (\n    offering_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    CONSTRAINT pk_offering_locations PRIMARY KEY (offering_id, location_id),\n    CONSTRAINT fk_offering_locations_offering_id FOREIGN KEY (offering_id) REFERENCES offerings (id),\n    CONSTRAINT fk_offering_locations_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2503,
+    "total_output_tokens": 1767,
+    "total_tokens": 4270,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2503,
+        "output_tokens": 1767,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2503,
+        "output_tokens": 1767,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,420 @@
+{
+  "testfall_id": "TC003",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9033816425120773,
+  "score_gesamt": 0.9420289855072463,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 5,
+    "pk_tabellen_mit_pk": 5,
+    "fk_referenzen_gesamt": 4,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.8333333333333334,
+      "recall": 0.9090909090909091,
+      "f1": 0.8695652173913043,
+      "matched": 20,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 4
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "members.entrydate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_sessions.available_spots",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Fitnessstudio möchte seine Mitglieder, die angebotenen Kurse und die einzelnen Kurstermine verwalten. Von jedem Mitglied sollen Vorname, Nachname, E-Mail-Adresse, Geburtsdatum und das Datum des Eintritts gespeichert werden. Jedes Mitglied ist entweder aktiv oder nicht aktiv. Zu jedem Kurs sollen der Name, eine kurze Beschreibung und die Dauer in Minuten erfasst werden. Ein Kurs kann an vielen Terminen stattfinden. Für jeden einzelnen Termin soll gespeichert werden, zu welchem Kurs er gehört, an welchem Tag er stattfindet, wann er beginnt und wie viele Plätze verfügbar sind. Jeder Termin wird genau von einem Trainer geleitet. Von jedem Trainer sollen Vorname, Nachname, E-Mail-Adresse und Telefonnummer gespeichert werden.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "members",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "joindate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "trainers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "courses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "duration_minutes",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "course_sessions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "course_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "trainer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "session_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_time",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "available_seats",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "course_id",
+              "references_table": "courses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "trainer_id",
+              "references_table": "trainers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "member_course_sessions",
+          "columns": [
+            {
+              "name": "member_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "course_session_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "member_id",
+              "references_table": "members",
+              "references_column": "id"
+            },
+            {
+              "from_column": "course_session_id",
+              "references_table": "course_sessions",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: members, trainers, courses, course_sessions (Kurstermine) und member_course_sessions (Anmeldungen). Die Anforderung ist vollständig abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Members (firstname, lastname, email, birthdate, joindate, is_active), Trainers (firstname, lastname, email, phone), Courses (name, description, duration_minutes), Course_sessions (course_id, trainer_id, session_date, start_time, available_seats). Keine Attribute fehlen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Kardinalitäten sind korrekt modelliert: 1:N zwischen courses und course_sessions (ein Kurs hat viele Termine), 1:N zwischen trainers und course_sessions (ein Trainer leitet viele Termine), M:N zwischen members und course_sessions (über Junction-Table member_course_sessions). Die Anforderung 'Jeder Termin wird genau von einem Trainer geleitet' ist durch NOT NULL auf trainer_id korrekt erzwungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen erkennbar, alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom Primärschlüssel, keine transitiven Abhängigkeiten. Die Auflösung der M:N-Beziehung über eine separate Junction-Table ist normalisierungskonform.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 2,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE courses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    duration_minutes INTEGER NOT NULL,\n    CONSTRAINT pk_courses PRIMARY KEY (id)\n);\n\nCREATE TABLE trainers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    CONSTRAINT pk_trainers PRIMARY KEY (id)\n);\n\nCREATE TABLE course_sessions (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    trainer_id INTEGER NOT NULL,\n    session_date DATE NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    available_seats INTEGER NOT NULL,\n    CONSTRAINT pk_course_sessions PRIMARY KEY (id),\n    CONSTRAINT fk_course_sessions_course_id FOREIGN KEY (course_id) REFERENCES courses (id),\n    CONSTRAINT fk_course_sessions_trainer_id FOREIGN KEY (trainer_id) REFERENCES trainers (id)\n);\n\nCREATE TABLE members (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    joindate DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_members PRIMARY KEY (id)\n);\n\nCREATE TABLE member_course_sessions (\n    member_id INTEGER NOT NULL,\n    course_session_id INTEGER NOT NULL,\n    CONSTRAINT pk_member_course_sessions PRIMARY KEY (member_id, course_session_id),\n    CONSTRAINT fk_member_course_sessions_member_id FOREIGN KEY (member_id) REFERENCES members (id),\n    CONSTRAINT fk_member_course_sessions_course_session_id FOREIGN KEY (course_session_id) REFERENCES course_sessions (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: members, trainers, courses, course_sessions (Kurstermine) und member_course_sessions (Anmeldungen). Die Anforderung ist vollständig abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Members (firstname, lastname, email, birthdate, joindate, is_active), Trainers (firstname, lastname, email, phone), Courses (name, description, duration_minutes), Course_sessions (course_id, trainer_id, session_date, start_time, available_seats). Keine Attribute fehlen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Kardinalitäten sind korrekt modelliert: 1:N zwischen courses und course_sessions (ein Kurs hat viele Termine), 1:N zwischen trainers und course_sessions (ein Trainer leitet viele Termine), M:N zwischen members und course_sessions (über Junction-Table member_course_sessions). Die Anforderung 'Jeder Termin wird genau von einem Trainer geleitet' ist durch NOT NULL auf trainer_id korrekt erzwungen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen erkennbar, alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom Primärschlüssel, keine transitiven Abhängigkeiten. Die Auflösung der M:N-Beziehung über eine separate Junction-Table ist normalisierungskonform.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 14183,
+    "total_output_tokens": 4239,
+    "total_tokens": 18422,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 2,
+        "input_tokens": 6828,
+        "output_tokens": 2381,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 2,
+        "input_tokens": 7355,
+        "output_tokens": 1858,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2310,
+        "output_tokens": 1109,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3677,
+        "output_tokens": 999,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4518,
+        "output_tokens": 1272,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3678,
+        "output_tokens": 859,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

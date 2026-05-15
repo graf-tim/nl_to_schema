@@ -1,0 +1,790 @@
+{
+  "testfall_id": "TC092",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7767403726708075,
+  "score_gesamt": 0.8660442236024846,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 13,
+    "pk_tabellen_mit_pk": 13,
+    "fk_referenzen_gesamt": 20,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.7692307692307693,
+      "recall": 1.0,
+      "f1": 0.8695652173913044,
+      "matched": 10,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.5066666666666667,
+      "recall": 0.76,
+      "f1": 0.6080000000000001,
+      "matched": 38,
+      "nur_in_referenz": 12,
+      "nur_in_generiert": 37
+    },
+    "beziehung": {
+      "recall": 0.9285714285714286,
+      "matched": 13,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "institutions.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.collection_institution_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.source_sample_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.container_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.concentration",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.rin",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons.internal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "consents.scope",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sample_diagnoses.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sample_diagnoses.comment",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_studies.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "institution_studies.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples → institutions",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für unsere Biobank sollen menschliche Proben aus verschiedenen Studien erfasst werden. Es geht vor allem um Blut, Serum, Plasma, Gewebe und manchmal auch DNA-Aliquots. Zu jeder Probe muss nachvollziehbar sein, von welcher Person sie stammt, in welcher Studie sie gewonnen wurde und wann die Entnahme ungefähr stattgefunden hat. Die Personen nehmen teils nur an einer Studie teil, teils wohl an mehreren; außerdem kann es sein, dass bei Nachbeobachtungen weitere Proben dazukommen. Wir brauchen neben einer internen Kennung auch medizinisch relevante Basisangaben wie Geburtsdatum und biologisches Geschlecht, falls bekannt. \n\nStudien haben ein Kürzel, einen Titel, laufen über bestimmte Zeiträume und werden meistens von einer Einrichtung verantwortet. Teilweise arbeiten aber mehrere Einrichtungen zusammen, und manchmal kommt eine Probe über eine andere Stelle in die Sammlung. Einrichtungen sollen mit Name, Ort und einer Art Kategorie wie Klinik, Forschungslabor oder Register hinterlegt werden.\n\nProben werden in Behältern und an Lagerorten aufbewahrt. Ein Lagerort kann z. B. ein Gebäude, Raum, Gefrierschrank oder Rack sein; wie fein das später aufgelöst wird, ist noch nicht ganz entschieden. Wichtig ist, dass man den aktuellen Platz kennt. Manche Proben werden umgelagert oder in mehrere Aliquote aufgeteilt. Ob ein Aliquot als eigene Probe zählt oder nur als Untereinheit, müssten wir im System sinnvoll abbilden.\n\nAußerdem sollen zu Proben Diagnosebezüge dokumentiert werden, etwa ICD-Codes oder Freitextangaben, weil dieselbe Person mehrere Diagnosen haben kann und eine Diagnose nicht immer für alle Proben gleichermaßen relevant ist. Für Auswertungen möchten wir auch die Verarbeitungsart festhalten, etwa frisch, zentrifugiert oder formalinfixiert, sowie Qualitätswerte wie Konzentration oder RIN, sofern vorhanden. Nicht jede Probe hat alle diese Angaben.\n\nSchließlich muss man sehen können, welche Einwilligung für eine Person vorliegt und ob sie widerrufen wurde. Unklar ist noch, ob eine Einwilligung studienbezogen oder allgemein gelten soll; beides kommt in der Praxis vor.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "internal_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "biological_sex",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "institutions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "category",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "studies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "responsible_institution_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "responsible_institution_id",
+              "references_table": "institutions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "study_institutions",
+          "columns": [
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "institution_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "institution_id",
+              "references_table": "institutions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "person_studies",
+          "columns": [
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "enrollment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "storage_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "parent_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "parent_location_id",
+              "references_table": "storage_locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "samples",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "internal_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "sample_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "collection_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "parent_sample_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_aliquot",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "processing_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "current_storage_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "parent_sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "current_storage_location_id",
+              "references_table": "storage_locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sample_quality_metrics",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sample_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "metric_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "metric_value",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "unit",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "measurement_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "diagnoses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "icd_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "sample_diagnoses",
+          "columns": [
+            {
+              "name": "sample_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "relevance_note",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "consents",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "consent_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "consent_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_withdrawn",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "withdrawal_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sample_transfers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sample_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "from_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "to_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "transfer_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reason",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "from_location_id",
+              "references_table": "storage_locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "to_location_id",
+              "references_table": "storage_locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sample_sources",
+          "columns": [
+            {
+              "name": "sample_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "institution_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "source_role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "institution_id",
+              "references_table": "institutions",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    internal_id VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    biological_sex VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE institutions (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    category VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_institutions PRIMARY KEY (id)\n);\n\nCREATE TABLE studies (\n    id INTEGER NOT NULL,\n    code VARCHAR(255) NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    responsible_institution_id INTEGER,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_studies PRIMARY KEY (id),\n    CONSTRAINT fk_studies_responsible_institution_id FOREIGN KEY (responsible_institution_id) REFERENCES institutions (id)\n);\n\nCREATE TABLE consents (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    study_id INTEGER,\n    consent_type VARCHAR(255),\n    consent_date DATE NOT NULL,\n    is_withdrawn BOOLEAN NOT NULL,\n    withdrawal_date DATE,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_consents PRIMARY KEY (id),\n    CONSTRAINT fk_consents_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_consents_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    icd_code VARCHAR(255),\n    description TEXT,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE person_studies (\n    person_id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    enrollment_date DATE,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_person_studies PRIMARY KEY (person_id, study_id),\n    CONSTRAINT fk_person_studies_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_person_studies_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE storage_locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location_type VARCHAR(255),\n    parent_location_id INTEGER,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_storage_locations PRIMARY KEY (id),\n    CONSTRAINT fk_storage_locations_parent_location_id FOREIGN KEY (parent_location_id) REFERENCES storage_locations (id)\n);\n\nCREATE TABLE samples (\n    id INTEGER NOT NULL,\n    internal_id VARCHAR(255) NOT NULL,\n    person_id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    sample_type VARCHAR(255) NOT NULL,\n    collection_date DATE,\n    parent_sample_id INTEGER,\n    is_aliquot BOOLEAN NOT NULL,\n    processing_type VARCHAR(255),\n    current_storage_location_id INTEGER,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_samples PRIMARY KEY (id),\n    CONSTRAINT fk_samples_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_samples_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_samples_parent_sample_id FOREIGN KEY (parent_sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_samples_current_storage_location_id FOREIGN KEY (current_storage_location_id) REFERENCES storage_locations (id)\n);\n\nCREATE TABLE sample_diagnoses (\n    sample_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    relevance_note TEXT,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_sample_diagnoses PRIMARY KEY (sample_id, diagnosis_id),\n    CONSTRAINT fk_sample_diagnoses_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_sample_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE sample_quality_metrics (\n    id INTEGER NOT NULL,\n    sample_id INTEGER NOT NULL,\n    metric_name VARCHAR(255) NOT NULL,\n    metric_value DECIMAL(18,2),\n    unit VARCHAR(255),\n    measurement_date DATE,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_sample_quality_metrics PRIMARY KEY (id),\n    CONSTRAINT fk_sample_quality_metrics_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id)\n);\n\nCREATE TABLE sample_sources (\n    sample_id INTEGER NOT NULL,\n    institution_id INTEGER NOT NULL,\n    source_role VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_sample_sources PRIMARY KEY (sample_id, institution_id),\n    CONSTRAINT fk_sample_sources_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_sample_sources_institution_id FOREIGN KEY (institution_id) REFERENCES institutions (id)\n);\n\nCREATE TABLE sample_transfers (\n    id INTEGER NOT NULL,\n    sample_id INTEGER NOT NULL,\n    from_location_id INTEGER,\n    to_location_id INTEGER NOT NULL,\n    transfer_date DATE NOT NULL,\n    reason TEXT,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_sample_transfers PRIMARY KEY (id),\n    CONSTRAINT fk_sample_transfers_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_sample_transfers_from_location_id FOREIGN KEY (from_location_id) REFERENCES storage_locations (id),\n    CONSTRAINT fk_sample_transfers_to_location_id FOREIGN KEY (to_location_id) REFERENCES storage_locations (id)\n);\n\nCREATE TABLE study_institutions (\n    study_id INTEGER NOT NULL,\n    institution_id INTEGER NOT NULL,\n    role VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_study_institutions PRIMARY KEY (study_id, institution_id),\n    CONSTRAINT fk_study_institutions_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_study_institutions_institution_id FOREIGN KEY (institution_id) REFERENCES institutions (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2744,
+    "total_output_tokens": 3668,
+    "total_tokens": 6412,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2744,
+        "output_tokens": 3668,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2744,
+        "output_tokens": 3668,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

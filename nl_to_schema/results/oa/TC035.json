@@ -1,0 +1,1074 @@
+{
+  "testfall_id": "TC035",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5553030303030303,
+  "score_gesamt": 0.7331818181818182,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.625,
+      "recall": 0.625,
+      "f1": 0.625,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.5428571428571428,
+      "recall": 0.6129032258064516,
+      "f1": 0.5757575757575757,
+      "matched": 19,
+      "nur_in_referenz": 12,
+      "nur_in_generiert": 16
+    },
+    "beziehung": {
+      "recall": 0.375,
+      "matched": 3,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.opening_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.dish_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.employee_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants → dishes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants → employees",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Restaurantkette soll festgehalten werden, welche Standorte es gibt und welche Mitarbeitenden dort im Einsatz sind. Zu jedem Standort sollen Name, Stadt, Adresse und das Eröffnungsdatum bekannt sein. Mitarbeitende haben persönliche Kontaktdaten, ein Eintrittsdatum und arbeiten normalerweise an einem Standort. In der Praxis kommt es aber vor, dass jemand zeitweise auch in anderen Filialen aushilft. Welche Einsätze dafür genau dokumentiert werden müssen, soll im System nachvollziehbar sein.\n\nAußerdem soll die Speisekarte verwaltet werden. Gerichte haben einen Namen, eine Beschreibung, einen Preis und werden einer Kategorie wie Vorspeise, Hauptgericht oder Dessert zugeordnet. Nicht jedes Gericht ist dauerhaft überall erhältlich, weil manche Filialen abweichende Karten oder saisonale Angebote haben. Es muss deshalb erkennbar sein, in welchem Restaurant welches Gericht angeboten wird.\n\nZu den Gerichten sollen auch Zutaten gepflegt werden, unter anderem damit Hinweise für Allergien oder Unverträglichkeiten möglich sind. Eine Zutat kann in mehreren Gerichten vorkommen, und ein Gericht besteht aus mehreren Zutaten. Ob dabei nur die Verwendung an sich oder auch Mengen festgehalten werden, ist fachlich nicht ganz klar. Zusätzlich soll gespeichert werden, ob eine Zutat typischerweise als Allergen gilt.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "opening_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dishes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "offerings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "available_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "available_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "dish_id",
+              "references_table": "dishes",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_allergen",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dish_ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "ingredient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "dish_id",
+              "references_table": "dishes",
+              "references_column": "id"
+            },
+            {
+              "from_column": "ingredient_id",
+              "references_table": "ingredients",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Standort",
+          "attribute": [
+            "Name",
+            "Stadt",
+            "Adresse",
+            "Eröffnungsdatum"
+          ],
+          "beschreibung": "Ein Restaurant einer Restaurantkette mit Standortinformationen"
+        },
+        {
+          "name": "Mitarbeitender",
+          "attribute": [
+            "Kontaktdaten",
+            "Eintrittsdatum"
+          ],
+          "beschreibung": "Eine Person, die in der Restaurantkette arbeitet und an Standorten eingesetzt wird"
+        },
+        {
+          "name": "Einsatz",
+          "attribute": [
+            "Startdatum",
+            "Enddatum"
+          ],
+          "beschreibung": "Dokumentation eines Mitarbeitenden an einem Standort, um zeitweise Aushilfen und Wechsel nachzuvollziehen"
+        },
+        {
+          "name": "Gericht",
+          "attribute": [
+            "Name",
+            "Beschreibung",
+            "Preis",
+            "Kategorie"
+          ],
+          "beschreibung": "Ein Speisegericht mit Informationen zur Kategorisierung und Preisgestaltung"
+        },
+        {
+          "name": "Kategorie",
+          "attribute": [
+            "Name"
+          ],
+          "beschreibung": "Klassifizierung von Gerichten wie Vorspeise, Hauptgericht oder Dessert"
+        },
+        {
+          "name": "Angebot",
+          "attribute": [
+            "Verfügbar_ab",
+            "Verfügbar_bis"
+          ],
+          "beschreibung": "Dokumentation, welches Gericht an welchem Standort angeboten wird, mit zeitlichen Gültigkeitsgrenzen für saisonale Angebote"
+        },
+        {
+          "name": "Zutat",
+          "attribute": [
+            "Name",
+            "Ist_Allergen"
+          ],
+          "beschreibung": "Ein Rohstoff oder Bestandteil, der in Gerichten verwendet wird, mit Kennzeichnung als Allergen"
+        },
+        {
+          "name": "Gericht_Zutat",
+          "attribute": [
+            "Menge"
+          ],
+          "beschreibung": "Verknüpfung zwischen Gericht und Zutat mit optionaler Mengenangabe"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Mitarbeitender",
+          "zu": "Einsatz",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Mitarbeitender kann mehrere Einsätze an verschiedenen Standorten haben"
+        },
+        {
+          "von": "Standort",
+          "zu": "Einsatz",
+          "kardinalitaet": "1:N",
+          "beschreibung": "An einem Standort können mehrere Mitarbeitende in verschiedenen Einsätzen tätig sein"
+        },
+        {
+          "von": "Gericht",
+          "zu": "Kategorie",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Mehrere Gerichte gehören zu einer Kategorie"
+        },
+        {
+          "von": "Standort",
+          "zu": "Angebot",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Standort bietet mehrere Gerichte an"
+        },
+        {
+          "von": "Gericht",
+          "zu": "Angebot",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Gericht wird an mehreren Standorten angeboten"
+        },
+        {
+          "von": "Gericht",
+          "zu": "Gericht_Zutat",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Gericht besteht aus mehreren Zutaten"
+        },
+        {
+          "von": "Zutat",
+          "zu": "Gericht_Zutat",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Zutat kann in mehreren Gerichten vorkommen"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Bei der Dokumentation von Mitarbeitereinsätzen ist unklar, ob nur die Tatsache der Aushilfe oder auch konkrete Zeiträume (Start- und Enddatum) erfasst werden sollen",
+          "betroffene_elemente": [
+            "Einsatz",
+            "Mitarbeitender",
+            "Standort"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht definiert, ob die Entität 'Kategorie' als separate Tabelle modelliert werden soll oder ob die Kategoriebezeichnung direkt als Attribut im Gericht gespeichert wird",
+          "betroffene_elemente": [
+            "Gericht",
+            "Kategorie"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob bei der Zuordnung von Gerichten zu Standorten (Angebot) auch Zeiträume (Verfügbar_ab, Verfügbar_bis) für saisonale Angebote erfasst werden sollen oder nur die reine Verfügbarkeit",
+          "betroffene_elemente": [
+            "Angebot",
+            "Gericht",
+            "Standort"
+          ]
+        },
+        {
+          "beschreibung": "Fachlich nicht geklärt ist, ob in der Gericht-Zutat-Beziehung nur die Verwendung an sich oder auch konkrete Mengen (mit Einheit) festgehalten werden sollen",
+          "betroffene_elemente": [
+            "Gericht_Zutat",
+            "Gericht",
+            "Zutat"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob ein Mitarbeitender einen Primärstandort hat oder ob alle Standorte gleichberechtigt über Einsätze dokumentiert werden",
+          "betroffene_elemente": [
+            "Mitarbeitender",
+            "Standort",
+            "Einsatz"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Standort",
+          "attribute": [
+            {
+              "name": "standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "stadt",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "eroeffnungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Mitarbeitender",
+          "attribute": [
+            {
+              "name": "mitarbeitender_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "eintrittsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Einsatz",
+          "attribute": [
+            {
+              "name": "einsatz_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "mitarbeitender_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Kategorie",
+          "attribute": [
+            {
+              "name": "kategorie_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Gericht",
+          "attribute": [
+            {
+              "name": "gericht_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kategorie_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Angebot",
+          "attribute": [
+            {
+              "name": "angebot_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gericht_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "verfuegbar_ab",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "verfuegbar_bis",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Zutat",
+          "attribute": [
+            {
+              "name": "zutat_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ist_allergen",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Gericht_Zutat",
+          "attribute": [
+            {
+              "name": "gericht_zutat_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gericht_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zutat_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "menge",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Mitarbeitender",
+          "zu": "Einsatz",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Standort",
+          "zu": "Einsatz",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Gericht",
+          "zu": "Kategorie",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Standort",
+          "zu": "Angebot",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Gericht",
+          "zu": "Angebot",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Gericht",
+          "zu": "Gericht_Zutat",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Zutat",
+          "zu": "Gericht_Zutat",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 8 Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: locations, employees, assignments, categories, dishes, offerings, ingredients, dish_ingredients. Keine Entität fehlt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: locations (name, city, address, opening_date), employees (firstname, lastname, phone, email, hire_date), assignments (employee_id, location_id, start_date, end_date), categories (name), dishes (name, description, price, category_id), offerings (dish_id, location_id, available_from, available_until), ingredients (name, is_allergen), dish_ingredients (dish_id, ingredient_id, quantity). Optionale Felder sind korrekt als nullable markiert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 7 Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: Mitarbeitender→Einsatz (1:N via employee_id), Standort→Einsatz (1:N via location_id), Gericht→Kategorie (N:1 via category_id), Standort→Angebot (1:N via location_id), Gericht→Angebot (1:N via dish_id), Gericht→Gericht_Zutat (1:N via dish_id), Zutat→Gericht_Zutat (1:N via ingredient_id). Kardinalitäten sind konsistent.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table dish_ingredients ist korrekt für die N:M-Beziehung modelliert. Alle Fremdschlüssel sind auf PKs referenziert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    opening_date DATE NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE assignments (\n    id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_assignments_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE dishes (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_dishes PRIMARY KEY (id),\n    CONSTRAINT fk_dishes_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE ingredients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    is_allergen BOOLEAN NOT NULL,\n    CONSTRAINT pk_ingredients PRIMARY KEY (id)\n);\n\nCREATE TABLE dish_ingredients (\n    id INTEGER NOT NULL,\n    dish_id INTEGER NOT NULL,\n    ingredient_id INTEGER NOT NULL,\n    quantity VARCHAR(255),\n    CONSTRAINT pk_dish_ingredients PRIMARY KEY (id),\n    CONSTRAINT fk_dish_ingredients_dish_id FOREIGN KEY (dish_id) REFERENCES dishes (id),\n    CONSTRAINT fk_dish_ingredients_ingredient_id FOREIGN KEY (ingredient_id) REFERENCES ingredients (id)\n);\n\nCREATE TABLE offerings (\n    id INTEGER NOT NULL,\n    dish_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    available_from DATE,\n    available_until DATE,\n    CONSTRAINT pk_offerings PRIMARY KEY (id),\n    CONSTRAINT fk_offerings_dish_id FOREIGN KEY (dish_id) REFERENCES dishes (id),\n    CONSTRAINT fk_offerings_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 8 Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: locations, employees, assignments, categories, dishes, offerings, ingredients, dish_ingredients. Keine Entität fehlt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: locations (name, city, address, opening_date), employees (firstname, lastname, phone, email, hire_date), assignments (employee_id, location_id, start_date, end_date), categories (name), dishes (name, description, price, category_id), offerings (dish_id, location_id, available_from, available_until), ingredients (name, is_allergen), dish_ingredients (dish_id, ingredient_id, quantity). Optionale Felder sind korrekt als nullable markiert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 7 Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: Mitarbeitender→Einsatz (1:N via employee_id), Standort→Einsatz (1:N via location_id), Gericht→Kategorie (N:1 via category_id), Standort→Angebot (1:N via location_id), Gericht→Angebot (1:N via dish_id), Gericht→Gericht_Zutat (1:N via dish_id), Zutat→Gericht_Zutat (1:N via ingredient_id). Kardinalitäten sind konsistent.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table dish_ingredients ist korrekt für die N:M-Beziehung modelliert. Alle Fremdschlüssel sind auf PKs referenziert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 18106,
+    "total_output_tokens": 6340,
+    "total_tokens": 24446,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1661,
+        "output_tokens": 1596,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3348,
+        "output_tokens": 1904,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4756,
+        "output_tokens": 1889,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 1,
+        "input_tokens": 8341,
+        "output_tokens": 951,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1661,
+        "output_tokens": 1596,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3348,
+        "output_tokens": 1904,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4756,
+        "output_tokens": 1889,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8341,
+        "output_tokens": 951,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

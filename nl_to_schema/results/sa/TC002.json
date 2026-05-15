@@ -1,0 +1,230 @@
+{
+  "testfall_id": "TC002",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 1.0,
+  "score_gesamt": 1.0,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 19,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [],
+  "state": {
+    "anforderungstext": "Für eine kleine Tierarztpraxis soll festgehalten werden, welche Tierhalter betreut werden, welche Tiere zu welchem Halter gehören und welche Behandlungstermine es gab. Von jedem Halter werden Vorname, Nachname, Telefonnummer, E-Mail-Adresse und Anschrift benötigt. Zu jedem Tier sollen Name, Tierart, Rasse, Geburtsdatum und Geschlecht gespeichert werden. Jedes Tier gehört genau einem Halter. Für jeden Termin soll dokumentiert werden, um welches Tier es ging, an welchem Tag der Termin war, welcher Grund vorlag, welche Behandlung durchgeführt wurde und welche Kosten berechnet wurden. Ein Tier kann im Laufe der Zeit viele Termine haben, aber jeder Termin bezieht sich immer nur auf genau ein Tier.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "owners",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "animals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "owner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "species",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "breed",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "gender",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "owner_id",
+              "references_table": "owners",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "animal_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reason",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "treatment",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "cost",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "animal_id",
+              "references_table": "animals",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT,\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE animals (\n    id INTEGER NOT NULL,\n    owner_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    species VARCHAR(255) NOT NULL,\n    breed VARCHAR(255),\n    birthdate DATE,\n    gender VARCHAR(255),\n    CONSTRAINT pk_animals PRIMARY KEY (id),\n    CONSTRAINT fk_animals_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    animal_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    reason TEXT,\n    treatment TEXT,\n    cost DECIMAL(18,2),\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_animal_id FOREIGN KEY (animal_id) REFERENCES animals (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2294,
+    "total_output_tokens": 777,
+    "total_tokens": 3071,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2294,
+        "output_tokens": 777,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2294,
+        "output_tokens": 777,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

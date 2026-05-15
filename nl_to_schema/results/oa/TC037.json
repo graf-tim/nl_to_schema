@@ -1,0 +1,1024 @@
+{
+  "testfall_id": "TC037",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7958904109589041,
+  "score_gesamt": 0.8775342465753424,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.875,
+      "recall": 0.875,
+      "f1": 0.875,
+      "matched": 7,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.7941176470588235,
+      "recall": 0.6923076923076923,
+      "f1": 0.7397260273972601,
+      "matched": 27,
+      "nur_in_referenz": 12,
+      "nur_in_generiert": 7
+    },
+    "beziehung": {
+      "recall": 0.75,
+      "matched": 6,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "patient_medications",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "diagnoses.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "doctors.specialty",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "doctors.employment_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointment_diagnoses.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "prescriptions.dosage_instruction",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments.scheduled_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments.notes",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.patient_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.medication_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.is_allergy",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications.note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications → medications",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "patient_medications → patients",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Arztpraxis soll eine übersichtliche Verwaltung entstehen. Von den Patientinnen und Patienten sollen die üblichen Kontaktdaten sowie das Geburtsdatum festgehalten werden. Die Praxis beschäftigt mehrere Ärztinnen und Ärzte verschiedener Fachrichtungen. Zu jedem Arzt soll nachvollziehbar sein, seit wann er in der Praxis arbeitet und ob er aktuell im Dienst ist.\n\nPatienten kommen zu Terminen in die Praxis. Ein Termin findet immer bei genau einem Arzt statt und hat einen geplanten Zeitpunkt. Außerdem soll erkennbar sein, ob der Termin wahrgenommen, abgesagt oder verschoben wurde. Nicht jeder Besuch läuft gleich ab: Bei einem Termin können mehrere Diagnosen festgestellt werden, und dieselbe Diagnose kann natürlich bei vielen verschiedenen Patienten oder Besuchen vorkommen.\n\nNach einem Besuch können Medikamente verordnet werden. Dabei soll dokumentiert werden, welches Medikament gemeint ist, in welcher Menge und wie oft es eingenommen werden soll. Da manche Mittel in unterschiedlichen Formen oder Stärken vorkommen, sollen zu Medikamenten auch solche Angaben gepflegt werden. Zusätzlich möchte die Praxis notieren, welche Patienten bestimmte Medikamente wegen Unverträglichkeiten nicht bekommen dürfen.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "patients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "doctors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "specialization",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employment_start",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "doctor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "scheduled_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "doctor_id",
+              "references_table": "doctors",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "diagnoses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointment_diagnoses",
+          "columns": [
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "medications",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "form",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "strength",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "prescriptions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medication_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "frequency",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medication_id",
+              "references_table": "medications",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "medication_intolerances",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medication_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medication_id",
+              "references_table": "medications",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Patient",
+          "attribute": [
+            "PatientenID",
+            "Vorname",
+            "Nachname",
+            "Kontaktdaten",
+            "Geburtsdatum"
+          ],
+          "beschreibung": "Patientinnen und Patienten der Arztpraxis mit Kontaktdaten und Geburtsdatum"
+        },
+        {
+          "name": "Arzt",
+          "attribute": [
+            "ArztID",
+            "Vorname",
+            "Nachname",
+            "Fachrichtung",
+            "Arbeitsbeginn",
+            "ImDienst"
+          ],
+          "beschreibung": "Ärztinnen und Ärzte verschiedener Fachrichtungen mit Informationen zu Arbeitsbeginn und aktuellem Dienststatus"
+        },
+        {
+          "name": "Termin",
+          "attribute": [
+            "TerminID",
+            "PatientenID",
+            "ArztID",
+            "geplanter_Zeitpunkt",
+            "Status"
+          ],
+          "beschreibung": "Termine von Patienten bei Ärzten mit Zeitpunkt und Status (wahrgenommen, abgesagt, verschoben)"
+        },
+        {
+          "name": "Diagnose",
+          "attribute": [
+            "DiagnoseID",
+            "Bezeichnung"
+          ],
+          "beschreibung": "Diagnosen, die bei Terminen festgestellt werden können"
+        },
+        {
+          "name": "Medikament",
+          "attribute": [
+            "MedikamentID",
+            "Name",
+            "Form",
+            "Staerke"
+          ],
+          "beschreibung": "Medikamente mit verschiedenen Formen und Stärken"
+        },
+        {
+          "name": "Verordnung",
+          "attribute": [
+            "VerordnungID",
+            "TerminID",
+            "MedikamentID",
+            "Menge",
+            "Haeufigkeit"
+          ],
+          "beschreibung": "Verordnungen von Medikamenten nach Besuchen mit Menge und Einnahmehäufigkeit"
+        },
+        {
+          "name": "Unvertraeglichkeit",
+          "attribute": [
+            "UnvertraeglichkeitID",
+            "PatientenID",
+            "MedikamentID"
+          ],
+          "beschreibung": "Dokumentation von Medikamentenunverträglichkeiten für Patienten"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Termin",
+          "zu": "Patient",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Patient kann mehrere Termine haben, ein Termin gehört zu genau einem Patienten"
+        },
+        {
+          "von": "Termin",
+          "zu": "Arzt",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Termin findet bei genau einem Arzt statt, ein Arzt kann mehrere Termine haben"
+        },
+        {
+          "von": "Termin",
+          "zu": "Diagnose",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Bei einem Termin können mehrere Diagnosen festgestellt werden, eine Diagnose kann bei vielen Terminen vorkommen"
+        },
+        {
+          "von": "Verordnung",
+          "zu": "Termin",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Verordnung gehört zu einem Termin, ein Termin kann mehrere Verordnungen haben"
+        },
+        {
+          "von": "Verordnung",
+          "zu": "Medikament",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Verordnung bezieht sich auf ein Medikament, ein Medikament kann in mehreren Verordnungen vorkommen"
+        },
+        {
+          "von": "Unvertraeglichkeit",
+          "zu": "Patient",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Patient kann mehrere Unverträglichkeiten haben, eine Unverträglichkeit gehört zu einem Patienten"
+        },
+        {
+          "von": "Unvertraeglichkeit",
+          "zu": "Medikament",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Unverträglichkeit bezieht sich auf ein Medikament, ein Medikament kann bei mehreren Patienten unverträglich sein"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Der Begriff 'Kontaktdaten' ist nicht spezifiziert. Unklar ist, welche konkreten Felder darunter fallen (z.B. Telefon, E-Mail, Adresse, etc.)",
+          "betroffene_elemente": [
+            "Patient"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob 'Besuch' und 'Termin' synonym zu verstehen sind oder ob es unterschiedliche Konzepte sind. Der Text verwendet beide Begriffe teilweise parallel.",
+          "betroffene_elemente": [
+            "Termin"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Beziehung zwischen Termin und Diagnose über eine separate Entität (z.B. Befund) modelliert werden soll oder direkt als M:N-Beziehung",
+          "betroffene_elemente": [
+            "Termin",
+            "Diagnose"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob 'Form' und 'Stärke' separate Attribute oder eigenständige Entitäten sein sollten (z.B. wenn mehrere Kombinationen möglich sind)",
+          "betroffene_elemente": [
+            "Medikament"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob Verordnungen auch ohne einen Termin existieren können oder ob sie immer an einen Termin gebunden sind",
+          "betroffene_elemente": [
+            "Verordnung",
+            "Termin"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Patient",
+          "attribute": [
+            {
+              "name": "PatientenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Arzt",
+          "attribute": [
+            {
+              "name": "ArztID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Fachrichtung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Arbeitsbeginn",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ImDienst",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Termin",
+          "attribute": [
+            {
+              "name": "TerminID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "PatientenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ArztID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "GeplantZeitpunkt",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Diagnose",
+          "attribute": [
+            {
+              "name": "DiagnoseID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Medikament",
+          "attribute": [
+            {
+              "name": "MedikamentID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Form",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Staerke",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Verordnung",
+          "attribute": [
+            {
+              "name": "VerordnungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TerminID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MedikamentID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Menge",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Haeufigkeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Unvertraeglichkeit",
+          "attribute": [
+            {
+              "name": "UnvertraeglichkeitID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "PatientenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MedikamentID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Termin",
+          "zu": "Patient",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Termin",
+          "zu": "Arzt",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Termin",
+          "zu": "Diagnose",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Verordnung",
+          "zu": "Termin",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Verordnung",
+          "zu": "Medikament",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Unvertraeglichkeit",
+          "zu": "Patient",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Unvertraeglichkeit",
+          "zu": "Medikament",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im logischen Schema vorhanden: patients, doctors, appointments, diagnoses, medications, prescriptions, medication_intolerances. Die Junction-Table appointment_diagnoses für die M:N-Beziehung ist korrekt implementiert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt übersetzt: Patientendaten (firstname, lastname, phone, email, address, birthdate), Arztdaten (firstname, lastname, specialization, employment_start, is_active), Termindaten (scheduled_datetime, status), Diagnosen (description), Medikamente (name, form, strength), Verordnungen (quantity, frequency), Unverträglichkeiten. Namenskonventionen sind konsistent eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Termin→Patient (N:1) via patient_id, (2) Termin→Arzt (N:1) via doctor_id, (3) Termin↔Diagnose (M:N) via appointment_diagnoses Junction-Table mit Composite-PK, (4) Verordnung→Termin (N:1) via appointment_id, (5) Verordnung→Medikament (N:1) via medication_id, (6) Unverträglichkeit→Patient (N:1) via patient_id, (7) Unverträglichkeit→Medikament (N:1) via medication_id. Kardinalitäten sind korrekt abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Alle Tabellen sind in 1NF (atomare Werte, keine Wiederholungsgruppen). (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK (2NF). (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen erkennbar (3NF). Die Junction-Table appointment_diagnoses ist korrekt normalisiert mit Composite-PK. Keine redundanten Daten oder unnötige Denormalisierungen vorhanden.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    birthdate DATE NOT NULL,\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE doctors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255) NOT NULL,\n    employment_start DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_doctors PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    doctor_id INTEGER NOT NULL,\n    scheduled_datetime TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_appointments_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctors (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    description VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_diagnoses (\n    appointment_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointment_diagnoses PRIMARY KEY (appointment_id, diagnosis_id),\n    CONSTRAINT fk_appointment_diagnoses_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE medications (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    form VARCHAR(255),\n    strength VARCHAR(255),\n    CONSTRAINT pk_medications PRIMARY KEY (id)\n);\n\nCREATE TABLE medication_intolerances (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    CONSTRAINT pk_medication_intolerances PRIMARY KEY (id),\n    CONSTRAINT fk_medication_intolerances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_medication_intolerances_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n\nCREATE TABLE prescriptions (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_prescriptions PRIMARY KEY (id),\n    CONSTRAINT fk_prescriptions_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_prescriptions_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im logischen Schema vorhanden: patients, doctors, appointments, diagnoses, medications, prescriptions, medication_intolerances. Die Junction-Table appointment_diagnoses für die M:N-Beziehung ist korrekt implementiert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt übersetzt: Patientendaten (firstname, lastname, phone, email, address, birthdate), Arztdaten (firstname, lastname, specialization, employment_start, is_active), Termindaten (scheduled_datetime, status), Diagnosen (description), Medikamente (name, form, strength), Verordnungen (quantity, frequency), Unverträglichkeiten. Namenskonventionen sind konsistent eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Termin→Patient (N:1) via patient_id, (2) Termin→Arzt (N:1) via doctor_id, (3) Termin↔Diagnose (M:N) via appointment_diagnoses Junction-Table mit Composite-PK, (4) Verordnung→Termin (N:1) via appointment_id, (5) Verordnung→Medikament (N:1) via medication_id, (6) Unverträglichkeit→Patient (N:1) via patient_id, (7) Unverträglichkeit→Medikament (N:1) via medication_id. Kardinalitäten sind korrekt abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Alle Tabellen sind in 1NF (atomare Werte, keine Wiederholungsgruppen). (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK (2NF). (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen erkennbar (3NF). Die Junction-Table appointment_diagnoses ist korrekt normalisiert mit Composite-PK. Keine redundanten Daten oder unnötige Denormalisierungen vorhanden.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 17720,
+    "total_output_tokens": 6625,
+    "total_tokens": 24345,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1634,
+        "output_tokens": 1615,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3346,
+        "output_tokens": 2072,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4562,
+        "output_tokens": 1895,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 1,
+        "input_tokens": 8178,
+        "output_tokens": 1043,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1634,
+        "output_tokens": 1615,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3346,
+        "output_tokens": 2072,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4562,
+        "output_tokens": 1895,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8178,
+        "output_tokens": 1043,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

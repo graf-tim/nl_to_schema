@@ -1,0 +1,629 @@
+{
+  "testfall_id": "TC065",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5590799031476997,
+  "score_gesamt": 0.7354479418886198,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5,
+      "recall": 0.6666666666666666,
+      "f1": 0.5714285714285715,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 4
+    },
+    "attribut": {
+      "precision": 0.5483870967741935,
+      "recall": 0.6071428571428571,
+      "f1": 0.5762711864406779,
+      "matched": 17,
+      "nur_in_referenz": 11,
+      "nur_in_generiert": 14
+    },
+    "beziehung": {
+      "recall": 0.5,
+      "matched": 3,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "warehouses.goods_category",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.unit",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.supplier_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.product_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products.lead_time_days",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products → products",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "supplier_products → suppliers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Unternehmen bezieht Waren von verschiedenen Lieferanten und möchte den Einkauf und die laufende Belieferung übersichtlich festhalten. Zu jedem Lieferanten sollen Name, Kontaktperson, E-Mail-Adresse und das Land bekannt sein. Das Unternehmen arbeitet mit mehreren Artikeln, die intern mit Bezeichnung, kurzer Beschreibung und einer Mengeneinheit wie Stück, Kilogramm oder Liter geführt werden. Ein Lieferant kann mehrere Artikel anbieten, und derselbe Artikel kann auch von verschiedenen Lieferanten kommen. Dabei soll erfasst werden, zu welchem Preis ein Artikel bei einem bestimmten Lieferanten aktuell bezogen werden kann und wie lange die übliche Lieferzeit ist.\n\nBestellungen werden an genau einen Lieferanten gerichtet. Für jede Bestellung soll nachvollziehbar sein, wann sie aufgegeben wurde, welchen Status sie hat und wann die Lieferung voraussichtlich eintreffen soll. In einer Bestellung können mehrere Artikel in unterschiedlichen Mengen enthalten sein. Außerdem soll festgehalten werden, in welchem Lager die Ware erwartet wird. Ein Lager hat einen Namen, einen Standort und kann für bestimmte Warengruppen vorgesehen sein. Ob diese Warengruppen fest vorgegeben sind oder frei beschrieben werden, bleibt dem System überlassen. Nicht jede Bestellung wird vollständig auf einmal geliefert; für den ersten Ausbauschritt reicht es aber, wenn pro Bestellung nur ein geplanter Wareneingang betrachtet wird.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "suppliers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "unit_of_measure",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "commodity_groups",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "warehouses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "warehouse_commodity_groups",
+          "columns": [
+            {
+              "name": "warehouse_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "commodity_group_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "warehouse_id",
+              "references_table": "warehouses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "commodity_group_id",
+              "references_table": "commodity_groups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "supplier_articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_time_days",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "warehouse_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "order_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "expected_delivery_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "warehouse_id",
+              "references_table": "warehouses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "supplier_article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "supplier_article_id",
+              "references_table": "supplier_articles",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: order_items enthält redundante Spalte article_id. Diese ist bereits über supplier_articles.article_id erreichbar und führt zu Dateninkonsistenz-Risiko (Artikel in order_items könnte nicht mit supplier_articles.article_id übereinstimmen). Zudem ist supplier_article_id semantisch unklar: Es ist nur supplier_id, nicht die vollständige Referenz zur Junction-Table.",
+          "korrekturanweisung": "Entfernen Sie article_id aus order_items. Referenzieren Sie supplier_articles eindeutig über einen echten FK (siehe FK-Integritätsfehler). Die article_id kann über supplier_articles nachgeschlagen werden."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: order_items.unit_price ist redundant. Der Preis ist bereits in supplier_articles.price gespeichert. Historische Preisänderungen werden nicht abgebildet, und es besteht Inkonsistenzrisiko zwischen order_items.unit_price und supplier_articles.price.",
+          "korrekturanweisung": "Entfernen Sie unit_price aus order_items und berechnen Sie den Preis zur Abfragzeit aus supplier_articles.price. Falls historische Preise erforderlich sind, implementieren Sie ein Versionierungskonzept (z.B. price_history-Tabelle mit Gültigkeitsdaten)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die N:M-Beziehung zwischen orders und articles wird über order_items modelliert, aber die Beziehung zwischen suppliers und articles (supplier_articles) wird nicht korrekt in order_items berücksichtigt. Ein order_item sollte eindeutig eine Kombination (order, supplier, article) darstellen, aber die aktuelle Struktur erlaubt semantisch ungültige Zustände (z.B. article_id ≠ supplier_articles.article_id).",
+          "korrekturanweisung": "Redesign order_items: Entweder (1) Composite-FK auf (supplier_articles.supplier_id, supplier_articles.article_id) + order_id, ODER (2) supplier_articles mit eigenem PK versehen und diesen direkt referenzieren. Entfernen Sie redundante article_id."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "VERSTOSSE GEGEN 3NF: (1) order_items.unit_price ist funktional abhängig von supplier_articles (transitive Abhängigkeit über supplier_id + article_id). (2) order_items.article_id ist funktional abhängig von supplier_article_id (wenn dieses vollständig wäre). (3) Redundante Speicherung von Preisinformationen führt zu Update-Anomalien. Schema ist in 2NF, nicht in 3NF.",
+          "korrekturanweisung": "Normalisieren Sie order_items auf 3NF: Entfernen Sie unit_price und article_id. Halten Sie nur order_id und eine vollständige Referenz zu supplier_articles (entweder Composite-FK oder eigenständiger PK). Preis wird zur Abfragzeit aus supplier_articles nachgeschlagen."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: suppliers, articles, warehouses, commodity_groups, orders. Die Brückentabellen supplier_articles und warehouse_commodity_groups sind korrekt modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'order_items' enthält eine redundante und fehlerhafte Fremdschlüssel-Struktur. Das Attribut 'supplier_article_id' ist als INTEGER definiert, referenziert aber auf 'supplier_articles' mit nur 'supplier_id' als FK. Dies ist strukturell unmöglich, da supplier_articles ein Composite-Key ist (supplier_id, article_id). Zudem ist 'article_id' in order_items redundant, da es bereits über supplier_articles erreichbar ist. Die korrekte Modellierung erfordert entweder: (a) einen Composite-FK auf (supplier_id, article_id) in supplier_articles, oder (b) ein neues Attribut 'supplier_article_id' als Surrogate-Key in supplier_articles mit entsprechender FK in order_items.",
+          "korrekturanweisung": "Lösung A (empfohlen): Füge in supplier_articles ein Surrogate-Key-Attribut 'id' hinzu (INTEGER PRIMARY KEY). Ändere order_items.supplier_article_id zu einem einfachen FK auf supplier_articles.id. Entferne order_items.article_id als redundant. Lösung B: Nutze Composite-FK in order_items mit (supplier_id, article_id) auf supplier_articles, entferne supplier_article_id."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen order_items und supplier_articles ist fehlerhaft modelliert. Der FK 'supplier_article_id' kann nicht auf einen Composite-Key (supplier_id, article_id) verweisen, wenn nur ein INTEGER-Attribut vorhanden ist. Dies verletzt die referenzielle Integrität. Zusätzlich fehlt eine explizite Beziehung zwischen order_items und supplier_articles, die die M:N-Beziehung zwischen orders und articles über supplier_articles korrekt abbildet.",
+          "korrekturanweisung": "Implementiere einen Surrogate-Key in supplier_articles (id INTEGER PRIMARY KEY) und referenziere diesen in order_items, oder nutze einen Composite-FK mit beiden Spalten (supplier_id, article_id)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "WEICHER FEHLER (Normalisierung): Die Tabelle order_items speichert 'unit_price' als Denormalisierung. Dies ist zwar für Audit-Zwecke sinnvoll (historische Preise), sollte aber dokumentiert sein. Kritischer: Das Attribut 'article_id' in order_items ist redundant, da es bereits über supplier_articles.article_id erreichbar ist und zu Inkonsistenzen führen kann (z.B. wenn article_id nicht mit supplier_articles.article_id übereinstimmt).",
+          "korrekturanweisung": "Entferne order_items.article_id oder dokumentiere explizit, dass es als Denormalisierung für Performance/Audit dient. Stelle sicher, dass unit_price als historischer Wert behandelt wird (nicht aus supplier_articles.price abgeleitet)."
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    unit_of_measure VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE commodity_groups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_commodity_groups PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    email VARCHAR(255),\n    country VARCHAR(255),\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE warehouses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    CONSTRAINT pk_warehouses PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    warehouse_id INTEGER NOT NULL,\n    order_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    expected_delivery_date DATE,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_orders_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)\n);\n\nCREATE TABLE supplier_articles (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    delivery_time_days INTEGER,\n    CONSTRAINT pk_supplier_articles PRIMARY KEY (id),\n    CONSTRAINT fk_supplier_articles_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_supplier_articles_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    supplier_article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_supplier_article_id FOREIGN KEY (supplier_article_id) REFERENCES supplier_articles (id)\n);\n\nCREATE TABLE warehouse_commodity_groups (\n    warehouse_id INTEGER NOT NULL,\n    commodity_group_id INTEGER NOT NULL,\n    CONSTRAINT pk_warehouse_commodity_groups PRIMARY KEY (warehouse_id, commodity_group_id),\n    CONSTRAINT fk_warehouse_commodity_groups_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses (id),\n    CONSTRAINT fk_warehouse_commodity_groups_commodity_group_id FOREIGN KEY (commodity_group_id) REFERENCES commodity_groups (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 6 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 3 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 3 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 8 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 38719,
+    "total_output_tokens": 11732,
+    "total_tokens": 50451,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 15705,
+        "output_tokens": 5066,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8217,
+        "output_tokens": 2605,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8129,
+        "output_tokens": 2256,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 6668,
+        "output_tokens": 1805,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2490,
+        "output_tokens": 1334,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3931,
+        "output_tokens": 1278,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3887,
+        "output_tokens": 1210,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6467,
+        "output_tokens": 1887,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4286,
+        "output_tokens": 1327,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4242,
+        "output_tokens": 1046,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6748,
+        "output_tokens": 1845,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6668,
+        "output_tokens": 1805,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,356 @@
+{
+  "testfall_id": "TC011",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.980952380952381,
+  "score_gesamt": 0.9885714285714287,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9523809523809523,
+      "recall": 0.9523809523809523,
+      "f1": 0.9523809523809523,
+      "matched": 20,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "dentists.specialty",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Zahnarztpraxis soll festgehalten werden, welche Patientinnen und Patienten betreut werden und welche Termine sie haben. Von jeder Person werden Vorname, Nachname, Geburtsdatum, Telefonnummer, E-Mail-Adresse und die Postanschrift benötigt. Jede behandelnde Zahnärztin oder jeder behandelnde Zahnarzt soll mit Vorname, Nachname, Telefonnummer, E-Mail-Adresse und Fachgebiet erfasst werden. Für jeden Termin muss gespeichert werden, zu welcher Patientin oder zu welchem Patienten er gehört, von welcher Zahnärztin oder welchem Zahnarzt er durchgeführt wird, an welchem Tag und zu welcher Uhrzeit er stattfindet und welcher Grund angegeben wurde. Zusätzlich soll dokumentiert werden, ob der Termin bereits wahrgenommen wurde oder ausgefallen ist.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "patients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dentists",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "specialization",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dentist_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reason",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "was_attended",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "was_cancelled",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "dentist_id",
+              "references_table": "dentists",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: patients (Patientinnen/Patienten), dentists (Zahnärztinnen/Zahnärzte), appointments (Termine). Die Anforderung ist vollständig abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Patienten (Vorname, Nachname, Geburtsdatum, Telefonnummer, E-Mail, Postanschrift), Zahnärzte (Vorname, Nachname, Telefonnummer, E-Mail, Fachgebiet), Termine (Patient, Zahnarzt, Datum, Uhrzeit, Grund, Wahrnehmung, Ausfall). Attributnamen folgen den Konventionen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: 1:N zwischen patients und appointments (ein Patient hat viele Termine), 1:N zwischen dentists und appointments (ein Zahnarzt führt viele Termine durch). Keine M:N-Beziehungen vorhanden, daher keine Junction-Table erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen erkannt, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, keine transitiven Abhängigkeiten vorhanden. Die Aufteilung in drei Tabellen ist angemessen.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    address TEXT NOT NULL,\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE dentists (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_dentists PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    dentist_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    reason TEXT NOT NULL,\n    was_attended BOOLEAN,\n    was_cancelled BOOLEAN,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_appointments_dentist_id FOREIGN KEY (dentist_id) REFERENCES dentists (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: patients (Patientinnen/Patienten), dentists (Zahnärztinnen/Zahnärzte), appointments (Termine). Die Anforderung ist vollständig abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Patienten (Vorname, Nachname, Geburtsdatum, Telefonnummer, E-Mail, Postanschrift), Zahnärzte (Vorname, Nachname, Telefonnummer, E-Mail, Fachgebiet), Termine (Patient, Zahnarzt, Datum, Uhrzeit, Grund, Wahrnehmung, Ausfall). Attributnamen folgen den Konventionen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: 1:N zwischen patients und appointments (ein Patient hat viele Termine), 1:N zwischen dentists und appointments (ein Zahnarzt führt viele Termine durch). Keine M:N-Beziehungen vorhanden, daher keine Junction-Table erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen erkannt, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, keine transitiven Abhängigkeiten vorhanden. Die Aufteilung in drei Tabellen ist angemessen.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 2,
+    "total_input_tokens": 5714,
+    "total_output_tokens": 1634,
+    "total_tokens": 7348,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 1,
+        "input_tokens": 2307,
+        "output_tokens": 842,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 1,
+        "input_tokens": 3407,
+        "output_tokens": 792,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2307,
+        "output_tokens": 842,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3407,
+        "output_tokens": 792,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

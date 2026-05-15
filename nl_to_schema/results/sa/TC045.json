@@ -1,0 +1,464 @@
+{
+  "testfall_id": "TC045",
+  "workflow": "sa",
+  "score_strukturell": 0.0,
+  "score_semantisch": 0.7657142857142858,
+  "score_gesamt": 0.45942857142857146,
+  "detail_strukturell": {
+    "syntax_gate": 0,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.8571428571428571,
+      "f1": 0.7999999999999999,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.6153846153846154,
+      "recall": 0.7741935483870968,
+      "f1": 0.6857142857142857,
+      "matched": 24,
+      "nur_in_referenz": 7,
+      "nur_in_generiert": 15
+    },
+    "beziehung": {
+      "recall": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "job_roles",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.job_role_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "trainings.title",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_projects.role_in_project",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_projects.assignment_startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "job_roles.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "job_roles.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "job_roles.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees → job_roles",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein mittelständisches Unternehmen soll eine Übersicht über die Belegschaft aufgebaut werden. Von allen Mitarbeitenden sollen die üblichen persönlichen Angaben und das Eintrittsdatum festgehalten werden. Jede Person gehört organisatorisch zu genau einem Bereich, wobei für jeden Bereich nachvollziehbar sein soll, wer ihn leitet. Da Stellen im Unternehmen unterschiedlich ausgestaltet sein können, soll außerdem hinterlegt werden, welche Funktion jemand grundsätzlich hat, etwa in Verwaltung, Technik oder Vertrieb.\n\nMitarbeitende können im Laufe der Zeit an mehreren Projekten mitwirken, und in einem Projekt arbeiten in der Regel mehrere Personen zusammen. Dabei soll sichtbar sein, seit wann jemand in einem Projekt dabei ist und welche Aufgabe er dort übernimmt. Die Aufgabe kann je nach Projekt unterschiedlich sein. Projekte selbst sollen mit Bezeichnung, geplanter Laufzeit und Budget erfasst werden.\n\nZusätzlich soll dokumentiert werden, welche Fortbildungen angeboten werden und welche Mitarbeitenden daran teilnehmen. Nicht jede Schulung ist für jede Funktion gleich relevant, aber es soll zumindest festgehalten werden, wer wann an welcher Fortbildung teilgenommen hat. Bereiche sollen einerseits als organisatorische Einheiten sichtbar sein, andererseits auch für Auswertungen nach Verantwortungsbereich dienen.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "departments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manager_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manager_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "functions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "department_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "function_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "department_id",
+              "references_table": "departments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "function_id",
+              "references_table": "functions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "projects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "budget",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employee_projects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "trainings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "provider",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "training_functions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "training_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "function_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "training_id",
+              "references_table": "trainings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "function_id",
+              "references_table": "functions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "employee_trainings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "training_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "participationdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "training_id",
+              "references_table": "trainings",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "",
+    "final_critic_report": null,
+    "error": "ddl_generation_failed: Zirkelreferenz im Schema entdeckt: departments -> employees -> departments. Topologische Sortierung nicht möglich.",
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2472,
+    "total_output_tokens": 1842,
+    "total_tokens": 4314,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2472,
+        "output_tokens": 1842,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2472,
+        "output_tokens": 1842,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,985 @@
+{
+  "testfall_id": "TC061",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.47926267281105994,
+  "score_gesamt": 0.687557603686636,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.5,
+      "recall": 0.46875,
+      "f1": 0.4838709677419355,
+      "matched": 15,
+      "nur_in_referenz": 17,
+      "nur_in_generiert": 15
+    },
+    "beziehung": {
+      "recall": 0.2857142857142857,
+      "matched": 2,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "subscription_plans",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions.subscription_plan_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions.promotion_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "payments.is_successful",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.magazine_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.plan_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.duration_months",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions.enddate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.promotion_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans.subscription_plan_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans → promotions",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "promotions_subscription_plans → subscription_plans",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscription_plans → magazines",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions → promotions",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions → subscription_plans",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Verlag bietet verschiedene Abos fuer seine Zeitschriften an. Jede Zeitschrift hat einen Titel und erscheint in einem bestimmten Rhythmus, zum Beispiel monatlich oder vierteljaehrlich. Zu jeder Zeitschrift koennen mehrere Abo-Varianten angeboten werden, etwa Print, Digital oder eine Kombination daraus. Die Preise koennen sich je nach Laufzeit unterscheiden, zum Beispiel monatlich oder fuer ein ganzes Jahr.\n\nKundinnen und Kunden sollen mit Namen, E-Mail-Adresse und dem Datum ihrer Registrierung verwaltet werden. Eine Person kann mehrere Abos gleichzeitig haben, auch fuer unterschiedliche Zeitschriften. Wenn jemand ein Abo abschliesst, soll festgehalten werden, ab wann es gilt und ob es bereits beendet wurde. Ausserdem soll nachvollziehbar sein, ueber welchen Weg das Abo zustande kam, etwa online, telefonisch oder im Rahmen einer Aktion.\n\nFuer Werbeaktionen koennen mehrere Abo-Varianten vorgesehen sein, und dieselbe Abo-Variante kann auch in verschiedenen Aktionen vorkommen. Nicht jede Aktion ist unbegrenzt gueltig; manche laufen nur in einem bestimmten Zeitraum. Wenn ein Kunde ein Abo nutzt, sollen die zugehoerigen Zahlungen gespeichert werden. Dabei ist wichtig, wann bezahlt wurde, welcher Betrag eingegangen ist und ob die Zahlung erfolgreich war.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "magazines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publication_frequency",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "subscription_variants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "magazine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duration",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "magazine_id",
+              "references_table": "magazines",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "registration_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "campaigns",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "campaign_subscription_variants",
+          "columns": [
+            {
+              "name": "campaign_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "subscription_variant_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "campaign_id",
+              "references_table": "campaigns",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subscription_variant_id",
+              "references_table": "subscription_variants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "subscriptions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subscription_variant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "campaign_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "acquisition_channel",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subscription_variant_id",
+              "references_table": "subscription_variants",
+              "references_column": "id"
+            },
+            {
+              "from_column": "campaign_id",
+              "references_table": "campaigns",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "payments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "subscription_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "payment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subscription_id",
+              "references_table": "subscriptions",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Zeitschrift",
+          "attribute": [
+            "Titel",
+            "Erscheinungsrhythmus"
+          ],
+          "beschreibung": "Eine Publikation, die in regelmäßigen Abständen erscheint und für die Abo-Varianten angeboten werden."
+        },
+        {
+          "name": "Abo-Variante",
+          "attribute": [
+            "Typ",
+            "Preis",
+            "Laufzeit"
+          ],
+          "beschreibung": "Eine spezifische Abovariante einer Zeitschrift, z.B. Print, Digital oder Kombination, mit unterschiedlichen Preisen je nach Laufzeit."
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Name",
+            "E-Mail-Adresse",
+            "Registrierungsdatum"
+          ],
+          "beschreibung": "Eine Person, die Abos abschließen kann und verwaltet werden soll."
+        },
+        {
+          "name": "Abo",
+          "attribute": [
+            "Startdatum",
+            "Enddatum",
+            "Abschlusskanal"
+          ],
+          "beschreibung": "Ein Abonnement, das ein Kunde für eine Abo-Variante abschließt, mit Informationen zum Gültigkeitszeitraum und dem Abschlussweg."
+        },
+        {
+          "name": "Aktion",
+          "attribute": [
+            "Name",
+            "Startdatum",
+            "Enddatum"
+          ],
+          "beschreibung": "Eine Werbeaktion, die mehrere Abo-Varianten umfassen kann und zeitlich begrenzt sein kann."
+        },
+        {
+          "name": "Zahlung",
+          "attribute": [
+            "Zahlungsdatum",
+            "Betrag",
+            "Status"
+          ],
+          "beschreibung": "Eine Zahlung, die zu einem Abo gehört, mit Information über Zeitpunkt, Betrag und Erfolg der Zahlung."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Zeitschrift",
+          "zu": "Abo-Variante",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Zu jeder Zeitschrift können mehrere Abo-Varianten angeboten werden."
+        },
+        {
+          "von": "Kunde",
+          "zu": "Abo",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Abos gleichzeitig haben."
+        },
+        {
+          "von": "Abo-Variante",
+          "zu": "Abo",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Abo-Variante kann von mehreren Kunden abonniert werden."
+        },
+        {
+          "von": "Aktion",
+          "zu": "Abo-Variante",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Mehrere Abo-Varianten können in einer Aktion vorgesehen sein, und dieselbe Abo-Variante kann in verschiedenen Aktionen vorkommen."
+        },
+        {
+          "von": "Abo",
+          "zu": "Zahlung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Zu einem Abo gehören mehrere Zahlungen, die gespeichert werden sollen."
+        },
+        {
+          "von": "Aktion",
+          "zu": "Abo",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Abo kann im Rahmen einer Aktion zustande kommen (optional, da nicht jedes Abo über eine Aktion abgeschlossen wird)."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Der Abschlusskanal wird als 'online, telefonisch oder im Rahmen einer Aktion' beschrieben. Unklar ist, ob 'Aktion' ein separater Kanal ist oder ob Aktionen auch online/telefonisch stattfinden können.",
+          "betroffene_elemente": [
+            "Abo",
+            "Aktion",
+            "Abschlusskanal"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob jedes Abo über eine Aktion zustande kommen muss oder ob dies optional ist. Der Text deutet an, dass nicht jede Aktion unbegrenzt gültig ist, aber nicht, ob jedes Abo an eine Aktion gebunden sein muss.",
+          "betroffene_elemente": [
+            "Abo",
+            "Aktion"
+          ]
+        },
+        {
+          "beschreibung": "Die Laufzeit wird bei Abo-Varianten erwähnt (monatlich, jährlich), aber unklar ist, ob dies ein festes Attribut der Variante ist oder ob die Laufzeit pro Abo-Abschluss variabel ist.",
+          "betroffene_elemente": [
+            "Abo-Variante",
+            "Abo",
+            "Laufzeit"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob das Enddatum eines Abos automatisch berechnet wird (Startdatum + Laufzeit) oder ob es separat gespeichert werden muss.",
+          "betroffene_elemente": [
+            "Abo",
+            "Startdatum",
+            "Enddatum"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, wie die Beziehung zwischen Abo und Aktion modelliert werden soll: Soll jedes Abo optional einer Aktion zugeordnet sein, oder gibt es eine separate Zuordnungstabelle?",
+          "betroffene_elemente": [
+            "Abo",
+            "Aktion"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Zeitschrift",
+          "attribute": [
+            {
+              "name": "zeitschrift_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "titel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "erscheinungsrhythmus",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Abo-Variante",
+          "attribute": [
+            {
+              "name": "abo_variante_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zeitschrift_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "typ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "laufzeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kunde_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "registrierungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Abo",
+          "attribute": [
+            {
+              "name": "abo_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kunde_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "abo_variante_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "aktion_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "abschlusskanal",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Aktion",
+          "attribute": [
+            {
+              "name": "aktion_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Zahlung",
+          "attribute": [
+            {
+              "name": "zahlung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "abo_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zahlungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "betrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Zeitschrift",
+          "zu": "Abo-Variante",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kunde",
+          "zu": "Abo",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Abo-Variante",
+          "zu": "Abo",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Aktion",
+          "zu": "Abo-Variante",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Abo",
+          "zu": "Zahlung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Aktion",
+          "zu": "Abo",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: magazines, subscription_variants, customers, subscriptions, campaigns, payments. Die Abbildung ist vollständig und korrekt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt abgebildet. Namenskonventionen (snake_case, englisch) sind konsistent eingehalten. Datentypen sind angemessen gewählt (VARCHAR für Texte, DATE für Daten, DECIMAL für Preise/Beträge, INTEGER für IDs).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 6 Beziehungen aus dem RequirementsReport sind korrekt im LogicalSchema abgebildet: (1) Zeitschrift→Abo-Variante (1:N via magazine_id FK), (2) Kunde→Abo (1:N via customer_id FK), (3) Abo-Variante→Abo (1:N via subscription_variant_id FK), (4) Aktion↔Abo-Variante (M:N via campaign_subscription_variants Junction-Table), (5) Abo→Zahlung (1:N via subscription_id FK), (6) Aktion→Abo (1:N via campaign_id FK, optional). Kardinalitäten und Optionalität sind korrekt modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table campaign_subscription_variants ist korrekt für die M:N-Beziehung modelliert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE campaigns (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    CONSTRAINT pk_campaigns PRIMARY KEY (id)\n);\n\nCREATE TABLE magazines (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publication_frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_magazines PRIMARY KEY (id)\n);\n\nCREATE TABLE subscription_variants (\n    id INTEGER NOT NULL,\n    magazine_id INTEGER NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    duration VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_subscription_variants PRIMARY KEY (id),\n    CONSTRAINT fk_subscription_variants_magazine_id FOREIGN KEY (magazine_id) REFERENCES magazines (id)\n);\n\nCREATE TABLE campaign_subscription_variants (\n    campaign_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    CONSTRAINT pk_campaign_subscription_variants PRIMARY KEY (campaign_id, subscription_variant_id),\n    CONSTRAINT fk_campaign_subscription_variants_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id),\n    CONSTRAINT fk_campaign_subscription_variants_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE subscriptions (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    campaign_id INTEGER,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    acquisition_channel VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_subscriptions PRIMARY KEY (id),\n    CONSTRAINT fk_subscriptions_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_subscriptions_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id),\n    CONSTRAINT fk_subscriptions_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    subscription_id INTEGER NOT NULL,\n    payment_date DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_subscription_id FOREIGN KEY (subscription_id) REFERENCES subscriptions (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: magazines, subscription_variants, customers, subscriptions, campaigns, payments. Die Abbildung ist vollständig und korrekt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt abgebildet. Namenskonventionen (snake_case, englisch) sind konsistent eingehalten. Datentypen sind angemessen gewählt (VARCHAR für Texte, DATE für Daten, DECIMAL für Preise/Beträge, INTEGER für IDs).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 6 Beziehungen aus dem RequirementsReport sind korrekt im LogicalSchema abgebildet: (1) Zeitschrift→Abo-Variante (1:N via magazine_id FK), (2) Kunde→Abo (1:N via customer_id FK), (3) Abo-Variante→Abo (1:N via subscription_variant_id FK), (4) Aktion↔Abo-Variante (M:N via campaign_subscription_variants Junction-Table), (5) Abo→Zahlung (1:N via subscription_id FK), (6) Aktion→Abo (1:N via campaign_id FK, optional). Kardinalitäten und Optionalität sind korrekt modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table campaign_subscription_variants ist korrekt für die M:N-Beziehung modelliert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 4,
+    "total_input_tokens": 16865,
+    "total_output_tokens": 6072,
+    "total_tokens": 22937,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1650,
+        "output_tokens": 1549,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3278,
+        "output_tokens": 1864,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4304,
+        "output_tokens": 1692,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 1,
+        "input_tokens": 7633,
+        "output_tokens": 967,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1650,
+        "output_tokens": 1549,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3278,
+        "output_tokens": 1864,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4304,
+        "output_tokens": 1692,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7633,
+        "output_tokens": 967,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

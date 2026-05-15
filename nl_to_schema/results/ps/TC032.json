@@ -1,0 +1,473 @@
+{
+  "testfall_id": "TC032",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9555555555555555,
+  "score_gesamt": 0.9733333333333333,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.8888888888888888,
+      "recall": 0.8888888888888888,
+      "f1": 0.8888888888888888,
+      "matched": 16,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "districts.borough",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Die Stadtverwaltung möchte die Informationen zu ihren Spielplätzen übersichtlich festhalten. Für jeden Spielplatz sollen der Name, die Straße, die Hausnummer, die Postleitzahl, der Ort und das Eröffnungsdatum gespeichert werden. Jeder Spielplatz liegt genau in einem Stadtteil. Zu jedem Stadtteil sollen der Name und der zuständige Bezirk erfasst werden. Auf jedem Spielplatz gibt es mehrere Spielgeräte. Für jedes Spielgerät sollen die Bezeichnung, die Geräteart, das Aufbaudatum und der aktuelle Zustand gespeichert werden. Jedes Spielgerät gehört immer genau zu einem Spielplatz. Außerdem soll vermerkt werden, ob ein Spielplatz aktuell geöffnet ist. Weitere Angaben sind nicht nötig.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "playgrounds",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "housenumber",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postalcode",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "openingdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_open",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "district_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "district_id",
+              "references_table": "districts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "districts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "responsible_district",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "playground_equipment",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "equipment_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "installation_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "condition",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "playground_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "playground_id",
+              "references_table": "playgrounds",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Spielplatz",
+          "attribute": [
+            "Name",
+            "Straße",
+            "Hausnummer",
+            "Postleitzahl",
+            "Ort",
+            "Eröffnungsdatum",
+            "Geöffnet"
+          ],
+          "beschreibung": "Ein Spielplatz mit Adressinformationen und Öffnungsstatus"
+        },
+        {
+          "name": "Stadtteil",
+          "attribute": [
+            "Name",
+            "Zuständiger Bezirk"
+          ],
+          "beschreibung": "Ein Stadtteil, in dem Spielplätze liegen"
+        },
+        {
+          "name": "Spielgerät",
+          "attribute": [
+            "Bezeichnung",
+            "Geräteart",
+            "Aufbaudatum",
+            "Zustand"
+          ],
+          "beschreibung": "Ein Spielgerät, das auf einem Spielplatz installiert ist"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Spielplatz",
+          "zu": "Stadtteil",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Spielplatz liegt genau in einem Stadtteil"
+        },
+        {
+          "von": "Spielplatz",
+          "zu": "Spielgerät",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Auf jedem Spielplatz gibt es mehrere Spielgeräte; jedes Spielgerät gehört genau zu einem Spielplatz"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Das Attribut 'Zuständiger Bezirk' bei Stadtteil ist unklar: Es ist nicht definiert, ob dies eine Referenz zu einer separaten Entität 'Bezirk' sein soll oder nur ein Textfeld mit dem Namen des Bezirks.",
+          "betroffene_elemente": [
+            "Stadtteil"
+          ]
+        },
+        {
+          "beschreibung": "Der Datentyp und die zulässigen Werte für das Attribut 'Geöffnet' bei Spielplatz sind nicht spezifiziert (z.B. Boolean, Ja/Nein, oder Status-Code).",
+          "betroffene_elemente": [
+            "Spielplatz"
+          ]
+        },
+        {
+          "beschreibung": "Das Attribut 'Zustand' bei Spielgerät ist nicht näher definiert: Unklar sind die zulässigen Werte oder Kategorien (z.B. 'gut', 'beschädigt', 'wartungsbedürftig').",
+          "betroffene_elemente": [
+            "Spielgerät"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Spielplatz",
+          "attribute": [
+            {
+              "name": "spielplatz_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "strasse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "hausnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "postleitzahl",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ort",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "eroeffnungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geoeffnet",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "stadtteil_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Stadtteil",
+          "attribute": [
+            {
+              "name": "stadtteil_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zustaendiger_bezirk",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Spielgerät",
+          "attribute": [
+            {
+              "name": "spielgeraet_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geraeteart",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "aufbaudatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zustand",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "spielplatz_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Spielplatz",
+          "zu": "Stadtteil",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Spielplatz",
+          "zu": "Spielgerät",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE districts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    responsible_district VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_districts PRIMARY KEY (id)\n);\n\nCREATE TABLE playgrounds (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    housenumber VARCHAR(255) NOT NULL,\n    postalcode VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    openingdate DATE NOT NULL,\n    is_open BOOLEAN NOT NULL,\n    district_id INTEGER NOT NULL,\n    CONSTRAINT pk_playgrounds PRIMARY KEY (id),\n    CONSTRAINT fk_playgrounds_district_id FOREIGN KEY (district_id) REFERENCES districts (id)\n);\n\nCREATE TABLE playground_equipment (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    equipment_type VARCHAR(255) NOT NULL,\n    installation_date DATE NOT NULL,\n    condition VARCHAR(255) NOT NULL,\n    playground_id INTEGER NOT NULL,\n    CONSTRAINT pk_playground_equipment PRIMARY KEY (id),\n    CONSTRAINT fk_playground_equipment_playground_id FOREIGN KEY (playground_id) REFERENCES playgrounds (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7094,
+    "total_output_tokens": 2750,
+    "total_tokens": 9844,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1474,
+        "output_tokens": 744,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2249,
+        "output_tokens": 1107,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3371,
+        "output_tokens": 899,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1474,
+        "output_tokens": 744,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2249,
+        "output_tokens": 1107,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3371,
+        "output_tokens": 899,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

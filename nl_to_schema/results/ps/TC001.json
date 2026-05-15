@@ -1,0 +1,402 @@
+{
+  "testfall_id": "TC001",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9692307692307693,
+  "score_gesamt": 0.9815384615384616,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9230769230769231,
+      "recall": 0.9230769230769231,
+      "f1": 0.9230769230769231,
+      "matched": 12,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "shelves.label",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Bibliothek soll festgehalten werden, welche Bücher vorhanden sind, von wem sie geschrieben wurden und in welchem Regal sie stehen. Zu jedem Buch werden der Titel, das Erscheinungsjahr und eine kurze Beschreibung benötigt. Jedes Buch stammt genau von einer Autorin oder einem Autor, aber eine Autorin oder ein Autor kann mehrere Bücher geschrieben haben. Außerdem steht jedes Buch genau in einem Regal, während in einem Regal mehrere Bücher stehen können. Für Autorinnen und Autoren sollen Vorname, Nachname und Geburtsdatum gespeichert werden. Für Regale werden eine Bezeichnung und der Standortbereich in der Bibliothek benötigt. Es sollen nur aktuell vorhandene Bücher erfasst werden, keine Ausleihen oder Reservierungen.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "authors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "shelves",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_area",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "books",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publicationyear",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "author_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "shelf_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "author_id",
+              "references_table": "authors",
+              "references_column": "id"
+            },
+            {
+              "from_column": "shelf_id",
+              "references_table": "shelves",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Buch",
+          "attribute": [
+            "Titel",
+            "Erscheinungsjahr",
+            "Beschreibung"
+          ],
+          "beschreibung": "Repräsentiert ein Buch in der Bibliothek mit seinen grundlegenden Metadaten."
+        },
+        {
+          "name": "Autor",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Geburtsdatum"
+          ],
+          "beschreibung": "Repräsentiert eine Autorin oder einen Autor, der Bücher geschrieben hat."
+        },
+        {
+          "name": "Regal",
+          "attribute": [
+            "Bezeichnung",
+            "Standortbereich"
+          ],
+          "beschreibung": "Repräsentiert ein Regal in der Bibliothek, in dem Bücher stehen."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Buch",
+          "zu": "Autor",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Buch stammt genau von einer Autorin oder einem Autor, aber eine Autorin oder ein Autor kann mehrere Bücher geschrieben haben."
+        },
+        {
+          "von": "Buch",
+          "zu": "Regal",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Buch steht genau in einem Regal, während in einem Regal mehrere Bücher stehen können."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist unklar, ob Bücher eindeutig identifiziert werden können (z.B. durch ISBN oder eine eindeutige Buch-ID). Der Text nennt nur Titel, Erscheinungsjahr und Beschreibung, was nicht garantiert eindeutig ist.",
+          "betroffene_elemente": [
+            "Buch"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob mehrere Exemplare desselben Buches separat erfasst werden oder ob nur eine Buch-Entität pro Titel/Autor-Kombination existiert.",
+          "betroffene_elemente": [
+            "Buch"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob Autoren eindeutig identifiziert werden können (z.B. durch eine Autor-ID). Vorname und Nachname könnten nicht eindeutig sein.",
+          "betroffene_elemente": [
+            "Autor"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Buch",
+          "attribute": [
+            {
+              "name": "buch_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "titel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "erscheinungsjahr",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "autor_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "regal_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Autor",
+          "attribute": [
+            {
+              "name": "autor_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Regal",
+          "attribute": [
+            {
+              "name": "regal_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "standortbereich",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Buch",
+          "zu": "Autor",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Buch",
+          "zu": "Regal",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE authors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    CONSTRAINT pk_authors PRIMARY KEY (id)\n);\n\nCREATE TABLE shelves (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    location_area VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_shelves PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publicationyear INTEGER NOT NULL,\n    description TEXT,\n    author_id INTEGER NOT NULL,\n    shelf_id INTEGER NOT NULL,\n    CONSTRAINT pk_books PRIMARY KEY (id),\n    CONSTRAINT fk_books_author_id FOREIGN KEY (author_id) REFERENCES authors (id),\n    CONSTRAINT fk_books_shelf_id FOREIGN KEY (shelf_id) REFERENCES shelves (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 6787,
+    "total_output_tokens": 2131,
+    "total_tokens": 8918,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1475,
+        "output_tokens": 703,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2199,
+        "output_tokens": 728,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3113,
+        "output_tokens": 700,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1475,
+        "output_tokens": 703,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2199,
+        "output_tokens": 728,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3113,
+        "output_tokens": 700,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

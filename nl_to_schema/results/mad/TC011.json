@@ -1,0 +1,442 @@
+{
+  "testfall_id": "TC011",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.961904761904762,
+  "score_gesamt": 0.9771428571428572,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9047619047619048,
+      "recall": 0.9047619047619048,
+      "f1": 0.9047619047619048,
+      "matched": 19,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "appointments.attended",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dentists.specialty",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Zahnarztpraxis soll festgehalten werden, welche Patientinnen und Patienten betreut werden und welche Termine sie haben. Von jeder Person werden Vorname, Nachname, Geburtsdatum, Telefonnummer, E-Mail-Adresse und die Postanschrift benötigt. Jede behandelnde Zahnärztin oder jeder behandelnde Zahnarzt soll mit Vorname, Nachname, Telefonnummer, E-Mail-Adresse und Fachgebiet erfasst werden. Für jeden Termin muss gespeichert werden, zu welcher Patientin oder zu welchem Patienten er gehört, von welcher Zahnärztin oder welchem Zahnarzt er durchgeführt wird, an welchem Tag und zu welcher Uhrzeit er stattfindet und welcher Grund angegeben wurde. Zusätzlich soll dokumentiert werden, ob der Termin bereits wahrgenommen wurde oder ausgefallen ist.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "patients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dentists",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "specialization",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dentist_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reason",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_attended",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_cancelled",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "dentist_id",
+              "references_table": "dentists",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung verlangt, dass für Termine dokumentiert wird, 'ob der Termin bereits wahrgenommen wurde oder ausgefallen ist'. Das Feld 'status' ist als VARCHAR definiert, ohne Wertebereich oder Constraint. Dies führt zu Datenkonsistenzproblemen: Ungültige Werte (z.B. 'wahrgenommen', 'wahrgenommen_', 'WAHRGENOMMEN') können eingegeben werden. Semantisch sollte 'status' ein ENUM oder CHECK-Constraint mit definierten Werten sein (z.B. 'completed', 'cancelled', 'scheduled').",
+          "korrekturanweisung": "Definiere 'status' mit explizitem Wertebereich: ENUM('completed', 'cancelled', 'scheduled') oder VARCHAR mit CHECK-Constraint. Alternativ: Nutze BOOLEAN-Felder 'is_completed' und 'is_cancelled' für klare Semantik."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Das Feld 'appointment_time' ist als VARCHAR definiert. Dies ist problematisch, da Zeitangaben als TIME-Datentyp gespeichert werden sollten, um Vergleiche, Sortierungen und Validierungen zu ermöglichen. VARCHAR erlaubt ungültige Formate (z.B. '25:99', 'mittags', '14.30') und erschwert Abfragen wie 'Termine nach 14:00 Uhr'.",
+          "korrekturanweisung": "Ändere 'appointment_time' von VARCHAR zu TIME. Dies ermöglicht korrekte zeitliche Vergleiche und Validierung."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die 1:N-Beziehungen zwischen patients→appointments und dentists→appointments sind korrekt modelliert. Foreign Keys sind NOT NULL, was die referenzielle Integrität sichert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine transitiven Abhängigkeiten, keine Redundanzen. Jede Tabelle hat einen eindeutigen Primärschlüssel, und alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind modelliert: patients, dentists, appointments. Keine fehlenden Entitäten identifiziert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Das Attribut 'appointment_time' ist als VARCHAR modelliert. Für eine Uhrzeit sollte der Typ TIME verwendet werden, um Konsistenz und Abfragbarkeit zu gewährleisten. VARCHAR erlaubt beliebige Strings und ist semantisch falsch.",
+          "korrekturanweisung": "Ändern Sie 'appointment_time' von VARCHAR zu TIME."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Das Attribut 'status' in der Tabelle 'appointments' ist als VARCHAR modelliert, aber der Anforderungstext spezifiziert nur zwei diskrete Zustände: 'wahrgenommen' oder 'ausgefallen'. VARCHAR erlaubt beliebige Werte und ist semantisch ungeeignet.",
+          "korrekturanweisung": "Ändern Sie 'status' zu ENUM oder VARCHAR mit CHECK-Constraint, das nur die Werte 'attended' und 'cancelled' zulässt. Alternativ: BOOLEAN (true=attended, false=cancelled)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: appointments hat 1:N-Beziehungen zu patients und dentists mit korrekten FK-Definitionen. Keine M:N-Beziehungen erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist normalisiert (3NF). Keine Redundanzen oder Anomalien erkannt.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    address TEXT NOT NULL,\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE dentists (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_dentists PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    dentist_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    reason TEXT NOT NULL,\n    is_attended BOOLEAN,\n    is_cancelled BOOLEAN,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_appointments_dentist_id FOREIGN KEY (dentist_id) REFERENCES dentists (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=1] C1: 2 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=2] C1: 2 unerfüllte Findings.",
+      "[iter=2] C2: 2 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 3 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 30148,
+    "total_output_tokens": 6930,
+    "total_tokens": 37078,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 12388,
+        "output_tokens": 2807,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6397,
+        "output_tokens": 1826,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6309,
+        "output_tokens": 1293,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5054,
+        "output_tokens": 1004,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2307,
+        "output_tokens": 842,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3220,
+        "output_tokens": 881,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3176,
+        "output_tokens": 651,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5032,
+        "output_tokens": 961,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3177,
+        "output_tokens": 945,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3133,
+        "output_tokens": 642,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5049,
+        "output_tokens": 1004,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5054,
+        "output_tokens": 1004,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,820 @@
+{
+  "testfall_id": "TC062",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8441558441558443,
+  "score_gesamt": 0.9064935064935066,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.8484848484848485,
+      "recall": 0.8484848484848485,
+      "f1": 0.8484848484848486,
+      "matched": 28,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 5
+    },
+    "beziehung": {
+      "recall": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "clients",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "projects.client_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.company_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.contact_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "projects → clients",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein kleines Projektmanagementtool sollen laufende Vorhaben einer Firma übersichtlich verwaltet werden. Zu jedem Vorhaben möchte man festhalten, wie es heißt, worum es geht, wann es geplant startet und endet und ob es gerade aktiv ist. Ein Vorhaben gehört immer zu genau einem Kunden, denn die Firma arbeitet im Auftrag verschiedener Unternehmen. Von den Kunden soll man den Firmennamen, eine Ansprechperson und eine E-Mail-Adresse sehen können.\n\nAußerdem arbeiten mehrere Mitarbeitende an den Vorhaben mit. Eine Person kann an mehreren Vorhaben beteiligt sein, und bei jedem Einsatz soll erkennbar sein, welche Aufgabe oder Funktion die Person dort übernimmt. Zu den Mitarbeitenden werden Vorname, Nachname, E-Mail-Adresse und Eintrittsdatum benötigt.\n\nInnerhalb eines Vorhabens fallen einzelne Aufgaben an. Für jede Aufgabe braucht man einen Titel, eine genauere Beschreibung, ein Fälligkeitsdatum und den aktuellen Stand. Aufgaben werden in der Regel einer verantwortlichen Person zugeordnet, damit klar ist, wer sich kümmert. Zusätzlich sollen Mitarbeitende Zeiten auf Aufgaben buchen können, damit man später den Aufwand je Vorhaben auswerten kann. Dabei reicht es, Datum, Dauer und ein kurzer Kommentar. Es soll nachvollziehbar bleiben, wer woran gearbeitet hat.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "projects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "planned_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "tasks",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "due_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "responsible_employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "responsible_employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "time_entries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "entry_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duration",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "comment",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "task_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "task_id",
+              "references_table": "tasks",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "employee_project_assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Vorhaben",
+          "attribute": [
+            "Name",
+            "Beschreibung",
+            "Geplantes Startdatum",
+            "Geplantes Enddatum",
+            "Aktiv-Status"
+          ],
+          "beschreibung": "Ein Vorhaben ist ein Projekt, das die Firma für einen Kunden durchführt. Es hat einen Namen, eine Beschreibung, geplante Start- und Enddaten sowie einen Status, der anzeigt, ob es aktiv ist."
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Firmennamen",
+            "Ansprechperson",
+            "E-Mail-Adresse"
+          ],
+          "beschreibung": "Ein Kunde ist ein Unternehmen, das die Firma mit Vorhaben beauftragt. Von jedem Kunden werden Firmennamen, eine Ansprechperson und eine E-Mail-Adresse erfasst."
+        },
+        {
+          "name": "Mitarbeitende",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "E-Mail-Adresse",
+            "Eintrittsdatum"
+          ],
+          "beschreibung": "Mitarbeitende sind Personen, die an Vorhaben und Aufgaben arbeiten. Für jeden Mitarbeitenden werden Vorname, Nachname, E-Mail-Adresse und Eintrittsdatum erfasst."
+        },
+        {
+          "name": "Aufgabe",
+          "attribute": [
+            "Titel",
+            "Beschreibung",
+            "Fälligkeitsdatum",
+            "Stand"
+          ],
+          "beschreibung": "Eine Aufgabe ist eine konkrete Tätigkeit innerhalb eines Vorhabens. Sie hat einen Titel, eine Beschreibung, ein Fälligkeitsdatum und einen aktuellen Stand. Eine Aufgabe wird einer verantwortlichen Person zugeordnet."
+        },
+        {
+          "name": "Zeitbuchung",
+          "attribute": [
+            "Datum",
+            "Dauer",
+            "Kommentar"
+          ],
+          "beschreibung": "Eine Zeitbuchung erfasst die Zeit, die ein Mitarbeitender an einer Aufgabe arbeitet. Sie enthält das Datum, die Dauer und einen kurzen Kommentar."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Vorhaben",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Vorhaben gehört immer zu genau einem Kunden. Ein Kunde kann mehrere Vorhaben haben."
+        },
+        {
+          "von": "Aufgabe",
+          "zu": "Vorhaben",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Aufgaben fallen innerhalb eines Vorhabens an. Ein Vorhaben kann mehrere Aufgaben haben."
+        },
+        {
+          "von": "Aufgabe",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Aufgabe wird einer verantwortlichen Person zugeordnet. Ein Mitarbeitender kann mehrere Aufgaben verantworten."
+        },
+        {
+          "von": "Mitarbeitende",
+          "zu": "Vorhaben",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Mehrere Mitarbeitende arbeiten an Vorhaben mit. Ein Mitarbeitender kann an mehreren Vorhaben beteiligt sein. Die Beziehung wird durch die Einsatzrolle charakterisiert (Aufgabe oder Funktion)."
+        },
+        {
+          "von": "Zeitbuchung",
+          "zu": "Aufgabe",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Zeitbuchungen werden auf Aufgaben gebucht. Eine Aufgabe kann mehrere Zeitbuchungen haben."
+        },
+        {
+          "von": "Zeitbuchung",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Zeitbuchung wird von einem Mitarbeitenden erstellt. Ein Mitarbeitender kann mehrere Zeitbuchungen haben."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Die M:N-Beziehung zwischen Mitarbeitende und Vorhaben wird als 'Aufgabe oder Funktion' beschrieben, aber es ist unklar, ob dies ein separates Attribut in einer Verbindungstabelle sein soll oder ob es sich um eine informelle Beschreibung handelt.",
+          "betroffene_elemente": [
+            "Mitarbeitende",
+            "Vorhaben"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht klar, ob eine Aufgabe immer einer verantwortlichen Person zugeordnet sein muss oder ob dies optional ist ('in der Regel').",
+          "betroffene_elemente": [
+            "Aufgabe",
+            "Mitarbeitende"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob Zeitbuchungen nur auf Aufgaben gebucht werden oder auch direkt auf Vorhaben. Der Text sagt 'Zeiten auf Aufgaben buchen', aber erwähnt auch 'Aufwand je Vorhaben auswerten'.",
+          "betroffene_elemente": [
+            "Zeitbuchung",
+            "Aufgabe",
+            "Vorhaben"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht spezifiziert, ob die E-Mail-Adresse des Kunden die des Ansprechpartners ist oder eine separate Kontaktadresse des Unternehmens.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Firmennamen",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Ansprechperson",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Vorhaben",
+          "attribute": [
+            {
+              "name": "VorhabenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "GeplantesStartdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "GeplantesEnddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "AktivStatus",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Mitarbeitende",
+          "attribute": [
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Eintrittsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Aufgabe",
+          "attribute": [
+            {
+              "name": "AufgabeID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Titel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Fälligkeitsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Stand",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VorhabenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VerantwortlicheMitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Zeitbuchung",
+          "attribute": [
+            {
+              "name": "ZeitbuchungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Dauer",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Kommentar",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "AufgabeID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "MitarbeiterVorhabenEinsatz",
+          "attribute": [
+            {
+              "name": "EinsatzID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VorhabenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Rolle",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Vorhaben",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Aufgabe",
+          "zu": "Vorhaben",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Aufgabe",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "MitarbeiterVorhabenEinsatz",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "MitarbeiterVorhabenEinsatz",
+          "zu": "Vorhaben",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Zeitbuchung",
+          "zu": "Aufgabe",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Zeitbuchung",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE projects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    planned_start_date DATE NOT NULL,\n    planned_end_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    customer_id INTEGER NOT NULL,\n    CONSTRAINT pk_projects PRIMARY KEY (id),\n    CONSTRAINT fk_projects_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE employee_project_assignments (\n    id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    project_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_employee_project_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_employee_project_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_project_assignments_project_id FOREIGN KEY (project_id) REFERENCES projects (id)\n);\n\nCREATE TABLE tasks (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    due_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    project_id INTEGER NOT NULL,\n    responsible_employee_id INTEGER,\n    CONSTRAINT pk_tasks PRIMARY KEY (id),\n    CONSTRAINT fk_tasks_project_id FOREIGN KEY (project_id) REFERENCES projects (id),\n    CONSTRAINT fk_tasks_responsible_employee_id FOREIGN KEY (responsible_employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE time_entries (\n    id INTEGER NOT NULL,\n    entry_date DATE NOT NULL,\n    duration DECIMAL(18,2) NOT NULL,\n    comment TEXT,\n    task_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    CONSTRAINT pk_time_entries PRIMARY KEY (id),\n    CONSTRAINT fk_time_entries_task_id FOREIGN KEY (task_id) REFERENCES tasks (id),\n    CONSTRAINT fk_time_entries_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9628,
+    "total_output_tokens": 5131,
+    "total_tokens": 14759,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1669,
+        "output_tokens": 1555,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3289,
+        "output_tokens": 1810,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4670,
+        "output_tokens": 1766,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1669,
+        "output_tokens": 1555,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3289,
+        "output_tokens": 1810,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4670,
+        "output_tokens": 1766,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

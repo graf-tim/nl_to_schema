@@ -1,0 +1,447 @@
+{
+  "testfall_id": "TC022",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.4731182795698925,
+  "score_gesamt": 0.6838709677419355,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.5,
+      "recall": 0.5333333333333333,
+      "f1": 0.5161290322580646,
+      "matched": 8,
+      "nur_in_referenz": 7,
+      "nur_in_generiert": 8
+    },
+    "beziehung": {
+      "recall": 0.0,
+      "matched": 0,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "toys",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sales.toy_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.manufacturer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys.is_available",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sales → toys",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "toys → manufacturers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Spielzeuggeschäft möchte seine Artikel, die Hersteller und die Verkäufe festhalten. Zu jedem Hersteller sollen der Name, die E-Mail-Adresse und die Telefonnummer gespeichert werden. Jeder Artikel stammt genau von einem Hersteller. Für jeden Artikel werden die Bezeichnung, eine kurze Beschreibung, der Verkaufspreis und ob der Artikel aktuell erhältlich ist benötigt. Außerdem soll festgehalten werden, wann ein Verkauf stattgefunden hat. Ein Verkauf bezieht sich immer auf genau einen Artikel. Zu jedem Verkauf sollen die verkaufte Menge und der zum Verkaufszeitpunkt berechnete Gesamtbetrag gespeichert werden. Es soll möglich sein, alle Artikel eines Herstellers sowie alle Verkäufe zu einem bestimmten Artikel auszuwerten.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "articles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "sale_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sales",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "sale_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_price_at_sale",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "article_id",
+              "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'customers' ist nicht in den Anforderungen vorgesehen. Der Anforderungstext erwähnt nur Hersteller, Artikel und Verkäufe – nicht Kunden. Die Tabelle wurde ohne Anforderungsgrundlage hinzugefügt und führt zu unnötiger Komplexität.",
+          "korrekturanweisung": "Entfernen Sie die 'customers'-Tabelle. Falls Kundendaten später erforderlich werden, sollten diese explizit in den Anforderungen dokumentiert sein."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "In der 'sales'-Tabelle fehlt das Attribut 'total_amount' (Gesamtbetrag). Der Anforderungstext fordert explizit: 'der zum Verkaufszeitpunkt berechnete Gesamtbetrag'. Derzeit kann dieser nur durch Multiplikation von quantity × unit_price_at_sale berechnet werden, was zu Redundanz und Konsistenzrisiken führt.",
+          "korrekturanweisung": "Fügen Sie ein Attribut 'total_amount' vom Typ DECIMAL NOT NULL in die 'sales'-Tabelle ein. Dies dokumentiert den tatsächlich berechneten Gesamtbetrag und verhindert Rechenabweichungen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'sales' und 'customers' ist nicht korrekt modelliert. Der Anforderungstext sagt: 'Ein Verkauf bezieht sich immer auf genau einen Artikel' – es gibt keine Anforderung für eine Kundenbeziehung. Die customer_id in der sales-Tabelle ist eine nicht-geforderte Fremdschlüssel-Beziehung.",
+          "korrekturanweisung": "Entfernen Sie die customer_id und die entsprechende Fremdschlüssel-Beziehung aus der 'sales'-Tabelle, da diese nicht in den Anforderungen spezifiziert ist."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Die 'articles'-Tabelle enthält das Attribut 'stock_quantity', das eine operative Bestandsverwaltung darstellt, aber nicht in den Anforderungen erwähnt wird. Gleichzeitig fehlt das geforderte Attribut 'is_available' als abgeleitetes Attribut – es sollte aus der Geschäftslogik (stock_quantity > 0) berechnet werden, nicht redundant gespeichert. Dies verstößt gegen die 3NF (transitive Abhängigkeit und Redundanz).",
+          "korrekturanweisung": "Entfernen Sie 'stock_quantity' aus dem Schema, da es nicht gefordert ist. Behalten Sie 'is_available' als BOOLEAN, aber dokumentieren Sie, dass es aus der Geschäftslogik abgeleitet wird. Alternativ: Wenn Bestandsverwaltung erforderlich ist, sollte dies explizit in den Anforderungen stehen und in einer separaten 'inventory'-Tabelle modelliert werden."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'customers' ist im Anforderungstext NICHT erwähnt. Der Text spricht nur von Herstellern, Artikeln und Verkäufen. Es gibt keine Anforderung, Kundendaten zu speichern. Die Tabelle 'customers' ist eine nicht geforderte Entität und sollte entfernt werden.",
+          "korrekturanweisung": "Entfernen Sie die Tabelle 'customers' vollständig. Ein Verkauf benötigt keine Kundenreferenz gemäß Anforderung."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "In der Tabelle 'articles' fehlt das Attribut für 'Gesamtbetrag' oder 'total_amount' bei Verkäufen. Der Anforderungstext fordert explizit: 'der zum Verkaufszeitpunkt berechnete Gesamtbetrag soll gespeichert werden'. In der 'sales'-Tabelle ist nur 'unit_price_at_sale' vorhanden, nicht aber der Gesamtbetrag (quantity × unit_price_at_sale). Zusätzlich ist das Attribut 'stock_quantity' in 'articles' nicht im Anforderungstext erwähnt und sollte überprüft werden.",
+          "korrekturanweisung": "Fügen Sie in der 'sales'-Tabelle ein Attribut 'total_amount' (DECIMAL, NOT NULL) hinzu, das den Gesamtbetrag des Verkaufs speichert. Entfernen Sie 'stock_quantity' aus 'articles', da es nicht gefordert ist."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Fremdschlüssel-Beziehung 'customer_id' in der 'sales'-Tabelle ist fehlerhaft, da die 'customers'-Tabelle selbst nicht gefordert ist. Nach Entfernung der 'customers'-Tabelle muss auch dieser FK entfernt werden. Die verbleibenden Beziehungen (manufacturer → articles, articles → sales) sind korrekt modelliert (1:N).",
+          "korrekturanweisung": "Entfernen Sie den FK 'customer_id' aus der 'sales'-Tabelle nach Entfernung der 'customers'-Tabelle."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema befindet sich in 3. Normalform (3NF). Keine Anomalien durch funktionale Abhängigkeiten erkannt. Die Struktur ist normalisiert.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE articles (\n    id INTEGER NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    sale_price DECIMAL(18,2) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id),\n    CONSTRAINT fk_articles_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE sales (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    sale_date TIMESTAMP NOT NULL,\n    quantity INTEGER NOT NULL,\n    unit_price_at_sale DECIMAL(18,2) NOT NULL,\n    total_amount DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_sales PRIMARY KEY (id),\n    CONSTRAINT fk_sales_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 0 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 3 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 3 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 30565,
+    "total_output_tokens": 7666,
+    "total_tokens": 38231,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 12935,
+        "output_tokens": 2578,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6263,
+        "output_tokens": 2541,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6175,
+        "output_tokens": 1722,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5192,
+        "output_tokens": 825,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2292,
+        "output_tokens": 673,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2982,
+        "output_tokens": 1405,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2938,
+        "output_tokens": 708,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5158,
+        "output_tokens": 1080,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3281,
+        "output_tokens": 1136,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3237,
+        "output_tokens": 1014,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5485,
+        "output_tokens": 825,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5192,
+        "output_tokens": 825,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

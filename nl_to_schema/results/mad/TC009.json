@@ -1,0 +1,461 @@
+{
+  "testfall_id": "TC009",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.26666666666666666,
+  "score_gesamt": 0.56,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.3333333333333333,
+      "recall": 0.3333333333333333,
+      "f1": 0.3333333333333333,
+      "matched": 1,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.3333333333333333,
+      "recall": 0.3333333333333333,
+      "f1": 0.3333333333333333,
+      "matched": 5,
+      "nur_in_referenz": 10,
+      "nur_in_generiert": 10
+    },
+    "beziehung": {
+      "recall": 0.0,
+      "matched": 0,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.label",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.access_note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.job_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.team_note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs → locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Reinigungsbetrieb möchte seine regelmäßigen Einsätze übersichtlich verwalten. Für jeden Kunden sollen der Name, die Telefonnummer, die E-Mail-Adresse und die Anschrift gespeichert werden. Jeder Kunde kann mehrere Einsatzorte haben, zum Beispiel Wohnung, Büro oder Praxis. Zu jedem Einsatzort sollen eine Bezeichnung, die genaue Adresse und ein Hinweis zur Zugänglichkeit festgehalten werden. Für jeden durchgeführten Reinigungseinsatz soll dokumentiert werden, an welchem Tag er stattgefunden hat, zu welchem Einsatzort er gehörte, welcher Status vorliegt und welche Notizen das Reinigungsteam hinterlassen hat. Jeder Reinigungseinsatz gehört immer genau zu einem Einsatzort, und jeder Einsatzort gehört immer genau zu einem Kunden.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "service_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "accessibility_notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "cleaning_services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "service_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "service_location_id",
+              "references_table": "service_locations",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'employees' ist nicht in den Anforderungen vorgesehen. Der Anforderungstext erwähnt nur Kunden, Einsatzorte und Reinigungseinsätze. Die Zuordnung von Mitarbeitern zu Einsätzen ist nicht spezifiziert und wird als Übermodellierung bewertet.",
+          "korrekturanweisung": "Entfernen Sie die 'employees'-Tabelle und den 'employee_id'-Foreign Key aus 'cleaning_services', sofern diese nicht explizit gefordert sind. Falls Mitarbeiterzuordnung später erforderlich wird, sollte dies dokumentiert sein."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "In der Tabelle 'cleaning_services' sind 'start_time' und 'end_time' optional (nullable: true), obwohl sie für die Dokumentation eines durchgeführten Einsatzes relevant sind. Zudem fehlt eine explizite Zuordnung zum Kunden in 'cleaning_services' (nur indirekt über service_location_id), was Abfragen erschwert.",
+          "korrekturanweisung": "Erwägen Sie, 'start_time' und 'end_time' als NOT NULL zu definieren, wenn sie zur Dokumentation gehören. Alternativ: Dokumentieren Sie, warum diese optional sind. Für bessere Abfragbarkeit könnte eine denormalisierte 'customer_id' in 'cleaning_services' sinnvoll sein (Lesezugriff-Optimierung)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'cleaning_services' und 'employees' ist nicht in den Anforderungen definiert. Der Anforderungstext sagt: 'Für jeden durchgeführten Reinigungseinsatz soll dokumentiert werden, an welchem Tag er stattgefunden hat, zu welchem Einsatzort er gehörte, welcher Status vorliegt und welche Notizen das Reinigungsteam hinterlassen hat.' Es wird nicht spezifiziert, dass einzelne Mitarbeiter zugeordnet werden sollen.",
+          "korrekturanweisung": "Klären Sie, ob Mitarbeiterzuordnung erforderlich ist. Falls ja: Dokumentieren Sie dies explizit. Falls nein: Entfernen Sie 'employee_id' aus 'cleaning_services'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine transitiven Abhängigkeiten, keine Redundanzen, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'employees' ist im Anforderungstext nicht erwähnt und nicht gefordert. Der Text spricht von 'Reinigungsteam' und 'Notizen des Reinigungsteams', aber es gibt keine Anforderung zur Verwaltung von Mitarbeitern oder deren Zuweisung zu Einsätzen. Diese Tabelle ist eine nicht-geforderte Erweiterung, die das Schema unnötig komplexifiziert.",
+          "korrekturanweisung": "Entfernen Sie die Tabelle 'employees' und den entsprechenden Foreign Key aus 'cleaning_services', da diese nicht im Anforderungstext gefordert ist."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "In der Tabelle 'cleaning_services' fehlt das Attribut 'employee_id' als Fremdschlüssel nicht, aber die Spalten 'start_time' und 'end_time' sind nicht im Anforderungstext gefordert. Kritischer: Das Attribut 'service_date' ist vom Typ DATE, aber 'start_time' und 'end_time' sind TIMESTAMP. Dies ist inkonsistent und führt zu Redundanz. Zudem ist 'created_at' nicht gefordert und nicht fachlich notwendig.",
+          "korrekturanweisung": "Entfernen Sie 'start_time', 'end_time' und 'created_at' aus 'cleaning_services', da sie nicht gefordert sind. Behalten Sie nur 'service_date' für das Einsatzdatum."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'cleaning_services' und 'employees' ist nicht gefordert. Der Anforderungstext sagt: 'Jeder Reinigungseinsatz gehört immer genau zu einem Einsatzort' – es gibt keine Anforderung, dass ein Einsatz zu einem Mitarbeiter gehört. Die Modellierung einer 1:N-Beziehung zu 'employees' ist daher nicht korrekt und widerspricht dem Anforderungstext.",
+          "korrekturanweisung": "Entfernen Sie den Foreign Key 'employee_id' aus 'cleaning_services' und die gesamte 'employees'-Tabelle."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform normalisiert. Keine Anomalien erkannt (unter Annahme, dass die nicht-geforderten Spalten entfernt werden).",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE service_locations (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    address TEXT NOT NULL,\n    accessibility_notes TEXT,\n    CONSTRAINT pk_service_locations PRIMARY KEY (id),\n    CONSTRAINT fk_service_locations_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE cleaning_services (\n    id INTEGER NOT NULL,\n    service_location_id INTEGER NOT NULL,\n    service_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    notes TEXT,\n    CONSTRAINT pk_cleaning_services PRIMARY KEY (id),\n    CONSTRAINT fk_cleaning_services_service_location_id FOREIGN KEY (service_location_id) REFERENCES service_locations (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=1] C1: 3 unerfüllte Findings.",
+      "[iter=1] C2: 0 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=2] C1: 3 unerfüllte Findings.",
+      "[iter=2] C2: 3 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 3 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 30571,
+    "total_output_tokens": 7296,
+    "total_tokens": 37867,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 12809,
+        "output_tokens": 2619,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6386,
+        "output_tokens": 2211,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6298,
+        "output_tokens": 1683,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5078,
+        "output_tokens": 783,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2312,
+        "output_tokens": 675,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3004,
+        "output_tokens": 1179,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2960,
+        "output_tokens": 678,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5003,
+        "output_tokens": 1161,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3382,
+        "output_tokens": 1032,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3338,
+        "output_tokens": 1005,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5494,
+        "output_tokens": 783,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5078,
+        "output_tokens": 783,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

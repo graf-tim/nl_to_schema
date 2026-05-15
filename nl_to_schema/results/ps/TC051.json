@@ -1,0 +1,895 @@
+{
+  "testfall_id": "TC051",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.4552380952380952,
+  "score_gesamt": 0.6731428571428572,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.41935483870967744,
+      "recall": 0.38235294117647056,
+      "f1": 0.39999999999999997,
+      "matched": 13,
+      "nur_in_referenz": 21,
+      "nur_in_generiert": 18
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "freelancers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications.freelancer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications.applied_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications.proposed_amount",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications.is_accepted",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "skills.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "job_postings.title",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "job_postings.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.profile_text",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers.hourly_rate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.freelancer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills.skill_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.application_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.start_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.end_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "applications → freelancers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → applications",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills → freelancers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "freelancers_skills → skills",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Plattform, auf der Unternehmen externe Fachleute für befristete Arbeiten finden, sollen die wichtigsten Abläufe festgehalten werden. Jedes Unternehmen legt ein Profil mit Name, Branche und einer Kontaktadresse an. Externe Fachleute registrieren sich ebenfalls mit ihren Kontaktdaten, einer kurzen Vorstellung und ihrem üblichen Stundensatz. Unternehmen veröffentlichen Ausschreibungen, in denen beschrieben wird, welche Aufgabe erledigt werden soll, in welchem Zeitraum der Einsatz geplant ist und welches Budget ungefähr vorgesehen ist. Eine Ausschreibung gehört immer zu genau einem Unternehmen.\n\nFachleute können sich auf passende Ausschreibungen melden. Dabei soll nachvollziehbar sein, wann die Meldung eingegangen ist, welchen Preis die Person anbietet und ob daraus später tatsächlich eine Zusammenarbeit geworden ist. Zusätzlich können Fachleute mehrere Kenntnisse angeben, etwa Programmiersprachen, Design oder Beratung. Dieselbe Kenntnis kann natürlich bei vielen Personen vorkommen.\n\nWenn es zu einer Zusammenarbeit kommt, soll auch gespeichert werden, in welchem Zeitraum gearbeitet wurde und ob der Auftrag noch läuft. Offen bleibt, ob eine Zusammenarbeit direkt aus genau einer Meldung entsteht oder auch auf anderem Weg zustande kommen kann. Ebenso ist nicht ganz eindeutig, ob das in einer Ausschreibung genannte Budget verbindlich ist oder nur zur Orientierung dient.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "companies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "industry",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "professionals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contact_data",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "introduction",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hourly_rate",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "job_postings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "task_description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "budget",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "company_id",
+              "references_table": "companies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "applications",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "job_posting_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "submission_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "offered_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "collaboration_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "job_posting_id",
+              "references_table": "job_postings",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "skills",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "professional_skills",
+          "columns": [
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "skill_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "skill_id",
+              "references_table": "skills",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "collaborations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "professional_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "company_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "job_posting_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "work_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "work_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_ongoing",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "professional_id",
+              "references_table": "professionals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "company_id",
+              "references_table": "companies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "job_posting_id",
+              "references_table": "job_postings",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Unternehmen",
+          "attribute": [
+            "Name",
+            "Branche",
+            "Kontaktadresse"
+          ],
+          "beschreibung": "Unternehmen, die externe Fachleute für befristete Arbeiten suchen und Ausschreibungen veröffentlichen."
+        },
+        {
+          "name": "Fachperson",
+          "attribute": [
+            "Kontaktdaten",
+            "Vorstellung",
+            "Stundensatz"
+          ],
+          "beschreibung": "Externe Fachleute, die sich auf Ausschreibungen melden und ihre Kenntnisse anbieten."
+        },
+        {
+          "name": "Ausschreibung",
+          "attribute": [
+            "Aufgabenbeschreibung",
+            "Zeitraum",
+            "Budget"
+          ],
+          "beschreibung": "Von Unternehmen veröffentlichte Ausschreibungen für befristete Arbeiten mit Aufgabenbeschreibung, geplanter Einsatzdauer und Budget."
+        },
+        {
+          "name": "Meldung",
+          "attribute": [
+            "Eingangsdatum",
+            "Angebotspreis",
+            "Status_Zusammenarbeit"
+          ],
+          "beschreibung": "Bewerbung einer Fachperson auf eine Ausschreibung mit Zeitstempel, angebotenem Preis und Information über tatsächliche Zusammenarbeit."
+        },
+        {
+          "name": "Kenntnis",
+          "attribute": [
+            "Bezeichnung"
+          ],
+          "beschreibung": "Fachliche Kenntnisse wie Programmiersprachen, Design oder Beratung, die Fachpersonen angeben können."
+        },
+        {
+          "name": "Zusammenarbeit",
+          "attribute": [
+            "Arbeitszeitraum",
+            "Status_laufend"
+          ],
+          "beschreibung": "Dokumentation einer tatsächlich stattgefundenen Zusammenarbeit zwischen Fachperson und Unternehmen mit Zeitraum und aktuellem Status."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Unternehmen",
+          "zu": "Ausschreibung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Unternehmen veröffentlicht mehrere Ausschreibungen; jede Ausschreibung gehört zu genau einem Unternehmen."
+        },
+        {
+          "von": "Fachperson",
+          "zu": "Meldung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Fachperson kann sich auf mehrere Ausschreibungen melden; jede Meldung stammt von genau einer Fachperson."
+        },
+        {
+          "von": "Ausschreibung",
+          "zu": "Meldung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Ausschreibung kann mehrere Meldungen erhalten; jede Meldung bezieht sich auf genau eine Ausschreibung."
+        },
+        {
+          "von": "Fachperson",
+          "zu": "Kenntnis",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Fachperson kann mehrere Kenntnisse angeben; eine Kenntnis kann bei vielen Fachpersonen vorkommen."
+        },
+        {
+          "von": "Fachperson",
+          "zu": "Zusammenarbeit",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Fachperson kann mehrere Zusammenarbeitsverhältnisse haben; jede Zusammenarbeit betrifft genau eine Fachperson."
+        },
+        {
+          "von": "Unternehmen",
+          "zu": "Zusammenarbeit",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Unternehmen kann mehrere Zusammenarbeitsverhältnisse haben; jede Zusammenarbeit betrifft genau ein Unternehmen."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Unklar ist, ob eine Zusammenarbeit immer direkt aus genau einer Meldung entsteht oder auch auf anderem Weg zustande kommen kann. Dies beeinflusst die Beziehung zwischen Meldung und Zusammenarbeit (1:1 vs. 1:N vs. optional).",
+          "betroffene_elemente": [
+            "Meldung",
+            "Zusammenarbeit"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob das in einer Ausschreibung genannte Budget verbindlich ist oder nur zur Orientierung dient. Dies könnte Auswirkungen auf die Geschäftslogik und Validierung haben.",
+          "betroffene_elemente": [
+            "Ausschreibung",
+            "Budget"
+          ]
+        },
+        {
+          "beschreibung": "Das Attribut 'Status_Zusammenarbeit' in der Meldung ist mehrdeutig: Es ist unklar, ob dies ein boolescher Wert (ja/nein) oder ein detaillierterer Status sein soll.",
+          "betroffene_elemente": [
+            "Meldung"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob eine Zusammenarbeit mit einer bestimmten Ausschreibung verknüpft sein muss oder ob diese Beziehung optional ist.",
+          "betroffene_elemente": [
+            "Ausschreibung",
+            "Zusammenarbeit"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Unternehmen",
+          "attribute": [
+            {
+              "name": "unternehmen_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "branche",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktadresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Fachperson",
+          "attribute": [
+            {
+              "name": "fachperson_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktdaten",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorstellung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "stundensatz",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Ausschreibung",
+          "attribute": [
+            {
+              "name": "ausschreibung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "unternehmen_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "aufgabenbeschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zeitraum_start",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zeitraum_end",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "budget",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Meldung",
+          "attribute": [
+            {
+              "name": "meldung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fachperson_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ausschreibung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "eingangsdatum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "angebotspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status_zusammenarbeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kenntnis",
+          "attribute": [
+            {
+              "name": "kenntnis_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Zusammenarbeit",
+          "attribute": [
+            {
+              "name": "zusammenarbeit_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fachperson_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "unternehmen_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ausschreibung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "arbeitszeitraum_start",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "arbeitszeitraum_end",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "status_laufend",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Unternehmen",
+          "zu": "Ausschreibung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Fachperson",
+          "zu": "Meldung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Ausschreibung",
+          "zu": "Meldung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Fachperson",
+          "zu": "Kenntnis",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Fachperson",
+          "zu": "Zusammenarbeit",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Unternehmen",
+          "zu": "Zusammenarbeit",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE professionals (\n    id INTEGER NOT NULL,\n    contact_data VARCHAR(255) NOT NULL,\n    introduction TEXT NOT NULL,\n    hourly_rate DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_professionals PRIMARY KEY (id)\n);\n\nCREATE TABLE companies (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255) NOT NULL,\n    contact_address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE job_postings (\n    id INTEGER NOT NULL,\n    company_id INTEGER NOT NULL,\n    task_description TEXT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    budget DECIMAL(18,2),\n    CONSTRAINT pk_job_postings PRIMARY KEY (id),\n    CONSTRAINT fk_job_postings_company_id FOREIGN KEY (company_id) REFERENCES companies (id)\n);\n\nCREATE TABLE applications (\n    id INTEGER NOT NULL,\n    professional_id INTEGER NOT NULL,\n    job_posting_id INTEGER NOT NULL,\n    submission_date TIMESTAMP NOT NULL,\n    offered_price DECIMAL(18,2) NOT NULL,\n    collaboration_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_applications PRIMARY KEY (id),\n    CONSTRAINT fk_applications_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id),\n    CONSTRAINT fk_applications_job_posting_id FOREIGN KEY (job_posting_id) REFERENCES job_postings (id)\n);\n\nCREATE TABLE collaborations (\n    id INTEGER NOT NULL,\n    professional_id INTEGER NOT NULL,\n    company_id INTEGER NOT NULL,\n    job_posting_id INTEGER,\n    work_start_date DATE NOT NULL,\n    work_end_date DATE,\n    is_ongoing BOOLEAN NOT NULL,\n    CONSTRAINT pk_collaborations PRIMARY KEY (id),\n    CONSTRAINT fk_collaborations_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id),\n    CONSTRAINT fk_collaborations_company_id FOREIGN KEY (company_id) REFERENCES companies (id),\n    CONSTRAINT fk_collaborations_job_posting_id FOREIGN KEY (job_posting_id) REFERENCES job_postings (id)\n);\n\nCREATE TABLE skills (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_skills PRIMARY KEY (id)\n);\n\nCREATE TABLE professional_skills (\n    professional_id INTEGER NOT NULL,\n    skill_id INTEGER NOT NULL,\n    CONSTRAINT pk_professional_skills PRIMARY KEY (professional_id, skill_id),\n    CONSTRAINT fk_professional_skills_professional_id FOREIGN KEY (professional_id) REFERENCES professionals (id),\n    CONSTRAINT fk_professional_skills_skill_id FOREIGN KEY (skill_id) REFERENCES skills (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9402,
+    "total_output_tokens": 4928,
+    "total_tokens": 14330,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1693,
+        "output_tokens": 1503,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3255,
+        "output_tokens": 1640,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4454,
+        "output_tokens": 1785,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1693,
+        "output_tokens": 1503,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3255,
+        "output_tokens": 1640,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4454,
+        "output_tokens": 1785,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

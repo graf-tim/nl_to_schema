@@ -1,0 +1,1039 @@
+{
+  "testfall_id": "TC086",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6977339901477833,
+  "score_gesamt": 0.81864039408867,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 16,
+    "pk_tabellen_mit_pk": 16,
+    "fk_referenzen_gesamt": 21,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6875,
+      "recall": 0.8461538461538461,
+      "f1": 0.7586206896551724,
+      "matched": 11,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 5
+    },
+    "attribut": {
+      "precision": 0.5571428571428572,
+      "recall": 0.6964285714285714,
+      "f1": 0.6190476190476191,
+      "matched": 39,
+      "nur_in_referenz": 17,
+      "nur_in_generiert": 31
+    },
+    "beziehung": {
+      "recall": 0.7333333333333333,
+      "matched": 11,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 2
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "spacecrafts",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "mission_spacecrafts",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "teams.discipline",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "mission_teams.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "roles.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "manufacturers.country",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "milestone_types.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "risks.spacecraft_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "risks.title",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "missions.planned_launch_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "missions.actual_launch_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spacecrafts.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spacecrafts.manufacturer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spacecrafts.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spacecrafts.vehicle_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spacecrafts.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "mission_spacecrafts.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "mission_spacecrafts.mission_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "mission_spacecrafts.spacecraft_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "mission_spacecrafts → missions",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "mission_spacecrafts → spacecrafts",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "risks → spacecrafts",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spacecrafts → manufacturers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für unsere Raumfahrtprojekte sollen künftig alle laufenden und abgeschlossenen Missionen an einer Stelle nachvollziehbar sein. Zu jeder Mission wollen wir den internen Namen, eine kurze Beschreibung, den geplanten Start sowie – falls schon bekannt – den tatsächlichen Start und das Missionsende festhalten. Manche Vorhaben sind nur Studien, andere fliegen wirklich. Außerdem gehört jede Mission irgendwie zu einem Programm, wobei im Alltag manchmal von Unterprogrammen gesprochen wird; fürs Erste reicht es vermutlich, wenn man erkennt, in welchem größeren Zusammenhang eine Mission steht.\n\nAn einer Mission arbeiten verschiedene Teams aus mehreren Fachrichtungen, etwa Avionik, Antrieb, Nutzlast oder Bodensegment. Ein Team kann auch an mehreren Missionen beteiligt sein. Innerhalb der Teams gibt es Mitarbeitende mit Rollen wie Systemingenieur, Flight Director oder Payload Specialist. Ob eine Person ihre Rolle allgemein hat oder nur für ein bestimmtes Team, ist bei uns nicht immer sauber getrennt, aber die Zuordnung sollte so erfasst werden, dass man später sehen kann, wer in welchem Zusammenhang mitgewirkt hat.\n\nJede Mission verwendet eine oder mehrere Raumfahrzeuge beziehungsweise Flughardware. Manchmal ist damit die komplette Sonde gemeint, manchmal nur ein Orbiter, Lander oder Rover als einzelnes Segment. Für die Planung möchten wir deshalb sowohl die Bezeichnung als auch die Bauart und den Hersteller hinterlegen. Ein Hersteller liefert oft für viele Missionen, und einzelne Missionen nutzen mitunter Hardware von mehreren Herstellern.\n\nWichtige Meilensteine wie Preliminary Design Review, Critical Design Review, Startfreigabe oder Orbit Insertion sollen mit Datum dokumentiert werden. Nicht ganz klar ist, ob ein Meilenstein nur einmal pro Mission vorkommt; in Ausnahmefällen wird derselbe Typ nachgeholt oder wiederholt. Zusätzlich sollen Risiken verwaltet werden, inklusive Einschätzung zu Eintrittswahrscheinlichkeit und Auswirkung. Risiken werden meistens einer Mission zugeordnet, manchmal aber eher einem bestimmten Hardwareteil oder einem Team. Es sollte außerdem festgehalten werden, ob ein Risiko noch offen ist.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "programs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "parent_program_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "parent_program_id",
+              "references_table": "programs",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "missions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "program_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_study",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_start",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "actual_start",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "mission_end",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "program_id",
+              "references_table": "programs",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "hardware_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "hardware",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hardware_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "hardware_type_id",
+              "references_table": "hardware_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "mission_hardware",
+          "columns": [
+            {
+              "name": "mission_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "hardware_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "mission_id",
+              "references_table": "missions",
+              "references_column": "id"
+            },
+            {
+              "from_column": "hardware_id",
+              "references_table": "hardware",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "disciplines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "teams",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "mission_teams",
+          "columns": [
+            {
+              "name": "mission_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "team_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "discipline_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "mission_id",
+              "references_table": "missions",
+              "references_column": "id"
+            },
+            {
+              "from_column": "team_id",
+              "references_table": "teams",
+              "references_column": "id"
+            },
+            {
+              "from_column": "discipline_id",
+              "references_table": "disciplines",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "roles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "person_roles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "team_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "mission_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "role_id",
+              "references_table": "roles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "team_id",
+              "references_table": "teams",
+              "references_column": "id"
+            },
+            {
+              "from_column": "mission_id",
+              "references_table": "missions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "milestone_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "milestones",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "mission_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hardware_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "team_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "milestone_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "milestone_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "sequence",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "reason",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "mission_id",
+              "references_table": "missions",
+              "references_column": "id"
+            },
+            {
+              "from_column": "hardware_id",
+              "references_table": "hardware",
+              "references_column": "id"
+            },
+            {
+              "from_column": "team_id",
+              "references_table": "teams",
+              "references_column": "id"
+            },
+            {
+              "from_column": "milestone_type_id",
+              "references_table": "milestone_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "risk_categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "risks",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "mission_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hardware_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "team_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "risk_category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "probability",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "impact",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_open",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "closed_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "mission_id",
+              "references_table": "missions",
+              "references_column": "id"
+            },
+            {
+              "from_column": "hardware_id",
+              "references_table": "hardware",
+              "references_column": "id"
+            },
+            {
+              "from_column": "team_id",
+              "references_table": "teams",
+              "references_column": "id"
+            },
+            {
+              "from_column": "risk_category_id",
+              "references_table": "risk_categories",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung erwähnt, dass Risiken 'meistens einer Mission zugeordnet, manchmal aber eher einem bestimmten Hardwareteil oder einem Team' werden. Das Schema modelliert dies durch optionale FKs, was zu Mehrdeutigkeit führt. Es ist unklar, ob ein Risiko ohne Mission aber mit Hardware/Team gültig ist. Zudem fehlt eine Tabelle für 'Risikokategorien' oder 'Risikoarten', die in der Anforderung impliziert sind.",
+          "korrekturanweisung": "Definieren Sie explizit die Gültigkeitskombinationen für Risiken (z.B. nur mission_id, oder mission_id + hardware_id, etc.). Erwägen Sie eine spezialisierte Modellierung oder eine CHECK-Constraint. Prüfen Sie, ob Risikokategorien/Risikoarten als separate Entität modelliert werden sollten."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: In der Tabelle 'person_team_roles' ist team_id NOT NULL, aber die Anforderung sagt 'Ob eine Person ihre Rolle allgemein hat oder nur für ein bestimmtes Team, ist bei uns nicht immer sauber getrennt'. Das Schema erlaubt keine Rollen ohne Team-Zuordnung in dieser Tabelle. Die Tabelle 'person_general_roles' existiert zwar, aber die Semantik ist redundant und unklar: Warum gibt es sowohl person_general_roles als auch person_team_roles? Ein Person kann die gleiche Rolle in beiden Tabellen haben, was zu Redundanz führt.",
+          "korrekturanweisung": "Vereinheitlichen Sie die Rollenmodellierung: Entweder (1) person_team_roles.team_id nullable machen und person_general_roles entfernen, ODER (2) eine einzige Tabelle 'person_roles' mit optionalem team_id verwenden. Dokumentieren Sie die Semantik klar."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Modellierung der Rollen ist redundant und semantisch unklar. Es existieren drei separate Tabellen (person_general_roles, person_team_roles, person_mission_roles), die alle die gleiche Entität (Person-Rolle-Zuordnung) mit unterschiedlichen Kontexten modellieren. Dies führt zu Anomalien: (1) Eine Person kann die gleiche Rolle in person_general_roles und person_team_roles haben (Redundanz), (2) Es ist unklar, ob person_mission_roles unabhängig von person_team_roles existieren kann, (3) Die Anforderung sagt 'wer in welchem Zusammenhang mitgewirkt hat', was eine einzige flexible Tabelle nahelegt.",
+          "korrekturanweisung": "Refaktorieren Sie zu einer einzigen Tabelle 'person_roles' mit Spalten: id (PK), person_id (FK), role_id (FK), context_type (ENUM: 'general', 'team', 'mission'), context_id (INTEGER, nullable). Alternativ: Drei spezialisierte Tabellen, aber mit expliziter Dokumentation der Gültigkeitskombinationen und Constraints gegen Redundanz."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Verstoß gegen 3NF in der Tabelle 'teams'. Die Spalte 'discipline_id' ist ein FK zu 'disciplines', aber 'discipline_id' ist nicht direkt vom PK (team_id) abhängig, sondern vom Kontext der Mission. Ein Team kann in verschiedenen Missionen unterschiedliche Disziplinen haben (z.B. 'Avionik-Team' arbeitet an Mission A als Avionik, an Mission B aber als Bodensegment). Die aktuelle Modellierung erzwingt eine 1:1-Zuordnung Team-Disziplin, was zu Redundanz führt. ZUSÄTZLICH: Die Tabelle 'mission_teams' hat Spalten 'start_date', 'end_date', 'status', die transitive Abhängigkeiten darstellen könnten, wenn sie von mission_id und team_id abhängen, aber nicht vom PK selbst.",
+          "korrekturanweisung": "Entfernen Sie 'discipline_id' aus 'teams' oder modellieren Sie die Disziplin-Zuordnung in 'mission_teams' (mission_teams.discipline_id). Prüfen Sie, ob 'start_date', 'end_date', 'status' in 'mission_teams' wirklich vom Composite-PK abhängen oder ob sie redundant sind. Erwägen Sie eine Normalisierung zu 'mission_team_assignments' mit expliziter Zeitlichkeit."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Entität 'Meilensteine' ist unvollständig modelliert. Der Anforderungstext besagt explizit: 'Nicht ganz klar ist, ob ein Meilenstein nur einmal pro Mission vorkommt; in Ausnahmefällen wird derselbe Typ nachgeholt oder wiederholt.' Das Schema erlaubt zwar mehrere Meilensteine pro Mission (gut), aber es fehlt die Möglichkeit, Meilensteine auch Hardware oder Teams zuzuordnen. Der Text sagt: 'Risiken werden meistens einer Mission zugeordnet, manchmal aber eher einem bestimmten Hardwareteil oder einem Team' – diese Flexibilität ist bei Risiken vorhanden, sollte aber auch bei Meilensteinen erwogen werden, da sie ähnlich kontextabhängig sind.",
+          "korrekturanweisung": "Erweitern Sie die 'milestones'-Tabelle um optionale Fremdschlüssel 'hardware_id' und 'team_id' (beide nullable), um Meilensteine flexibel Mission, Hardware oder Team zuordnen zu können. Alternativ: Dokumentieren Sie explizit, dass Meilensteine AUSSCHLIESSLICH auf Missionsebene erfasst werden und nicht auf Hardware/Team-Ebene."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der 'teams'-Tabelle fehlt ein Attribut zur Erfassung der Teamzugehörigkeit zu Missionen mit zeitlichem Kontext. Zwar existiert die Junction-Tabelle 'mission_teams' mit start_date und end_date, aber die 'teams'-Tabelle selbst hat keine Beschreibung oder weitere Kontextinformationen. Kritischer: Der Anforderungstext erwähnt 'verschiedene Teams aus mehreren Fachrichtungen' – die Disziplin ist über 'discipline_id' erfasst, aber es fehlt ein Attribut wie 'description' oder 'team_lead_id' zur Dokumentation der Teamstruktur. Dies ist eine weiche Optimierung, aber die fehlende Beschreibung in 'teams' ist eine Lücke.",
+          "korrekturanweisung": "Fügen Sie der 'teams'-Tabelle ein optionales Attribut 'description' (TEXT, nullable) hinzu, um Teamzweck und -struktur zu dokumentieren. Optional: Erwägen Sie 'team_lead_id' (INTEGER, nullable, FK zu persons) für die Teamleitung."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die 'persons'-Tabelle ist unvollständig. Der Anforderungstext erwähnt Mitarbeitende mit Rollen in verschiedenen Kontexten, aber es fehlen grundlegende Kontaktinformationen wie E-Mail-Adresse oder Telefon. Zwar ist dies nicht explizit im Text gefordert, aber für ein Raumfahrtprojekt-Management-System ist dies eine Standard-Anforderung. Kritischer: Es fehlt ein Attribut zur Erfassung des Beschäftigungsstatus (z.B. 'is_active' BOOLEAN), um zu unterscheiden zwischen aktiven und inaktiven Mitarbeitern.",
+          "korrekturanweisung": "Fügen Sie der 'persons'-Tabelle mindestens folgende Attribute hinzu: 'email' (VARCHAR, nullable), 'is_active' (BOOLEAN, nullable: false, default: true). Optional: 'phone' (VARCHAR, nullable), 'department' (VARCHAR, nullable)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Modellierung der Personenrollen ist redundant und fehlerhaft. Es existieren drei separate Tabellen für Personenrollen: 'person_team_roles', 'person_mission_roles' und 'person_general_roles'. Dies führt zu Dateninkonsistenzen: Eine Person könnte die gleiche Rolle in 'person_general_roles' und 'person_team_roles' haben, ohne dass dies erkannt wird. Der Anforderungstext sagt: 'Ob eine Person ihre Rolle allgemein hat oder nur für ein bestimmtes Team, ist bei uns nicht immer sauber getrennt, aber die Zuordnung sollte so erfasst werden, dass man später sehen kann, wer in welchem Zusammenhang mitgewirkt hat.' Dies erfordert eine EINZIGE, flexible Tabelle mit optionalen Kontextfeldern, nicht drei separate Tabellen.",
+          "korrekturanweisung": "Ersetzen Sie die drei Tabellen 'person_team_roles', 'person_mission_roles' und 'person_general_roles' durch eine einzige Tabelle 'person_roles' mit Struktur: id (PK), person_id (FK), role_id (FK), team_id (FK, nullable), mission_id (FK, nullable). Dies ermöglicht: allgemeine Rollen (beide FK null), Team-spezifische Rollen (mission_id null), Mission-spezifische Rollen (team_id null) und Team+Mission-spezifische Rollen (beide gesetzt)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die M:N-Beziehung zwischen Missionen und Hardware ist korrekt modelliert via Junction-Tabelle 'mission_hardware' mit Composite-PK und optionalem 'role'-Attribut zur Dokumentation der Hardwarerolle in der Mission.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die M:N-Beziehung zwischen Missionen und Teams ist korrekt modelliert via Junction-Tabelle 'mission_teams' mit Composite-PK und zeitlichen Kontextinformationen (start_date, end_date, status).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die hierarchische Beziehung zwischen Programmen (parent_program_id als Selbstreferenz) ist korrekt modelliert und ermöglicht die Abbildung von Unterprogrammen wie im Text gefordert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, Fremdschlüssel referenzieren korrekt, und es gibt keine Anomalien durch redundante Daten (mit Ausnahme der redundanten Rollenmodellierung, die ein konzeptionelles, nicht normalisierungstechnisches Problem ist).",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE disciplines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_disciplines PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE hardware_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_hardware_types PRIMARY KEY (id)\n);\n\nCREATE TABLE hardware (\n    id INTEGER NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    hardware_type_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_hardware PRIMARY KEY (id),\n    CONSTRAINT fk_hardware_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id),\n    CONSTRAINT fk_hardware_hardware_type_id FOREIGN KEY (hardware_type_id) REFERENCES hardware_types (id)\n);\n\nCREATE TABLE milestone_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_milestone_types PRIMARY KEY (id)\n);\n\nCREATE TABLE programs (\n    id INTEGER NOT NULL,\n    parent_program_id INTEGER,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_programs PRIMARY KEY (id),\n    CONSTRAINT fk_programs_parent_program_id FOREIGN KEY (parent_program_id) REFERENCES programs (id)\n);\n\nCREATE TABLE missions (\n    id INTEGER NOT NULL,\n    program_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    is_study BOOLEAN NOT NULL,\n    planned_start DATE NOT NULL,\n    actual_start DATE,\n    mission_end DATE,\n    CONSTRAINT pk_missions PRIMARY KEY (id),\n    CONSTRAINT fk_missions_program_id FOREIGN KEY (program_id) REFERENCES programs (id)\n);\n\nCREATE TABLE teams (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_teams PRIMARY KEY (id)\n);\n\nCREATE TABLE milestones (\n    id INTEGER NOT NULL,\n    mission_id INTEGER,\n    hardware_id INTEGER,\n    team_id INTEGER,\n    milestone_type_id INTEGER NOT NULL,\n    milestone_date DATE NOT NULL,\n    sequence INTEGER,\n    reason VARCHAR(255),\n    CONSTRAINT pk_milestones PRIMARY KEY (id),\n    CONSTRAINT fk_milestones_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_milestones_hardware_id FOREIGN KEY (hardware_id) REFERENCES hardware (id),\n    CONSTRAINT fk_milestones_team_id FOREIGN KEY (team_id) REFERENCES teams (id),\n    CONSTRAINT fk_milestones_milestone_type_id FOREIGN KEY (milestone_type_id) REFERENCES milestone_types (id)\n);\n\nCREATE TABLE mission_hardware (\n    mission_id INTEGER NOT NULL,\n    hardware_id INTEGER NOT NULL,\n    role VARCHAR(255),\n    CONSTRAINT pk_mission_hardware PRIMARY KEY (mission_id, hardware_id),\n    CONSTRAINT fk_mission_hardware_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_mission_hardware_hardware_id FOREIGN KEY (hardware_id) REFERENCES hardware (id)\n);\n\nCREATE TABLE mission_teams (\n    mission_id INTEGER NOT NULL,\n    team_id INTEGER NOT NULL,\n    discipline_id INTEGER,\n    start_date DATE,\n    end_date DATE,\n    status VARCHAR(255),\n    CONSTRAINT pk_mission_teams PRIMARY KEY (mission_id, team_id),\n    CONSTRAINT fk_mission_teams_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_mission_teams_team_id FOREIGN KEY (team_id) REFERENCES teams (id),\n    CONSTRAINT fk_mission_teams_discipline_id FOREIGN KEY (discipline_id) REFERENCES disciplines (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE roles (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_roles PRIMARY KEY (id)\n);\n\nCREATE TABLE person_roles (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    role_id INTEGER NOT NULL,\n    team_id INTEGER,\n    mission_id INTEGER,\n    CONSTRAINT pk_person_roles PRIMARY KEY (id),\n    CONSTRAINT fk_person_roles_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_person_roles_role_id FOREIGN KEY (role_id) REFERENCES roles (id),\n    CONSTRAINT fk_person_roles_team_id FOREIGN KEY (team_id) REFERENCES teams (id),\n    CONSTRAINT fk_person_roles_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id)\n);\n\nCREATE TABLE risk_categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_risk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE risks (\n    id INTEGER NOT NULL,\n    mission_id INTEGER,\n    hardware_id INTEGER,\n    team_id INTEGER,\n    risk_category_id INTEGER,\n    description TEXT NOT NULL,\n    probability DECIMAL(18,2) NOT NULL,\n    impact DECIMAL(18,2) NOT NULL,\n    is_open BOOLEAN NOT NULL,\n    created_date TIMESTAMP NOT NULL,\n    closed_date TIMESTAMP,\n    CONSTRAINT pk_risks PRIMARY KEY (id),\n    CONSTRAINT fk_risks_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_risks_hardware_id FOREIGN KEY (hardware_id) REFERENCES hardware (id),\n    CONSTRAINT fk_risks_team_id FOREIGN KEY (team_id) REFERENCES teams (id),\n    CONSTRAINT fk_risks_risk_category_id FOREIGN KEY (risk_category_id) REFERENCES risk_categories (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 14 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 4 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 17 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 4 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 16 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 16 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 57083,
+    "total_output_tokens": 22098,
+    "total_tokens": 79181,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 22203,
+        "output_tokens": 10779,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 12267,
+        "output_tokens": 3462,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 12179,
+        "output_tokens": 3807,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 10434,
+        "output_tokens": 4050,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2707,
+        "output_tokens": 2711,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5633,
+        "output_tokens": 1675,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5589,
+        "output_tokens": 1668,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 9056,
+        "output_tokens": 4018,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6634,
+        "output_tokens": 1787,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6590,
+        "output_tokens": 2139,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 10440,
+        "output_tokens": 4050,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 10434,
+        "output_tokens": 4050,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

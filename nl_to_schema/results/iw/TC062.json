@@ -1,0 +1,504 @@
+{
+  "testfall_id": "TC062",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8441558441558443,
+  "score_gesamt": 0.9064935064935066,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.8484848484848485,
+      "recall": 0.8484848484848485,
+      "f1": 0.8484848484848486,
+      "matched": 28,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 5
+    },
+    "beziehung": {
+      "recall": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "clients",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "projects.client_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.company_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.contact_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "projects → clients",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein kleines Projektmanagementtool sollen laufende Vorhaben einer Firma übersichtlich verwaltet werden. Zu jedem Vorhaben möchte man festhalten, wie es heißt, worum es geht, wann es geplant startet und endet und ob es gerade aktiv ist. Ein Vorhaben gehört immer zu genau einem Kunden, denn die Firma arbeitet im Auftrag verschiedener Unternehmen. Von den Kunden soll man den Firmennamen, eine Ansprechperson und eine E-Mail-Adresse sehen können.\n\nAußerdem arbeiten mehrere Mitarbeitende an den Vorhaben mit. Eine Person kann an mehreren Vorhaben beteiligt sein, und bei jedem Einsatz soll erkennbar sein, welche Aufgabe oder Funktion die Person dort übernimmt. Zu den Mitarbeitenden werden Vorname, Nachname, E-Mail-Adresse und Eintrittsdatum benötigt.\n\nInnerhalb eines Vorhabens fallen einzelne Aufgaben an. Für jede Aufgabe braucht man einen Titel, eine genauere Beschreibung, ein Fälligkeitsdatum und den aktuellen Stand. Aufgaben werden in der Regel einer verantwortlichen Person zugeordnet, damit klar ist, wer sich kümmert. Zusätzlich sollen Mitarbeitende Zeiten auf Aufgaben buchen können, damit man später den Aufwand je Vorhaben auswerten kann. Dabei reicht es, Datum, Dauer und ein kurzer Kommentar. Es soll nachvollziehbar bleiben, wer woran gearbeitet hat.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "projects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "planned_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "employee_projects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "tasks",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "assigned_employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "due_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "assigned_employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "time_entries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "task_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "entry_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duration_hours",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "comment",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "task_id",
+              "references_table": "tasks",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: customers, employees, projects, tasks, time_entries sowie die Junction-Table employee_projects für die M:N-Beziehung zwischen Mitarbeitenden und Vorhaben.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle zentralen Attribute pro Entität sind vorhanden: Kunden (Firmennamen, Ansprechperson, E-Mail), Mitarbeitende (Vor-/Nachname, E-Mail, Eintrittsdatum), Vorhaben (Name, Beschreibung, Start-/Enddatum, Aktivstatus), Aufgaben (Titel, Beschreibung, Fälligkeitsdatum, Status, Zuordnung), Zeiteintrag (Datum, Dauer, Kommentar, Zuordnung). Alle Anforderungen sind abgedeckt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Kardinalitäten und Beziehungsauflösungen sind korrekt: 1:N (customers→projects), M:N (employees↔projects via employee_projects mit Attribut 'role'), 1:N (projects→tasks), 0..1:N (employees→tasks als assigned_employee_id), 1:N (tasks→time_entries), 1:N (employees→time_entries). Die M:N-Beziehung ist korrekt mit Junction-Table aufgelöst.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema erfüllt mindestens 3NF: Keine offensichtlichen Redundanzen, keine transitive Abhängigkeiten, alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom Primärschlüssel. Die Struktur ist normalisiert und wartbar.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 1,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE projects (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    planned_start_date DATE NOT NULL,\n    planned_end_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_projects PRIMARY KEY (id),\n    CONSTRAINT fk_projects_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE employee_projects (\n    id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    project_id INTEGER NOT NULL,\n    role VARCHAR(255),\n    CONSTRAINT pk_employee_projects PRIMARY KEY (id),\n    CONSTRAINT fk_employee_projects_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_projects_project_id FOREIGN KEY (project_id) REFERENCES projects (id)\n);\n\nCREATE TABLE tasks (\n    id INTEGER NOT NULL,\n    project_id INTEGER NOT NULL,\n    assigned_employee_id INTEGER,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    due_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_tasks PRIMARY KEY (id),\n    CONSTRAINT fk_tasks_project_id FOREIGN KEY (project_id) REFERENCES projects (id),\n    CONSTRAINT fk_tasks_assigned_employee_id FOREIGN KEY (assigned_employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE time_entries (\n    id INTEGER NOT NULL,\n    task_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    entry_date DATE NOT NULL,\n    duration_hours DECIMAL(18,2) NOT NULL,\n    comment TEXT,\n    CONSTRAINT pk_time_entries PRIMARY KEY (id),\n    CONSTRAINT fk_time_entries_task_id FOREIGN KEY (task_id) REFERENCES tasks (id),\n    CONSTRAINT fk_time_entries_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle fachlich erforderlichen Entitäten sind vorhanden: customers, employees, projects, tasks, time_entries sowie die Junction-Table employee_projects für die M:N-Beziehung zwischen Mitarbeitenden und Vorhaben.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle zentralen Attribute pro Entität sind vorhanden: Kunden (Firmennamen, Ansprechperson, E-Mail), Mitarbeitende (Vor-/Nachname, E-Mail, Eintrittsdatum), Vorhaben (Name, Beschreibung, Start-/Enddatum, Aktivstatus), Aufgaben (Titel, Beschreibung, Fälligkeitsdatum, Status, Zuordnung), Zeiteintrag (Datum, Dauer, Kommentar, Zuordnung). Alle Anforderungen sind abgedeckt.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Kardinalitäten und Beziehungsauflösungen sind korrekt: 1:N (customers→projects), M:N (employees↔projects via employee_projects mit Attribut 'role'), 1:N (projects→tasks), 0..1:N (employees→tasks als assigned_employee_id), 1:N (tasks→time_entries), 1:N (employees→time_entries). Die M:N-Beziehung ist korrekt mit Junction-Table aufgelöst.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema erfüllt mindestens 3NF: Keine offensichtlichen Redundanzen, keine transitive Abhängigkeiten, alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom Primärschlüssel. Die Struktur ist normalisiert und wartbar.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 2,
+    "total_input_tokens": 6836,
+    "total_output_tokens": 2401,
+    "total_tokens": 9237,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 1,
+        "input_tokens": 2487,
+        "output_tokens": 1523,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 1,
+        "input_tokens": 4349,
+        "output_tokens": 878,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2487,
+        "output_tokens": 1523,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4349,
+        "output_tokens": 878,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

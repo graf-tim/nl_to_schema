@@ -1,0 +1,1107 @@
+{
+  "testfall_id": "TC052",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5314516129032258,
+  "score_gesamt": 0.7188709677419356,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.625,
+      "recall": 0.625,
+      "f1": 0.625,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.5333333333333333,
+      "recall": 0.5,
+      "f1": 0.5161290322580646,
+      "matched": 16,
+      "nur_in_referenz": 16,
+      "nur_in_generiert": 14
+    },
+    "beziehung": {
+      "recall": 0.375,
+      "matched": 3,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "offers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "location_offers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "booking_spaces.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spaces.location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spaces.offer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offers.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "location_offers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "location_offers.location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "location_offers.offer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services.offer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services.service_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "location_offers → locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "location_offers → offers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_services → offers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spaces → locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "spaces → offers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Coworking-Space möchte seine laufenden Buchungen und Angebote übersichtlich verwalten. Es gibt verschiedene Standorte, und an jedem Standort werden unterschiedliche Plätze angeboten, zum Beispiel flexible Arbeitsplätze, feste Schreibtische oder Besprechungsräume. Für jeden Platz soll festgehalten werden, zu welchem Standort er gehört, wie er heißt und wie viele Personen ihn höchstens nutzen können. Manche Angebote können an mehreren Standorten verfügbar sein.\n\nKundinnen und Kunden sollen mit ihren Kontaktdaten erfasst werden. Eine Person kann im Laufe der Zeit mehrere Buchungen haben. Bei jeder Buchung soll nachvollziehbar sein, wann sie beginnt, wann sie endet und in welchem Zustand sie gerade ist, etwa angefragt, bestätigt oder storniert. Zusätzlich soll sichtbar sein, welche Plätze zu einer Buchung gehören, weil zum Beispiel ein Team gleichzeitig mehrere Arbeitsplätze oder einen Besprechungsraum mitbuchen kann.\n\nAußerdem bietet der Coworking-Space Zusatzleistungen wie Kaffee-Flatrate, Schließfach oder Druckpakete an. Solche Leistungen können je nach Angebot unterschiedlich vorgesehen sein. Für Auswertungen möchte man auch den Preis eines Angebots kennen sowie festhalten, ob es aktuell überhaupt noch buchbar ist. Nicht eindeutig geregelt ist bislang, ob Preise standortabhängig sind oder überall gleich gelten.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "spaces",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_bookable",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "space_locations",
+          "columns": [
+            {
+              "name": "space_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "space_id",
+              "references_table": "spaces",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "additional_services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_bookable",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "bookings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "bookingdate",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "booking_spaces",
+          "columns": [
+            {
+              "name": "booking_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "space_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "booking_id",
+              "references_table": "bookings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "space_id",
+              "references_table": "spaces",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "booking_additional_services",
+          "columns": [
+            {
+              "name": "booking_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "additional_service_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "booking_id",
+              "references_table": "bookings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "additional_service_id",
+              "references_table": "additional_services",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Standort",
+          "attribute": [
+            "Standort-ID",
+            "Name",
+            "Adresse"
+          ],
+          "beschreibung": "Ein physischer Ort, an dem der Coworking-Space Plätze und Leistungen anbietet."
+        },
+        {
+          "name": "Platz",
+          "attribute": [
+            "Platz-ID",
+            "Name",
+            "Typ",
+            "Kapazität",
+            "Standort-ID"
+          ],
+          "beschreibung": "Ein buchbarer Arbeitsplatz oder Raum an einem Standort (z.B. flexibler Arbeitsplatz, fester Schreibtisch, Besprechungsraum)."
+        },
+        {
+          "name": "Angebot",
+          "attribute": [
+            "Angebot-ID",
+            "Name",
+            "Beschreibung",
+            "Preis",
+            "Buchbar"
+          ],
+          "beschreibung": "Ein Platz oder eine Zusatzleistung, die gebucht werden kann. Kann an mehreren Standorten verfügbar sein."
+        },
+        {
+          "name": "Zusatzleistung",
+          "attribute": [
+            "Leistungs-ID",
+            "Name",
+            "Beschreibung",
+            "Preis",
+            "Buchbar"
+          ],
+          "beschreibung": "Zusätzliche Services wie Kaffee-Flatrate, Schließfach oder Druckpakete."
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Kunden-ID",
+            "Name",
+            "Kontaktdaten",
+            "E-Mail",
+            "Telefon"
+          ],
+          "beschreibung": "Eine Person oder Organisation, die Plätze und Leistungen buchen kann."
+        },
+        {
+          "name": "Buchung",
+          "attribute": [
+            "Buchungs-ID",
+            "Kunden-ID",
+            "Startdatum",
+            "Enddatum",
+            "Status",
+            "Buchungsdatum"
+          ],
+          "beschreibung": "Eine Reservierung von Plätzen und/oder Zusatzleistungen durch einen Kunden für einen bestimmten Zeitraum. Status kann sein: angefragt, bestätigt, storniert."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Platz",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Platz gehört zu genau einem Standort. Ein Standort kann mehrere Plätze haben."
+        },
+        {
+          "von": "Angebot",
+          "zu": "Standort",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Angebot kann an mehreren Standorten verfügbar sein. Ein Standort kann mehrere Angebote haben."
+        },
+        {
+          "von": "Buchung",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Buchung gehört zu genau einem Kunden. Ein Kunde kann mehrere Buchungen haben."
+        },
+        {
+          "von": "Buchung",
+          "zu": "Platz",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Buchung kann mehrere Plätze umfassen. Ein Platz kann in mehreren Buchungen vorkommen."
+        },
+        {
+          "von": "Buchung",
+          "zu": "Zusatzleistung",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Buchung kann mehrere Zusatzleistungen enthalten. Eine Zusatzleistung kann in mehreren Buchungen vorkommen."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Sind Preise standortabhängig oder gelten sie überall gleich? Der Text erwähnt explizit, dass dies nicht eindeutig geregelt ist.",
+          "betroffene_elemente": [
+            "Angebot",
+            "Zusatzleistung",
+            "Standort"
+          ]
+        },
+        {
+          "beschreibung": "Wie wird die Verfügbarkeit eines Platzes an einem Standort zu einem bestimmten Zeitpunkt ermittelt? Ist eine Überbuchung möglich oder gibt es Kapazitätsgrenzen pro Zeitfenster?",
+          "betroffene_elemente": [
+            "Platz",
+            "Buchung"
+          ]
+        },
+        {
+          "beschreibung": "Sind Plätze und Zusatzleistungen separate Angebote oder sollten sie in einer gemeinsamen Entität modelliert werden?",
+          "betroffene_elemente": [
+            "Angebot",
+            "Platz",
+            "Zusatzleistung"
+          ]
+        },
+        {
+          "beschreibung": "Welche Kontaktdaten genau sollen für Kunden erfasst werden? Der Text erwähnt 'Kontaktdaten' allgemein, nennt aber keine spezifischen Felder.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Können Buchungen zeitlich überlappend für denselben Platz existieren, oder ist ein Platz zu einem Zeitpunkt nur einer Buchung zugeordnet?",
+          "betroffene_elemente": [
+            "Platz",
+            "Buchung"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Standort",
+          "attribute": [
+            {
+              "name": "standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Platz",
+          "attribute": [
+            {
+              "name": "platz_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "typ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kapazitaet",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Angebot",
+          "attribute": [
+            {
+              "name": "angebot_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "buchbar",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Zusatzleistung",
+          "attribute": [
+            {
+              "name": "leistungs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "buchbar",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kunden_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Buchung",
+          "attribute": [
+            {
+              "name": "buchungs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kunden_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "buchungsdatum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Angebot_Standort",
+          "attribute": [
+            {
+              "name": "angebot_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Buchung_Platz",
+          "attribute": [
+            {
+              "name": "buchungs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "platz_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Buchung_Zusatzleistung",
+          "attribute": [
+            {
+              "name": "buchungs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leistungs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Platz",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Angebot",
+          "zu": "Angebot_Standort",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Standort",
+          "zu": "Angebot_Standort",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Buchung",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Buchung",
+          "zu": "Buchung_Platz",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Platz",
+          "zu": "Buchung_Platz",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Buchung",
+          "zu": "Buchung_Zusatzleistung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Zusatzleistung",
+          "zu": "Buchung_Zusatzleistung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCHER FEHLER: Die Tabelle 'spaces' vermischt zwei konzeptionell unterschiedliche Entitäten: 'Platz' (mit Standort-Bezug) und 'Zusatzleistung' (standortunabhängig). Im ER-Modell sind diese als separate Entitäten 'Platz' und 'Zusatzleistung' definiert. Im LogicalSchema existiert nur 'spaces' (ohne Standort-FK) und 'additional_services'. Die Tabelle 'spaces' hat keine Fremdschlüssel zu 'locations', obwohl jeder Platz laut Anforderung zu genau einem Standort gehört (N:1-Beziehung). Stattdessen existiert eine separate Junction-Table 'space_locations', die eine M:N-Beziehung modelliert – dies widerspricht der Anforderung und dem ER-Modell.",
+          "korrekturanweisung": "Aufteilen der 'spaces'-Tabelle in zwei separate Tabellen: (1) 'spaces' mit location_id als NOT NULL FK zu 'locations' (N:1-Beziehung), (2) 'additional_services' bleibt unverändert. Die Junction-Table 'space_locations' muss entfernt werden, da sie nicht benötigt wird."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Tabelle 'spaces' enthält Attribute ('price', 'is_bookable'), die konzeptionell zu 'Zusatzleistung' gehören, nicht zu 'Platz'. Laut Anforderung und ER-Modell haben Plätze keine Preise – nur Zusatzleistungen und Angebote haben Preise. Die Attribute 'price' und 'is_bookable' sollten nur in 'additional_services' vorhanden sein, nicht in 'spaces'. Dies ist eine Folge der fehlerhaften Entitäts-Modellierung.",
+          "korrekturanweisung": "Entfernen Sie 'price' und 'is_bookable' aus der 'spaces'-Tabelle. Diese Attribute gehören nur zu 'additional_services'. Falls Plätze ebenfalls Preise haben sollen, muss dies explizit im Anforderungstext geklärt werden und würde eine Änderung des ER-Modells erfordern."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCHER FEHLER: Die Beziehung zwischen 'spaces' und 'locations' ist falsch modelliert. Das ER-Modell definiert eine N:1-Beziehung (jeder Platz gehört zu genau einem Standort), aber das LogicalSchema implementiert dies als M:N-Beziehung über die Junction-Table 'space_locations'. Dies ist semantisch inkorrekt und widerspricht der Anforderung: 'Für jeden Platz soll festgehalten werden, zu welchem Standort er gehört' (singular). Die M:N-Beziehung ist für 'Angebot' und 'Standort' vorgesehen (Angebote können an mehreren Standorten verfügbar sein), nicht für Plätze.",
+          "korrekturanweisung": "Ersetzen Sie die Junction-Table 'space_locations' durch einen direkten FK 'location_id' in der 'spaces'-Tabelle (NOT NULL). Dies modelliert die N:1-Beziehung korrekt."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Tabelle 'spaces' ist nicht normalisiert. Sie enthält Attribute ('price', 'is_bookable'), die nicht funktional von ihrem Primärschlüssel abhängen, sondern konzeptionell zu einer anderen Entität gehören. Dies verstößt gegen die 3NF. Zusätzlich führt die falsche M:N-Modellierung der Platz-Standort-Beziehung zu redundanten Daten und Anomalien.",
+          "korrekturanweisung": "Normalisieren Sie das Schema durch Aufteilen der 'spaces'-Tabelle und Entfernen der fehlplatziert Attribute. Implementieren Sie die N:1-Beziehung direkt über einen FK statt über eine Junction-Table."
+        }
+      ],
+      "origin_step": "cmd"
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE additional_services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    is_bookable BOOLEAN NOT NULL,\n    CONSTRAINT pk_additional_services PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE bookings (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    bookingdate TIMESTAMP NOT NULL,\n    CONSTRAINT pk_bookings PRIMARY KEY (id),\n    CONSTRAINT fk_bookings_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE booking_additional_services (\n    booking_id INTEGER NOT NULL,\n    additional_service_id INTEGER NOT NULL,\n    CONSTRAINT pk_booking_additional_services PRIMARY KEY (booking_id, additional_service_id),\n    CONSTRAINT fk_booking_additional_services_booking_id FOREIGN KEY (booking_id) REFERENCES bookings (id),\n    CONSTRAINT fk_booking_additional_services_additional_service_id FOREIGN KEY (additional_service_id) REFERENCES additional_services (id)\n);\n\nCREATE TABLE spaces (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    capacity INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    is_bookable BOOLEAN NOT NULL,\n    CONSTRAINT pk_spaces PRIMARY KEY (id)\n);\n\nCREATE TABLE booking_spaces (\n    booking_id INTEGER NOT NULL,\n    space_id INTEGER NOT NULL,\n    CONSTRAINT pk_booking_spaces PRIMARY KEY (booking_id, space_id),\n    CONSTRAINT fk_booking_spaces_booking_id FOREIGN KEY (booking_id) REFERENCES bookings (id),\n    CONSTRAINT fk_booking_spaces_space_id FOREIGN KEY (space_id) REFERENCES spaces (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE space_locations (\n    space_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    CONSTRAINT pk_space_locations PRIMARY KEY (space_id, location_id),\n    CONSTRAINT fk_space_locations_space_id FOREIGN KEY (space_id) REFERENCES spaces (id),\n    CONSTRAINT fk_space_locations_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCHER FEHLER: Die Tabelle 'spaces' vermischt zwei konzeptionell unterschiedliche Entitäten: 'Platz' (mit Standort-Bezug) und 'Zusatzleistung' (standortunabhängig). Im ER-Modell sind diese als separate Entitäten 'Platz' und 'Zusatzleistung' definiert. Im LogicalSchema existiert nur 'spaces' (ohne Standort-FK) und 'additional_services'. Die Tabelle 'spaces' hat keine Fremdschlüssel zu 'locations', obwohl jeder Platz laut Anforderung zu genau einem Standort gehört (N:1-Beziehung). Stattdessen existiert eine separate Junction-Table 'space_locations', die eine M:N-Beziehung modelliert – dies widerspricht der Anforderung und dem ER-Modell.",
+          "korrekturanweisung": "Aufteilen der 'spaces'-Tabelle in zwei separate Tabellen: (1) 'spaces' mit location_id als NOT NULL FK zu 'locations' (N:1-Beziehung), (2) 'additional_services' bleibt unverändert. Die Junction-Table 'space_locations' muss entfernt werden, da sie nicht benötigt wird."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Tabelle 'spaces' enthält Attribute ('price', 'is_bookable'), die konzeptionell zu 'Zusatzleistung' gehören, nicht zu 'Platz'. Laut Anforderung und ER-Modell haben Plätze keine Preise – nur Zusatzleistungen und Angebote haben Preise. Die Attribute 'price' und 'is_bookable' sollten nur in 'additional_services' vorhanden sein, nicht in 'spaces'. Dies ist eine Folge der fehlerhaften Entitäts-Modellierung.",
+          "korrekturanweisung": "Entfernen Sie 'price' und 'is_bookable' aus der 'spaces'-Tabelle. Diese Attribute gehören nur zu 'additional_services'. Falls Plätze ebenfalls Preise haben sollen, muss dies explizit im Anforderungstext geklärt werden und würde eine Änderung des ER-Modells erfordern."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCHER FEHLER: Die Beziehung zwischen 'spaces' und 'locations' ist falsch modelliert. Das ER-Modell definiert eine N:1-Beziehung (jeder Platz gehört zu genau einem Standort), aber das LogicalSchema implementiert dies als M:N-Beziehung über die Junction-Table 'space_locations'. Dies ist semantisch inkorrekt und widerspricht der Anforderung: 'Für jeden Platz soll festgehalten werden, zu welchem Standort er gehört' (singular). Die M:N-Beziehung ist für 'Angebot' und 'Standort' vorgesehen (Angebote können an mehreren Standorten verfügbar sein), nicht für Plätze.",
+          "korrekturanweisung": "Ersetzen Sie die Junction-Table 'space_locations' durch einen direkten FK 'location_id' in der 'spaces'-Tabelle (NOT NULL). Dies modelliert die N:1-Beziehung korrekt."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Tabelle 'spaces' ist nicht normalisiert. Sie enthält Attribute ('price', 'is_bookable'), die nicht funktional von ihrem Primärschlüssel abhängen, sondern konzeptionell zu einer anderen Entität gehören. Dies verstößt gegen die 3NF. Zusätzlich führt die falsche M:N-Modellierung der Platz-Standort-Beziehung zu redundanten Daten und Anomalien.",
+          "korrekturanweisung": "Normalisieren Sie das Schema durch Aufteilen der 'spaces'-Tabelle und Entfernen der fehlplatziert Attribute. Implementieren Sie die N:1-Beziehung direkt über einen FK statt über eine Junction-Table."
+        }
+      ],
+      "origin_step": "cmd"
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 10,
+    "total_input_tokens": 51925,
+    "total_output_tokens": 16911,
+    "total_tokens": 68836,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1681,
+        "output_tokens": 1436,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 3,
+        "input_tokens": 9648,
+        "output_tokens": 5332,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 3,
+        "input_tokens": 16679,
+        "output_tokens": 5572,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 3,
+        "input_tokens": 23917,
+        "output_tokens": 4571,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1681,
+        "output_tokens": 1436,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3216,
+        "output_tokens": 1665,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4444,
+        "output_tokens": 1941,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7929,
+        "output_tokens": 1398,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3216,
+        "output_tokens": 1665,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5793,
+        "output_tokens": 1912,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7900,
+        "output_tokens": 1658,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3216,
+        "output_tokens": 2002,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6442,
+        "output_tokens": 1719,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8088,
+        "output_tokens": 1515,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "testfall_id": "TC021",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.6333333333333333,
+  "score_gesamt": 0.78,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 10,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 5
+    },
+    "beziehung": {
+      "recall": 0.5,
+      "matched": 1,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "plant_types",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "plants.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "plants.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "plant_types.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "plant_types.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "plant_types.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "plants → plant_types",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für einen kleinen Pflanzenmarkt soll festgehalten werden, welche Pflanzen angeboten werden, von welchen Lieferanten sie kommen und zu welcher Pflanzenart sie gehören. Zu jeder Pflanzenart sollen der Name und eine kurze Beschreibung gespeichert werden. Zu jedem Lieferanten sollen Firmenname, Ansprechpartner, Telefonnummer und E-Mail erfasst werden. Für jede einzelne angebotene Pflanze sollen der Verkaufsname, der Preis, der aktuelle Lagerbestand und ein Kennzeichen, ob sie aktuell verkauft wird, gespeichert werden. Außerdem soll zu jeder Pflanze eindeutig hinterlegt sein, genau von welchem Lieferanten sie stammt und zu welcher Pflanzenart sie gehört. Eine Pflanzenart kann bei vielen Pflanzen vorkommen, und ein Lieferant kann viele Pflanzen liefern.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "plant_species",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "suppliers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "company_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "plants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sales_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "stock_quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "plant_species_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "supplier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "plant_species_id",
+              "references_table": "plant_species",
+              "references_column": "id"
+            },
+            {
+              "from_column": "supplier_id",
+              "references_table": "suppliers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE plant_species (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_plant_species PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE plants (\n    id INTEGER NOT NULL,\n    sales_name VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    stock_quantity INTEGER NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    plant_species_id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    CONSTRAINT pk_plants PRIMARY KEY (id),\n    CONSTRAINT fk_plants_plant_species_id FOREIGN KEY (plant_species_id) REFERENCES plant_species (id),\n    CONSTRAINT fk_plants_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2313,
+    "total_output_tokens": 678,
+    "total_tokens": 2991,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2313,
+        "output_tokens": 678,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2313,
+        "output_tokens": 678,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

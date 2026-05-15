@@ -1,0 +1,501 @@
+{
+  "testfall_id": "TC035",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5399253731343284,
+  "score_gesamt": 0.7239552238805971,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.625,
+      "recall": 0.625,
+      "f1": 0.625,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.5,
+      "recall": 0.5806451612903226,
+      "f1": 0.537313432835821,
+      "matched": 18,
+      "nur_in_referenz": 13,
+      "nur_in_generiert": 18
+    },
+    "beziehung": {
+      "recall": 0.375,
+      "matched": 3,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.hire_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "restaurants.opening_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.dish_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.employee_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants.restaurant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants → dishes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dish_restaurants → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants → employees",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employee_restaurants → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees → restaurants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Restaurantkette soll festgehalten werden, welche Standorte es gibt und welche Mitarbeitenden dort im Einsatz sind. Zu jedem Standort sollen Name, Stadt, Adresse und das Eröffnungsdatum bekannt sein. Mitarbeitende haben persönliche Kontaktdaten, ein Eintrittsdatum und arbeiten normalerweise an einem Standort. In der Praxis kommt es aber vor, dass jemand zeitweise auch in anderen Filialen aushilft. Welche Einsätze dafür genau dokumentiert werden müssen, soll im System nachvollziehbar sein.\n\nAußerdem soll die Speisekarte verwaltet werden. Gerichte haben einen Namen, eine Beschreibung, einen Preis und werden einer Kategorie wie Vorspeise, Hauptgericht oder Dessert zugeordnet. Nicht jedes Gericht ist dauerhaft überall erhältlich, weil manche Filialen abweichende Karten oder saisonale Angebote haben. Es muss deshalb erkennbar sein, in welchem Restaurant welches Gericht angeboten wird.\n\nZu den Gerichten sollen auch Zutaten gepflegt werden, unter anderem damit Hinweise für Allergien oder Unverträglichkeiten möglich sind. Eine Zutat kann in mehreren Gerichten vorkommen, und ein Gericht besteht aus mehreren Zutaten. Ob dabei nur die Verwendung an sich oder auch Mengen festgehalten werden, ist fachlich nicht ganz klar. Zusätzlich soll gespeichert werden, ob eine Zutat typischerweise als Allergen gilt.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "openingdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "primary_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "primary_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "employee_assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "startdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "enddate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dishes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "category_id",
+              "references_table": "categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_allergen",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dish_ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "ingredient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "dish_id",
+              "references_table": "dishes",
+              "references_column": "id"
+            },
+            {
+              "from_column": "ingredient_id",
+              "references_table": "ingredients",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "location_dishes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "dish_id",
+              "references_table": "dishes",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE dishes (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_dishes PRIMARY KEY (id),\n    CONSTRAINT fk_dishes_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE ingredients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    is_allergen BOOLEAN NOT NULL,\n    CONSTRAINT pk_ingredients PRIMARY KEY (id)\n);\n\nCREATE TABLE dish_ingredients (\n    id INTEGER NOT NULL,\n    dish_id INTEGER NOT NULL,\n    ingredient_id INTEGER NOT NULL,\n    quantity VARCHAR(255),\n    CONSTRAINT pk_dish_ingredients PRIMARY KEY (id),\n    CONSTRAINT fk_dish_ingredients_dish_id FOREIGN KEY (dish_id) REFERENCES dishes (id),\n    CONSTRAINT fk_dish_ingredients_ingredient_id FOREIGN KEY (ingredient_id) REFERENCES ingredients (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    openingdate DATE NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    hiredate DATE NOT NULL,\n    primary_location_id INTEGER NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id),\n    CONSTRAINT fk_employees_primary_location_id FOREIGN KEY (primary_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE employee_assignments (\n    id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE,\n    CONSTRAINT pk_employee_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_employee_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_assignments_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE location_dishes (\n    id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    dish_id INTEGER NOT NULL,\n    available BOOLEAN NOT NULL,\n    CONSTRAINT pk_location_dishes PRIMARY KEY (id),\n    CONSTRAINT fk_location_dishes_location_id FOREIGN KEY (location_id) REFERENCES locations (id),\n    CONSTRAINT fk_location_dishes_dish_id FOREIGN KEY (dish_id) REFERENCES dishes (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2483,
+    "total_output_tokens": 1720,
+    "total_tokens": 4203,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2483,
+        "output_tokens": 1720,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2483,
+        "output_tokens": 1720,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

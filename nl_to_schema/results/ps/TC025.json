@@ -1,0 +1,472 @@
+{
+  "testfall_id": "TC025",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9529411764705882,
+  "score_gesamt": 0.9717647058823529,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.8823529411764706,
+      "recall": 0.8823529411764706,
+      "f1": 0.8823529411764706,
+      "matched": 15,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "repair_orders.accepted_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "repair_orders.requested_work",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Schuhreparaturbetrieb moechte seine Kunden, die abgegebenen Schuhe und die dazugehoerigen Reparaturauftraege verwalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und auf Wunsch auch die E-Mail-Adresse gespeichert werden. Zu jedem abgegebenen Schuhpaar sollen Marke, Modell, Farbe und die Schuhgroesse festgehalten werden. Jedes Schuhpaar gehoert genau einem Kunden. Fuer jeden Reparaturauftrag soll erfasst werden, wann der Auftrag angenommen wurde, welche Arbeiten gewuenscht sind, ob der Auftrag bereits abgeschlossen ist und welcher Preis berechnet wird. Jeder Reparaturauftrag bezieht sich genau auf ein Schuhpaar. Ein Schuhpaar kann im Laufe der Zeit mehrere Reparaturauftraege haben.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "shoes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "brand",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "size",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "repair_orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "shoe_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "acceptance_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "desired_work",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_completed",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "shoe_id",
+              "references_table": "shoes",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse"
+          ],
+          "beschreibung": "Ein Kunde des Schuhreparaturbetriebs, von dem Vorname, Nachname, Telefonnummer und optional E-Mail-Adresse gespeichert werden."
+        },
+        {
+          "name": "Schuhpaar",
+          "attribute": [
+            "Marke",
+            "Modell",
+            "Farbe",
+            "Schuhgroesse"
+          ],
+          "beschreibung": "Ein abgegebenes Schuhpaar mit Informationen zu Marke, Modell, Farbe und Größe. Gehört genau einem Kunden."
+        },
+        {
+          "name": "Reparaturauftrag",
+          "attribute": [
+            "Annahmedatum",
+            "gewuenschte_Arbeiten",
+            "Abgeschlossen",
+            "Preis"
+          ],
+          "beschreibung": "Ein Reparaturauftrag für ein Schuhpaar mit Annahmedatum, gewünschten Arbeiten, Abschluss-Status und Preis."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Schuhpaar",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Schuhpaar gehört genau einem Kunden. Ein Kunde kann mehrere Schuhpaare abgeben."
+        },
+        {
+          "von": "Reparaturauftrag",
+          "zu": "Schuhpaar",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Reparaturauftrag bezieht sich genau auf ein Schuhpaar. Ein Schuhpaar kann mehrere Reparaturaufträge haben."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Unklar ist, ob die E-Mail-Adresse ein optionales Attribut ist (NULL-Werte erlaubt) oder ob sie immer vorhanden sein muss. Der Text sagt 'auf Wunsch auch', was auf Optionalität hindeutet.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, wie das Attribut 'gewuenschte_Arbeiten' strukturiert sein soll (z.B. Freitext, Auswahl aus Katalog, separate Entität für Arbeitstypen).",
+          "betroffene_elemente": [
+            "Reparaturauftrag"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob das Attribut 'Abgeschlossen' ein boolescher Wert ist oder ob auch ein Abschlussdatum erfasst werden soll.",
+          "betroffene_elemente": [
+            "Reparaturauftrag"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob jeder Kunde eine eindeutige Identifikation (z.B. Kundennummer) benötigt und wie Duplikate vermieden werden.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob jedes Schuhpaar eine eindeutige Identifikation benötigt und wie es von anderen Schuhpaaren desselben Kunden unterschieden wird.",
+          "betroffene_elemente": [
+            "Schuhpaar"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EmailAdresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Schuhpaar",
+          "attribute": [
+            {
+              "name": "schuhpaarId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundenId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Marke",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Modell",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Farbe",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Schuhgroesse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Reparaturauftrag",
+          "attribute": [
+            {
+              "name": "reparaturauftragId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "schuhpaarId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Annahmedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gewuenschteArbeiten",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Abgeschlossen",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Preis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Schuhpaar",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Reparaturauftrag",
+          "zu": "Schuhpaar",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE shoes (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    size VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_shoes PRIMARY KEY (id),\n    CONSTRAINT fk_shoes_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE repair_orders (\n    id INTEGER NOT NULL,\n    shoe_id INTEGER NOT NULL,\n    acceptance_date DATE NOT NULL,\n    desired_work TEXT NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_repair_orders PRIMARY KEY (id),\n    CONSTRAINT fk_repair_orders_shoe_id FOREIGN KEY (shoe_id) REFERENCES shoes (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7351,
+    "total_output_tokens": 2891,
+    "total_tokens": 10242,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1494,
+        "output_tokens": 969,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2504,
+        "output_tokens": 1069,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3353,
+        "output_tokens": 853,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1494,
+        "output_tokens": 969,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2504,
+        "output_tokens": 1069,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3353,
+        "output_tokens": 853,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

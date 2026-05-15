@@ -1,0 +1,482 @@
+{
+  "testfall_id": "TC019",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9636363636363636,
+  "score_gesamt": 0.9781818181818182,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9375,
+      "recall": 0.8823529411764706,
+      "f1": 0.9090909090909091,
+      "matched": 15,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "orders.is_collected",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "order_products.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine kleine Bäckerei möchte ihre täglichen Bestellungen übersichtlich festhalten. Von jedem Kunden sollen Vorname, Nachname, Telefonnummer und E-Mail gespeichert werden. Die Bäckerei bietet verschiedene Produkte an, zum Beispiel Brot, Brötchen, Kuchen oder Croissants. Zu jedem Produkt sollen Name, kurze Beschreibung und Verkaufspreis hinterlegt werden. Wenn ein Kunde etwas bestellt, soll festgehalten werden, wann die Bestellung aufgenommen wurde und ob sie bereits abgeholt wurde. Eine Bestellung gehört immer genau zu einem Kunden. In einer Bestellung können mehrere verschiedene Produkte vorkommen, und zu jedem enthaltenen Produkt muss die bestellte Menge gespeichert werden. Jedes Produkt kann in vielen verschiedenen Bestellungen enthalten sein.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "products",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "order_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_picked_up",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "product_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "product_id",
+              "references_table": "products",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail"
+          ],
+          "beschreibung": "Repräsentiert einen Kunden der Bäckerei mit seinen Kontaktdaten."
+        },
+        {
+          "name": "Produkt",
+          "attribute": [
+            "Name",
+            "Beschreibung",
+            "Verkaufspreis"
+          ],
+          "beschreibung": "Repräsentiert ein Produkt, das die Bäckerei anbietet (z.B. Brot, Brötchen, Kuchen, Croissants)."
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            "Aufnahmezeitpunkt",
+            "Abgeholt"
+          ],
+          "beschreibung": "Repräsentiert eine Bestellung eines Kunden mit Zeitstempel und Abholstatus."
+        },
+        {
+          "name": "BestellungProdukt",
+          "attribute": [
+            "Menge"
+          ],
+          "beschreibung": "Verknüpfungsentität, die die Beziehung zwischen Bestellung und Produkt mit der bestellten Menge darstellt."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Kunde kann mehrere Bestellungen aufgeben. Eine Bestellung gehört genau zu einem Kunden."
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Produkt",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Bestellung kann mehrere verschiedene Produkte enthalten. Ein Produkt kann in vielen verschiedenen Bestellungen vorkommen. Die Beziehung wird durch die Entität BestellungProdukt mit dem Attribut Menge realisiert."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Das Attribut 'Abgeholt' ist als boolescher Wert interpretiert worden (ja/nein), könnte aber auch ein Zeitstempel sein (Abholzeitpunkt). Die genaue Datentypisierung ist nicht spezifiziert.",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob Kunden eindeutig identifiziert werden (z.B. durch eine Kundennummer) oder nur durch ihre Kontaktdaten. Keine explizite Primärschlüssel-Definition vorhanden.",
+          "betroffene_elemente": [
+            "Kunde"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht spezifiziert, ob ein Produkt eine eindeutige Produktnummer/ID haben soll oder nur über seinen Namen identifiziert wird.",
+          "betroffene_elemente": [
+            "Produkt"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Menge in der BestellungProdukt-Entität eine Einheit hat (z.B. Stück, Gramm) oder nur eine Zahl darstellt.",
+          "betroffene_elemente": [
+            "BestellungProdukt"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Produkt",
+          "attribute": [
+            {
+              "name": "ProduktID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Verkaufspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            {
+              "name": "BestellungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Aufnahmezeitpunkt",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Abgeholt",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "BestellungProdukt",
+          "attribute": [
+            {
+              "name": "BestellungProduktID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BestellungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ProduktID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Menge",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kunde",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Produkt",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "Menge"
+          ]
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    order_date TIMESTAMP NOT NULL,\n    is_picked_up BOOLEAN NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_products PRIMARY KEY (id)\n);\n\nCREATE TABLE order_items (\n    order_id INTEGER NOT NULL,\n    product_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (order_id, product_id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_product_id FOREIGN KEY (product_id) REFERENCES products (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7245,
+    "total_output_tokens": 2723,
+    "total_tokens": 9968,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1473,
+        "output_tokens": 908,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2416,
+        "output_tokens": 926,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3356,
+        "output_tokens": 889,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1473,
+        "output_tokens": 908,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2416,
+        "output_tokens": 926,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3356,
+        "output_tokens": 889,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

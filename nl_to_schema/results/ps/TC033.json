@@ -1,0 +1,447 @@
+{
+  "testfall_id": "TC033",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.95,
+  "score_gesamt": 0.97,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.875,
+      "recall": 0.875,
+      "f1": 0.875,
+      "matched": 14,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "stays.checkindate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dogs.notes",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für ein Hundehotel soll festgehalten werden, welche Hunde betreut werden und wem sie gehören. Zu jedem Besitzer werden Vorname, Nachname, Telefonnummer und E-Mail-Adresse benötigt. Zu jedem Hund sollen Name, Geburtsdatum, Geschlecht und besondere Hinweise wie Unverträglichkeiten oder Medikamente gespeichert werden. Jeder Hund gehört genau einem Besitzer, ein Besitzer kann aber mehrere Hunde haben. Außerdem sollen die Aufenthalte der Hunde erfasst werden. Für jeden Aufenthalt muss bekannt sein, welcher Hund da war, an welchem Tag er gebracht wurde, an welchem Tag er wieder abgeholt wurde und ob eine Fütterung nach Plan erforderlich ist. Ein Hund kann mehrere Aufenthalte im Laufe der Zeit haben.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "owners",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dogs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "gender",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "special_notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "owner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "owner_id",
+              "references_table": "owners",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "stays",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dog_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkin_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkout_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "feeding_plan_required",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "dog_id",
+              "references_table": "dogs",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Besitzer",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse"
+          ],
+          "beschreibung": "Eine Person, die einen oder mehrere Hunde besitzt und diese im Hundehotel betreuen lässt."
+        },
+        {
+          "name": "Hund",
+          "attribute": [
+            "Name",
+            "Geburtsdatum",
+            "Geschlecht",
+            "besondere Hinweise"
+          ],
+          "beschreibung": "Ein Hund, der vom Hundehotel betreut wird. Besondere Hinweise umfassen Unverträglichkeiten und Medikamente."
+        },
+        {
+          "name": "Aufenthalt",
+          "attribute": [
+            "Ankunftstag",
+            "Abreißtag",
+            "Fütterung nach Plan erforderlich"
+          ],
+          "beschreibung": "Ein Zeitraum, in dem ein Hund im Hundehotel untergebracht ist."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Hund",
+          "zu": "Besitzer",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Hund gehört genau einem Besitzer. Ein Besitzer kann mehrere Hunde haben."
+        },
+        {
+          "von": "Aufenthalt",
+          "zu": "Hund",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Aufenthalt bezieht sich auf genau einen Hund. Ein Hund kann mehrere Aufenthalte im Laufe der Zeit haben."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Das Attribut 'besondere Hinweise' ist eine Freitextfeld, das mehrere Informationen (Unverträglichkeiten, Medikamente) enthält. Unklar ist, ob diese strukturiert (z.B. in separaten Tabellen) oder unstrukturiert gespeichert werden sollen.",
+          "betroffene_elemente": [
+            "Hund"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob 'Abreißtag' optional sein kann (z.B. wenn ein Hund noch im Hotel ist) oder immer gesetzt sein muss.",
+          "betroffene_elemente": [
+            "Aufenthalt"
+          ]
+        },
+        {
+          "beschreibung": "Das Attribut 'Fütterung nach Plan erforderlich' ist als boolescher Wert interpretiert, könnte aber auch weitere Details (z.B. Fütterungsplan, Fütterungszeiten) enthalten.",
+          "betroffene_elemente": [
+            "Aufenthalt"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Besitzer",
+          "attribute": [
+            {
+              "name": "besitzer_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email_adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Hund",
+          "attribute": [
+            {
+              "name": "hund_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geschlecht",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "besondere_hinweise",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "besitzer_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Aufenthalt",
+          "attribute": [
+            {
+              "name": "aufenthalt_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "hund_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ankunftstag",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "abreißtag",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "fuetterung_nach_plan_erforderlich",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Hund",
+          "zu": "Besitzer",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Aufenthalt",
+          "zu": "Hund",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE dogs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    gender VARCHAR(255) NOT NULL,\n    special_notes TEXT,\n    owner_id INTEGER NOT NULL,\n    CONSTRAINT pk_dogs PRIMARY KEY (id),\n    CONSTRAINT fk_dogs_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE stays (\n    id INTEGER NOT NULL,\n    dog_id INTEGER NOT NULL,\n    checkin_date DATE NOT NULL,\n    checkout_date DATE,\n    feeding_plan_required BOOLEAN NOT NULL,\n    CONSTRAINT pk_stays PRIMARY KEY (id),\n    CONSTRAINT fk_stays_dog_id FOREIGN KEY (dog_id) REFERENCES dogs (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7035,
+    "total_output_tokens": 2434,
+    "total_tokens": 9469,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1475,
+        "output_tokens": 779,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2281,
+        "output_tokens": 836,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3279,
+        "output_tokens": 819,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1475,
+        "output_tokens": 779,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2281,
+        "output_tokens": 836,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3279,
+        "output_tokens": 819,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

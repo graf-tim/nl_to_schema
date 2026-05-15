@@ -1,0 +1,1741 @@
+{
+  "testfall_id": "TC087",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5323919554985024,
+  "score_gesamt": 0.7194351732991014,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 27,
+    "pk_tabellen_mit_pk": 27,
+    "fk_referenzen_gesamt": 35,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.4444444444444444,
+      "recall": 0.8571428571428571,
+      "f1": 0.5853658536585367,
+      "matched": 12,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 15
+    },
+    "attribut": {
+      "precision": 0.29375,
+      "recall": 0.6911764705882353,
+      "f1": 0.41228070175438597,
+      "matched": 47,
+      "nur_in_referenz": 21,
+      "nur_in_generiert": 113
+    },
+    "beziehung": {
+      "recall": 0.6666666666666666,
+      "matched": 10,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 6
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "device_categories",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_person_roles",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "product_standards.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.product_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products.model",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "incidents.severity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "standards.code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.building",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.department",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.unit_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "manufacturers.contact_phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "manufacturers.contact_email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "manufacturers.website",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "inspection_types.default_interval_months",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "devices.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "inspections.device_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_categories.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_categories.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_categories.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_person_roles.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_person_roles.device_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_person_roles.person_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_person_roles.role_name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_category_inspection_types → device_categories",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_person_roles → devices",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "device_person_roles → persons",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "inspections → devices",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "products → device_categories",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für unsere Klinikgruppe soll eine zentrale Erfassung aller Medizinprodukte und aktiven Geräte aufgebaut werden, damit Medizintechnik, Einkauf und die Beauftragten für die Betreiberpflichten denselben Stand sehen. Erfasst werden sollen unter anderem Infusionspumpen, Defibrillatoren, Beatmungsgeräte, Monitore und ähnliche Produkte. Wichtig ist, dass man unterscheiden kann, zu welcher Geräteart etwas gehört und von welchem Hersteller es stammt. Manche Hersteller haben mehrere Ansprechpartner oder Servicewege, manchmal läuft aber auch alles über einen externen Dienstleister. Das sollte irgendwie nachvollziehbar bleiben.\n\nJedes einzelne Gerät soll mit Inventar- oder Serienangaben, Modellbezeichnung, Inbetriebnahme und aktuellem Status geführt werden. Außerdem muss sichtbar sein, in welchem Haus, auf welcher Station oder in welchem Funktionsbereich das Gerät momentan eingesetzt wird. Geräte wechseln aber gelegentlich den Standort; ob man nur den aktuellen Ort oder auch frühere Umsetzungen sehen muss, ist fachlich noch nicht ganz entschieden, eigentlich wäre beides nützlich.\n\nFür viele Geräte sind regelmäßige Prüfungen relevant, zum Beispiel STK, MTK oder sicherheitstechnische Kontrollen nach internen Vorgaben. Dabei gibt es Fristen, Prüfergebnisse und teils auch Bemerkungen oder Mängel. Nicht immer ist klar, ob jede Prüfung direkt an ein einzelnes Gerät gebunden ist oder ob bestimmte Prüfarten eher für eine Gerätegruppe hinterlegt werden. Zusätzlich sollen Vorkommnisse wie Störungen, Ausfälle oder Fehlalarme dokumentiert werden, gegebenenfalls mit Meldedatum, Schweregrad und einer kurzen Beschreibung.\n\nZu jedem Produkt sollen die regulatorischen Daten auffindbar sein, etwa Risikoklasse, UDI-DI, CE-Kennzeichnung und relevante Normen. Ein Gerät kann mehreren Normen unterliegen, und dieselbe Norm gilt natürlich für viele Produkte. Außerdem wäre es gut, wenn man zuordnen kann, welche Personen für Einweisung, Betreuung oder Freigabe zuständig sind; je nach Bereich kann das aber unterschiedlich gehandhabt werden. Verbrauchsmaterialien müssen hier nicht einzeln verfolgt werden, Zubehör wäre später eventuell interessant.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "manufacturer_contacts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "service_area",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "device_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "products",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "device_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model_designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "risk_class",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "udi_di",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "ce_marking",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "device_type_id",
+              "references_table": "device_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "standards",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "standard_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "product_standards",
+          "columns": [
+            {
+              "name": "product_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "standard_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "product_id",
+              "references_table": "products",
+              "references_column": "id"
+            },
+            {
+              "from_column": "standard_id",
+              "references_table": "standards",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "service_providers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "service_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_external",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "manufacturer_service_providers",
+          "columns": [
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_provider_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_provider_id",
+              "references_table": "service_providers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "product_service_providers",
+          "columns": [
+            {
+              "name": "product_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_provider_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contact_person",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "service_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "product_id",
+              "references_table": "products",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_provider_id",
+              "references_table": "service_providers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "location_level_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "parent_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "level_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "building_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "station_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "functional_area",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "room_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "parent_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "level_type_id",
+              "references_table": "location_level_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "device_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "devices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "product_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "inventory_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "serial_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "model_variant",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "commissioning_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "device_status_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status_changed_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "current_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "warranty_end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "maintenance_contract_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "product_id",
+              "references_table": "products",
+              "references_column": "id"
+            },
+            {
+              "from_column": "device_status_id",
+              "references_table": "device_statuses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "current_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "maintenance_contract_id",
+              "references_table": "maintenance_contracts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "device_location_history",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "device_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "device_id",
+              "references_table": "devices",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "inspection_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "device_inspections",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "device_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "inspection_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "inspection_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "next_due_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "result",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "remarks",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "defects_found",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "inspector_person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "inspector_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "device_id",
+              "references_table": "devices",
+              "references_column": "id"
+            },
+            {
+              "from_column": "inspection_type_id",
+              "references_table": "inspection_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "inspector_person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "product_inspections",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "product_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "inspection_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "inspection_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "next_due_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "result",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "remarks",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "defects_found",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "inspector_person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "inspector_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "product_id",
+              "references_table": "products",
+              "references_column": "id"
+            },
+            {
+              "from_column": "inspection_type_id",
+              "references_table": "inspection_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "inspector_person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "inspection_defects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "device_inspection_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "product_inspection_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "defect_description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "severity",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "resolution_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "resolution_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "device_inspection_id",
+              "references_table": "device_inspections",
+              "references_column": "id"
+            },
+            {
+              "from_column": "product_inspection_id",
+              "references_table": "product_inspections",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "incident_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "incident_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "incident_severities",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "incidents",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "device_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "incident_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "report_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "report_time",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "incident_severity_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "incident_status_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "resolution_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "reported_by_person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "device_id",
+              "references_table": "devices",
+              "references_column": "id"
+            },
+            {
+              "from_column": "incident_type_id",
+              "references_table": "incident_types",
+              "references_column": "id"
+            },
+            {
+              "from_column": "incident_severity_id",
+              "references_table": "incident_severities",
+              "references_column": "id"
+            },
+            {
+              "from_column": "incident_status_id",
+              "references_table": "incident_statuses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "reported_by_person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "department",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "responsibility_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "device_responsibilities",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "device_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "responsibility_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "device_id",
+              "references_table": "devices",
+              "references_column": "id"
+            },
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "responsibility_type_id",
+              "references_table": "responsibility_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "device_accessories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "device_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "accessory_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "device_id",
+              "references_table": "devices",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "maintenance_contracts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contract_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "service_provider_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "contract_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "service_provider_id",
+              "references_table": "service_providers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Tabelle 'device_location_history' hat keine Constraint, die sicherstellt, dass end_date >= start_date. Zudem fehlt eine Constraint, die verhindert, dass ein Gerät zu überlappenden Zeiträumen an mehreren Orten sein kann. Dies führt zu logischen Inkonsistenzen in der Standortverfolgung.",
+          "korrekturanweisung": "Hinzufügen von CHECK-Constraints: (1) end_date IS NULL OR end_date >= start_date, (2) Unique-Constraint auf (device_id, start_date) mit Prüfung auf Überlappungen (ggf. via Trigger oder Applikationslogik)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "FEHLER 3NF: Tabelle 'devices' enthält das Attribut 'status' (VARCHAR), das ein Enumerations-Wert ist (z.B. 'active', 'inactive', 'maintenance'). Dies ist eine transitive Abhängigkeit: Der Status ist nicht direkt vom Primärschlüssel abhängig, sondern von Geschäftsregeln. Besser: Separate Tabelle 'device_statuses' mit id und name, dann device_status_id als FK in 'devices'. Ähnlich: 'incidents.status' und 'incidents.severity' sind ebenfalls Enumerationen ohne Normalisierung.",
+          "korrekturanweisung": "Extrahieren Sie Enumerations-Attribute in separate Lookup-Tabellen: 'device_statuses', 'incident_statuses', 'incident_severities'. Ersetzen Sie VARCHAR-Spalten durch entsprechende Foreign Keys."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Anforderung erwähnt explizit 'Verbrauchsmaterialien müssen hier nicht einzeln verfolgt werden, Zubehör wäre später eventuell interessant.' Das Schema hat keine Struktur für Zubehör/Accessories. Zudem fehlt eine Entität für 'Defects' oder 'Defect Details' – die Anforderung spricht von 'Mängel' bei Prüfungen, aber 'inspections.remarks' ist nur ein Freitextfeld. Für Compliance und Nachverfolgung sollten Mängel strukturiert erfasst werden.",
+          "korrekturanweisung": "Erwägen Sie: (1) Tabelle 'device_accessories' mit device_id, accessory_type, description, etc. (2) Tabelle 'inspection_defects' mit inspection_id, defect_description, severity, resolution_status, etc. für strukturierte Mangelverfolgung."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Tabelle 'devices' fehlt ein Attribut für die aktuelle Standort-Referenz. Die Anforderung verlangt 'in welchem Haus, auf welcher Station oder in welchem Funktionsbereich das Gerät momentan eingesetzt wird'. Aktuell muss man 'device_location_history' mit end_date IS NULL abfragen – das ist ineffizient und fehleranfällig. Zudem fehlt in 'locations' ein Attribut für die Hierarchie-Ebene (z.B. 'level_type': 'building', 'station', 'functional_area'), um die Struktur zu validieren.",
+          "korrekturanweisung": "Hinzufügen von 'current_location_id' (FK zu locations) in 'devices' mit Trigger/Constraint, der sicherstellt, dass dies mit dem letzten Eintrag in 'device_location_history' (end_date IS NULL) konsistent bleibt. Optional: 'level_type' in 'locations' für Validierung."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Entität 'current_location' oder eine Verknüpfung zwischen 'devices' und 'locations' für den aktuellen Standort fehlt. Der Anforderungstext fordert explizit: 'in welchem Haus, auf welcher Station oder in welchem Funktionsbereich das Gerät momentan eingesetzt wird'. Die Tabelle 'device_location_history' dokumentiert nur die Historie mit start_date und end_date, ermöglicht aber keine effiziente Abfrage des AKTUELLEN Standorts (WHERE end_date IS NULL ist ein Workaround, aber keine strukturelle Lösung). Eine explizite Spalte 'current_location_id' in 'devices' oder eine dedizierte 'device_current_location'-Tabelle ist notwendig.",
+          "korrekturanweisung": "Füge eine Spalte 'current_location_id INTEGER NULLABLE' zu 'devices' hinzu und referenziere 'locations(id)', ODER erstelle eine separate Tabelle 'device_current_locations' mit (device_id, location_id, updated_at). Dies ermöglicht schnelle Abfragen des aktuellen Standorts ohne Subqueries."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: In der Tabelle 'devices' fehlt ein Attribut für den aktuellen Status-Grund oder Statusübergangs-Datum. Der Anforderungstext erwähnt 'aktuellem Status', aber es ist unklar, seit wann ein Gerät den Status hat. Zudem fehlt in 'inspections' ein Attribut für den Inspekteur/Prüfer als Freitext (falls keine Person zugeordnet ist). Die Spalte 'inspector_person_id' ist optional (nullable), aber es gibt keine Alternative für externe Inspektoren oder Prüforganisationen.",
+          "korrekturanweisung": "1) Füge 'status_changed_date DATE NULLABLE' zu 'devices' hinzu. 2) Füge 'inspector_name VARCHAR NULLABLE' zu 'inspections' hinzu für Fälle, in denen der Inspekteur nicht in 'persons' erfasst ist (z.B. externe Prüforganisationen)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen 'inspections' und 'devices'/'products' ist untermodelliert. Der Anforderungstext sagt: 'Nicht immer ist klar, ob jede Prüfung direkt an ein einzelnes Gerät gebunden ist oder ob bestimmte Prüfarten eher für eine Gerätegruppe hinterlegt werden.' Das Schema erlaubt (device_id, product_id) beide NULL oder beide gesetzt, was zu Mehrdeutigkeiten führt. Es fehlt eine Constraint, die sicherstellt, dass GENAU EINE der beiden Spalten gesetzt ist (XOR-Constraint). Ohne diese Regel können inkonsistente Daten entstehen.",
+          "korrekturanweisung": "Implementiere einen CHECK-Constraint in 'inspections': (device_id IS NOT NULL AND product_id IS NULL) OR (device_id IS NULL AND product_id IS NOT NULL). Alternativ: Erstelle zwei separate Tabellen 'device_inspections' und 'product_inspections' mit jeweils einer NOT NULL FK."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Tabelle 'device_responsibilities' hat eine zusammengesetzte Primärschlüssel (device_id, person_id, responsibility_type_id), aber es fehlt eine Kardinalitäts-Klarheit. Der Anforderungstext sagt: 'welche Personen für Einweisung, Betreuung oder Freigabe zuständig sind; je nach Bereich kann das aber unterschiedlich gehandhabt werden.' Das Schema erlaubt mehrere Einträge für dieselbe (device, person, responsibility_type)-Kombination mit unterschiedlichen start_date/end_date, aber die PK verhindert dies. Die Spalte 'is_active' ist redundant, wenn end_date NULL bedeutet 'aktiv'.",
+          "korrekturanweisung": "Ändere PK zu (device_id, person_id, responsibility_type_id, start_date) oder entferne responsibility_type_id aus PK und erstelle einen UNIQUE-Constraint auf (device_id, person_id, responsibility_type_id, start_date). Entferne 'is_active' und nutze 'end_date IS NULL' als Indikator für aktive Verantwortung."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "WARNUNG (weich): Die Entität 'external_service_providers' ist nur teilweise modelliert. Der Anforderungstext erwähnt: 'manchmal läuft aber auch alles über einen externen Dienstleister'. Das Schema hat 'service_providers' und 'manufacturer_service_providers', aber es fehlt eine klare Unterscheidung zwischen Herstellerkontakten (manufacturer_contacts) und externen Dienstleistern. Es ist unklar, ob ein 'service_provider' auch direkt mit einem 'device' oder 'product' verknüpft sein kann (ja, via 'product_service_providers'), aber die Semantik ist nicht eindeutig.",
+          "korrekturanweisung": "Dokumentiere in der Datenbankdokumentation, dass 'service_providers' externe Dienstleister sind und 'manufacturer_contacts' interne Ansprechpartner des Herstellers. Erwäge, ein Attribut 'is_external BOOLEAN' zu 'service_providers' hinzuzufügen, um die Unterscheidung zu verdeutlichen."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "WARNUNG (weich): In der Tabelle 'devices' fehlt ein Attribut für die Garantie-/Wartungsablauf-Information. Der Anforderungstext erwähnt 'Betreiberpflichten' und 'regelmäßige Prüfungen', aber es gibt kein Feld für Garantieende, Wartungsvertrag oder Servicevereinbarung. Dies ist relevant für die Planung von Inspektionen und Instandhaltung.",
+          "korrekturanweisung": "Füge optionale Spalten zu 'devices' hinzu: 'warranty_end_date DATE NULLABLE', 'maintenance_contract_id INTEGER NULLABLE' (FK zu einer neuen Tabelle 'maintenance_contracts'). Dies ermöglicht bessere Planung von Inspektionen und Wartungen."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, Fremdschlüssel referenzieren korrekt, und es gibt keine offensichtlichen Anomalien oder Redundanzen. Junction-Tables sind korrekt modelliert (product_standards, manufacturer_service_providers, device_responsibilities).",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE device_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_device_types PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    country VARCHAR(255),\n    notes TEXT,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    device_type_id INTEGER NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    model_designation VARCHAR(255) NOT NULL,\n    risk_class VARCHAR(255),\n    udi_di VARCHAR(255),\n    ce_marking BOOLEAN,\n    description TEXT,\n    CONSTRAINT pk_products PRIMARY KEY (id),\n    CONSTRAINT fk_products_device_type_id FOREIGN KEY (device_type_id) REFERENCES device_types (id),\n    CONSTRAINT fk_products_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE device_statuses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_device_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE location_level_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_location_level_types PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    parent_location_id INTEGER,\n    level_type_id INTEGER,\n    building_name VARCHAR(255) NOT NULL,\n    station_name VARCHAR(255),\n    functional_area VARCHAR(255),\n    room_number VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_locations PRIMARY KEY (id),\n    CONSTRAINT fk_locations_parent_location_id FOREIGN KEY (parent_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_locations_level_type_id FOREIGN KEY (level_type_id) REFERENCES location_level_types (id)\n);\n\nCREATE TABLE service_providers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    service_type VARCHAR(255),\n    is_external BOOLEAN,\n    notes TEXT,\n    CONSTRAINT pk_service_providers PRIMARY KEY (id)\n);\n\nCREATE TABLE maintenance_contracts (\n    id INTEGER NOT NULL,\n    contract_number VARCHAR(255),\n    service_provider_id INTEGER,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    contract_type VARCHAR(255),\n    description TEXT,\n    notes TEXT,\n    CONSTRAINT pk_maintenance_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_maintenance_contracts_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE devices (\n    id INTEGER NOT NULL,\n    product_id INTEGER NOT NULL,\n    inventory_number VARCHAR(255),\n    serial_number VARCHAR(255),\n    model_variant VARCHAR(255),\n    commissioning_date DATE,\n    device_status_id INTEGER NOT NULL,\n    status_changed_date DATE,\n    current_location_id INTEGER,\n    warranty_end_date DATE,\n    maintenance_contract_id INTEGER,\n    notes TEXT,\n    CONSTRAINT pk_devices PRIMARY KEY (id),\n    CONSTRAINT fk_devices_product_id FOREIGN KEY (product_id) REFERENCES products (id),\n    CONSTRAINT fk_devices_device_status_id FOREIGN KEY (device_status_id) REFERENCES device_statuses (id),\n    CONSTRAINT fk_devices_current_location_id FOREIGN KEY (current_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_devices_maintenance_contract_id FOREIGN KEY (maintenance_contract_id) REFERENCES maintenance_contracts (id)\n);\n\nCREATE TABLE device_accessories (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    accessory_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    quantity INTEGER,\n    notes TEXT,\n    CONSTRAINT pk_device_accessories PRIMARY KEY (id),\n    CONSTRAINT fk_device_accessories_device_id FOREIGN KEY (device_id) REFERENCES devices (id)\n);\n\nCREATE TABLE inspection_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    code VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_inspection_types PRIMARY KEY (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    department VARCHAR(255),\n    notes TEXT,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE device_inspections (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    inspection_type_id INTEGER NOT NULL,\n    inspection_date DATE NOT NULL,\n    next_due_date DATE,\n    result VARCHAR(255),\n    remarks TEXT,\n    defects_found BOOLEAN,\n    inspector_person_id INTEGER,\n    inspector_name VARCHAR(255),\n    CONSTRAINT pk_device_inspections PRIMARY KEY (id),\n    CONSTRAINT fk_device_inspections_device_id FOREIGN KEY (device_id) REFERENCES devices (id),\n    CONSTRAINT fk_device_inspections_inspection_type_id FOREIGN KEY (inspection_type_id) REFERENCES inspection_types (id),\n    CONSTRAINT fk_device_inspections_inspector_person_id FOREIGN KEY (inspector_person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE device_location_history (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    notes TEXT,\n    CONSTRAINT pk_device_location_history PRIMARY KEY (id),\n    CONSTRAINT fk_device_location_history_device_id FOREIGN KEY (device_id) REFERENCES devices (id),\n    CONSTRAINT fk_device_location_history_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE responsibility_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_responsibility_types PRIMARY KEY (id)\n);\n\nCREATE TABLE device_responsibilities (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    responsibility_type_id INTEGER NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    notes TEXT,\n    CONSTRAINT pk_device_responsibilities PRIMARY KEY (id),\n    CONSTRAINT fk_device_responsibilities_device_id FOREIGN KEY (device_id) REFERENCES devices (id),\n    CONSTRAINT fk_device_responsibilities_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_device_responsibilities_responsibility_type_id FOREIGN KEY (responsibility_type_id) REFERENCES responsibility_types (id)\n);\n\nCREATE TABLE incident_severities (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_incident_severities PRIMARY KEY (id)\n);\n\nCREATE TABLE incident_statuses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_incident_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE incident_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_incident_types PRIMARY KEY (id)\n);\n\nCREATE TABLE incidents (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    incident_type_id INTEGER NOT NULL,\n    report_date DATE NOT NULL,\n    report_time TIMESTAMP,\n    incident_severity_id INTEGER,\n    description TEXT,\n    incident_status_id INTEGER,\n    resolution_date DATE,\n    reported_by_person_id INTEGER,\n    CONSTRAINT pk_incidents PRIMARY KEY (id),\n    CONSTRAINT fk_incidents_device_id FOREIGN KEY (device_id) REFERENCES devices (id),\n    CONSTRAINT fk_incidents_incident_type_id FOREIGN KEY (incident_type_id) REFERENCES incident_types (id),\n    CONSTRAINT fk_incidents_incident_severity_id FOREIGN KEY (incident_severity_id) REFERENCES incident_severities (id),\n    CONSTRAINT fk_incidents_incident_status_id FOREIGN KEY (incident_status_id) REFERENCES incident_statuses (id),\n    CONSTRAINT fk_incidents_reported_by_person_id FOREIGN KEY (reported_by_person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE product_inspections (\n    id INTEGER NOT NULL,\n    product_id INTEGER NOT NULL,\n    inspection_type_id INTEGER NOT NULL,\n    inspection_date DATE NOT NULL,\n    next_due_date DATE,\n    result VARCHAR(255),\n    remarks TEXT,\n    defects_found BOOLEAN,\n    inspector_person_id INTEGER,\n    inspector_name VARCHAR(255),\n    CONSTRAINT pk_product_inspections PRIMARY KEY (id),\n    CONSTRAINT fk_product_inspections_product_id FOREIGN KEY (product_id) REFERENCES products (id),\n    CONSTRAINT fk_product_inspections_inspection_type_id FOREIGN KEY (inspection_type_id) REFERENCES inspection_types (id),\n    CONSTRAINT fk_product_inspections_inspector_person_id FOREIGN KEY (inspector_person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE inspection_defects (\n    id INTEGER NOT NULL,\n    device_inspection_id INTEGER,\n    product_inspection_id INTEGER,\n    defect_description TEXT NOT NULL,\n    severity VARCHAR(255),\n    resolution_status VARCHAR(255),\n    resolution_date DATE,\n    notes TEXT,\n    CONSTRAINT pk_inspection_defects PRIMARY KEY (id),\n    CONSTRAINT fk_inspection_defects_device_inspection_id FOREIGN KEY (device_inspection_id) REFERENCES device_inspections (id),\n    CONSTRAINT fk_inspection_defects_product_inspection_id FOREIGN KEY (product_inspection_id) REFERENCES product_inspections (id)\n);\n\nCREATE TABLE manufacturer_contacts (\n    id INTEGER NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    role VARCHAR(255),\n    service_area VARCHAR(255),\n    notes TEXT,\n    CONSTRAINT pk_manufacturer_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_manufacturer_contacts_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE manufacturer_service_providers (\n    manufacturer_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    contact_person VARCHAR(255),\n    notes TEXT,\n    CONSTRAINT pk_manufacturer_service_providers PRIMARY KEY (manufacturer_id, service_provider_id),\n    CONSTRAINT fk_manufacturer_service_providers_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id),\n    CONSTRAINT fk_manufacturer_service_providers_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE product_service_providers (\n    product_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    contact_person VARCHAR(255),\n    service_type VARCHAR(255),\n    notes TEXT,\n    CONSTRAINT pk_product_service_providers PRIMARY KEY (product_id, service_provider_id),\n    CONSTRAINT fk_product_service_providers_product_id FOREIGN KEY (product_id) REFERENCES products (id),\n    CONSTRAINT fk_product_service_providers_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE standards (\n    id INTEGER NOT NULL,\n    standard_code VARCHAR(255) NOT NULL,\n    title VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_standards PRIMARY KEY (id)\n);\n\nCREATE TABLE product_standards (\n    product_id INTEGER NOT NULL,\n    standard_id INTEGER NOT NULL,\n    CONSTRAINT pk_product_standards PRIMARY KEY (product_id, standard_id),\n    CONSTRAINT fk_product_standards_product_id FOREIGN KEY (product_id) REFERENCES products (id),\n    CONSTRAINT fk_product_standards_standard_id FOREIGN KEY (standard_id) REFERENCES standards (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 16 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 7 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 19 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 6 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 27 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 27 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 72526,
+    "total_output_tokens": 34136,
+    "total_tokens": 106662,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 26244,
+        "output_tokens": 17519,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 15791,
+        "output_tokens": 3561,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 15703,
+        "output_tokens": 4537,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 14788,
+        "output_tokens": 8519,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2789,
+        "output_tokens": 3979,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7298,
+        "output_tokens": 1970,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7254,
+        "output_tokens": 2291,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 11353,
+        "output_tokens": 5021,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8493,
+        "output_tokens": 1591,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8449,
+        "output_tokens": 2246,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 12102,
+        "output_tokens": 8519,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 14788,
+        "output_tokens": 8519,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

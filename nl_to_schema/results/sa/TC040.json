@@ -1,0 +1,422 @@
+{
+  "testfall_id": "TC040",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8587301587301588,
+  "score_gesamt": 0.9152380952380953,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8571428571428571,
+      "recall": 0.8571428571428571,
+      "f1": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.8857142857142857,
+      "recall": 0.8378378378378378,
+      "f1": 0.8611111111111112,
+      "matched": 31,
+      "nur_in_referenz": 6,
+      "nur_in_generiert": 4
+    },
+    "beziehung": {
+      "recall": 0.8571428571428571,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "services",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles.construction_year",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "rentals_services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.daily_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "rentals_services → services",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Autovermietung soll festgehalten werden, welche Fahrzeuge an welchen Standorten verfügbar sind und von welchen Herstellern sie stammen. Zu jedem Auto sollen Kennzeichen, Modellbezeichnung, Baujahr, aktuelle Kilometerzahl und der Tagespreis bekannt sein. Manche Fahrzeuge sind gerade aktiv vermietbar, andere vorübergehend nicht, etwa wegen Reinigung oder Werkstatt. Kunden sollen mit Namen, Geburtsdatum, Telefonnummer, E-Mail und Führerscheinnummer erfasst werden. Es muss nachvollziehbar sein, wann ein Kunde ein Fahrzeug übernimmt und wann die geplante Rückgabe ist; die tatsächliche Rückgabe kann später abweichen. Außerdem möchte das Unternehmen speichern, an welchem Standort die Übergabe und die Rücknahme stattfinden. Ein Kunde kann bei einer Anmietung zusätzliche Leistungen auswählen, zum Beispiel Kindersitz, Navigationsgerät oder Zusatzfahrer. Solche Leistungen können bei vielen Anmietungen vorkommen. Für jeden Standort sollen Name, Stadt und Adresse gespeichert werden. Ein Hersteller baut viele Fahrzeuge, und ein Fahrzeug gehört genau zu einem Hersteller. Wenn ein Auto zurückkommt, soll sein Kilometerstand aktualisiert werden. Es reicht, wenn zunächst nur normale Anmietungen betrachtet werden; langfristige Firmenverträge spielen hier noch keine Rolle.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "vehicles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "license_plate",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "year_of_manufacture",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "current_mileage",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "daily_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "license_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "additional_services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "rentals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "vehicle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "pickup_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "return_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "pickup_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_return_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "actual_return_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "vehicle_id",
+              "references_table": "vehicles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "pickup_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "return_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "rental_services",
+          "columns": [
+            {
+              "name": "rental_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "rental_id",
+              "references_table": "rentals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_id",
+              "references_table": "additional_services",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE additional_services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_additional_services PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    license_number VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    year_of_manufacture INTEGER NOT NULL,\n    current_mileage INTEGER NOT NULL,\n    daily_price DECIMAL(18,2) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id),\n    CONSTRAINT fk_vehicles_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    pickup_location_id INTEGER NOT NULL,\n    return_location_id INTEGER NOT NULL,\n    pickup_date DATE NOT NULL,\n    planned_return_date DATE NOT NULL,\n    actual_return_date DATE,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_rentals_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_rentals_pickup_location_id FOREIGN KEY (pickup_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_rentals_return_location_id FOREIGN KEY (return_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE rental_services (\n    rental_id INTEGER NOT NULL,\n    service_id INTEGER NOT NULL,\n    CONSTRAINT pk_rental_services PRIMARY KEY (rental_id, service_id),\n    CONSTRAINT fk_rental_services_rental_id FOREIGN KEY (rental_id) REFERENCES rentals (id),\n    CONSTRAINT fk_rental_services_service_id FOREIGN KEY (service_id) REFERENCES additional_services (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2488,
+    "total_output_tokens": 1678,
+    "total_tokens": 4166,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2488,
+        "output_tokens": 1678,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2488,
+        "output_tokens": 1678,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

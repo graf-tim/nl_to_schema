@@ -1,0 +1,435 @@
+{
+  "testfall_id": "TC004",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9733333333333334,
+  "score_gesamt": 0.984,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 0.9333333333333333,
+      "recall": 0.9333333333333333,
+      "f1": 0.9333333333333333,
+      "matched": 14,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "books.stock_quantity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Buchhandlung soll festgehalten werden, welche Verlage die angebotenen Bücher herausgeben. Zu jedem Verlag werden der Name, die E-Mail-Adresse und die Telefonnummer gespeichert. Zu jedem Buch sollen der Titel, die internationale Buchnummer, das Erscheinungsdatum, der Verkaufspreis und der aktuelle Lagerbestand erfasst werden. Jedes Buch gehört genau zu einem Verlag, ein Verlag kann aber viele Bücher herausgeben. Außerdem möchte die Buchhandlung Bestellungen von Kundinnen und Kunden dokumentieren. Für jede Bestellung werden das Bestelldatum und der aktuelle Status notiert. Jede Bestellung gehört genau zu einem Buch, und ein Buch kann in vielen Bestellungen vorkommen. Weitere Informationen werden nicht benötigt.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "publishers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "books",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "isbn",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publicationdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "stock",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publisher_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "publisher_id",
+              "references_table": "publishers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "book_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "book_id",
+              "references_table": "books",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Verlag",
+          "attribute": [
+            "Name",
+            "E-Mail-Adresse",
+            "Telefonnummer"
+          ],
+          "beschreibung": "Verlage, die Bücher herausgeben. Zu jedem Verlag werden Name, E-Mail-Adresse und Telefonnummer gespeichert."
+        },
+        {
+          "name": "Buch",
+          "attribute": [
+            "Titel",
+            "Internationale Buchnummer",
+            "Erscheinungsdatum",
+            "Verkaufspreis",
+            "Lagerbestand"
+          ],
+          "beschreibung": "Bücher, die von Verlagen herausgegeben werden. Zu jedem Buch werden Titel, internationale Buchnummer, Erscheinungsdatum, Verkaufspreis und aktueller Lagerbestand erfasst."
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            "Bestelldatum",
+            "Status"
+          ],
+          "beschreibung": "Bestellungen von Kundinnen und Kunden. Für jede Bestellung werden das Bestelldatum und der aktuelle Status notiert."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Verlag",
+          "zu": "Buch",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Verlag kann viele Bücher herausgeben, jedes Buch gehört genau zu einem Verlag."
+        },
+        {
+          "von": "Buch",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Buch kann in vielen Bestellungen vorkommen, jede Bestellung gehört genau zu einem Buch."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist nicht spezifiziert, ob die internationale Buchnummer (ISBN) eindeutig sein muss oder ob Duplikate möglich sind.",
+          "betroffene_elemente": [
+            "Buch"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht definiert, welche Werte der Status einer Bestellung annehmen kann (z.B. 'offen', 'versendet', 'geliefert', etc.).",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht geklärt, ob Kundinnen und Kunden als separate Entität modelliert werden sollen oder ob nur die Bestellungen ohne Kundendaten erfasst werden.",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht spezifiziert, ob die E-Mail-Adresse und Telefonnummer des Verlags eindeutig sein müssen.",
+          "betroffene_elemente": [
+            "Verlag"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Verlag",
+          "attribute": [
+            {
+              "name": "VerlagID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EMail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Buch",
+          "attribute": [
+            {
+              "name": "BuchID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Titel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ISBN",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Erscheinungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Verkaufspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Lagerbestand",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VerlagID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            {
+              "name": "BestellungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bestelldatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BuchID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Verlag",
+          "zu": "Buch",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Buch",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE publishers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_publishers PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    isbn VARCHAR(255) NOT NULL,\n    publicationdate DATE NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    stock INTEGER NOT NULL,\n    publisher_id INTEGER NOT NULL,\n    CONSTRAINT pk_books PRIMARY KEY (id),\n    CONSTRAINT fk_books_publisher_id FOREIGN KEY (publisher_id) REFERENCES publishers (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    book_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_book_id FOREIGN KEY (book_id) REFERENCES books (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 6995,
+    "total_output_tokens": 2525,
+    "total_tokens": 9520,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1474,
+        "output_tokens": 804,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2309,
+        "output_tokens": 948,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3212,
+        "output_tokens": 773,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1474,
+        "output_tokens": 804,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2309,
+        "output_tokens": 948,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3212,
+        "output_tokens": 773,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

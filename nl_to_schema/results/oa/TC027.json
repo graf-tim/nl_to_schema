@@ -1,0 +1,712 @@
+{
+  "testfall_id": "TC027",
+  "workflow": "oa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.9276485788113695,
+  "score_gesamt": 0.9565891472868218,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 5,
+    "pk_tabellen_mit_pk": 5,
+    "fk_referenzen_gesamt": 4,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "matched": 4,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.8695652173913043,
+      "recall": 1.0,
+      "f1": 0.9302325581395349,
+      "matched": 20,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 3
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [],
+  "state": {
+    "anforderungstext": "Für eine kleine Weinhandlung soll festgehalten werden, welche Weingüter die angebotenen Weine herstellen. Zu jedem Weingut werden der Name, das Land und der Ort gespeichert. Jeder Wein gehört genau zu einem Weingut. Für jeden Wein sollen der Name, die Farbe, der Jahrgang, der Verkaufspreis und eine kurze Beschreibung erfasst werden. Außerdem möchte die Weinhandlung ihre Kundinnen und Kunden mit Vorname, Nachname, E-Mail-Adresse und dem Datum der Registrierung verwalten. Eine Kundin oder ein Kunde kann mehrere Bestellungen aufgeben, aber jede Bestellung gehört immer genau zu einer Person. Für jede Bestellung werden das Bestelldatum und der aktuelle Status gespeichert.",
+    "workflow_name": "oa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "wineries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "wines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "color",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "vintage",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "winery_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "winery_id",
+              "references_table": "wineries",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "registrationdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "orderdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_wines",
+          "columns": [
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "wine_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "wine_id",
+              "references_table": "wines",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Weingut",
+          "attribute": [
+            "Name",
+            "Land",
+            "Ort"
+          ],
+          "beschreibung": "Hersteller von Weinen mit Standortinformationen"
+        },
+        {
+          "name": "Wein",
+          "attribute": [
+            "Name",
+            "Farbe",
+            "Jahrgang",
+            "Verkaufspreis",
+            "Beschreibung"
+          ],
+          "beschreibung": "Weinprodukt mit Eigenschaften und Preisinformation"
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "E-Mail-Adresse",
+            "Registrierungsdatum"
+          ],
+          "beschreibung": "Kundin oder Kunde der Weinhandlung"
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            "Bestelldatum",
+            "Status"
+          ],
+          "beschreibung": "Bestellung eines Kunden mit Zeitstempel und aktuellem Status"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Wein",
+          "zu": "Weingut",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Wein gehört genau zu einem Weingut"
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jede Bestellung gehört genau zu einer Kundin oder einem Kunden; eine Kundin oder ein Kunde kann mehrere Bestellungen aufgeben"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist nicht spezifiziert, welche Weine in einer Bestellung enthalten sind. Unklar ist, ob eine Bestellung mehrere Weine enthalten kann und wie die Menge pro Wein erfasst wird.",
+          "betroffene_elemente": [
+            "Bestellung",
+            "Wein"
+          ]
+        },
+        {
+          "beschreibung": "Für die Bestellung wird nur das Bestelldatum und der Status genannt. Unklar ist, ob weitere Informationen wie Gesamtpreis, Lieferdatum oder Lieferadresse erfasst werden sollen.",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Der Verkaufspreis wird als Attribut des Weins genannt. Unklar ist, ob dieser Preis zeitlich konstant ist oder ob Preishistorie erfasst werden soll.",
+          "betroffene_elemente": [
+            "Wein"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Weingut",
+          "attribute": [
+            {
+              "name": "weingut_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "land",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ort",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Wein",
+          "attribute": [
+            {
+              "name": "wein_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "farbe",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "jahrgang",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "verkaufspreis",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "weingut_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Kunde",
+          "attribute": [
+            {
+              "name": "kunde_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "email_adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "registrierungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Bestellung",
+          "attribute": [
+            {
+              "name": "bestellung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bestelldatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kunde_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Wein",
+          "zu": "Weingut",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die N:M-Beziehung zwischen Bestellung und Wein ist nicht als eigenständige Entität modelliert. Der Anforderungstext und das RequirementsReport enthalten eine Unklarheit: 'Es ist nicht spezifiziert, welche Weine in einer Bestellung enthalten sind.' Das LogicalSchema löst dies durch die Junction-Table 'order_wines', was eine sinnvolle Interpretation ist. JEDOCH: Das ERModell enthält diese Beziehungsentität NICHT. Dies ist ein konzeptioneller Fehler im ERModell, der sich ins LogicalSchema fortgepflanzt hat. Die Beziehung Bestellung-Wein ist implizit im RequirementsText vorhanden ('eine Bestellung kann mehrere Weine enthalten'), wurde aber im ERModell nicht explizit modelliert.",
+          "korrekturanweisung": "Das ERModell muss eine Beziehungsentität 'Bestellung_Wein' (oder 'order_wines') mit den Attributen 'bestellung_id', 'wein_id' und 'menge' enthalten. Dies ist eine konzeptionelle Lücke im ERModell (Fehler in cmd-Phase)."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext und RequirementsReport geforderten Attribute sind im LogicalSchema vorhanden: Weingut (name, country, city), Wein (name, color, vintage, price, description), Kunde (firstname, lastname, email, registrationdate), Bestellung (orderdate, status). Die Junction-Table 'order_wines' enthält zusätzlich 'quantity', was eine sinnvolle Ergänzung ist.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen Bestellung und Wein ist im LogicalSchema als N:M-Beziehung über die Junction-Table 'order_wines' korrekt implementiert. JEDOCH: Diese Beziehung ist im ERModell NICHT dokumentiert. Das ERModell zeigt nur zwei Beziehungen (Wein→Weingut N:1 und Bestellung→Kunde N:1), ignoriert aber die implizite N:M-Beziehung zwischen Bestellung und Wein. Dies ist ein konzeptioneller Fehler: Entweder war die Beziehung im Anforderungstext nicht erkannt (ra-Fehler) oder im ERModell nicht modelliert (cmd-Fehler). Da der Anforderungstext die Beziehung impliziert ('eine Bestellung kann mehrere Weine enthalten'), ist dies ein cmd-Fehler.",
+          "korrekturanweisung": "Das ERModell muss die N:M-Beziehung zwischen Bestellung und Wein mit einer Beziehungsentität 'Bestellung_Wein' explizit dokumentieren."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, keine partiellen oder transitiven Abhängigkeiten. Die Junction-Table 'order_wines' ist korrekt normalisiert mit zusammengesetztem Primärschlüssel (order_id, wine_id).",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": "cmd"
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registrationdate DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    customer_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE wineries (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_wineries PRIMARY KEY (id)\n);\n\nCREATE TABLE wines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    vintage INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    description TEXT,\n    winery_id INTEGER NOT NULL,\n    CONSTRAINT pk_wines PRIMARY KEY (id),\n    CONSTRAINT fk_wines_winery_id FOREIGN KEY (winery_id) REFERENCES wineries (id)\n);\n\nCREATE TABLE order_wines (\n    order_id INTEGER NOT NULL,\n    wine_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    CONSTRAINT pk_order_wines PRIMARY KEY (order_id, wine_id),\n    CONSTRAINT fk_order_wines_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_wines_wine_id FOREIGN KEY (wine_id) REFERENCES wines (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die N:M-Beziehung zwischen Bestellung und Wein ist nicht als eigenständige Entität modelliert. Der Anforderungstext und das RequirementsReport enthalten eine Unklarheit: 'Es ist nicht spezifiziert, welche Weine in einer Bestellung enthalten sind.' Das LogicalSchema löst dies durch die Junction-Table 'order_wines', was eine sinnvolle Interpretation ist. JEDOCH: Das ERModell enthält diese Beziehungsentität NICHT. Dies ist ein konzeptioneller Fehler im ERModell, der sich ins LogicalSchema fortgepflanzt hat. Die Beziehung Bestellung-Wein ist implizit im RequirementsText vorhanden ('eine Bestellung kann mehrere Weine enthalten'), wurde aber im ERModell nicht explizit modelliert.",
+          "korrekturanweisung": "Das ERModell muss eine Beziehungsentität 'Bestellung_Wein' (oder 'order_wines') mit den Attributen 'bestellung_id', 'wein_id' und 'menge' enthalten. Dies ist eine konzeptionelle Lücke im ERModell (Fehler in cmd-Phase)."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext und RequirementsReport geforderten Attribute sind im LogicalSchema vorhanden: Weingut (name, country, city), Wein (name, color, vintage, price, description), Kunde (firstname, lastname, email, registrationdate), Bestellung (orderdate, status). Die Junction-Table 'order_wines' enthält zusätzlich 'quantity', was eine sinnvolle Ergänzung ist.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen Bestellung und Wein ist im LogicalSchema als N:M-Beziehung über die Junction-Table 'order_wines' korrekt implementiert. JEDOCH: Diese Beziehung ist im ERModell NICHT dokumentiert. Das ERModell zeigt nur zwei Beziehungen (Wein→Weingut N:1 und Bestellung→Kunde N:1), ignoriert aber die implizite N:M-Beziehung zwischen Bestellung und Wein. Dies ist ein konzeptioneller Fehler: Entweder war die Beziehung im Anforderungstext nicht erkannt (ra-Fehler) oder im ERModell nicht modelliert (cmd-Fehler). Da der Anforderungstext die Beziehung impliziert ('eine Bestellung kann mehrere Weine enthalten'), ist dies ein cmd-Fehler.",
+          "korrekturanweisung": "Das ERModell muss die N:M-Beziehung zwischen Bestellung und Wein mit einer Beziehungsentität 'Bestellung_Wein' explizit dokumentieren."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, keine partiellen oder transitiven Abhängigkeiten. Die Junction-Table 'order_wines' ist korrekt normalisiert mit zusammengesetztem Primärschlüssel (order_id, wine_id).",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": "cmd"
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 11,
+    "total_input_tokens": 38311,
+    "total_output_tokens": 11904,
+    "total_tokens": 50215,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 2,
+        "input_tokens": 2924,
+        "output_tokens": 1476,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 3,
+        "input_tokens": 6723,
+        "output_tokens": 3609,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 3,
+        "input_tokens": 12465,
+        "output_tokens": 3470,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 3,
+        "input_tokens": 16199,
+        "output_tokens": 3349,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1462,
+        "output_tokens": 732,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2233,
+        "output_tokens": 1203,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3455,
+        "output_tokens": 993,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5228,
+        "output_tokens": 1013,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1462,
+        "output_tokens": 744,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2245,
+        "output_tokens": 1203,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4458,
+        "output_tokens": 1257,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5504,
+        "output_tokens": 1117,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2245,
+        "output_tokens": 1203,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4552,
+        "output_tokens": 1220,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5467,
+        "output_tokens": 1219,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

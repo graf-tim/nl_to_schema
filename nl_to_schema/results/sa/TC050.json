@@ -1,0 +1,457 @@
+{
+  "testfall_id": "TC050",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5961904761904762,
+  "score_gesamt": 0.7577142857142858,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.6571428571428571,
+      "recall": 0.6571428571428571,
+      "f1": 0.6571428571428571,
+      "matched": 23,
+      "nur_in_referenz": 12,
+      "nur_in_generiert": 12
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customer_addresses",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.customer_address_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.label",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.street",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.postal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders.dish_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders.order_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders.quantity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customer_addresses → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders → dishes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dishes_orders → orders",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders → customer_addresses",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Lieferdienst möchte seine täglichen Bestellungen besser verwalten. Kundinnen und Kunden sollen mit Namen, Telefonnummer und ihrer E-Mail erfasst werden. Da viele Stammkunden mehrere Orte angeben, sollen pro Person auch mehrere Lieferadressen möglich sein, etwa Zuhause, Büro oder die Wohnung von Freunden. Bestellungen werden immer für genau eine dieser Adressen aufgegeben. Zu jeder Bestellung soll festgehalten werden, wann sie eingegangen ist, in welchem Zustand sie sich befindet und welcher Gesamtbetrag berechnet wurde.\n\nDer Lieferdienst arbeitet mit verschiedenen Restaurants zusammen. Zu jedem Restaurant sollen Name, Telefonnummer, Adresse und die Küche festgehalten werden. Ein Restaurant bietet mehrere Gerichte an. Für jedes Gericht braucht man die Bezeichnung, eine Beschreibung, den aktuellen Preis und ob es gerade verfügbar ist. Manche Gerichte können zeitweise bei mehreren Restaurants in ähnlicher Form vorkommen, für den Betrieb reicht es aber, wenn jedes Gericht genau einem Restaurant zugeordnet ist.\n\nIn einer Bestellung können mehrere Gerichte enthalten sein, und ein Gericht kann natürlich in vielen verschiedenen Bestellungen vorkommen. Außerdem soll gespeichert werden, in welcher Menge ein Gericht in einer Bestellung gewählt wurde. Optional soll zu einer Bestellung eine kurze Bemerkung möglich sein. Später könnten auch Fahrerinnen und Fahrer berücksichtigt werden, zunächst geht es aber nur um Bestellungen bis zur Übergabe an den Lieferdienst.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "delivery_addresses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "restaurants",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "cuisine",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dishes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "restaurant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "restaurant_id",
+              "references_table": "restaurants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "order_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "delivery_address_id",
+              "references_table": "delivery_addresses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dish_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "order_id",
+              "references_table": "orders",
+              "references_column": "id"
+            },
+            {
+              "from_column": "dish_id",
+              "references_table": "dishes",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE delivery_addresses (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    address_type VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_delivery_addresses PRIMARY KEY (id),\n    CONSTRAINT fk_delivery_addresses_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE restaurants (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    cuisine VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_restaurants PRIMARY KEY (id)\n);\n\nCREATE TABLE dishes (\n    id INTEGER NOT NULL,\n    restaurant_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    CONSTRAINT pk_dishes PRIMARY KEY (id),\n    CONSTRAINT fk_dishes_restaurant_id FOREIGN KEY (restaurant_id) REFERENCES restaurants (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    delivery_address_id INTEGER NOT NULL,\n    order_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    total_amount DECIMAL(18,2) NOT NULL,\n    notes TEXT,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_delivery_address_id FOREIGN KEY (delivery_address_id) REFERENCES delivery_addresses (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    dish_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_dish_id FOREIGN KEY (dish_id) REFERENCES dishes (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2516,
+    "total_output_tokens": 1533,
+    "total_tokens": 4049,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2516,
+        "output_tokens": 1533,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2516,
+        "output_tokens": 1533,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

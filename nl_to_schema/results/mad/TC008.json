@@ -1,0 +1,507 @@
+{
+  "testfall_id": "TC008",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.44666666666666666,
+  "score_gesamt": 0.6679999999999999,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5,
+      "matched": 2,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.45,
+      "recall": 0.45,
+      "f1": 0.45,
+      "matched": 9,
+      "nur_in_referenz": 11,
+      "nur_in_generiert": 11
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 1,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments.service_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dogs.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "appointments → services",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dogs → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Hundesalon möchte seine Kundschaft und die Termine übersichtlich verwalten. Von jeder Person sollen Vorname, Nachname, Telefonnummer und optional die E-Mail-Adresse festgehalten werden. Jede Person kann mehrere Hunde haben, aber jeder Hund gehört genau einer Person. Zu jedem Hund sollen Name, Geburtsdatum, Rasse und besondere Hinweise zur Pflege gespeichert werden. Für den Salon werden verschiedene Behandlungsarten angeboten, zum Beispiel Baden, Schneiden oder Krallenpflege. Zu jeder Behandlungsart sollen Bezeichnung, kurze Beschreibung und Preis hinterlegt werden. Wenn ein Termin vereinbart wird, soll festgehalten werden, für welchen Hund er ist, welche Behandlungsart gebucht wurde, an welchem Tag der Termin stattfindet und ob der Termin bereits erledigt wurde.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dogs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "breed",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "care_notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "treatments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dog_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "treatment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_completed",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "dog_id",
+              "references_table": "dogs",
+              "references_column": "id"
+            },
+            {
+              "from_column": "treatment_id",
+              "references_table": "treatments",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle Entitäten aus der Anforderung sind modelliert: Personen, Hunde, Behandlungsarten, Termine.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: Personen (Vorname, Nachname, Telefon, E-Mail), Hunde (Name, Geburtsdatum, Rasse, Pflegehinweise), Behandlungen (Bezeichnung, Beschreibung, Preis), Termine (Hund, Behandlung, Datum, Erledigt-Status).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Beziehungen sind korrekt modelliert: 1:N (Person → Hunde), N:1 (Termine → Hund), N:1 (Termine → Behandlung). Keine fehlenden oder falsch definierten Relationen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema erfüllt 3NF: Keine transitiven Abhängigkeiten, keine Redundanzen, keine mehrwertigen Abhängigkeiten. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind modelliert: persons (Kunden), dogs (Hunde), treatments (Behandlungsarten) und appointments (Termine). Keine fehlenden Entitäten identifiziert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: persons (firstname, lastname, phone, email), dogs (name, birthdate, breed, care_notes), treatments (name, description, price), appointments (dog_id, treatment_id, appointment_date, is_completed). Attributnamen folgen den Konventionen.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: 1:N zwischen persons und dogs (jeder Hund gehört genau einer Person), 1:N zwischen dogs und appointments, 1:N zwischen treatments und appointments. Kardinalitäten entsprechen den Anforderungen. Keine M:N-Beziehungen vorhanden, daher keine Brückentabellen erforderlich.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema ist normalisiert (mindestens 3NF): Keine Redundanzen, keine Anomalien erkannt. Fremdschlüssel sind korrekt gesetzt, Abhängigkeiten sind funktional und nicht-transitiv.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE dogs (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    breed VARCHAR(255),\n    care_notes TEXT,\n    CONSTRAINT pk_dogs PRIMARY KEY (id),\n    CONSTRAINT fk_dogs_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE treatments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_treatments PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    dog_id INTEGER NOT NULL,\n    treatment_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_dog_id FOREIGN KEY (dog_id) REFERENCES dogs (id),\n    CONSTRAINT fk_appointments_treatment_id FOREIGN KEY (treatment_id) REFERENCES treatments (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=1] C1: 0 unerfüllte Findings.",
+      "[iter=1] C2: 0 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=2] C1: 0 unerfüllte Findings.",
+      "[iter=2] C2: 0 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 4 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 29476,
+    "total_output_tokens": 6901,
+    "total_tokens": 36377,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 11844,
+        "output_tokens": 2958,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6492,
+        "output_tokens": 1427,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6404,
+        "output_tokens": 1482,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 4736,
+        "output_tokens": 1034,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2303,
+        "output_tokens": 890,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3246,
+        "output_tokens": 706,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3202,
+        "output_tokens": 741,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4767,
+        "output_tokens": 1034,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3246,
+        "output_tokens": 721,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3202,
+        "output_tokens": 741,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4774,
+        "output_tokens": 1034,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4736,
+        "output_tokens": 1034,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

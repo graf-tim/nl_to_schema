@@ -1,0 +1,958 @@
+{
+  "testfall_id": "TC053",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.5398187633262261,
+  "score_gesamt": 0.7238912579957357,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.7142857142857143,
+      "recall": 0.7142857142857143,
+      "f1": 0.7142857142857143,
+      "matched": 5,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.45454545454545453,
+      "recall": 0.4411764705882353,
+      "f1": 0.4477611940298507,
+      "matched": 15,
+      "nur_in_referenz": 19,
+      "nur_in_generiert": 18
+    },
+    "beziehung": {
+      "recall": 0.375,
+      "matched": 3,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "teams",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "match_players",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "matches.home_score",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "matches.away_score",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "seasons.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "stadiums.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "players.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "players.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "players.jersey_number",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "player_teams.team_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "player_teams.startdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "player_teams.enddate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "teams.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "teams.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "teams.foundationdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "teams.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "teams.stadium_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "match_players.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "match_players.match_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "match_players.player_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "match_players.is_starting",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "match_players → matches",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "match_players → players",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "matches → teams",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "player_teams → teams",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "teams → stadiums",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine regionale Sportliga sollen die wichtigsten Abläufe einer Saison festgehalten werden. In der Liga treten mehrere Vereine an, und jeder Verein gehört zu genau einer Heimstätte, in der er üblicherweise seine Heimspiele austrägt. Zu jedem Verein möchte man den Namen, das Gründungsdatum und eine Kontakt-E-Mail kennen. Die Heimstätte hat einen Namen, einen Ort und eine maximale Zuschauerzahl.\n\nAußerdem sollen Personen erfasst werden, die für Vereine spielen. Von ihnen sind Name, Geburtsdatum, Trikotnummer und die Position wichtig. Ein Spieler steht jeweils für einen Verein im Kader, kann aber im Lauf der Zeit auch für verschiedene Vereine gespielt haben. Für Auswertungen soll nachvollziehbar bleiben, ab wann jemand zu einem Verein gehörte und bis wann.\n\nIn jeder Saison gibt es Spiele zwischen zwei Vereinen. Gespeichert werden sollen Datum und Uhrzeit, die beteiligten Vereine, die Saison sowie das Ergebnis. Ein Spiel findet in einer Heimstätte statt; meistens ist das die des Heimvereins, aber nicht immer. Für die Saison reicht eine Bezeichnung wie 2024/2025. Zusätzlich soll man sehen können, welche Spieler bei welchen Spielen eingesetzt wurden. Ob jemand in der Startaufstellung stand oder nur später ins Spiel kam, soll ebenfalls erkennbar sein.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "stadiums",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "max_capacity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "clubs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "founded_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "stadium_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "stadium_id",
+              "references_table": "stadiums",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "players",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "position",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "player_rosters",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "player_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "club_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "jersey_number",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "from_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "to_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "player_id",
+              "references_table": "players",
+              "references_column": "id"
+            },
+            {
+              "from_column": "club_id",
+              "references_table": "clubs",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "seasons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "matches",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "match_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "match_time",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "result",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "home_club_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "away_club_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "season_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "stadium_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "home_club_id",
+              "references_table": "clubs",
+              "references_column": "id"
+            },
+            {
+              "from_column": "away_club_id",
+              "references_table": "clubs",
+              "references_column": "id"
+            },
+            {
+              "from_column": "season_id",
+              "references_table": "seasons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "stadium_id",
+              "references_table": "stadiums",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "player_appearances",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "player_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "match_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appearance_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "player_id",
+              "references_table": "players",
+              "references_column": "id"
+            },
+            {
+              "from_column": "match_id",
+              "references_table": "matches",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Verein",
+          "attribute": [
+            "Name",
+            "Gründungsdatum",
+            "Kontakt-E-Mail"
+          ],
+          "beschreibung": "Ein Verein, der in der Liga antritt. Gehört zu genau einer Heimstätte und trägt dort üblicherweise seine Heimspiele aus."
+        },
+        {
+          "name": "Heimstätte",
+          "attribute": [
+            "Name",
+            "Ort",
+            "Maximale Zuschauerzahl"
+          ],
+          "beschreibung": "Ein Stadion oder Spielort, in dem Heimspiele ausgetragen werden. Gehört zu genau einem Verein als dessen Heimstätte."
+        },
+        {
+          "name": "Spieler",
+          "attribute": [
+            "Name",
+            "Geburtsdatum",
+            "Trikotnummer",
+            "Position"
+          ],
+          "beschreibung": "Eine Person, die für einen oder mehrere Vereine spielen kann. Kann im Lauf der Zeit für verschiedene Vereine tätig sein."
+        },
+        {
+          "name": "Saison",
+          "attribute": [
+            "Bezeichnung"
+          ],
+          "beschreibung": "Eine Spielsaison, z.B. 2024/2025. Dient zur Gruppierung von Spielen."
+        },
+        {
+          "name": "Spiel",
+          "attribute": [
+            "Datum",
+            "Uhrzeit",
+            "Ergebnis"
+          ],
+          "beschreibung": "Ein Spiel zwischen zwei Vereinen in einer bestimmten Saison. Findet in einer Heimstätte statt, die nicht zwingend die des Heimvereins sein muss."
+        },
+        {
+          "name": "Spielereinsatz",
+          "attribute": [
+            "Einsatztyp"
+          ],
+          "beschreibung": "Die Zuordnung eines Spielers zu einem Spiel mit Information, ob er in der Startaufstellung stand oder später ins Spiel kam."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Verein",
+          "zu": "Heimstätte",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Verein gehört zu genau einer Heimstätte. Eine Heimstätte kann mehreren Vereinen gehören (impliziert durch 'genau eine' auf Vereinsseite)."
+        },
+        {
+          "von": "Spieler",
+          "zu": "Verein",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Spieler kann im Lauf der Zeit für verschiedene Vereine spielen. Ein Verein hat mehrere Spieler im Kader. Die Beziehung ist zeitlich begrenzt (ab wann bis wann)."
+        },
+        {
+          "von": "Spiel",
+          "zu": "Verein",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Spiel beteiligt zwei Vereine (Heimverein und Auswärtsverein). Ein Verein spielt in mehreren Spielen."
+        },
+        {
+          "von": "Spiel",
+          "zu": "Saison",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Spiel gehört zu genau einer Saison. Eine Saison enthält mehrere Spiele."
+        },
+        {
+          "von": "Spiel",
+          "zu": "Heimstätte",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Spiel findet in genau einer Heimstätte statt. Eine Heimstätte kann Austragungsort für mehrere Spiele sein."
+        },
+        {
+          "von": "Spielereinsatz",
+          "zu": "Spieler",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Spielereinsatz bezieht sich auf genau einen Spieler. Ein Spieler kann in mehreren Spielen eingesetzt werden."
+        },
+        {
+          "von": "Spielereinsatz",
+          "zu": "Spiel",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Spielereinsatz bezieht sich auf genau ein Spiel. Ein Spiel hat mehrere Spielereinsätze."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Die Beziehung zwischen Verein und Heimstätte ist mehrdeutig: Der Text sagt 'jeder Verein gehört zu genau einer Heimstätte', aber es ist unklar, ob eine Heimstätte zu genau einem Verein gehört oder zu mehreren Vereinen gehören kann.",
+          "betroffene_elemente": [
+            "Verein",
+            "Heimstätte"
+          ]
+        },
+        {
+          "beschreibung": "Die Kardinalität der Spiel-Verein-Beziehung ist nicht vollständig spezifiziert: Es ist unklar, ob ein Spiel immer genau zwei Vereine beteiligt oder ob auch andere Konstellationen möglich sind.",
+          "betroffene_elemente": [
+            "Spiel",
+            "Verein"
+          ]
+        },
+        {
+          "beschreibung": "Die zeitliche Komponente der Spieler-Verein-Beziehung (ab wann bis wann) ist erwähnt, aber es ist unklar, wie diese in der Datenstruktur abgebildet werden soll (z.B. als Attribute der Beziehung oder als separate Entität).",
+          "betroffene_elemente": [
+            "Spieler",
+            "Verein"
+          ]
+        },
+        {
+          "beschreibung": "Der Einsatztyp eines Spielers (Startaufstellung vs. später ins Spiel gekommen) ist erwähnt, aber die genauen Werte oder Kategorien sind nicht definiert.",
+          "betroffene_elemente": [
+            "Spielereinsatz"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob die Trikotnummer eines Spielers global eindeutig ist oder nur innerhalb eines Vereins eindeutig sein muss.",
+          "betroffene_elemente": [
+            "Spieler"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Verein",
+          "attribute": [
+            {
+              "name": "vereinId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gruendungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktEmail",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "heimstaetteId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Heimstaette",
+          "attribute": [
+            {
+              "name": "heimstaetteId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ort",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "maxZuschauerzahl",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Spieler",
+          "attribute": [
+            {
+              "name": "spielerId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "position",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Spielerkader",
+          "attribute": [
+            {
+              "name": "spielerKaderId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "spielerId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vereinId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "trikotnummer",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vonDatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bisDatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Saison",
+          "attribute": [
+            {
+              "name": "saisonId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Spiel",
+          "attribute": [
+            {
+              "name": "spielId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "uhrzeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ergebnis",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "heimvereinId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "auswaertsvereinId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "saisonId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "heimstaetteId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Spielereinsatz",
+          "attribute": [
+            {
+              "name": "spielereinsatzId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "spielerId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "spielId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "einsatztyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Verein",
+          "zu": "Heimstaette",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Spieler",
+          "zu": "Spielerkader",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Verein",
+          "zu": "Spielerkader",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Spiel",
+          "zu": "Saison",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Spiel",
+          "zu": "Heimstaette",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Spiel",
+          "zu": "Verein",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "heimvereinId",
+            "auswaertsvereinId"
+          ]
+        },
+        {
+          "von": "Spielereinsatz",
+          "zu": "Spieler",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Spielereinsatz",
+          "zu": "Spiel",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE stadiums (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    max_capacity INTEGER NOT NULL,\n    CONSTRAINT pk_stadiums PRIMARY KEY (id)\n);\n\nCREATE TABLE clubs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    founded_date DATE NOT NULL,\n    contact_email VARCHAR(255) NOT NULL,\n    stadium_id INTEGER NOT NULL,\n    CONSTRAINT pk_clubs PRIMARY KEY (id),\n    CONSTRAINT fk_clubs_stadium_id FOREIGN KEY (stadium_id) REFERENCES stadiums (id)\n);\n\nCREATE TABLE seasons (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_seasons PRIMARY KEY (id)\n);\n\nCREATE TABLE matches (\n    id INTEGER NOT NULL,\n    match_date DATE NOT NULL,\n    match_time VARCHAR(255) NOT NULL,\n    result VARCHAR(255),\n    home_club_id INTEGER NOT NULL,\n    away_club_id INTEGER NOT NULL,\n    season_id INTEGER NOT NULL,\n    stadium_id INTEGER NOT NULL,\n    CONSTRAINT pk_matches PRIMARY KEY (id),\n    CONSTRAINT fk_matches_home_club_id FOREIGN KEY (home_club_id) REFERENCES clubs (id),\n    CONSTRAINT fk_matches_away_club_id FOREIGN KEY (away_club_id) REFERENCES clubs (id),\n    CONSTRAINT fk_matches_season_id FOREIGN KEY (season_id) REFERENCES seasons (id),\n    CONSTRAINT fk_matches_stadium_id FOREIGN KEY (stadium_id) REFERENCES stadiums (id)\n);\n\nCREATE TABLE players (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    position VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_players PRIMARY KEY (id)\n);\n\nCREATE TABLE player_appearances (\n    id INTEGER NOT NULL,\n    player_id INTEGER NOT NULL,\n    match_id INTEGER NOT NULL,\n    appearance_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_player_appearances PRIMARY KEY (id),\n    CONSTRAINT fk_player_appearances_player_id FOREIGN KEY (player_id) REFERENCES players (id),\n    CONSTRAINT fk_player_appearances_match_id FOREIGN KEY (match_id) REFERENCES matches (id)\n);\n\nCREATE TABLE player_rosters (\n    id INTEGER NOT NULL,\n    player_id INTEGER NOT NULL,\n    club_id INTEGER NOT NULL,\n    jersey_number INTEGER NOT NULL,\n    from_date DATE NOT NULL,\n    to_date DATE,\n    CONSTRAINT pk_player_rosters PRIMARY KEY (id),\n    CONSTRAINT fk_player_rosters_player_id FOREIGN KEY (player_id) REFERENCES players (id),\n    CONSTRAINT fk_player_rosters_club_id FOREIGN KEY (club_id) REFERENCES clubs (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 9727,
+    "total_output_tokens": 5461,
+    "total_tokens": 15188,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1657,
+        "output_tokens": 1665,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 3387,
+        "output_tokens": 1916,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 4683,
+        "output_tokens": 1880,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1657,
+        "output_tokens": 1665,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3387,
+        "output_tokens": 1916,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4683,
+        "output_tokens": 1880,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

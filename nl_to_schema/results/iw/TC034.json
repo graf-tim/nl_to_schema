@@ -1,0 +1,627 @@
+{
+  "testfall_id": "TC034",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8660162601626016,
+  "score_gesamt": 0.9196097560975609,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1": 0.9333333333333333,
+      "matched": 7,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.6382978723404256,
+      "recall": 0.8571428571428571,
+      "f1": 0.7317073170731707,
+      "matched": 30,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 17
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 6,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "room_categories.regular_nightly_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "bookings.booked_at",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "guests.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.unit_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "bookings_services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Hotelbetrieb moechte seine Zimmer, Buchungen und zusaetzlichen Angebote uebersichtlich verwalten. Fuer jedes Zimmer soll festgehalten werden, welche Nummer es hat, auf welcher Etage es liegt, wie viele Personen maximal darin uebernachten koennen und zu welcher Kategorie es gehoert, zum Beispiel Standard, Deluxe oder Suite. Zu jeder Kategorie soll auch hinterlegt werden, wie hoch der reguläre Preis pro Nacht ist und eine kurze Beschreibung, was typischerweise dazugehört.\n\nGaeste sollen mit Namen, E-Mail-Adresse, Telefonnummer und, falls vorhanden, ihrer Postanschrift erfasst werden. Eine Buchung wird immer von einem Gast vorgenommen und bezieht sich auf ein bestimmtes Zimmer. Wichtig sind An- und Abreisedatum, der Zeitpunkt der Buchung und der aktuelle Stand, etwa angefragt, bestaetigt oder storniert.\n\nAusserdem bietet das Hotel Leistungen wie Fruehstueck, Parkplatz, Spa oder Fahrradverleih an. Solche Leistungen koennen zu einer Buchung dazugebucht werden, und dieselbe Leistung kann natuerlich bei vielen Buchungen vorkommen. Dabei soll auch vermerkt werden, in welcher Menge oder fuer wie viele Tage etwas gebucht wurde.\n\nZimmer koennen im Alltag auch voruebergehend nicht verfuegbar sein, etwa wegen Renovierung oder technischer Probleme. Diese Information soll ebenfalls nachvollziehbar sein.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "room_categories",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price_per_night",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "rooms",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "room_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "floor",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "max_occupancy",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "room_category_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "room_category_id",
+              "references_table": "room_categories",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "addresses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "guests",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "address_id",
+              "references_table": "addresses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "bookings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "guest_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "room_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkin_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkout_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "number_of_guests",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "booking_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "total_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "guest_id",
+              "references_table": "guests",
+              "references_column": "id"
+            },
+            {
+              "from_column": "room_id",
+              "references_table": "rooms",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "booking_services",
+          "columns": [
+            {
+              "name": "booking_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "days",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price_at_booking",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "booking_id",
+              "references_table": "bookings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_id",
+              "references_table": "services",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "room_unavailability",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "room_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reason",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_by",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "room_id",
+              "references_table": "rooms",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung verlangt explizit, dass 'Zimmer können im Alltag auch vorübergehend nicht verfügbar sein' nachvollziehbar sein soll. Die Tabelle room_unavailability existiert zwar, aber es fehlt eine Entität zur Verwaltung von Mitarbeitern/Personal, die Wartungsarbeiten durchführen oder Unavailability-Einträge erstellen. Das Feld 'created_by' in room_unavailability ist nur ein VARCHAR und verweist auf keine Entität. Zudem fehlt eine explizite Entität für Rechnungen/Zahlungen, die für ein Hotelbetriebssystem typischerweise notwendig ist.",
+          "korrekturanweisung": "Füge eine Tabelle 'staff' (oder 'employees') mit Spalten wie id, firstname, lastname, email, phone, role, hire_date hinzu. Ändere room_unavailability.created_by von VARCHAR zu INTEGER und erstelle einen FK zu staff(id). Optional: Erwäge eine Tabelle 'payments' oder 'invoices' für Zahlungsabwicklung, falls dies Teil der Anforderung ist."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: In der Tabelle 'guests' fehlt das Attribut 'lastname' nicht, aber die Anforderung verlangt explizit 'Namen' (Vor- und Nachname), E-Mail, Telefonnummer und 'falls vorhanden, ihre Postanschrift'. Das Schema erfasst dies korrekt. JEDOCH: In der Tabelle 'bookings' fehlt ein Attribut zur Erfassung von Zahlungsinformationen oder Zahlungsstatus (z.B. 'payment_status': paid, pending, refunded). Das Feld 'total_price' ist vorhanden, aber ohne Zahlungsstatus ist die Geschäftslogik unvollständig. Zudem fehlt in 'room_unavailability' ein Attribut für die Dauer oder Eskalationsstufe (z.B. 'severity': minor, major, critical).",
+          "korrekturanweisung": "Füge in 'bookings' ein Attribut 'payment_status' (VARCHAR, NOT NULL, default 'pending') hinzu. Optional: Füge in 'room_unavailability' ein Attribut 'severity' (VARCHAR, NOT NULL) hinzu, um die Schwere der Nichtverfügbarkeit zu klassifizieren."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen 'guests' und 'addresses' ist 1:1 modelliert (address_id in guests), aber die Anforderung sagt 'falls vorhanden, ihre Postanschrift' — dies deutet auf eine optionale 1:1-Beziehung hin, die korrekt mit nullable: true modelliert ist. JEDOCH: Die Beziehung zwischen 'bookings' und 'services' über 'booking_services' ist korrekt als M:N modelliert. ABER: Es fehlt eine explizite Kardinalitätsprüfung — die Anforderung verlangt, dass 'Leistungen zu einer Buchung dazugebucht werden' und 'dieselbe Leistung kann natürlich bei vielen Buchungen vorkommen'. Dies ist korrekt als M:N gelöst. JEDOCH: Die Beziehung zwischen 'rooms' und 'room_categories' ist 1:N (viele Zimmer zu einer Kategorie), was korrekt ist. ABER: Es gibt keine Validierung, dass 'number_of_guests' in bookings nicht größer als 'max_occupancy' des Zimmers sein darf — dies ist eine Geschäftsregel, die auf Datenbankebene nicht erzwungen wird.",
+          "korrekturanweisung": "Füge einen CHECK-Constraint in 'bookings' hinzu: ALTER TABLE bookings ADD CONSTRAINT check_occupancy CHECK (number_of_guests <= (SELECT max_occupancy FROM rooms WHERE rooms.id = bookings.room_id)). Alternativ: Dokumentiere diese Validierung als Anwendungslogik."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'booking_services' speichert 'price_at_booking' (DECIMAL), was eine Denormalisierung darstellt. Dies ist zwar eine bewusste Designentscheidung (um historische Preise zu bewahren), aber es führt zu Redundanz: Der Preis ist bereits in 'services' gespeichert. Wenn sich der Preis einer Leistung ändert, wird die historische Information in 'booking_services' nicht automatisch aktualisiert. Dies ist akzeptabel für Audit-Zwecke, sollte aber dokumentiert sein. JEDOCH: Die Tabelle 'bookings' speichert 'total_price' (DECIMAL), die aus 'price_per_night' (room_categories) und den Leistungspreisen berechnet werden kann — dies ist ebenfalls eine Denormalisierung und führt zu Redundanz. Wenn sich Preise ändern, wird 'total_price' nicht automatisch aktualisiert.",
+          "korrekturanweisung": "Entferne 'total_price' aus 'bookings' und berechne es stattdessen in der Anwendungslogik oder über eine VIEW. Alternativ: Dokumentiere, dass 'total_price' ein Snapshot des Buchungszeitpunkts ist und nicht automatisch aktualisiert wird. Für 'price_at_booking' in 'booking_services' ist die Denormalisierung akzeptabel, um historische Preise zu bewahren."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE addresses (\n    id INTEGER NOT NULL,\n    street VARCHAR(255),\n    city VARCHAR(255),\n    postal_code VARCHAR(255),\n    country VARCHAR(255),\n    CONSTRAINT pk_addresses PRIMARY KEY (id)\n);\n\nCREATE TABLE guests (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    birthdate DATE,\n    address_id INTEGER,\n    CONSTRAINT pk_guests PRIMARY KEY (id),\n    CONSTRAINT fk_guests_address_id FOREIGN KEY (address_id) REFERENCES addresses (id)\n);\n\nCREATE TABLE room_categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price_per_night DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_room_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE rooms (\n    id INTEGER NOT NULL,\n    room_number VARCHAR(255) NOT NULL,\n    floor INTEGER NOT NULL,\n    max_occupancy INTEGER NOT NULL,\n    room_category_id INTEGER NOT NULL,\n    CONSTRAINT pk_rooms PRIMARY KEY (id),\n    CONSTRAINT fk_rooms_room_category_id FOREIGN KEY (room_category_id) REFERENCES room_categories (id)\n);\n\nCREATE TABLE bookings (\n    id INTEGER NOT NULL,\n    guest_id INTEGER NOT NULL,\n    room_id INTEGER NOT NULL,\n    checkin_date DATE NOT NULL,\n    checkout_date DATE NOT NULL,\n    number_of_guests INTEGER NOT NULL,\n    booking_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    total_price DECIMAL(18,2),\n    CONSTRAINT pk_bookings PRIMARY KEY (id),\n    CONSTRAINT fk_bookings_guest_id FOREIGN KEY (guest_id) REFERENCES guests (id),\n    CONSTRAINT fk_bookings_room_id FOREIGN KEY (room_id) REFERENCES rooms (id)\n);\n\nCREATE TABLE services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_services PRIMARY KEY (id)\n);\n\nCREATE TABLE booking_services (\n    booking_id INTEGER NOT NULL,\n    service_id INTEGER NOT NULL,\n    quantity INTEGER,\n    days INTEGER,\n    price_at_booking DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_booking_services PRIMARY KEY (booking_id, service_id),\n    CONSTRAINT fk_booking_services_booking_id FOREIGN KEY (booking_id) REFERENCES bookings (id),\n    CONSTRAINT fk_booking_services_service_id FOREIGN KEY (service_id) REFERENCES services (id)\n);\n\nCREATE TABLE room_unavailability (\n    id INTEGER NOT NULL,\n    room_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    reason VARCHAR(255) NOT NULL,\n    notes TEXT,\n    created_by VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_room_unavailability PRIMARY KEY (id),\n    CONSTRAINT fk_room_unavailability_room_id FOREIGN KEY (room_id) REFERENCES rooms (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung verlangt explizit, dass 'Zimmer können im Alltag auch vorübergehend nicht verfügbar sein' nachvollziehbar sein soll. Die Tabelle room_unavailability existiert zwar, aber es fehlt eine Entität zur Verwaltung von Mitarbeitern/Personal, die Wartungsarbeiten durchführen oder Unavailability-Einträge erstellen. Das Feld 'created_by' in room_unavailability ist nur ein VARCHAR und verweist auf keine Entität. Zudem fehlt eine explizite Entität für Rechnungen/Zahlungen, die für ein Hotelbetriebssystem typischerweise notwendig ist.",
+          "korrekturanweisung": "Füge eine Tabelle 'staff' (oder 'employees') mit Spalten wie id, firstname, lastname, email, phone, role, hire_date hinzu. Ändere room_unavailability.created_by von VARCHAR zu INTEGER und erstelle einen FK zu staff(id). Optional: Erwäge eine Tabelle 'payments' oder 'invoices' für Zahlungsabwicklung, falls dies Teil der Anforderung ist."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: In der Tabelle 'guests' fehlt das Attribut 'lastname' nicht, aber die Anforderung verlangt explizit 'Namen' (Vor- und Nachname), E-Mail, Telefonnummer und 'falls vorhanden, ihre Postanschrift'. Das Schema erfasst dies korrekt. JEDOCH: In der Tabelle 'bookings' fehlt ein Attribut zur Erfassung von Zahlungsinformationen oder Zahlungsstatus (z.B. 'payment_status': paid, pending, refunded). Das Feld 'total_price' ist vorhanden, aber ohne Zahlungsstatus ist die Geschäftslogik unvollständig. Zudem fehlt in 'room_unavailability' ein Attribut für die Dauer oder Eskalationsstufe (z.B. 'severity': minor, major, critical).",
+          "korrekturanweisung": "Füge in 'bookings' ein Attribut 'payment_status' (VARCHAR, NOT NULL, default 'pending') hinzu. Optional: Füge in 'room_unavailability' ein Attribut 'severity' (VARCHAR, NOT NULL) hinzu, um die Schwere der Nichtverfügbarkeit zu klassifizieren."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen 'guests' und 'addresses' ist 1:1 modelliert (address_id in guests), aber die Anforderung sagt 'falls vorhanden, ihre Postanschrift' — dies deutet auf eine optionale 1:1-Beziehung hin, die korrekt mit nullable: true modelliert ist. JEDOCH: Die Beziehung zwischen 'bookings' und 'services' über 'booking_services' ist korrekt als M:N modelliert. ABER: Es fehlt eine explizite Kardinalitätsprüfung — die Anforderung verlangt, dass 'Leistungen zu einer Buchung dazugebucht werden' und 'dieselbe Leistung kann natürlich bei vielen Buchungen vorkommen'. Dies ist korrekt als M:N gelöst. JEDOCH: Die Beziehung zwischen 'rooms' und 'room_categories' ist 1:N (viele Zimmer zu einer Kategorie), was korrekt ist. ABER: Es gibt keine Validierung, dass 'number_of_guests' in bookings nicht größer als 'max_occupancy' des Zimmers sein darf — dies ist eine Geschäftsregel, die auf Datenbankebene nicht erzwungen wird.",
+          "korrekturanweisung": "Füge einen CHECK-Constraint in 'bookings' hinzu: ALTER TABLE bookings ADD CONSTRAINT check_occupancy CHECK (number_of_guests <= (SELECT max_occupancy FROM rooms WHERE rooms.id = bookings.room_id)). Alternativ: Dokumentiere diese Validierung als Anwendungslogik."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'booking_services' speichert 'price_at_booking' (DECIMAL), was eine Denormalisierung darstellt. Dies ist zwar eine bewusste Designentscheidung (um historische Preise zu bewahren), aber es führt zu Redundanz: Der Preis ist bereits in 'services' gespeichert. Wenn sich der Preis einer Leistung ändert, wird die historische Information in 'booking_services' nicht automatisch aktualisiert. Dies ist akzeptabel für Audit-Zwecke, sollte aber dokumentiert sein. JEDOCH: Die Tabelle 'bookings' speichert 'total_price' (DECIMAL), die aus 'price_per_night' (room_categories) und den Leistungspreisen berechnet werden kann — dies ist ebenfalls eine Denormalisierung und führt zu Redundanz. Wenn sich Preise ändern, wird 'total_price' nicht automatisch aktualisiert.",
+          "korrekturanweisung": "Entferne 'total_price' aus 'bookings' und berechne es stattdessen in der Anwendungslogik oder über eine VIEW. Alternativ: Dokumentiere, dass 'total_price' ein Snapshot des Buchungszeitpunkts ist und nicht automatisch aktualisiert wird. Für 'price_at_booking' in 'booking_services' ist die Denormalisierung akzeptabel, um historische Preise zu bewahren."
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 29288,
+    "total_output_tokens": 11309,
+    "total_tokens": 40597,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 14853,
+        "output_tokens": 6362,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 14435,
+        "output_tokens": 4947,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2496,
+        "output_tokens": 1728,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4617,
+        "output_tokens": 1887,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6395,
+        "output_tokens": 2258,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4850,
+        "output_tokens": 1212,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5962,
+        "output_tokens": 2376,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4968,
+        "output_tokens": 1848,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

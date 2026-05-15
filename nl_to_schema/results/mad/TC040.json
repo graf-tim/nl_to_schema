@@ -1,0 +1,681 @@
+{
+  "testfall_id": "TC040",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7641558441558443,
+  "score_gesamt": 0.8584935064935065,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.75,
+      "recall": 0.8571428571428571,
+      "f1": 0.7999999999999999,
+      "matched": 6,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.725,
+      "recall": 0.7837837837837838,
+      "f1": 0.7532467532467533,
+      "matched": 29,
+      "nur_in_referenz": 8,
+      "nur_in_generiert": 11
+    },
+    "beziehung": {
+      "recall": 0.7142857142857143,
+      "matched": 5,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "services",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles.location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles.construction_year",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles.is_available",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "rentals_services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "services.daily_price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "rentals_services → services",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles → locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine kleine Autovermietung soll festgehalten werden, welche Fahrzeuge an welchen Standorten verfügbar sind und von welchen Herstellern sie stammen. Zu jedem Auto sollen Kennzeichen, Modellbezeichnung, Baujahr, aktuelle Kilometerzahl und der Tagespreis bekannt sein. Manche Fahrzeuge sind gerade aktiv vermietbar, andere vorübergehend nicht, etwa wegen Reinigung oder Werkstatt. Kunden sollen mit Namen, Geburtsdatum, Telefonnummer, E-Mail und Führerscheinnummer erfasst werden. Es muss nachvollziehbar sein, wann ein Kunde ein Fahrzeug übernimmt und wann die geplante Rückgabe ist; die tatsächliche Rückgabe kann später abweichen. Außerdem möchte das Unternehmen speichern, an welchem Standort die Übergabe und die Rücknahme stattfinden. Ein Kunde kann bei einer Anmietung zusätzliche Leistungen auswählen, zum Beispiel Kindersitz, Navigationsgerät oder Zusatzfahrer. Solche Leistungen können bei vielen Anmietungen vorkommen. Für jeden Standort sollen Name, Stadt und Adresse gespeichert werden. Ein Hersteller baut viele Fahrzeuge, und ein Fahrzeug gehört genau zu einem Hersteller. Wenn ein Auto zurückkommt, soll sein Kilometerstand aktualisiert werden. Es reicht, wenn zunächst nur normale Anmietungen betrachtet werden; langfristige Firmenverträge spielen hier noch keine Rolle.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "vehicles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "license_plate",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "model",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "year_of_manufacture",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "current_mileage",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "daily_price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "availability_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "vehicle_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "vehicle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "assigned_since",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "vehicle_id",
+              "references_table": "vehicles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "license_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "additional_services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "rentals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "vehicle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "pickup_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "return_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "pickup_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "planned_return_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "actual_return_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "actual_return_mileage",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "vehicle_id",
+              "references_table": "vehicles",
+              "references_column": "id"
+            },
+            {
+              "from_column": "pickup_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "return_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "rental_services",
+          "columns": [
+            {
+              "name": "rental_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "rental_id",
+              "references_table": "rentals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_id",
+              "references_table": "additional_services",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung 'Fahrzeuge an welchen Standorten verfügbar sind' wird durch vehicle_locations modelliert, aber es fehlt eine explizite Beziehung zwischen vehicles und locations. Die Tabelle vehicle_locations ist eine Junction-Table, die die N:M-Beziehung korrekt abbildet. JEDOCH: Die Anforderung 'Manche Fahrzeuge sind gerade aktiv vermietbar, andere vorübergehend nicht' wird durch das Feld 'status' in der vehicles-Tabelle modelliert. Dies ist redundant und führt zu Inkonsistenzen: Ein Fahrzeug kann in vehicles.status='unavailable' sein, aber in vehicle_locations.is_available=true für einen Standort. Die Verfügbarkeit sollte AUSSCHLIESSLICH über vehicle_locations.is_available gesteuert werden, nicht über vehicles.status. vehicles.status sollte entfernt werden.",
+          "korrekturanweisung": "Entfernen Sie die Spalte 'status' aus der vehicles-Tabelle. Die Verfügbarkeit wird ausschließlich durch vehicle_locations.is_available pro Standort abgebildet."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung 'Wenn ein Auto zurückkommt, soll sein Kilometerstand aktualisiert werden' wird durch actual_return_mileage in rentals erfasst, aber es gibt keinen Mechanismus, um vehicles.current_mileage zu aktualisieren. Die Spalte actual_return_mileage ist vorhanden, aber vehicles.current_mileage bleibt statisch. Dies ist ein Datenverwaltungsproblem: Nach jeder Rückgabe muss vehicles.current_mileage = actual_return_mileage gesetzt werden. Das Schema dokumentiert dies nicht explizit und bietet keine Constraint-basierte Sicherung.",
+          "korrekturanweisung": "Dokumentieren Sie in der Anwendungslogik, dass nach jeder Rückgabe (actual_return_datetime IS NOT NULL) vehicles.current_mileage aktualisiert werden muss. Optional: Trigger oder Anwendungs-Constraint implementieren."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Anforderung 'Ein Hersteller baut viele Fahrzeuge, und ein Fahrzeug gehört genau zu einem Hersteller' wird korrekt durch vehicles.manufacturer_id modelliert (1:N). JEDOCH: Die Anforderung 'Fahrzeuge an welchen Standorten verfügbar sind' wird durch vehicle_locations modelliert, was eine N:M-Beziehung ist. Dies ist semantisch korrekt (ein Fahrzeug kann an mehreren Standorten sein, ein Standort kann mehrere Fahrzeuge haben). ABER: Es ist unklar, ob ein Fahrzeug zu JEDEM Zeitpunkt an mindestens einem Standort sein muss oder ob es auch 'in Transit' sein kann. Die Anforderung sagt 'welche Fahrzeuge an welchen Standorten verfügbar sind', impliziert aber nicht, dass ein Fahrzeug immer an genau einem Standort sein muss. Das Schema erlaubt, dass ein Fahrzeug in mehreren vehicle_locations-Einträgen existiert, was realistisch ist (z.B. Fahrzeug kann an Standort A und B verfügbar sein). Dies ist korrekt modelliert.",
+          "korrekturanweisung": "Keine Änderung erforderlich – die N:M-Beziehung ist semantisch korrekt. Aber dokumentieren Sie, ob ein Fahrzeug immer an mindestens einem Standort sein muss (ggf. NOT NULL Constraint auf vehicle_locations)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Verstoß gegen 3NF in der vehicles-Tabelle. Die Spalte 'status' (VARCHAR) ist funktional abhängig von der Kombination (vehicle_id, location_id) über die vehicle_locations-Tabelle, nicht vom Primärschlüssel vehicles.id allein. Dies führt zu Redundanz und Anomalien: Ein Fahrzeug kann status='available' haben, aber in vehicle_locations.is_available=false für alle Standorte. Die Verfügbarkeitsinformation ist DUPLIZIERT. ZUSÄTZLICH: Die Spalte 'current_mileage' in vehicles ist nach jeder Rückgabe abhängig von actual_return_mileage in rentals (transitive Abhängigkeit), was zu Redundanz führt. LÖSUNG: (1) Entfernen Sie vehicles.status – nutzen Sie vehicle_locations.is_available. (2) Dokumentieren Sie, dass vehicles.current_mileage nach Rückgabe aktualisiert wird, oder lagern Sie die 'aktuelle' Kilometerstand-Logik in eine View aus.",
+          "korrekturanweisung": "1. Entfernen Sie vehicles.status. 2. Implementieren Sie einen Trigger oder Anwendungs-Constraint, der vehicles.current_mileage nach jeder Rückgabe aktualisiert. 3. Optional: Erstellen Sie eine View, die den aktuellen Kilometerstand aus rentals.actual_return_mileage ableitet, um Redundanz zu vermeiden."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: Hersteller (manufacturers), Standorte (locations), Fahrzeuge (vehicles), Kunden (customers), Anmietungen (rentals), Zusatzleistungen (additional_services). Die Brückentabelle rental_services für die M:N-Beziehung zwischen Anmietungen und Leistungen ist korrekt modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'vehicles' hat kein Attribut für die Verfügbarkeit des Fahrzeugs. Der Anforderungstext fordert explizit: 'Manche Fahrzeuge sind gerade aktiv vermietbar, andere vorübergehend nicht, etwa wegen Reinigung oder Werkstatt.' Das Attribut 'status' in der vehicles-Tabelle ist zu vage und nicht aussagekräftig genug. Die Verfügbarkeitsinformation ist derzeit nur in der Brückentabelle 'vehicle_locations' mit 'is_available' gespeichert, was bedeutet, dass die Verfügbarkeit standortabhängig ist. Dies ist konzeptionell falsch: Ein Fahrzeug kann global nicht verfügbar sein (z.B. in der Werkstatt), unabhängig davon, an welchem Standort es sich befindet. Das 'status'-Attribut sollte Werte wie 'available', 'maintenance', 'cleaning' etc. annehmen können.",
+          "korrekturanweisung": "Ersetze das vage 'status'-Attribut in vehicles durch ein aussagekräftiges Attribut wie 'availability_status' mit Werten wie 'available', 'maintenance', 'cleaning', 'reserved' oder nutze ein ENUM-ähnliches Konzept. Alternativ: Dokumentiere klar, dass 'status' in vehicles die globale Verfügbarkeit abbildet und 'is_available' in vehicle_locations die standortspezifische Verfügbarkeit."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'vehicle_locations' hat kein Attribut für den Preis pro Standort. Der Anforderungstext nennt 'Tagespreis', der in vehicles als 'daily_price' gespeichert ist. Es ist jedoch nicht modelliert, ob der Preis standortabhängig variieren kann. Dies ist eine realistische Anforderung für Autovermietungen (z.B. höhere Preise an touristischen Standorten). Entweder muss dies explizit ausgeschlossen werden oder das Attribut muss in vehicle_locations hinzugefügt werden.",
+          "korrekturanweisung": "Entweder: (1) Füge 'daily_price' zu vehicle_locations hinzu, um standortabhängige Preisgestaltung zu ermöglichen, oder (2) dokumentiere explizit, dass der Preis global pro Fahrzeug gilt und nicht standortabhängig ist."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen vehicles und locations ist nicht korrekt modelliert. Der Anforderungstext sagt: 'welche Fahrzeuge an welchen Standorten verfügbar sind'. Dies ist eine M:N-Beziehung (ein Fahrzeug kann an mehreren Standorten sein, ein Standort kann mehrere Fahrzeuge haben). Die Brückentabelle 'vehicle_locations' existiert, aber es fehlt eine Unique-Constraint oder Dokumentation, dass (vehicle_id, location_id) eindeutig sein sollte. Ohne diese Constraint können Duplikate entstehen. Zudem ist unklar, ob ein Fahrzeug zu einem bestimmten Zeitpunkt an mehreren Standorten gleichzeitig sein kann (logisch unmöglich) oder ob vehicle_locations nur die möglichen Standorte abbildet.",
+          "korrekturanweisung": "Definiere eine UNIQUE-Constraint auf (vehicle_id, location_id) in vehicle_locations. Dokumentiere klar: Bedeutet ein Eintrag in vehicle_locations, dass das Fahrzeug AKTUELL an diesem Standort ist, oder dass es JEMALS an diesem Standort verfügbar war? Für die aktuelle Verfügbarkeit sollte nur ein Eintrag pro Fahrzeug aktiv sein."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen rentals und vehicle_locations ist nicht modelliert. Der Anforderungstext fordert: 'Es muss nachvollziehbar sein, wann ein Kunde ein Fahrzeug übernimmt und wann die geplante Rückgabe ist' UND 'Außerdem möchte das Unternehmen speichern, an welchem Standort die Übergabe und die Rücknahme stattfinden.' Die rentals-Tabelle hat zwar pickup_location_id und return_location_id, aber es ist nicht sichergestellt, dass das Fahrzeug zum Zeitpunkt der Anmietung tatsächlich an dem pickup_location verfügbar war. Es fehlt eine Konsistenzprüfung oder eine explizite Referenz zur vehicle_locations-Tabelle.",
+          "korrekturanweisung": "Dokumentiere, dass pickup_location_id und return_location_id in rentals auf locations verweisen, aber die Konsistenz mit vehicle_locations muss auf Anwendungsebene geprüft werden. Alternativ: Modelliere eine explizite Beziehung oder Constraint, die sicherstellt, dass ein Fahrzeug nur an einem Standort angemietete werden kann, an dem es verfügbar ist."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "WEICHER FEHLER: Die Kardinalität zwischen vehicles und vehicle_locations ist nicht explizit dokumentiert. Ein Fahrzeug kann an 0..* Standorten verfügbar sein (1:N oder M:N). Ein Standort kann 0..* Fahrzeuge haben. Die Brückentabelle vehicle_locations ist korrekt, aber die Semantik ist unklar: Ist dies eine historische Tabelle (alle Standorte, an denen ein Fahrzeug je war) oder eine aktuelle Tabelle (nur aktuelle Standorte)?",
+          "korrekturanweisung": "Dokumentiere die Kardinalität und Semantik von vehicle_locations explizit. Empfehlung: Nutze vehicle_locations nur für AKTUELLE Standorte und füge ggf. ein Attribut 'assigned_since' hinzu, um Änderungen nachzuvollziehen."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien durch transitive Abhängigkeiten erkannt. Die Brückentabelle rental_services ist korrekt normalisiert für die M:N-Beziehung.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE additional_services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_additional_services PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    license_number VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    year_of_manufacture INTEGER NOT NULL,\n    current_mileage INTEGER NOT NULL,\n    daily_price DECIMAL(18,2) NOT NULL,\n    availability_status VARCHAR(255) NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    pickup_location_id INTEGER NOT NULL,\n    return_location_id INTEGER NOT NULL,\n    pickup_datetime TIMESTAMP NOT NULL,\n    planned_return_datetime TIMESTAMP NOT NULL,\n    actual_return_datetime TIMESTAMP,\n    actual_return_mileage INTEGER,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_rentals_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_rentals_pickup_location_id FOREIGN KEY (pickup_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_rentals_return_location_id FOREIGN KEY (return_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE rental_services (\n    rental_id INTEGER NOT NULL,\n    service_id INTEGER NOT NULL,\n    CONSTRAINT pk_rental_services PRIMARY KEY (rental_id, service_id),\n    CONSTRAINT fk_rental_services_rental_id FOREIGN KEY (rental_id) REFERENCES rentals (id),\n    CONSTRAINT fk_rental_services_service_id FOREIGN KEY (service_id) REFERENCES additional_services (id)\n);\n\nCREATE TABLE vehicle_locations (\n    id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    assigned_since TIMESTAMP NOT NULL,\n    CONSTRAINT pk_vehicle_locations PRIMARY KEY (id),\n    CONSTRAINT fk_vehicle_locations_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_vehicle_locations_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 5 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 5 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 8 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 45070,
+    "total_output_tokens": 14708,
+    "total_tokens": 59778,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 18858,
+        "output_tokens": 5770,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8901,
+        "output_tokens": 3264,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8813,
+        "output_tokens": 3757,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 8498,
+        "output_tokens": 1917,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2484,
+        "output_tokens": 1678,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4314,
+        "output_tokens": 1523,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4270,
+        "output_tokens": 1731,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7803,
+        "output_tokens": 2194,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4587,
+        "output_tokens": 1741,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4543,
+        "output_tokens": 2026,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8571,
+        "output_tokens": 1898,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8498,
+        "output_tokens": 1917,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,1243 @@
+{
+  "testfall_id": "TC092",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7384761904761904,
+  "score_gesamt": 0.8430857142857142,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 14,
+    "pk_tabellen_mit_pk": 14,
+    "fk_referenzen_gesamt": 17,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.7142857142857143,
+      "recall": 1.0,
+      "f1": 0.8333333333333333,
+      "matched": 10,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 4
+    },
+    "attribut": {
+      "precision": 0.62,
+      "recall": 0.62,
+      "f1": 0.62,
+      "matched": 31,
+      "nur_in_referenz": 19,
+      "nur_in_generiert": 19
+    },
+    "beziehung": {
+      "recall": 0.7857142857142857,
+      "matched": 11,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "diagnoses.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "studies.code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.source_sample_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.container_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.current_storage_location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.concentration",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples.rin",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "institutions.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sample_diagnoses.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sample_diagnoses.comment",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "storage_locations.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "storage_locations.location_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "storage_locations.parent_location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons.internal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "consents.scope",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_studies.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_studies.enrollmentdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "institution_studies.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "institution_studies.role",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples → samples",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "samples → storage_locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "storage_locations → storage_locations",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für unsere Biobank sollen menschliche Proben aus verschiedenen Studien erfasst werden. Es geht vor allem um Blut, Serum, Plasma, Gewebe und manchmal auch DNA-Aliquots. Zu jeder Probe muss nachvollziehbar sein, von welcher Person sie stammt, in welcher Studie sie gewonnen wurde und wann die Entnahme ungefähr stattgefunden hat. Die Personen nehmen teils nur an einer Studie teil, teils wohl an mehreren; außerdem kann es sein, dass bei Nachbeobachtungen weitere Proben dazukommen. Wir brauchen neben einer internen Kennung auch medizinisch relevante Basisangaben wie Geburtsdatum und biologisches Geschlecht, falls bekannt. \n\nStudien haben ein Kürzel, einen Titel, laufen über bestimmte Zeiträume und werden meistens von einer Einrichtung verantwortet. Teilweise arbeiten aber mehrere Einrichtungen zusammen, und manchmal kommt eine Probe über eine andere Stelle in die Sammlung. Einrichtungen sollen mit Name, Ort und einer Art Kategorie wie Klinik, Forschungslabor oder Register hinterlegt werden.\n\nProben werden in Behältern und an Lagerorten aufbewahrt. Ein Lagerort kann z. B. ein Gebäude, Raum, Gefrierschrank oder Rack sein; wie fein das später aufgelöst wird, ist noch nicht ganz entschieden. Wichtig ist, dass man den aktuellen Platz kennt. Manche Proben werden umgelagert oder in mehrere Aliquote aufgeteilt. Ob ein Aliquot als eigene Probe zählt oder nur als Untereinheit, müssten wir im System sinnvoll abbilden.\n\nAußerdem sollen zu Proben Diagnosebezüge dokumentiert werden, etwa ICD-Codes oder Freitextangaben, weil dieselbe Person mehrere Diagnosen haben kann und eine Diagnose nicht immer für alle Proben gleichermaßen relevant ist. Für Auswertungen möchten wir auch die Verarbeitungsart festhalten, etwa frisch, zentrifugiert oder formalinfixiert, sowie Qualitätswerte wie Konzentration oder RIN, sofern vorhanden. Nicht jede Probe hat alle diese Angaben.\n\nSchließlich muss man sehen können, welche Einwilligung für eine Person vorliegt und ob sie widerrufen wurde. Unklar ist noch, ob eine Einwilligung studienbezogen oder allgemein gelten soll; beides kommt in der Praxis vor.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "biological_sex",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "studies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "study_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "institutions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "category",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "samples",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "sample_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "collection_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "processing_method",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "quality_values",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "source_institution_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "source_institution_id",
+              "references_table": "institutions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "containers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "sample_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "storage_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "container_locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "container_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "storage_location_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "placement_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "container_id",
+              "references_table": "containers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "storage_location_id",
+              "references_table": "storage_locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "diagnoses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "icd_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "freetext_description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "person_diagnoses",
+          "columns": [
+            {
+              "name": "person_id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sample_diagnoses",
+          "columns": [
+            {
+              "name": "sample_id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "consents",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "consent_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "withdrawal_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "aliquots",
+          "columns": [
+            {
+              "name": "id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "parent_sample_id",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "division_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "parent_sample_id",
+              "references_table": "samples",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "person_studies",
+          "columns": [
+            {
+              "name": "person_id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "study_institutions",
+          "columns": [
+            {
+              "name": "study_id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "institution_id",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "institution_id",
+              "references_table": "institutions",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Person",
+          "attribute": [
+            "PersonenID",
+            "Geburtsdatum",
+            "biologisches_Geschlecht"
+          ],
+          "beschreibung": "Spender von Proben; kann an mehreren Studien teilnehmen und mehrere Diagnosen haben"
+        },
+        {
+          "name": "Studie",
+          "attribute": [
+            "Studienkürzel",
+            "Titel",
+            "Startdatum",
+            "Enddatum",
+            "verantwortliche_Einrichtung"
+          ],
+          "beschreibung": "Forschungsprojekt, in dem Proben gewonnen werden; wird von einer oder mehreren Einrichtungen verantwortet"
+        },
+        {
+          "name": "Einrichtung",
+          "attribute": [
+            "Name",
+            "Ort",
+            "Kategorie"
+          ],
+          "beschreibung": "Organisation wie Klinik, Forschungslabor oder Register, die Studien verantwortet oder Proben bereitstellt"
+        },
+        {
+          "name": "Probe",
+          "attribute": [
+            "ProbenID",
+            "Probentyp",
+            "Entnahmedatum",
+            "Verarbeitungsart",
+            "Qualitätswerte"
+          ],
+          "beschreibung": "Biologisches Material (Blut, Serum, Plasma, Gewebe, DNA-Aliquot) von einer Person aus einer Studie"
+        },
+        {
+          "name": "Lagerort",
+          "attribute": [
+            "LagerortID",
+            "Typ",
+            "Beschreibung"
+          ],
+          "beschreibung": "Physischer Aufbewahrungsort einer Probe (z.B. Gebäude, Raum, Gefrierschrank, Rack)"
+        },
+        {
+          "name": "Behälter",
+          "attribute": [
+            "BehälterID",
+            "Typ"
+          ],
+          "beschreibung": "Behältnis, in dem eine Probe aufbewahrt wird"
+        },
+        {
+          "name": "Diagnose",
+          "attribute": [
+            "DiagnoseID",
+            "ICD_Code",
+            "Freitextangabe"
+          ],
+          "beschreibung": "Medizinische Diagnose einer Person, die zu einer oder mehreren Proben dokumentiert wird"
+        },
+        {
+          "name": "Einwilligung",
+          "attribute": [
+            "EinwilligungsID",
+            "Datum",
+            "Widerrufsdatum",
+            "Status"
+          ],
+          "beschreibung": "Zustimmung einer Person zur Verwendung ihrer Proben; kann studienbezogen oder allgemein sein"
+        },
+        {
+          "name": "Aliquot",
+          "attribute": [
+            "AliquotID",
+            "Ursprungsprobe",
+            "Aufteilungsdatum"
+          ],
+          "beschreibung": "Untereinheit einer Probe, die durch Aufteilung entstanden ist; kann als eigene Probe oder Untereinheit behandelt werden"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Person",
+          "zu": "Studie",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Person kann an mehreren Studien teilnehmen; eine Studie hat mehrere Teilnehmer"
+        },
+        {
+          "von": "Probe",
+          "zu": "Person",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Probe stammt von genau einer Person; eine Person kann mehrere Proben haben"
+        },
+        {
+          "von": "Probe",
+          "zu": "Studie",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Probe wird in genau einer Studie gewonnen; eine Studie hat mehrere Proben"
+        },
+        {
+          "von": "Studie",
+          "zu": "Einrichtung",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Studie wird von einer oder mehreren Einrichtungen verantwortet; eine Einrichtung verantwortet mehrere Studien"
+        },
+        {
+          "von": "Probe",
+          "zu": "Behälter",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Probe wird in einem Behälter aufbewahrt; ein Behälter kann mehrere Proben enthalten"
+        },
+        {
+          "von": "Behälter",
+          "zu": "Lagerort",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Behälter befindet sich an einem Lagerort; ein Lagerort kann mehrere Behälter enthalten"
+        },
+        {
+          "von": "Probe",
+          "zu": "Diagnose",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Probe kann mehrere Diagnosen haben; eine Diagnose kann zu mehreren Proben dokumentiert sein"
+        },
+        {
+          "von": "Person",
+          "zu": "Diagnose",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Person kann mehrere Diagnosen haben; eine Diagnose kann mehrere Personen betreffen"
+        },
+        {
+          "von": "Person",
+          "zu": "Einwilligung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Person kann mehrere Einwilligungen haben (studienbezogen oder allgemein)"
+        },
+        {
+          "von": "Probe",
+          "zu": "Aliquot",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Probe kann in mehrere Aliquote aufgeteilt werden; ein Aliquot stammt von einer Ursprungsprobe"
+        },
+        {
+          "von": "Probe",
+          "zu": "Einrichtung",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Probe kann über eine Einrichtung in die Sammlung kommen (Herkunftseinrichtung)"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Aliquote: Unklar, ob Aliquote als eigenständige Proben mit eigener ProbenID zu behandeln sind oder nur als Untereinheiten einer Originalprobe. Dies beeinflusst die Datenmodellierung erheblich.",
+          "betroffene_elemente": [
+            "Probe",
+            "Aliquot"
+          ]
+        },
+        {
+          "beschreibung": "Einwilligung: Unklar, ob Einwilligungen studienbezogen (pro Studie) oder allgemein (für alle Studien) gelten sollen. Der Text deutet an, dass beides in der Praxis vorkommt.",
+          "betroffene_elemente": [
+            "Einwilligung",
+            "Person",
+            "Studie"
+          ]
+        },
+        {
+          "beschreibung": "Lagerort-Granularität: Unklar, wie fein die Auflösung von Lagerorten sein soll (Gebäude, Raum, Gefrierschrank, Rack). Dies beeinflusst die Struktur der Lagerort-Entität.",
+          "betroffene_elemente": [
+            "Lagerort"
+          ]
+        },
+        {
+          "beschreibung": "Qualitätswerte: Unklar, welche konkreten Qualitätswerte (z.B. Konzentration, RIN) erfasst werden sollen und wie diese strukturiert werden. Der Text erwähnt, dass nicht jede Probe alle Angaben hat.",
+          "betroffene_elemente": [
+            "Probe"
+          ]
+        },
+        {
+          "beschreibung": "Umlagerung: Unklar, wie Umlagerungen von Proben historisiert werden sollen (z.B. Audit-Trail mit Zeitstempel und altem/neuem Lagerort).",
+          "betroffene_elemente": [
+            "Probe",
+            "Lagerort",
+            "Behälter"
+          ]
+        },
+        {
+          "beschreibung": "Verantwortliche Einrichtung bei Studien: Unklar, ob eine Studie eine oder mehrere primär verantwortliche Einrichtungen hat, oder ob alle beteiligten Einrichtungen gleichberechtigt sind.",
+          "betroffene_elemente": [
+            "Studie",
+            "Einrichtung"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Person",
+          "attribute": [
+            {
+              "name": "PersonenID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "biologisches_Geschlecht",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Studie",
+          "attribute": [
+            {
+              "name": "StudienID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Studienkürzel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Titel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Startdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Enddatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Einrichtung",
+          "attribute": [
+            {
+              "name": "EinrichtungsID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Ort",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Kategorie",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Probe",
+          "attribute": [
+            {
+              "name": "ProbenID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "PersonenID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "StudienID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Probentyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Entnahmedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Verarbeitungsart",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Qualitätswerte",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "HerkunftsEinrichtungsID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Behälter",
+          "attribute": [
+            {
+              "name": "BehälterID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Typ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Lagerort",
+          "attribute": [
+            {
+              "name": "LagerortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Typ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Diagnose",
+          "attribute": [
+            {
+              "name": "DiagnoseID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ICD_Code",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Freitextangabe",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Einwilligung",
+          "attribute": [
+            {
+              "name": "EinwilligungsID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "PersonenID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "StudienID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Widerrufsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Aliquot",
+          "attribute": [
+            {
+              "name": "AliquotID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "UrsprungsProbenID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Aufteilungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Person",
+          "zu": "Studie",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Probe",
+          "zu": "Person",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Probe",
+          "zu": "Studie",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Studie",
+          "zu": "Einrichtung",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Probe",
+          "zu": "Behälter",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Behälter",
+          "zu": "Lagerort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Probe",
+          "zu": "Diagnose",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Person",
+          "zu": "Diagnose",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Person",
+          "zu": "Einwilligung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Probe",
+          "zu": "Aliquot",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Probe",
+          "zu": "Einrichtung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE persons (\n    id VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    biological_sex VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE studies (\n    id VARCHAR(255) NOT NULL,\n    study_code VARCHAR(255) NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_studies PRIMARY KEY (id)\n);\n\nCREATE TABLE institutions (\n    id VARCHAR(255) NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255),\n    category VARCHAR(255),\n    CONSTRAINT pk_institutions PRIMARY KEY (id)\n);\n\nCREATE TABLE samples (\n    id VARCHAR(255) NOT NULL,\n    person_id VARCHAR(255) NOT NULL,\n    study_id VARCHAR(255) NOT NULL,\n    sample_type VARCHAR(255) NOT NULL,\n    collection_date DATE NOT NULL,\n    processing_method VARCHAR(255),\n    quality_values TEXT,\n    source_institution_id VARCHAR(255),\n    CONSTRAINT pk_samples PRIMARY KEY (id),\n    CONSTRAINT fk_samples_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_samples_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_samples_source_institution_id FOREIGN KEY (source_institution_id) REFERENCES institutions (id)\n);\n\nCREATE TABLE aliquots (\n    id VARCHAR(255) NOT NULL,\n    parent_sample_id VARCHAR(255) NOT NULL,\n    division_date DATE NOT NULL,\n    CONSTRAINT pk_aliquots PRIMARY KEY (id),\n    CONSTRAINT fk_aliquots_parent_sample_id FOREIGN KEY (parent_sample_id) REFERENCES samples (id)\n);\n\nCREATE TABLE consents (\n    id VARCHAR(255) NOT NULL,\n    person_id VARCHAR(255) NOT NULL,\n    study_id VARCHAR(255),\n    consent_date DATE NOT NULL,\n    withdrawal_date DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_consents PRIMARY KEY (id),\n    CONSTRAINT fk_consents_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_consents_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE containers (\n    id VARCHAR(255) NOT NULL,\n    type VARCHAR(255),\n    sample_id VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_containers PRIMARY KEY (id),\n    CONSTRAINT fk_containers_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id)\n);\n\nCREATE TABLE storage_locations (\n    id VARCHAR(255) NOT NULL,\n    type VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_storage_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE container_locations (\n    id VARCHAR(255) NOT NULL,\n    container_id VARCHAR(255) NOT NULL,\n    storage_location_id VARCHAR(255) NOT NULL,\n    placement_date TIMESTAMP NOT NULL,\n    CONSTRAINT pk_container_locations PRIMARY KEY (id),\n    CONSTRAINT fk_container_locations_container_id FOREIGN KEY (container_id) REFERENCES containers (id),\n    CONSTRAINT fk_container_locations_storage_location_id FOREIGN KEY (storage_location_id) REFERENCES storage_locations (id)\n);\n\nCREATE TABLE diagnoses (\n    id VARCHAR(255) NOT NULL,\n    icd_code VARCHAR(255),\n    freetext_description TEXT,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE person_diagnoses (\n    person_id VARCHAR(255) NOT NULL,\n    diagnosis_id VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_person_diagnoses PRIMARY KEY (person_id, diagnosis_id),\n    CONSTRAINT fk_person_diagnoses_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_person_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE person_studies (\n    person_id VARCHAR(255) NOT NULL,\n    study_id VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_person_studies PRIMARY KEY (person_id, study_id),\n    CONSTRAINT fk_person_studies_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_person_studies_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE sample_diagnoses (\n    sample_id VARCHAR(255) NOT NULL,\n    diagnosis_id VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_sample_diagnoses PRIMARY KEY (sample_id, diagnosis_id),\n    CONSTRAINT fk_sample_diagnoses_sample_id FOREIGN KEY (sample_id) REFERENCES samples (id),\n    CONSTRAINT fk_sample_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE study_institutions (\n    study_id VARCHAR(255) NOT NULL,\n    institution_id VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_study_institutions PRIMARY KEY (study_id, institution_id),\n    CONSTRAINT fk_study_institutions_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_study_institutions_institution_id FOREIGN KEY (institution_id) REFERENCES institutions (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 11528,
+    "total_output_tokens": 7944,
+    "total_tokens": 19472,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1922,
+        "output_tokens": 2222,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 4265,
+        "output_tokens": 2629,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 5341,
+        "output_tokens": 3093,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1922,
+        "output_tokens": 2222,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4265,
+        "output_tokens": 2629,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5341,
+        "output_tokens": 3093,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

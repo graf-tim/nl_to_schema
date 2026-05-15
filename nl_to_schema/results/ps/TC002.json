@@ -1,0 +1,487 @@
+{
+  "testfall_id": "TC002",
+  "workflow": "ps",
+  "score_strukturell": 1.0,
+  "score_semantisch": 1.0,
+  "score_gesamt": 1.0,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 2,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 3,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "attribut": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matched": 19,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 2,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [],
+  "state": {
+    "anforderungstext": "Für eine kleine Tierarztpraxis soll festgehalten werden, welche Tierhalter betreut werden, welche Tiere zu welchem Halter gehören und welche Behandlungstermine es gab. Von jedem Halter werden Vorname, Nachname, Telefonnummer, E-Mail-Adresse und Anschrift benötigt. Zu jedem Tier sollen Name, Tierart, Rasse, Geburtsdatum und Geschlecht gespeichert werden. Jedes Tier gehört genau einem Halter. Für jeden Termin soll dokumentiert werden, um welches Tier es ging, an welchem Tag der Termin war, welcher Grund vorlag, welche Behandlung durchgeführt wurde und welche Kosten berechnet wurden. Ein Tier kann im Laufe der Zeit viele Termine haben, aber jeder Termin bezieht sich immer nur auf genau ein Tier.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "owners",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "animals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "species",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "breed",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "gender",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "owner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "owner_id",
+              "references_table": "owners",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "appointments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "animal_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "appointment_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "reason",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "treatment",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "cost",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "animal_id",
+              "references_table": "animals",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Tierhalter",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "E-Mail-Adresse",
+            "Anschrift"
+          ],
+          "beschreibung": "Personen, die Tiere in der Praxis betreuen lassen"
+        },
+        {
+          "name": "Tier",
+          "attribute": [
+            "Name",
+            "Tierart",
+            "Rasse",
+            "Geburtsdatum",
+            "Geschlecht"
+          ],
+          "beschreibung": "Tiere, die in der Praxis behandelt werden"
+        },
+        {
+          "name": "Behandlungstermin",
+          "attribute": [
+            "Datum",
+            "Grund",
+            "Behandlung",
+            "Kosten"
+          ],
+          "beschreibung": "Dokumentation von Behandlungsterminen für Tiere"
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Tierhalter",
+          "zu": "Tier",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Tierhalter kann mehrere Tiere haben, jedes Tier gehört genau einem Halter"
+        },
+        {
+          "von": "Tier",
+          "zu": "Behandlungstermin",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Tier kann viele Behandlungstermine haben, jeder Termin bezieht sich auf genau ein Tier"
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Eindeutigkeit von Tierhaltern: Es ist unklar, ob Vorname und Nachname eindeutig sind oder ob ein Primärschlüssel (z.B. Kundennummer) benötigt wird",
+          "betroffene_elemente": [
+            "Tierhalter"
+          ]
+        },
+        {
+          "beschreibung": "Eindeutigkeit von Tieren: Es ist unklar, ob der Name eines Tieres eindeutig ist oder ob ein Primärschlüssel benötigt wird",
+          "betroffene_elemente": [
+            "Tier"
+          ]
+        },
+        {
+          "beschreibung": "Zeitliche Auflösung des Termindatums: Es ist unklar, ob nur das Datum oder auch die Uhrzeit des Termins gespeichert werden soll",
+          "betroffene_elemente": [
+            "Behandlungstermin"
+          ]
+        },
+        {
+          "beschreibung": "Kosten-Datentyp: Es ist unklar, ob die Kosten als Dezimalzahl, Integer oder Text gespeichert werden sollen und welche Währung verwendet wird",
+          "betroffene_elemente": [
+            "Behandlungstermin"
+          ]
+        },
+        {
+          "beschreibung": "Veterinär-Information: Es ist unklar, ob dokumentiert werden soll, welcher Tierarzt die Behandlung durchgeführt hat",
+          "betroffene_elemente": [
+            "Behandlungstermin"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Tierhalter",
+          "attribute": [
+            {
+              "name": "halter_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "email_adresse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "anschrift",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Tier",
+          "attribute": [
+            {
+              "name": "tier_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "tierart",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "rasse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "geschlecht",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "halter_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Behandlungstermin",
+          "attribute": [
+            {
+              "name": "termin_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "tier_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "datum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "grund",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "behandlung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kosten",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Tierhalter",
+          "zu": "Tier",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Tier",
+          "zu": "Behandlungstermin",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT NOT NULL,\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE animals (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    species VARCHAR(255) NOT NULL,\n    breed VARCHAR(255),\n    birthdate DATE,\n    gender VARCHAR(255),\n    owner_id INTEGER NOT NULL,\n    CONSTRAINT pk_animals PRIMARY KEY (id),\n    CONSTRAINT fk_animals_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    animal_id INTEGER NOT NULL,\n    appointment_date TIMESTAMP NOT NULL,\n    reason TEXT NOT NULL,\n    treatment TEXT NOT NULL,\n    cost DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_animal_id FOREIGN KEY (animal_id) REFERENCES animals (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7213,
+    "total_output_tokens": 2692,
+    "total_tokens": 9905,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1472,
+        "output_tokens": 832,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2349,
+        "output_tokens": 938,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3392,
+        "output_tokens": 922,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1472,
+        "output_tokens": 832,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2349,
+        "output_tokens": 938,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3392,
+        "output_tokens": 922,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

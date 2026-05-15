@@ -1,0 +1,551 @@
+{
+  "testfall_id": "TC038",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7808243727598566,
+  "score_gesamt": 0.8684946236559139,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.875,
+      "recall": 0.875,
+      "f1": 0.875,
+      "matched": 7,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.6956521739130435,
+      "recall": 0.6808510638297872,
+      "f1": 0.6881720430107526,
+      "matched": 32,
+      "nur_in_referenz": 15,
+      "nur_in_generiert": 14
+    },
+    "beziehung": {
+      "recall": 0.7777777777777778,
+      "matched": 7,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "clients",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "viewings.client_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "properties.street",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "properties.postal_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "properties.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "properties.marketing_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "properties.listingdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "agents.hiredate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "agent_properties.assignment_start",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interests.client_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "clients.search_request",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "interests → clients",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "viewings → clients",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Maklerbuero vermittelt Wohnungen und Haeuser fuer verschiedene Eigentuemer. Zu jedem Objekt sollen die ueblichen Angaben festgehalten werden, etwa Titel, Adresse, Art des Objekts, Wohnflaeche, Kauf- oder Mietpreis, ob es aktuell verfuegbar ist und seit wann das Angebot laeuft. Manche Eigentuemer haben mehrere Objekte, und ein Objekt kann im Lauf der Zeit auch von unterschiedlichen Maklern betreut werden. Fuer die taegliche Arbeit sollen daher die Makler mit ihren Kontaktdaten und ihrem Eintrittsdatum erfasst werden.\n\nInteressenten melden sich mit Namen, Telefonnummer, E-Mail und ihrem Suchwunsch. Es soll nachvollziehbar sein, fuer welche Objekte sich ein Interessent interessiert und wann zuletzt Kontakt bestand. Wenn ein Interessent ein Objekt besichtigt, moechte das Buero Termin, Ergebnis und kurze Notizen speichern. Dabei kann es vorkommen, dass bei einer Besichtigung mehr als ein Makler beteiligt ist, etwa wenn jemand eingearbeitet wird oder ein Gebiet uebergeben wird.\n\nAusserdem soll sichtbar sein, welcher Eigentuemer bevorzugt per Telefon oder per E-Mail kontaktiert werden moechte. Nicht jeder Kontakt fuehrt sofort zu einem Abschluss, deshalb reicht es, den aktuellen Stand der Vermittlung im Alltag ueber Besichtigungen und Interessen sauber nachzuhalten.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "owners",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "contact_preference",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "agents",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "properties",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "owner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "property_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "living_area",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "listing_start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "owner_id",
+              "references_table": "owners",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "property_agents",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "property_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "agent_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "assignment_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "property_id",
+              "references_table": "properties",
+              "references_column": "id"
+            },
+            {
+              "from_column": "agent_id",
+              "references_table": "agents",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "prospects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "search_criteria",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "prospect_interests",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "prospect_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "property_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "last_contact_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "prospect_id",
+              "references_table": "prospects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "property_id",
+              "references_table": "properties",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "viewings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "prospect_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "property_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "viewing_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "result",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "prospect_id",
+              "references_table": "prospects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "property_id",
+              "references_table": "properties",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "viewing_agents",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "viewing_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "agent_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "viewing_id",
+              "references_table": "viewings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "agent_id",
+              "references_table": "agents",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE agents (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_agents PRIMARY KEY (id)\n);\n\nCREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    contact_preference VARCHAR(255),\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE properties (\n    id INTEGER NOT NULL,\n    owner_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    property_type VARCHAR(255) NOT NULL,\n    living_area DECIMAL(18,2),\n    price DECIMAL(18,2) NOT NULL,\n    price_type VARCHAR(255) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    listing_start_date DATE NOT NULL,\n    CONSTRAINT pk_properties PRIMARY KEY (id),\n    CONSTRAINT fk_properties_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE property_agents (\n    id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    agent_id INTEGER NOT NULL,\n    assignment_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_property_agents PRIMARY KEY (id),\n    CONSTRAINT fk_property_agents_property_id FOREIGN KEY (property_id) REFERENCES properties (id),\n    CONSTRAINT fk_property_agents_agent_id FOREIGN KEY (agent_id) REFERENCES agents (id)\n);\n\nCREATE TABLE prospects (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    search_criteria TEXT,\n    CONSTRAINT pk_prospects PRIMARY KEY (id)\n);\n\nCREATE TABLE prospect_interests (\n    id INTEGER NOT NULL,\n    prospect_id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    last_contact_date DATE,\n    CONSTRAINT pk_prospect_interests PRIMARY KEY (id),\n    CONSTRAINT fk_prospect_interests_prospect_id FOREIGN KEY (prospect_id) REFERENCES prospects (id),\n    CONSTRAINT fk_prospect_interests_property_id FOREIGN KEY (property_id) REFERENCES properties (id)\n);\n\nCREATE TABLE viewings (\n    id INTEGER NOT NULL,\n    prospect_id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    viewing_date DATE NOT NULL,\n    result VARCHAR(255),\n    notes TEXT,\n    CONSTRAINT pk_viewings PRIMARY KEY (id),\n    CONSTRAINT fk_viewings_prospect_id FOREIGN KEY (prospect_id) REFERENCES prospects (id),\n    CONSTRAINT fk_viewings_property_id FOREIGN KEY (property_id) REFERENCES properties (id)\n);\n\nCREATE TABLE viewing_agents (\n    id INTEGER NOT NULL,\n    viewing_id INTEGER NOT NULL,\n    agent_id INTEGER NOT NULL,\n    CONSTRAINT pk_viewing_agents PRIMARY KEY (id),\n    CONSTRAINT fk_viewing_agents_viewing_id FOREIGN KEY (viewing_id) REFERENCES viewings (id),\n    CONSTRAINT fk_viewing_agents_agent_id FOREIGN KEY (agent_id) REFERENCES agents (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2490,
+    "total_output_tokens": 2057,
+    "total_tokens": 4547,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2490,
+        "output_tokens": 2057,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2490,
+        "output_tokens": 2057,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

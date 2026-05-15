@@ -1,0 +1,656 @@
+{
+  "testfall_id": "TC043",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.8071895424836601,
+  "score_gesamt": 0.884313725490196,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 10,
+    "pk_tabellen_mit_pk": 10,
+    "fk_referenzen_gesamt": 9,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.7,
+      "recall": 1.0,
+      "f1": 0.8235294117647058,
+      "matched": 7,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.6097560975609756,
+      "recall": 0.8064516129032258,
+      "f1": 0.6944444444444445,
+      "matched": 25,
+      "nur_in_referenz": 6,
+      "nur_in_generiert": 16
+    },
+    "beziehung": {
+      "recall": 1.0,
+      "matched": 6,
+      "nur_in_referenz": 0,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers.contact",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "manufacturers.headquarters",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "active_ingredients_medications.strength",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "medications.package_size",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "medications.is_prescription_only",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "doctor_practices.specialty",
+      "typ": "attribut",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Apotheke soll festgehalten werden, welche Arzneimittel im Sortiment sind und von welchen Herstellern sie kommen. Zu jedem Mittel braucht man den Namen, die Darreichungsform wie Tabletten oder Salbe, die Packungsgröße, den Verkaufspreis und ob es rezeptpflichtig ist. Manche Mittel haben mehrere Wirkstoffe, und derselbe Wirkstoff kann in verschiedenen Mitteln vorkommen. Bei Wirkstoffen soll auch die Stärke mit erfasst werden, weil dieselben Stoffe je nach Mittel unterschiedlich dosiert sein können.\n\nAußerdem möchte die Apotheke dokumentieren, welche Kundinnen und Kunden Medikamente erhalten haben. Dabei soll nachvollziehbar bleiben, wann etwas ausgegeben wurde und in welcher Menge. Falls ein Rezept vorlag, soll auch die ausstellende Arztpraxis bekannt sein. Nicht jede Abgabe läuft aber über ein Rezept.\n\nVon Kundinnen und Kunden werden Name, Geburtsdatum und Kontaktmöglichkeit benötigt. Bei Arztpraxen reichen Name, Fachrichtung und Anschrift. Bei Herstellern sollen Name und Sitz hinterlegt werden. Es kommt vor, dass ein Mittel von genau einem Hersteller stammt, ein Hersteller aber viele Mittel liefert. Für Auswertungen soll später erkennbar sein, welche Wirkstoffe häufig in abgegebenen Mitteln enthalten waren.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "package_units",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medicines",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dosage_form",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "package_quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "package_unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "price",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "requires_prescription",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "package_unit_id",
+              "references_table": "package_units",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "active_ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "strength_units",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medicine_active_ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "medicine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "active_ingredient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "strength_value",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "strength_unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "medicine_id",
+              "references_table": "medicines",
+              "references_column": "id"
+            },
+            {
+              "from_column": "active_ingredient_id",
+              "references_table": "active_ingredients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "strength_unit_id",
+              "references_table": "strength_units",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "specializations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "medical_practices",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "specialization_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "specialization_id",
+              "references_table": "specializations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "dispensations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medicine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "dispensation_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "quantity",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "has_prescription",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medical_practice_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medicine_id",
+              "references_table": "medicines",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medical_practice_id",
+              "references_table": "medical_practices",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Tabelle 'customers' hat 'birthdate' als NOT NULL, aber Anforderung sagt nur 'Name, Geburtsdatum und Kontaktmöglichkeit benötigt'. Geburtsdatum ist für Apotheken-Kontext optional (nicht jeder Kunde gibt es an). Auch: 'contact' ist nullable, aber sollte mindestens eine Kontaktmöglichkeit erfasst sein (E-Mail oder Telefon). Aktuell können Kunden ohne jede Kontaktmöglichkeit existieren.",
+          "korrekturanweisung": "1. birthdate auf nullable: true setzen. 2. Entweder contact als NOT NULL oder zwei separate Felder (email, phone) mit mindestens einem NOT NULL einführen."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Tabelle 'medicine_active_ingredients' fehlt ein Primärschlüssel-Feld 'id'. Composite-PK (medicine_id, active_ingredient_id) ist zwar funktional, aber für Auswertungen und Referenzierbarkeit suboptimal. Außerdem: 'strength_unit' sollte standardisiert sein (z.B. ENUM oder Referenz zu units-Tabelle), nicht freier VARCHAR. Aktuell können inkonsistente Einheiten entstehen (mg vs. mg. vs. milligram).",
+          "korrekturanweisung": "1. Composite-PK beibehalten oder zusätzlich 'id INTEGER PRIMARY KEY' hinzufügen. 2. strength_unit in standardisierte Einheiten-Tabelle auslagern oder ENUM verwenden."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Anforderung sagt 'ein Mittel von genau einem Hersteller' (1:N Beziehung), aber es gibt keine Constraint, der dies erzwingt. manufacturer_id ist NOT NULL, was gut ist, aber es fehlt ein UNIQUE-Constraint auf medicines.manufacturer_id, falls die Anforderung bedeutet, dass jedes Mittel nur von EINEM Hersteller stammt (was sie tut). Aktuell können mehrere Hersteller dasselbe Mittel liefern. INTERPRETATION: Die Anforderung ist klar: 1:N (ein Hersteller → viele Mittel, ein Mittel → genau ein Hersteller). Das ist korrekt modelliert, aber die Semantik ist nicht erzwungen.",
+          "korrekturanweisung": "Keine Änderung nötig, wenn 1:N-Beziehung gewünscht ist. Aber: Dokumentation klären, ob ein Mittel wirklich nur von EINEM Hersteller stammen kann oder ob später Mehrfach-Lieferanten möglich sind. Falls ja: medicine_active_ingredients sollte auch ein echtes id-Feld haben für Referenzierbarkeit."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER (3NF-Verstoß): Tabelle 'medicines' enthält 'package_size' als VARCHAR. Dies ist eine Kombination aus Zahlenwert und Einheit (z.B. '100 Stück', '50 ml'). Das führt zu Redundanz und Abfrage-Schwierigkeiten. Beispiel: Alle Mittel mit Packungsgröße > 50 können nicht effizient abgefragt werden. ZWEITER FEHLER: 'strength_unit' in medicine_active_ingredients ist ebenfalls nicht normalisiert (siehe attribut_vollstaendigkeit). DRITTER FEHLER: 'specialization' in medical_practices ist VARCHAR, sollte aber normalisiert sein (Referenz zu specializations-Tabelle oder ENUM), um Konsistenz zu gewährleisten.",
+          "korrekturanweisung": "1. package_size in zwei Felder aufteilen: package_quantity (INTEGER) und package_unit (VARCHAR/ENUM: 'Stück', 'ml', 'g', etc.). 2. strength_unit normalisieren (siehe attribut_vollstaendigkeit). 3. specialization in separate Tabelle auslagern oder ENUM verwenden."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle im Anforderungstext genannten Entitäten sind vorhanden: Arzneimittel (medicines), Hersteller (manufacturers), Wirkstoffe (active_ingredients), Kunden (customers), Arztpraxen (medical_practices) und Abgaben (dispensations). Die Brückentabelle medicine_active_ingredients für die M:N-Beziehung ist korrekt modelliert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Tabelle 'customers' hat 'birthdate' als NOT NULL definiert, obwohl Geburtsdatum eine optionale Information sein kann (nicht alle Kunden möchten diese preisgeben). Ferner fehlt in der Tabelle 'medicine_active_ingredients' die Dokumentation der Einheit für die Stärke (strength_unit ist vorhanden, aber strength_value sollte mit einer Einheit kombiniert sein – dies ist zwar teilweise gelöst, aber die Modellierung könnte präziser sein). Kritischer: Es fehlt ein Attribut zur Unterscheidung, ob eine Abgabe rezeptpflichtig war oder nicht – dies ist für die Nachvollziehbarkeit relevant, da der Anforderungstext explizit erwähnt 'Falls ein Rezept vorlag' und 'Nicht jede Abgabe läuft aber über ein Rezept'.",
+          "korrekturanweisung": "1. Ändern Sie 'birthdate' in der Tabelle 'customers' zu nullable: true. 2. Fügen Sie in der Tabelle 'dispensations' ein Attribut 'requires_prescription' (BOOLEAN, nullable: false) hinzu, um zu dokumentieren, ob die Abgabe rezeptpflichtig war. Dies ist unabhängig davon, ob ein Rezept vorlag, und wichtig für Auswertungen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'medicines' und 'manufacturers' ist als 1:N modelliert (manufacturer_id in medicines), was korrekt ist. ABER: Der Anforderungstext sagt 'Es kommt vor, dass ein Mittel von genau einem Hersteller stammt' – dies ist erfüllt. Jedoch ist die Kardinalität in der Dispensations-Tabelle problematisch: medical_practice_id ist nullable, was bedeutet, dass eine Abgabe ohne Arztpraxis möglich ist. Das ist fachlich korrekt (Anforderung: 'Nicht jede Abgabe läuft aber über ein Rezept'). ABER: Es gibt keine explizite Dokumentation, ob eine Abgabe mit oder ohne Rezept erfolgte. Die Anwesenheit von medical_practice_id wird implizit als 'mit Rezept' interpretiert, was fehleranfällig ist. Zusätzlich: Die Beziehung zwischen 'dispensations' und 'medical_practices' sollte optional sein (nullable: true ist korrekt), aber es fehlt eine Integritätsbedingung: Wenn medical_practice_id NULL ist, sollte dies dokumentiert sein, dass kein Rezept vorlag.",
+          "korrekturanweisung": "Fügen Sie in der Tabelle 'dispensations' ein Attribut 'has_prescription' (BOOLEAN, nullable: false, default: false) hinzu, um explizit zu dokumentieren, ob ein Rezept vorlag. Dies ermöglicht klare Auswertungen und verhindert Mehrdeutigkeiten. Die Beziehung zu medical_practices bleibt optional (nullable: true), wird aber durch has_prescription semantisch geklärt."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Die Brückentabelle medicine_active_ingredients ist korrekt für die M:N-Beziehung zwischen medicines und active_ingredients modelliert. Keine Anomalien erkannt.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE active_ingredients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_active_ingredients PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE package_units (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_package_units PRIMARY KEY (id)\n);\n\nCREATE TABLE medicines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    dosage_form VARCHAR(255) NOT NULL,\n    package_quantity INTEGER NOT NULL,\n    package_unit_id INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    requires_prescription BOOLEAN NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_medicines PRIMARY KEY (id),\n    CONSTRAINT fk_medicines_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id),\n    CONSTRAINT fk_medicines_package_unit_id FOREIGN KEY (package_unit_id) REFERENCES package_units (id)\n);\n\nCREATE TABLE specializations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_specializations PRIMARY KEY (id)\n);\n\nCREATE TABLE medical_practices (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    specialization_id INTEGER,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medical_practices PRIMARY KEY (id),\n    CONSTRAINT fk_medical_practices_specialization_id FOREIGN KEY (specialization_id) REFERENCES specializations (id)\n);\n\nCREATE TABLE dispensations (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    medicine_id INTEGER NOT NULL,\n    dispensation_date TIMESTAMP NOT NULL,\n    quantity INTEGER NOT NULL,\n    has_prescription BOOLEAN NOT NULL,\n    medical_practice_id INTEGER,\n    CONSTRAINT pk_dispensations PRIMARY KEY (id),\n    CONSTRAINT fk_dispensations_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_dispensations_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_dispensations_medical_practice_id FOREIGN KEY (medical_practice_id) REFERENCES medical_practices (id)\n);\n\nCREATE TABLE strength_units (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_strength_units PRIMARY KEY (id)\n);\n\nCREATE TABLE medicine_active_ingredients (\n    id INTEGER NOT NULL,\n    medicine_id INTEGER NOT NULL,\n    active_ingredient_id INTEGER NOT NULL,\n    strength_value DECIMAL(18,2) NOT NULL,\n    strength_unit_id INTEGER NOT NULL,\n    CONSTRAINT pk_medicine_active_ingredients PRIMARY KEY (id),\n    CONSTRAINT fk_medicine_active_ingredients_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_medicine_active_ingredients_active_ingredient_id FOREIGN KEY (active_ingredient_id) REFERENCES active_ingredients (id),\n    CONSTRAINT fk_medicine_active_ingredients_strength_unit_id FOREIGN KEY (strength_unit_id) REFERENCES strength_units (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=1] C1: 3 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 2 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 10 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 10 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 39754,
+    "total_output_tokens": 12710,
+    "total_tokens": 52464,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 16075,
+        "output_tokens": 5452,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8137,
+        "output_tokens": 2584,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8049,
+        "output_tokens": 2379,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 7493,
+        "output_tokens": 2295,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2473,
+        "output_tokens": 1468,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4066,
+        "output_tokens": 1119,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4022,
+        "output_tokens": 1204,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6677,
+        "output_tokens": 1689,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4071,
+        "output_tokens": 1465,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4027,
+        "output_tokens": 1175,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6925,
+        "output_tokens": 2295,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7493,
+        "output_tokens": 2295,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,423 @@
+{
+  "testfall_id": "TC044",
+  "workflow": "sa",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.7251282051282051,
+  "score_gesamt": 0.835076923076923,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 6,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.65625,
+      "recall": 0.6363636363636364,
+      "f1": 0.6461538461538462,
+      "matched": 21,
+      "nur_in_referenz": 12,
+      "nur_in_generiert": 11
+    },
+    "beziehung": {
+      "recall": 0.6666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "customers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts.planned_enddate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.processed_amount",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisors.hiredate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisor_customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisor_customers.customer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.managed_since",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "advisor_customers → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contracts → customers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine Versicherungsagentur möchte ihre täglichen Vorgänge besser im Blick behalten. Erfasst werden sollen Kundinnen und Kunden mit ihren Kontaktdaten und dem Datum, seit wann sie von der Agentur betreut werden. Für jede Person können mehrere Verträge laufen, zum Beispiel für Auto, Hausrat oder Haftpflicht. Zu jedem Vertrag sollen Beginn, geplantes Ende, aktueller Status und der regelmäßige Beitrag festgehalten werden. Die verschiedenen Versicherungsarten haben eigene Bezeichnungen und allgemeine Beschreibungen.\n\nAußerdem arbeiten in der Agentur mehrere Beraterinnen und Berater. Von ihnen sollen Name, E-Mail, Telefonnummer, Eintrittsdatum und ob sie aktuell aktiv sind gespeichert werden. Ein Kunde kann von mehreren Beratern betreut werden, etwa wenn jemand im Urlaub ist oder Spezialwissen gebraucht wird. Ebenso betreut ein Berater in der Regel viele Kunden.\n\nZu Verträgen gibt es Schadensmeldungen. Dabei sind Meldedatum, kurze Schilderung, bearbeiteter Betrag und der aktuelle Stand wichtig. Eine Meldung wird von einem Berater aufgenommen, der sich zunächst darum kümmert. Falls später jemand anderes die weitere Bearbeitung übernimmt, reicht es, wenn trotzdem nur diese erste Zuständigkeit festgehalten wird. Bei einem Vertrag kann es im Lauf der Zeit auch mehrere Meldungen geben.",
+    "workflow_name": "sa",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "customer_since",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "advisors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "insurance_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "contracts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "insurance_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "premium",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "insurance_type_id",
+              "references_table": "insurance_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "advisor_persons",
+          "columns": [
+            {
+              "name": "advisor_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "person_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "advisor_id",
+              "references_table": "advisors",
+              "references_column": "id"
+            },
+            {
+              "from_column": "person_id",
+              "references_table": "persons",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "claims",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contract_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "advisor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "claim_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "advisor_id",
+              "references_table": "advisors",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE advisors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_advisors PRIMARY KEY (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    customer_since DATE NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE advisor_persons (\n    advisor_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    CONSTRAINT pk_advisor_persons PRIMARY KEY (advisor_id, person_id),\n    CONSTRAINT fk_advisor_persons_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id),\n    CONSTRAINT fk_advisor_persons_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE insurance_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_insurance_types PRIMARY KEY (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    insurance_type_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    premium DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_contracts_insurance_type_id FOREIGN KEY (insurance_type_id) REFERENCES insurance_types (id)\n);\n\nCREATE TABLE claims (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    advisor_id INTEGER NOT NULL,\n    claim_date DATE NOT NULL,\n    description TEXT NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_claims PRIMARY KEY (id),\n    CONSTRAINT fk_claims_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_claims_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 1,
+    "total_input_tokens": 2485,
+    "total_output_tokens": 1457,
+    "total_tokens": 3942,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "sa_generator": {
+        "calls": 1,
+        "input_tokens": 2485,
+        "output_tokens": 1457,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "sa",
+        "iteration": 0,
+        "agent_name": "sa_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2485,
+        "output_tokens": 1457,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

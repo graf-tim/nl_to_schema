@@ -1,0 +1,723 @@
+{
+  "testfall_id": "TC036",
+  "workflow": "iw",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.4992941176470589,
+  "score_gesamt": 0.6995764705882354,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 9,
+    "pk_tabellen_mit_pk": 9,
+    "fk_referenzen_gesamt": 13,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5555555555555556,
+      "recall": 0.625,
+      "f1": 0.5882352941176471,
+      "matched": 5,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 4
+    },
+    "attribut": {
+      "precision": 0.5121951219512195,
+      "recall": 0.6176470588235294,
+      "f1": 0.56,
+      "matched": 21,
+      "nur_in_referenz": 13,
+      "nur_in_generiert": 20
+    },
+    "beziehung": {
+      "recall": 0.2,
+      "matched": 2,
+      "nur_in_referenz": 8,
+      "nur_in_generiert": 1
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "school_classes",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "assessments.title",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "students.school_class_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes.school_year",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes.teacher_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers.school_class_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers.teacher_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers.subject_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers.teacher_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers.school_class_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "assessments → subject_teachers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes → teachers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers → school_classes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "school_classes_teachers → teachers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "students → school_classes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers → school_classes",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers → subjects",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subject_teachers → teachers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Für eine Schule soll eine Lösung entstehen, mit der die wichtigsten Abläufe rund um Unterricht und Teilnahme festgehalten werden können. Von allen Kindern und Jugendlichen sollen die üblichen Kontaktdaten sowie das Geburtsdatum bekannt sein. Außerdem muss nachvollziehbar sein, in welcher Lerngruppe jemand aktuell geführt wird. Lehrkräfte sollen mit Namen, Erreichbarkeit und ihrem Einstellungsdatum erfasst werden. Eine Lehrkraft kann mehrere Fächer unterrichten, und ein Fach wird an der Schule oft von mehreren Lehrkräften übernommen. Die Schule bietet verschiedene Lerngruppen an, etwa nach Jahrgang oder Profil. Jede Lerngruppe hat eine Bezeichnung und ein Schuljahr. Pro Lerngruppe gibt es eine Klassenleitung. Zusätzlich sollen die unterrichteten Fächer verwaltet werden. Dabei ist wichtig, welche Lehrkraft welches Fach in welcher Lerngruppe übernimmt. Für Leistungsnachweise soll gespeichert werden, wann sie stattgefunden haben, worum es ging und welche Note ein Kind erhalten hat. Eine Note bezieht sich immer auf einen konkreten Leistungsnachweis. Es soll außerdem möglich sein festzuhalten, welche Lehrkräfte eine Lerngruppe betreuen, da dies im Schulalltag nicht immer nur die Klassenleitung betrifft. Was genau als Betreuung gilt, kann je nach organisatorischer Regelung der Schule unterschiedlich ausgelegt werden.",
+    "workflow_name": "iw",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "students",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "student_learninggroup_assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "student_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "learninggroup_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "start_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "end_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "student_id",
+              "references_table": "students",
+              "references_column": "id"
+            },
+            {
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "teachers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "subjects",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "learninggroups",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "schoolyear",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "classleader_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "classleader_id",
+              "references_table": "teachers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "teachings",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "teacher_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subject_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "learninggroup_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "teacher_id",
+              "references_table": "teachers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subject_id",
+              "references_table": "subjects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "assessments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "assessmentdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "teaching_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subject_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "teaching_id",
+              "references_table": "teachings",
+              "references_column": "id"
+            },
+            {
+              "from_column": "subject_id",
+              "references_table": "subjects",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "grades",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "student_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "assessment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "learninggroup_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "grade",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "student_id",
+              "references_table": "students",
+              "references_column": "id"
+            },
+            {
+              "from_column": "assessment_id",
+              "references_table": "assessments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "learninggroup_supervisors",
+          "columns": [
+            {
+              "name": "learninggroup_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "teacher_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
+              "references_column": "id"
+            },
+            {
+              "from_column": "teacher_id",
+              "references_table": "teachers",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung 'welche Lehrkräfte eine Lerngruppe betreuen' wird durch 'learninggroup_supervisors' abgedeckt. Allerdings fehlt eine explizite Entität oder Attribut zur Unterscheidung zwischen 'Klassenleitung' (1:1 in learninggroups.classleader_id) und 'Betreuung' (N:M in learninggroup_supervisors). Die Anforderung erwähnt, dass 'Betreuung' flexibel ausgelegt werden kann und nicht immer nur die Klassenleitung betrifft. Das Schema modelliert dies korrekt, aber es fehlt eine Möglichkeit, die Art oder den Typ der Betreuung zu dokumentieren (z.B. 'Klassenleitung', 'Fachlehrer', 'Schulberater'). Dies ist eine Lücke für zukünftige Erweiterbarkeit.",
+          "korrekturanweisung": "Erweitern Sie 'learninggroup_supervisors' um ein optionales Attribut 'supervision_type' (VARCHAR, nullable: true), um die Art der Betreuung dokumentieren zu können. Beispiel: supervision_type IN ('classleader', 'subject_teacher', 'counselor', 'other')."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'students' fehlt ein Attribut für die aktuelle Lerngruppe. Zwar existiert 'student_learninggroup_assignments' mit Zeiträumen, aber es gibt keine direkte Abfragemöglichkeit für 'aktuelle Lerngruppe' ohne Datumsprüfung. Außerdem fehlt in 'students' ein Adressfeld (Straße, Hausnummer, PLZ, Ort), das unter 'übliche Kontaktdaten' zu verstehen ist. Die Anforderung nennt explizit 'Kontaktdaten' neben E-Mail und Telefon.",
+          "korrekturanweisung": "Fügen Sie der Tabelle 'students' folgende Spalten hinzu: 'address' (VARCHAR, nullable: true), 'postal_code' (VARCHAR, nullable: true), 'city' (VARCHAR, nullable: true). Optional: Ergänzen Sie 'student_learninggroup_assignments' um ein Attribut 'is_current' (BOOLEAN, nullable: false, default: true) zur schnelleren Abfrage der aktuellen Lerngruppe."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'grades' enthält eine redundante Spalte 'learninggroup_id'. Diese ist bereits über die Beziehung student_id → student_learninggroup_assignments → learninggroup_id erreichbar (unter Berücksichtigung des Zeitraums). Die direkte Speicherung schafft Inkonsistenzpotenzial: Ein Student könnte in mehreren Lerngruppen sein, und die Spalte 'learninggroup_id' in 'grades' könnte nicht mit der tatsächlichen Lerngruppe zum Zeitpunkt der Bewertung übereinstimmen. Dies ist ein Datenintegrität-Problem.",
+          "korrekturanweisung": "Entfernen Sie die Spalte 'learninggroup_id' aus der Tabelle 'grades'. Die Lerngruppe eines Schülers zum Zeitpunkt einer Bewertung sollte über die Beziehung zu 'student_learninggroup_assignments' und dem Bewertungsdatum ermittelt werden, nicht redundant gespeichert."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Das Schema weist mehrere Redundanzen auf, die gegen die 3NF verstoßen: (1) 'assessments.subject_id' ist transitiv abhängig von 'assessments.teaching_id' (teaching_id → subject_id). (2) 'grades.learninggroup_id' ist transitiv abhängig von 'grades.student_id' über 'student_learninggroup_assignments'. Diese Redundanzen führen zu Update- und Delete-Anomalien und erschweren die Datenintegrität.",
+          "korrekturanweisung": "Normalisieren Sie das Schema auf 3NF: (1) Entfernen Sie 'assessments.subject_id' und leiten Sie das Fach über 'teachings' ab. (2) Entfernen Sie 'grades.learninggroup_id' und leiten Sie die Lerngruppe über 'student_learninggroup_assignments' ab. Dies reduziert Redundanz und verbessert die Datenintegrität."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE teachers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    hiredate DATE NOT NULL,\n    CONSTRAINT pk_teachers PRIMARY KEY (id)\n);\n\nCREATE TABLE subjects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_subjects PRIMARY KEY (id)\n);\n\nCREATE TABLE learninggroups (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    schoolyear VARCHAR(255) NOT NULL,\n    classleader_id INTEGER NOT NULL,\n    CONSTRAINT pk_learninggroups PRIMARY KEY (id),\n    CONSTRAINT fk_learninggroups_classleader_id FOREIGN KEY (classleader_id) REFERENCES teachers (id)\n);\n\nCREATE TABLE teachings (\n    id INTEGER NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    subject_id INTEGER NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    CONSTRAINT pk_teachings PRIMARY KEY (id),\n    CONSTRAINT fk_teachings_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_teachings_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id),\n    CONSTRAINT fk_teachings_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n\nCREATE TABLE assessments (\n    id INTEGER NOT NULL,\n    assessmentdate DATE NOT NULL,\n    description TEXT,\n    teaching_id INTEGER NOT NULL,\n    subject_id INTEGER NOT NULL,\n    CONSTRAINT pk_assessments PRIMARY KEY (id),\n    CONSTRAINT fk_assessments_teaching_id FOREIGN KEY (teaching_id) REFERENCES teachings (id),\n    CONSTRAINT fk_assessments_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id)\n);\n\nCREATE TABLE students (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    birthdate DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_students PRIMARY KEY (id)\n);\n\nCREATE TABLE grades (\n    id INTEGER NOT NULL,\n    student_id INTEGER NOT NULL,\n    assessment_id INTEGER NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    grade DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_grades PRIMARY KEY (id),\n    CONSTRAINT fk_grades_student_id FOREIGN KEY (student_id) REFERENCES students (id),\n    CONSTRAINT fk_grades_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id),\n    CONSTRAINT fk_grades_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n\nCREATE TABLE learninggroup_supervisors (\n    learninggroup_id INTEGER NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    CONSTRAINT pk_learninggroup_supervisors PRIMARY KEY (learninggroup_id, teacher_id),\n    CONSTRAINT fk_learninggroup_supervisors_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id),\n    CONSTRAINT fk_learninggroup_supervisors_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id)\n);\n\nCREATE TABLE student_learninggroup_assignments (\n    id INTEGER NOT NULL,\n    student_id INTEGER NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_student_learninggroup_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_student_learninggroup_assignments_student_id FOREIGN KEY (student_id) REFERENCES students (id),\n    CONSTRAINT fk_student_learninggroup_assignments_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Anforderung 'welche Lehrkräfte eine Lerngruppe betreuen' wird durch 'learninggroup_supervisors' abgedeckt. Allerdings fehlt eine explizite Entität oder Attribut zur Unterscheidung zwischen 'Klassenleitung' (1:1 in learninggroups.classleader_id) und 'Betreuung' (N:M in learninggroup_supervisors). Die Anforderung erwähnt, dass 'Betreuung' flexibel ausgelegt werden kann und nicht immer nur die Klassenleitung betrifft. Das Schema modelliert dies korrekt, aber es fehlt eine Möglichkeit, die Art oder den Typ der Betreuung zu dokumentieren (z.B. 'Klassenleitung', 'Fachlehrer', 'Schulberater'). Dies ist eine Lücke für zukünftige Erweiterbarkeit.",
+          "korrekturanweisung": "Erweitern Sie 'learninggroup_supervisors' um ein optionales Attribut 'supervision_type' (VARCHAR, nullable: true), um die Art der Betreuung dokumentieren zu können. Beispiel: supervision_type IN ('classleader', 'subject_teacher', 'counselor', 'other')."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'students' fehlt ein Attribut für die aktuelle Lerngruppe. Zwar existiert 'student_learninggroup_assignments' mit Zeiträumen, aber es gibt keine direkte Abfragemöglichkeit für 'aktuelle Lerngruppe' ohne Datumsprüfung. Außerdem fehlt in 'students' ein Adressfeld (Straße, Hausnummer, PLZ, Ort), das unter 'übliche Kontaktdaten' zu verstehen ist. Die Anforderung nennt explizit 'Kontaktdaten' neben E-Mail und Telefon.",
+          "korrekturanweisung": "Fügen Sie der Tabelle 'students' folgende Spalten hinzu: 'address' (VARCHAR, nullable: true), 'postal_code' (VARCHAR, nullable: true), 'city' (VARCHAR, nullable: true). Optional: Ergänzen Sie 'student_learninggroup_assignments' um ein Attribut 'is_current' (BOOLEAN, nullable: false, default: true) zur schnelleren Abfrage der aktuellen Lerngruppe."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Tabelle 'grades' enthält eine redundante Spalte 'learninggroup_id'. Diese ist bereits über die Beziehung student_id → student_learninggroup_assignments → learninggroup_id erreichbar (unter Berücksichtigung des Zeitraums). Die direkte Speicherung schafft Inkonsistenzpotenzial: Ein Student könnte in mehreren Lerngruppen sein, und die Spalte 'learninggroup_id' in 'grades' könnte nicht mit der tatsächlichen Lerngruppe zum Zeitpunkt der Bewertung übereinstimmen. Dies ist ein Datenintegrität-Problem.",
+          "korrekturanweisung": "Entfernen Sie die Spalte 'learninggroup_id' aus der Tabelle 'grades'. Die Lerngruppe eines Schülers zum Zeitpunkt einer Bewertung sollte über die Beziehung zu 'student_learninggroup_assignments' und dem Bewertungsdatum ermittelt werden, nicht redundant gespeichert."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Das Schema weist mehrere Redundanzen auf, die gegen die 3NF verstoßen: (1) 'assessments.subject_id' ist transitiv abhängig von 'assessments.teaching_id' (teaching_id → subject_id). (2) 'grades.learninggroup_id' ist transitiv abhängig von 'grades.student_id' über 'student_learninggroup_assignments'. Diese Redundanzen führen zu Update- und Delete-Anomalien und erschweren die Datenintegrität.",
+          "korrekturanweisung": "Normalisieren Sie das Schema auf 3NF: (1) Entfernen Sie 'assessments.subject_id' und leiten Sie das Fach über 'teachings' ab. (2) Entfernen Sie 'grades.learninggroup_id' und leiten Sie die Lerngruppe über 'student_learninggroup_assignments' ab. Dies reduziert Redundanz und verbessert die Datenintegrität."
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 6,
+    "total_input_tokens": 29458,
+    "total_output_tokens": 11451,
+    "total_tokens": 40909,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "iw_generator": {
+        "calls": 3,
+        "input_tokens": 15037,
+        "output_tokens": 6429,
+        "cost_usd": 0.0
+      },
+      "iw_critic": {
+        "calls": 3,
+        "input_tokens": 14421,
+        "output_tokens": 5022,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "iw",
+        "iteration": 0,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2490,
+        "output_tokens": 1995,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4815,
+        "output_tokens": 1857,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 1,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6567,
+        "output_tokens": 2002,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4588,
+        "output_tokens": 1501,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 2,
+        "agent_name": "iw_generator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5980,
+        "output_tokens": 2432,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "iw",
+        "iteration": 3,
+        "agent_name": "iw_critic",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5018,
+        "output_tokens": 1664,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,473 @@
+{
+  "testfall_id": "TC032",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.581203007518797,
+  "score_gesamt": 0.7487218045112782,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 4,
+    "pk_tabellen_mit_pk": 4,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5,
+      "recall": 0.6666666666666666,
+      "f1": 0.5714285714285715,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 2
+    },
+    "attribut": {
+      "precision": 0.6,
+      "recall": 0.6666666666666666,
+      "f1": 0.631578947368421,
+      "matched": 12,
+      "nur_in_referenz": 6,
+      "nur_in_generiert": 8
+    },
+    "beziehung": {
+      "recall": 0.5,
+      "matched": 1,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "playground_equipments",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.playground_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.equipment_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.installation_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.condition",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments → playgrounds",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Die Stadtverwaltung möchte die Informationen zu ihren Spielplätzen übersichtlich festhalten. Für jeden Spielplatz sollen der Name, die Straße, die Hausnummer, die Postleitzahl, der Ort und das Eröffnungsdatum gespeichert werden. Jeder Spielplatz liegt genau in einem Stadtteil. Zu jedem Stadtteil sollen der Name und der zuständige Bezirk erfasst werden. Auf jedem Spielplatz gibt es mehrere Spielgeräte. Für jedes Spielgerät sollen die Bezeichnung, die Geräteart, das Aufbaudatum und der aktuelle Zustand gespeichert werden. Jedes Spielgerät gehört immer genau zu einem Spielplatz. Außerdem soll vermerkt werden, ob ein Spielplatz aktuell geöffnet ist. Weitere Angaben sind nicht nötig.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "boroughs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "districts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "borough_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "borough_id",
+              "references_table": "boroughs",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "playgrounds",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "house_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "opening_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_open",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "district_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "district_id",
+              "references_table": "districts",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "play_equipment",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "equipment_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "installation_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "condition",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "playground_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "playground_id",
+              "references_table": "playgrounds",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: Die Anforderung nennt 'Stadtteil' als Entität mit Attributen 'Name' und 'zuständiger Bezirk'. Das Schema modelliert dies als 'districts' mit 'borough_id'. Die Anforderung spricht aber von 'Bezirk' als Attribut des Stadtteils, nicht als separate Entität. Die Tabelle 'boroughs' ist nicht in der Anforderung definiert und stellt eine nicht-geforderte Entität dar. Entweder ist die Modellierung über-normalisiert oder die Anforderung wurde missverstanden.",
+          "korrekturanweisung": "Klärung erforderlich: Sind 'Stadtteil' und 'Bezirk' zwei separate Entitäten (1:N-Beziehung) oder ist 'Bezirk' nur ein Attribut des Stadtteils? Falls letzteres: 'boroughs' entfernen, 'districts' um Spalte 'borough' (VARCHAR) erweitern. Falls ersteres: Anforderung war unvollständig."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "FEHLER: In der Tabelle 'playgrounds' fehlt das Attribut 'city' (Ort). Die Anforderung verlangt explizit: 'Straße, Hausnummer, Postleitzahl, Ort und Eröffnungsdatum'. Das Attribut 'city' oder 'location' ist nicht vorhanden.",
+          "korrekturanweisung": "Spalte 'city' (VARCHAR, NOT NULL) nach 'postal_code' in die Tabelle 'playgrounds' einfügen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: 1:N zwischen districts und playgrounds, 1:N zwischen playgrounds und play_equipment.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema erfüllt die 3NF: Keine transitiven Abhängigkeiten, keine Redundanzen, alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom Primärschlüssel.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Im Anforderungstext wird explizit ein 'Stadtteil' erwähnt ('Jeder Spielplatz liegt genau in einem Stadtteil. Zu jedem Stadtteil sollen der Name und der zuständige Bezirk erfasst werden.'). Das Schema modelliert stattdessen 'districts' (Stadtteile) und 'boroughs' (Bezirke). Die Hierarchie ist invertiert: Ein Stadtteil sollte zu genau einem Bezirk gehören (1:N), nicht umgekehrt. Die aktuelle Struktur mit 'boroughs' als übergeordnete Entität ist fachlich falsch. Korrekt wäre: districts (Stadtteil) mit FK zu boroughs (Bezirk).",
+          "korrekturanweisung": "Umbenennung durchführen: 'boroughs' → 'districts' (Stadtteil), 'districts' → 'boroughs' (Bezirk). Dann die FK-Beziehung korrigieren: playgrounds.borough_id (statt district_id) referenziert boroughs.id. Die alte districts-Tabelle wird gelöscht."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Im Anforderungstext wird für jeden Spielplatz 'der Ort' gefordert ('Für jeden Spielplatz sollen der Name, die Straße, die Hausnummer, die Postleitzahl, der Ort und das Eröffnungsdatum gespeichert werden.'). Das Attribut 'city' oder 'ort' fehlt in der playgrounds-Tabelle. Postleitzahl allein ist nicht ausreichend, um den Ort eindeutig zu identifizieren.",
+          "korrekturanweisung": "Spalte 'city' (VARCHAR, NOT NULL) zur playgrounds-Tabelle hinzufügen."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen playgrounds und districts/boroughs ist fachlich falsch modelliert (siehe entitaets_vollstaendigkeit). Zusätzlich: Ein Spielplatz liegt in einem Stadtteil (district), nicht in einem Bezirk (borough). Die aktuelle FK playgrounds.district_id referenziert die falsch benannte Tabelle.",
+          "korrekturanweisung": "Nach Korrektur der Entitäten: playgrounds.borough_id (FK) sollte auf districts.id referenzieren (wobei 'districts' dann der Stadtteil ist). Alternativ: playgrounds.district_id auf die korrekt benannte districts-Tabelle (Stadtteil) mit deren FK zu boroughs (Bezirk)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Schema ist in 3NF normalisiert. Keine Anomalien erkannt (nach Korrektur der Entitäten).",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE boroughs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_boroughs PRIMARY KEY (id)\n);\n\nCREATE TABLE districts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    borough_id INTEGER NOT NULL,\n    CONSTRAINT pk_districts PRIMARY KEY (id),\n    CONSTRAINT fk_districts_borough_id FOREIGN KEY (borough_id) REFERENCES boroughs (id)\n);\n\nCREATE TABLE playgrounds (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    house_number VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    opening_date DATE NOT NULL,\n    is_open BOOLEAN NOT NULL,\n    district_id INTEGER NOT NULL,\n    CONSTRAINT pk_playgrounds PRIMARY KEY (id),\n    CONSTRAINT fk_playgrounds_district_id FOREIGN KEY (district_id) REFERENCES districts (id)\n);\n\nCREATE TABLE play_equipment (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    equipment_type VARCHAR(255) NOT NULL,\n    installation_date DATE NOT NULL,\n    condition VARCHAR(255) NOT NULL,\n    playground_id INTEGER NOT NULL,\n    CONSTRAINT pk_play_equipment PRIMARY KEY (id),\n    CONSTRAINT fk_play_equipment_playground_id FOREIGN KEY (playground_id) REFERENCES playgrounds (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 3 Tabelle(n).",
+      "[iter=1] C1: 4 unerfüllte Findings.",
+      "[iter=1] C2: 2 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=2] C1: 2 unerfüllte Findings.",
+      "[iter=2] C2: 3 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 4 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 4 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 31300,
+    "total_output_tokens": 8620,
+    "total_tokens": 39920,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 13455,
+        "output_tokens": 2821,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 6311,
+        "output_tokens": 2368,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 6223,
+        "output_tokens": 2384,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 5311,
+        "output_tokens": 1047,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2292,
+        "output_tokens": 764,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3100,
+        "output_tokens": 1462,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3056,
+        "output_tokens": 1279,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5851,
+        "output_tokens": 1010,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3211,
+        "output_tokens": 906,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3167,
+        "output_tokens": 1105,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5312,
+        "output_tokens": 1047,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5311,
+        "output_tokens": 1047,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

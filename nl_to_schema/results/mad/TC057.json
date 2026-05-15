@@ -1,0 +1,679 @@
+{
+  "testfall_id": "TC057",
+  "workflow": "mad",
+  "score_strukturell": 1.0,
+  "score_semantisch": 0.46071428571428574,
+  "score_gesamt": 0.6764285714285714,
+  "detail_strukturell": {
+    "syntax_gate": 1,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 7,
+    "pk_tabellen_mit_pk": 7,
+    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.5714285714285714,
+      "recall": 0.5714285714285714,
+      "f1": 0.5714285714285714,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
+    },
+    "attribut": {
+      "precision": 0.4375,
+      "recall": 0.4375,
+      "f1": 0.4375,
+      "matched": 14,
+      "nur_in_referenz": 18,
+      "nur_in_generiert": 18
+    },
+    "beziehung": {
+      "recall": 0.2857142857142857,
+      "matched": 2,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "members",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "author_books.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.birthdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "members.registrationdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries.book_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries.library_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries.is_available",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.member_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.library_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.book_library_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.checkoutdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.duedate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings.returndate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries → books",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "book_libraries → libraries",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings → book_libraries",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings → libraries",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "borrowings → members",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Ein Verbund aus mehreren Bibliotheken möchte seine Medien und die Ausleihen gemeinsam verwalten. Jede Bibliothek hat einen Namen, einen Standort und eine allgemeine Kontaktadresse. Leserinnen und Leser sollen sich einmal registrieren und dann in verschiedenen Häusern Medien ausleihen können. Von ihnen werden Name, E-Mail-Adresse, Geburtsdatum und das Datum der Anmeldung benötigt.\n\nIm Bestand gibt es vor allem Bücher. Zu jedem Buch sollen Titel, Erscheinungsjahr, Sprache und eine internationale Kennnummer festgehalten werden. Ein Buch kann von mehreren Personen geschrieben worden sein, und eine Autorin oder ein Autor kann natürlich auch viele Bücher veröffentlicht haben. Nicht jedes Werk liegt in jeder Bibliothek vor, deshalb muss nachvollziehbar sein, welche Bibliothek welche Exemplare bzw. Titel im Bestand hat. Außerdem soll sichtbar sein, ob ein Medium aktuell ausleihbar ist.\n\nWenn jemand etwas mitnimmt, muss festgehalten werden, wer es ausgeliehen hat, in welcher Bibliothek die Ausleihe erfolgt ist, wann die Ausleihe begann und bis wann die Rückgabe vorgesehen ist. Falls etwas später zurückkommt, soll auch das tatsächliche Rückgabedatum gespeichert werden. Mitarbeitende möchten später außerdem auswerten können, welche Autorinnen und Autoren in welchen Bibliotheken besonders stark vertreten sind.",
+    "workflow_name": "mad",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "libraries",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "location",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "readers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "registration_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "authors",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "books",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "title",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "publicationyear",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "language",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "isbn",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "author_books",
+          "columns": [
+            {
+              "name": "author_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "book_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "author_id",
+              "references_table": "authors",
+              "references_column": "id"
+            },
+            {
+              "from_column": "book_id",
+              "references_table": "books",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "copies",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "library_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "book_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "copy_number",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_available",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "library_id",
+              "references_table": "libraries",
+              "references_column": "id"
+            },
+            {
+              "from_column": "book_id",
+              "references_table": "books",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "checkouts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "reader_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "copy_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "library_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "checkoutdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "duedate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "returndate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "reader_id",
+              "references_table": "readers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "copy_id",
+              "references_table": "copies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "library_id",
+              "references_table": "libraries",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": null,
+    "er_modell": null,
+    "critic_report": null,
+    "critic_report_c1": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'copies' ist redundant und konzeptionell fehlerhaft. Sie speichert nur 'copy_number' als Attribut, was keine echte Entität darstellt. Die Anforderung 'ob ein Medium aktuell ausleihbar ist' kann nicht direkt aus dieser Struktur beantwortet werden. Besser: 'copies' sollte ein 'is_available' BOOLEAN-Feld haben, oder die Verfügbarkeit sollte über eine Abfrage der 'checkouts'-Tabelle (returndate IS NULL) ermittelt werden. Aktuell ist unklar, wie Exemplare eindeutig identifiziert und ihr Status verwaltet wird.",
+          "korrekturanweisung": "Ergänze 'copies' um ein Feld 'is_available BOOLEAN NOT NULL DEFAULT true' oder implementiere die Verfügbarkeitsprüfung über eine View, die offene Checkouts abfragt."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'library_books' enthält ein 'quantity'-Feld, das redundant ist. Wenn 'copies' die einzelnen Exemplare speichert, sollte 'quantity' nicht separat gepflegt werden – es kann durch COUNT(*) auf 'copies' ermittelt werden. Dies führt zu Konsistenzproblemen (Anomalien bei Insert/Delete). Außerdem fehlt in 'checkouts' ein Feld, das die Bibliothek dokumentiert, in der die Ausleihe erfolgte – die Anforderung 'in welcher Bibliothek die Ausleihe erfolgt ist' ist nicht direkt abbildbar (nur indirekt über copy → library_book → library).",
+          "korrekturanweisung": "Entferne 'quantity' aus 'library_books' oder nutze es nur als Denormalisierung mit Trigger-Wartung. Alternativ: Füge 'library_id' direkt zu 'checkouts' hinzu für explizite Dokumentation der Ausleihbibliothek."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Beziehung zwischen 'checkouts' und 'libraries' ist indirekt und fehleranfällig. Der Pfad 'checkouts → copies → library_books → libraries' ist zu lang und verursacht Komplexität. Wenn ein Exemplar zwischen Bibliotheken verschoben wird, können historische Checkouts die falsche Bibliothek referenzieren. Die Anforderung 'welche Autorinnen und Autoren in welchen Bibliotheken besonders stark vertreten sind' erfordert eine direkte Verbindung zwischen 'authors', 'books', 'libraries' – diese ist nur über mehrere Joins erreichbar und nicht optimal.",
+          "korrekturanweisung": "Füge 'library_id' direkt zu 'checkouts' hinzu (NOT NULL, FK zu libraries). Dies dokumentiert explizit, wo die Ausleihe stattfand, und ermöglicht einfachere Auswertungen."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Verstoß gegen 3NF durch Redundanz und transitive Abhängigkeiten. (1) 'library_books.quantity' ist eine Aggregation von 'copies' und sollte nicht separat gespeichert werden – dies führt zu Update-Anomalien. (2) Die Struktur 'library_books' mit 'quantity' suggeriert ein Aggregat-Modell, während 'copies' ein Detail-Modell ist – beide zusammen sind inkonsistent. (3) 'copies' speichert nur 'copy_number', was keine echte Entität mit eigenständigen Attributen ist; es sollte entweder in 'library_books' aufgelöst oder mit zusätzlichen Attributen (z.B. 'is_available', 'condition') angereichert werden. Empfehlung: Entweder (A) 'library_books' mit 'quantity' nutzen und 'copies' entfernen, oder (B) 'copies' als echte Entität mit Attributen nutzen und 'quantity' entfernen.",
+          "korrekturanweisung": "Wähle ein konsistentes Modell: (A) Aggregat-Modell: Entferne 'copies', nutze 'library_books' mit 'quantity' und speichere Checkout-Details direkt in 'checkouts' mit 'library_id'. (B) Detail-Modell: Behalte 'copies', entferne 'quantity' aus 'library_books', und nutze 'copies' als Fremdschlüssel in 'checkouts'."
+        }
+      ],
+      "origin_step": null
+    },
+    "critic_report_c2": {
+      "qualitaet_ausreichend": false,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Entität 'Exemplar/Copy' ist unzureichend modelliert. Das Schema hat zwar eine 'copies'-Tabelle, aber diese ist nicht eigenständig ausleihbar. Ein Exemplar sollte einen Ausleihstatus (verfügbar/ausgeliehen) haben, um die Anforderung 'ob ein Medium aktuell ausleihbar ist' zu erfüllen. Derzeit kann man nur über die 'checkouts'-Tabelle indirekt ableiten, ob ein Exemplar verfügbar ist (kein aktiver Checkout mit NULL returndate). Das ist fehleranfällig und ineffizient.",
+          "korrekturanweisung": "Füge der 'copies'-Tabelle ein Attribut 'is_available BOOLEAN NOT NULL DEFAULT true' hinzu. Alternativ: Denormalisiere bewusst und speichere den Status direkt, oder nutze eine View für die Verfügbarkeitsprüfung. Die aktuelle Modellierung ist zu implizit."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: In der 'readers'-Tabelle fehlt das Attribut für den Namen. Der Anforderungstext sagt 'Von ihnen werden Name, E-Mail-Adresse, Geburtsdatum und das Datum der Anmeldung benötigt.' Das Schema hat 'firstname' und 'lastname' (was korrekt ist), aber die Anforderung spricht von 'Name' singular. Dies ist eine Interpretation, aber die Aufteilung in firstname/lastname ist fachlich sinnvoll und wird akzeptiert. JEDOCH: Das Attribut 'email' ist als NOT NULL definiert, aber die Anforderung sagt nicht explizit, dass E-Mail-Adresse Pflichtfeld sein muss. Dies ist eine weiche Optimierung. HAUPTPROBLEM: Die 'copies'-Tabelle hat nur 'copy_number', aber keine Informationen über den Zustand des Exemplars (z.B. Beschädigungen, Verschleiß). Das ist optional, aber für ein Bibliothekssystem relevant.",
+          "korrekturanweisung": "Überprüfe, ob 'email' wirklich NOT NULL sein soll (optional: nullable=true). Erwäge, ein Attribut wie 'condition' oder 'status' in 'copies' hinzuzufügen, falls Exemplarzustände relevant sind. Für die Kernfunktionalität ist dies aber nicht kritisch."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Die Beziehung zwischen 'library_books' und 'copies' ist redundant und führt zu Anomalien. 'library_books' speichert bereits die Zuordnung Bibliothek→Buch mit 'quantity'. Die 'copies'-Tabelle speichert dann einzelne Exemplare mit 'copy_number'. Das Problem: Es gibt keine Garantie, dass die Anzahl der Exemplare in 'copies' mit 'quantity' in 'library_books' übereinstimmt. Dies ist eine Integritätsverletzung auf fachlicher Ebene. WEITERHIN: Die Beziehung 'checkouts' → 'copies' ist korrekt, aber 'copies' → 'library_books' ist nicht optimal. Ein Checkout sollte direkt wissen, in welcher Bibliothek die Ausleihe stattfand (Anforderung: 'in welcher Bibliothek die Ausleihe erfolgt ist'). Derzeit muss man über copies→library_books→library_id navigieren. Das ist möglich, aber die Anforderung 'welche Autorinnen und Autoren in welchen Bibliotheken besonders stark vertreten sind' wird dadurch kompliziert.",
+          "korrekturanweisung": "OPTION A (Normalisierung): Entferne 'quantity' aus 'library_books' und nutze nur 'copies' mit Fremdschlüssel auf 'library_books'. Füge dann einen Trigger/Constraint ein, um Konsistenz zu sichern. OPTION B (Denormalisierung): Speichere 'library_id' direkt in 'copies' statt über 'library_books'. Dies vereinfacht Abfragen und macht die Bibliothekszuordnung explizit. OPTION B ist empfohlen für die Anforderungen dieses Systems."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "WEICHER FEHLER: Die Auswertungsanforderung 'welche Autorinnen und Autoren in welchen Bibliotheken besonders stark vertreten sind' ist mit dem aktuellen Schema schwer zu beantworten. Man müsste über author_books→books→library_books→libraries joinen. Das ist möglich, aber die Abfrage ist komplex. Dies ist keine Modellierungsfehler, sondern eine Optimierungsmöglichkeit. Eine Materialisierte View oder ein Reporting-Schema könnte helfen, aber das ist optional.",
+          "korrekturanweisung": "Optional: Erwäge eine Materialisierte View 'author_library_stats' oder ein Reporting-Schema für häufige Auswertungen. Für die Kernmodellierung ist dies nicht erforderlich."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "HARTER FEHLER: Das Schema verletzt die 3. Normalform durch die redundante Struktur 'library_books' + 'copies'. 'library_books' speichert die Aggregation (quantity), während 'copies' die Details speichert. Dies führt zu Update-Anomalien: Wenn ein Exemplar gelöscht wird, muss 'quantity' manuell angepasst werden. Besser: Entweder nur 'copies' mit Fremdschlüssel auf 'library_books' (und quantity als View), oder 'library_books' mit direktem Fremdschlüssel auf 'libraries' und 'books', und 'copies' mit Fremdschlüssel direkt auf 'libraries' und 'books' (nicht über library_books).",
+          "korrekturanweisung": "Refaktoriere die Struktur: EMPFOHLEN: Entferne 'quantity' aus 'library_books' oder nutze es nur als Denormalisierung mit Trigger-Konsistenz. Besser: Speichere 'library_id' direkt in 'copies' und berechne 'quantity' als COUNT(*) in einer View. Dies eliminiert Redundanz und Update-Anomalien."
+        }
+      ],
+      "origin_step": null
+    },
+    "iteration": 3,
+    "max_iter": 3,
+    "final_ddl": "CREATE TABLE authors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_authors PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publicationyear INTEGER,\n    language VARCHAR(255),\n    isbn VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_books PRIMARY KEY (id)\n);\n\nCREATE TABLE author_books (\n    author_id INTEGER NOT NULL,\n    book_id INTEGER NOT NULL,\n    CONSTRAINT pk_author_books PRIMARY KEY (author_id, book_id),\n    CONSTRAINT fk_author_books_author_id FOREIGN KEY (author_id) REFERENCES authors (id),\n    CONSTRAINT fk_author_books_book_id FOREIGN KEY (book_id) REFERENCES books (id)\n);\n\nCREATE TABLE readers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    birthdate DATE,\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_readers PRIMARY KEY (id)\n);\n\nCREATE TABLE libraries (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    contact_address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_libraries PRIMARY KEY (id)\n);\n\nCREATE TABLE copies (\n    id INTEGER NOT NULL,\n    library_id INTEGER NOT NULL,\n    book_id INTEGER NOT NULL,\n    copy_number INTEGER NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    CONSTRAINT pk_copies PRIMARY KEY (id),\n    CONSTRAINT fk_copies_library_id FOREIGN KEY (library_id) REFERENCES libraries (id),\n    CONSTRAINT fk_copies_book_id FOREIGN KEY (book_id) REFERENCES books (id)\n);\n\nCREATE TABLE checkouts (\n    id INTEGER NOT NULL,\n    reader_id INTEGER NOT NULL,\n    copy_id INTEGER NOT NULL,\n    library_id INTEGER NOT NULL,\n    checkoutdate DATE NOT NULL,\n    duedate DATE NOT NULL,\n    returndate DATE,\n    CONSTRAINT pk_checkouts PRIMARY KEY (id),\n    CONSTRAINT fk_checkouts_reader_id FOREIGN KEY (reader_id) REFERENCES readers (id),\n    CONSTRAINT fk_checkouts_copy_id FOREIGN KEY (copy_id) REFERENCES copies (id),\n    CONSTRAINT fk_checkouts_library_id FOREIGN KEY (library_id) REFERENCES libraries (id)\n);\n",
+    "final_critic_report": null,
+    "error": null,
+    "diskussionsverlauf": [
+      "[iter=0] Architekt: Schema mit 7 Tabelle(n).",
+      "[iter=1] C1: 3 unerfüllte Findings.",
+      "[iter=1] C2: 3 unerfüllte Findings.",
+      "[iter=1] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=2] C1: 4 unerfüllte Findings.",
+      "[iter=2] C2: 5 unerfüllte Findings.",
+      "[iter=2] Architekt: Schema mit 8 Tabelle(n).",
+      "[iter=3] Moderator: finales Schema mit 7 Tabelle(n)."
+    ]
+  },
+  "telemetry": {
+    "total_calls": 8,
+    "total_input_tokens": 41580,
+    "total_output_tokens": 13195,
+    "total_tokens": 54775,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "mad_architekt": {
+        "calls": 3,
+        "input_tokens": 17036,
+        "output_tokens": 5303,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c1": {
+        "calls": 2,
+        "input_tokens": 8331,
+        "output_tokens": 3022,
+        "cost_usd": 0.0
+      },
+      "mad_critic_c2": {
+        "calls": 2,
+        "input_tokens": 8243,
+        "output_tokens": 3124,
+        "cost_usd": 0.0
+      },
+      "mad_moderator": {
+        "calls": 1,
+        "input_tokens": 7970,
+        "output_tokens": 1746,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "mad",
+        "iteration": 0,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2488,
+        "output_tokens": 1508,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4112,
+        "output_tokens": 1467,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4068,
+        "output_tokens": 1062,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 1,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6691,
+        "output_tokens": 1822,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c1",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4219,
+        "output_tokens": 1555,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_critic_c2",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4175,
+        "output_tokens": 2062,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 2,
+        "agent_name": "mad_architekt",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7857,
+        "output_tokens": 1973,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "mad",
+        "iteration": 3,
+        "agent_name": "mad_moderator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7970,
+        "output_tokens": 1746,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}

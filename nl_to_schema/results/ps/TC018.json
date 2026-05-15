@@ -1,0 +1,553 @@
+{
+  "testfall_id": "TC018",
+  "workflow": "ps",
+  "score_strukturell": 0.0,
+  "score_semantisch": 0.5228070175438596,
+  "score_gesamt": 0.31368421052631573,
+  "detail_strukturell": {
+    "syntax_gate": 0,
+    "fk_gate": 1,
+    "pk_rate": 1.0,
+    "pk_tabellen_gesamt": 3,
+    "pk_tabellen_mit_pk": 3,
+    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_ungueltig": 0
+  },
+  "detail_semantisch": {
+    "entitaet": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
+    },
+    "attribut": {
+      "precision": 0.47368421052631576,
+      "recall": 0.47368421052631576,
+      "f1": 0.47368421052631576,
+      "matched": 9,
+      "nur_in_referenz": 10,
+      "nur_in_generiert": 10
+    },
+    "beziehung": {
+      "recall": 0.3333333333333333,
+      "matched": 1,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 0
+    }
+  },
+  "abweichungen": [
+    {
+      "element": "staffs",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "children.notes",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "groups.age_range",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "groups.room",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staffs.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staffs.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staffs.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staffs.phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staffs.hiredate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staffs.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staffs.group_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "groups → staffs",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "staffs → groups",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    }
+  ],
+  "state": {
+    "anforderungstext": "Eine Kindertagesstaette moechte ihre Kinder, Gruppen und Betreuungspersonen verwalten. Von jedem Kind sollen Vorname, Nachname, Geburtsdatum, Aufnahmedatum und besondere Hinweise festgehalten werden. Jedes Kind gehoert genau zu einer Gruppe. Fuer jede Gruppe werden Name, Altersbereich und der Gruppenraum gespeichert. Betreuungspersonen arbeiten jeweils fest in genau einer Gruppe. Von ihnen werden Vorname, Nachname, Telefonnummer, Einstellungsdatum und ob sie aktuell aktiv sind erfasst. Eine Gruppe kann mehrere Kinder und mehrere Betreuungspersonen haben. Es soll ausserdem nachvollziehbar sein, wer die Leitung einer Gruppe ist. Jede Gruppe hat genau eine Leitung, und diese Leitung ist immer eine der Betreuungspersonen dieser Gruppe.",
+    "workflow_name": "ps",
+    "logical_schema": {
+      "tables": [
+        {
+          "name": "groups",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "agerange",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "grouproom",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "leader_caregiver_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "leader_caregiver_id",
+              "references_table": "caregivers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "caregivers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phonenumber",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hiredate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "group_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "group_id",
+              "references_table": "groups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "children",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "admissiondate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "special_notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "group_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "group_id",
+              "references_table": "groups",
+              "references_column": "id"
+            }
+          ]
+        }
+      ]
+    },
+    "requirements_report": {
+      "entitaeten": [
+        {
+          "name": "Kind",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Geburtsdatum",
+            "Aufnahmedatum",
+            "besondere Hinweise"
+          ],
+          "beschreibung": "Ein Kind, das in der Kindertagesstätte betreut wird. Jedes Kind gehört genau zu einer Gruppe."
+        },
+        {
+          "name": "Gruppe",
+          "attribute": [
+            "Name",
+            "Altersbereich",
+            "Gruppenraum"
+          ],
+          "beschreibung": "Eine Betreuungsgruppe in der Kindertagesstätte. Eine Gruppe kann mehrere Kinder und mehrere Betreuungspersonen haben und hat genau eine Leitung."
+        },
+        {
+          "name": "Betreuungsperson",
+          "attribute": [
+            "Vorname",
+            "Nachname",
+            "Telefonnummer",
+            "Einstellungsdatum",
+            "aktiv"
+          ],
+          "beschreibung": "Eine Person, die in der Kindertagesstätte arbeitet. Jede Betreuungsperson arbeitet fest in genau einer Gruppe und kann die Leitung dieser Gruppe sein."
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kind",
+          "zu": "Gruppe",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Kind gehört genau zu einer Gruppe. Eine Gruppe kann mehrere Kinder haben."
+        },
+        {
+          "von": "Betreuungsperson",
+          "zu": "Gruppe",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jede Betreuungsperson arbeitet fest in genau einer Gruppe. Eine Gruppe kann mehrere Betreuungspersonen haben."
+        },
+        {
+          "von": "Gruppe",
+          "zu": "Betreuungsperson",
+          "kardinalitaet": "1:1",
+          "beschreibung": "Jede Gruppe hat genau eine Leitung, und diese Leitung ist immer eine der Betreuungspersonen dieser Gruppe."
+        }
+      ],
+      "unklarheiten": [
+        {
+          "beschreibung": "Die Beziehung zwischen Gruppe und Betreuungsperson ist redundant modelliert: Einerseits arbeitet jede Betreuungsperson in genau einer Gruppe (N:1), andererseits ist die Leitung einer Gruppe eine spezifische Betreuungsperson (1:1). Unklar ist, ob die Leitung eine zusätzliche Rolle darstellt oder ob sie durch ein Attribut in der Betreuungsperson oder Gruppe gekennzeichnet werden soll.",
+          "betroffene_elemente": [
+            "Betreuungsperson",
+            "Gruppe"
+          ]
+        },
+        {
+          "beschreibung": "Das Attribut 'aktiv' bei Betreuungsperson ist als boolescher Wert interpretiert worden ('ob sie aktuell aktiv sind'), könnte aber auch ein Datum oder ein Status-Feld sein.",
+          "betroffene_elemente": [
+            "Betreuungsperson"
+          ]
+        }
+      ]
+    },
+    "er_modell": {
+      "entitaeten": [
+        {
+          "name": "Kind",
+          "attribute": [
+            {
+              "name": "kind_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "aufnahmedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "besondere_hinweise",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "gruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Gruppe",
+          "attribute": [
+            {
+              "name": "gruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "altersbereich",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gruppenraum",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leitung_betreuungsperson_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Betreuungsperson",
+          "attribute": [
+            {
+              "name": "betreuungsperson_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "telefonnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "einstellungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "aktiv",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        }
+      ],
+      "beziehungen": [
+        {
+          "von": "Kind",
+          "zu": "Gruppe",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Betreuungsperson",
+          "zu": "Gruppe",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Gruppe",
+          "zu": "Betreuungsperson",
+          "kardinalitaet": "1:1",
+          "beziehungsattribute": []
+        }
+      ]
+    },
+    "critic_report": null,
+    "critic_report_c1": null,
+    "critic_report_c2": null,
+    "iteration": 0,
+    "max_iter": 3,
+    "final_ddl": "",
+    "final_critic_report": null,
+    "error": "ddl_generation_failed: Zirkelreferenz im Schema entdeckt: caregivers -> groups -> caregivers. Topologische Sortierung nicht möglich.",
+    "diskussionsverlauf": []
+  },
+  "telemetry": {
+    "total_calls": 3,
+    "total_input_tokens": 7337,
+    "total_output_tokens": 2863,
+    "total_tokens": 10200,
+    "total_cost_usd": 0.0,
+    "per_agent": {
+      "requirements_analyst": {
+        "calls": 1,
+        "input_tokens": 1484,
+        "output_tokens": 868,
+        "cost_usd": 0.0
+      },
+      "conceptual_model_designer": {
+        "calls": 1,
+        "input_tokens": 2379,
+        "output_tokens": 1008,
+        "cost_usd": 0.0
+      },
+      "logical_schema_designer": {
+        "calls": 1,
+        "input_tokens": 3474,
+        "output_tokens": 987,
+        "cost_usd": 0.0
+      }
+    },
+    "calls": [
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "requirements_analyst",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 1484,
+        "output_tokens": 868,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 2379,
+        "output_tokens": 1008,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "ps",
+        "iteration": 0,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 3474,
+        "output_tokens": 987,
+        "cost_usd": 0.0
+      }
+    ]
+  }
+}
