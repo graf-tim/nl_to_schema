@@ -2,15 +2,15 @@
   "testfall_id": "TC072",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.35861471861471855,
-  "score_gesamt": 0.6151688311688311,
+  "score_semantisch": 0.36838095238095236,
+  "score_gesamt": 0.6210285714285715,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
     "pk_tabellen_gesamt": 21,
     "pk_tabellen_mit_pk": 21,
-    "fk_referenzen_gesamt": 33,
+    "fk_referenzen_gesamt": 32,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
@@ -23,18 +23,18 @@
       "nur_in_generiert": 13
     },
     "attribut": {
-      "precision": 0.23529411764705882,
-      "recall": 0.32432432432432434,
-      "f1": 0.2727272727272727,
-      "matched": 24,
-      "nur_in_referenz": 50,
-      "nur_in_generiert": 78
+      "precision": 0.25742574257425743,
+      "recall": 0.35135135135135137,
+      "f1": 0.2971428571428572,
+      "matched": 26,
+      "nur_in_referenz": 48,
+      "nur_in_generiert": 75
     },
     "beziehung": {
       "recall": 0.3333333333333333,
       "matched": 6,
       "nur_in_referenz": 12,
-      "nur_in_generiert": 1
+      "nur_in_generiert": 0
     }
   },
   "abweichungen": [
@@ -66,6 +66,11 @@
     {
       "element": "status_events",
       "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "shipment_services.id",
+      "typ": "attribut",
       "fehlerklasse": null
     },
     {
@@ -119,22 +124,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "customers.email",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "customers.phone",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "packages.package_number",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "packages.length",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -164,12 +154,12 @@
       "fehlerklasse": null
     },
     {
-      "element": "carriers.contact_email",
+      "element": "carriers.contact_phone",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
-      "element": "carriers.contact_phone",
+      "element": "package_transport_legs.id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -385,7 +375,7 @@
     "logical_schema": {
       "tables": [
         {
-          "name": "locations",
+          "name": "addresses",
           "columns": [
             {
               "name": "id",
@@ -394,61 +384,37 @@
               "nullable": false
             },
             {
-              "name": "name",
+              "name": "street",
               "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "address",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "latitude",
-              "type": "DECIMAL",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "longitude",
-              "type": "DECIMAL",
+              "name": "house_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "country",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": []
-        },
-        {
-          "name": "location_functions",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "location_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "function",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "location_id",
-              "references_table": "locations",
-              "references_column": "id"
-            }
-          ]
         },
         {
           "name": "customers",
@@ -466,28 +432,28 @@
               "nullable": false
             },
             {
-              "name": "contact_data",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "address",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "location_id",
+              "name": "address_id",
               "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "location_id",
-              "references_table": "locations",
+              "from_column": "address_id",
+              "references_table": "addresses",
               "references_column": "id"
             }
           ]
@@ -508,13 +474,19 @@
               "nullable": false
             },
             {
-              "name": "contact_data",
+              "name": "address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "address",
+              "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -524,26 +496,259 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "address_id",
+              "references_table": "addresses",
+              "references_column": "id"
             },
             {
-              "name": "location_id",
+              "from_column": "customer_id",
+              "references_table": "customers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "carriers",
+          "columns": [
+            {
+              "name": "id",
               "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "customer_id",
-              "references_table": "customers",
+              "from_column": "address_id",
+              "references_table": "addresses",
               "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "locations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
             },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "address_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "latitude",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "longitude",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "address_id",
+              "references_table": "addresses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "location_functions",
+          "columns": [
+            {
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "function",
+              "type": "VARCHAR",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
             {
               "from_column": "location_id",
               "references_table": "locations",
               "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "transport_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "capacity",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "vehicles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "transport_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "license_plate",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "transport_type_id",
+              "references_table": "transport_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "carrier_vehicles",
+          "columns": [
+            {
+              "name": "carrier_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "vehicle_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "carrier_id",
+              "references_table": "carriers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "vehicle_id",
+              "references_table": "vehicles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "temperature_requirements",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "temperature_min_celsius",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "temperature_max_celsius",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "condition_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "tolerance_range",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "valid_from",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "valid_until",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "shipments",
@@ -579,13 +784,37 @@
               "nullable": false
             },
             {
-              "name": "planned_arrival_time",
+              "name": "temperature_requirement_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "is_hazmat",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hazmat_class",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "un_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "planned_arrival",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "actual_arrival_time",
+              "name": "actual_arrival",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": true
@@ -617,6 +846,11 @@
               "from_column": "end_location_id",
               "references_table": "locations",
               "references_column": "id"
+            },
+            {
+              "from_column": "temperature_requirement_id",
+              "references_table": "temperature_requirements",
+              "references_column": "id"
             }
           ]
         },
@@ -642,7 +876,7 @@
               "nullable": true
             },
             {
-              "name": "height",
+              "name": "length",
               "type": "DECIMAL",
               "primary_key": false,
               "nullable": true
@@ -654,8 +888,14 @@
               "nullable": true
             },
             {
-              "name": "depth",
+              "name": "height",
               "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "content_description",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             }
@@ -669,7 +909,7 @@
           ]
         },
         {
-          "name": "package_groups",
+          "name": "dispositions",
           "columns": [
             {
               "name": "id",
@@ -678,8 +918,8 @@
               "nullable": false
             },
             {
-              "name": "name",
-              "type": "VARCHAR",
+              "name": "description",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             },
@@ -693,31 +933,25 @@
           "foreign_keys": []
         },
         {
-          "name": "package_group_members",
+          "name": "disposition_packages",
           "columns": [
             {
-              "name": "id",
+              "name": "disposition_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "package_group_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "package_id",
               "type": "INTEGER",
-              "primary_key": false,
+              "primary_key": true,
               "nullable": false
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "package_group_id",
-              "references_table": "package_groups",
+              "from_column": "disposition_id",
+              "references_table": "dispositions",
               "references_column": "id"
             },
             {
@@ -728,7 +962,7 @@
           ]
         },
         {
-          "name": "hazardous_goods",
+          "name": "package_tracking",
           "columns": [
             {
               "name": "id",
@@ -737,385 +971,7 @@
               "nullable": false
             },
             {
-              "name": "shipment_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "un_number",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "classification",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "shipment_id",
-              "references_table": "shipments",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "temperature_requirements",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "shipment_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "min_temperature",
-              "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "max_temperature",
-              "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "unit",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "shipment_id",
-              "references_table": "shipments",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "services",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "description",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "shipment_services",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "shipment_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "service_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "booked_at",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "shipment_id",
-              "references_table": "shipments",
-              "references_column": "id"
-            },
-            {
-              "from_column": "service_id",
-              "references_table": "services",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "carriers",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "contact_data",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "vehicle_types",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "description",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "vehicles",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "carrier_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "vehicle_type_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "license_plate",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "capacity",
-              "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "carrier_id",
-              "references_table": "carriers",
-              "references_column": "id"
-            },
-            {
-              "from_column": "vehicle_type_id",
-              "references_table": "vehicle_types",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "transports",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "carrier_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "vehicle_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "start_location_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "end_location_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "planned_departure_time",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "actual_departure_time",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "planned_arrival_time",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "actual_arrival_time",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "carrier_id",
-              "references_table": "carriers",
-              "references_column": "id"
-            },
-            {
-              "from_column": "vehicle_id",
-              "references_table": "vehicles",
-              "references_column": "id"
-            },
-            {
-              "from_column": "start_location_id",
-              "references_table": "locations",
-              "references_column": "id"
-            },
-            {
-              "from_column": "end_location_id",
-              "references_table": "locations",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "shipment_routes",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "shipment_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "sequence_number",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "location_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "planned_arrival_time",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "actual_arrival_time",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "shipment_id",
-              "references_table": "shipments",
-              "references_column": "id"
-            },
-            {
-              "from_column": "location_id",
-              "references_table": "locations",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "transshipments",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "from_transport_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "to_transport_id",
+              "name": "package_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -1133,21 +989,16 @@
               "nullable": false
             },
             {
-              "name": "handling_type",
+              "name": "event_type",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "from_transport_id",
-              "references_table": "transports",
-              "references_column": "id"
-            },
-            {
-              "from_column": "to_transport_id",
-              "references_table": "transports",
+              "from_column": "package_id",
+              "references_table": "packages",
               "references_column": "id"
             },
             {
@@ -1158,7 +1009,7 @@
           ]
         },
         {
-          "name": "transport_shipments",
+          "name": "transports",
           "columns": [
             {
               "name": "id",
@@ -1167,69 +1018,132 @@
               "nullable": false
             },
             {
-              "name": "transport_id",
+              "name": "start_location_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "shipment_id",
+              "name": "end_location_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "carrier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "vehicle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "planned_departure",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "actual_departure",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "planned_arrival",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "actual_arrival",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "responsibility",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "transport_id",
-              "references_table": "transports",
+              "from_column": "start_location_id",
+              "references_table": "locations",
               "references_column": "id"
             },
             {
-              "from_column": "shipment_id",
-              "references_table": "shipments",
+              "from_column": "end_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "carrier_id",
+              "references_table": "carriers",
+              "references_column": "id"
+            },
+            {
+              "from_column": "vehicle_id",
+              "references_table": "vehicles",
               "references_column": "id"
             }
           ]
         },
         {
-          "name": "packages_transports",
+          "name": "shipment_transports",
           "columns": [
             {
-              "name": "id",
+              "name": "shipment_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "package_id",
+              "name": "transport_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sequence",
               "type": "INTEGER",
               "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "shipment_id",
+              "references_table": "shipments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "transport_id",
+              "references_table": "transports",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "package_transports",
+          "columns": [
+            {
+              "name": "package_id",
+              "type": "INTEGER",
+              "primary_key": true,
               "nullable": false
             },
             {
               "name": "transport_id",
               "type": "INTEGER",
-              "primary_key": false,
+              "primary_key": true,
               "nullable": false
-            },
-            {
-              "name": "sequence_number",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "planned_departure_time",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "actual_departure_time",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -1267,7 +1181,13 @@
               "nullable": true
             },
             {
-              "name": "status",
+              "name": "location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status_type",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -1279,8 +1199,8 @@
               "nullable": false
             },
             {
-              "name": "location_id",
-              "type": "INTEGER",
+              "name": "notes",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             }
@@ -1302,6 +1222,65 @@
               "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "cost",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "shipment_services",
+          "columns": [
+            {
+              "name": "shipment_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "service_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "shipment_id",
+              "references_table": "shipments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_id",
+              "references_table": "services",
+              "references_column": "id"
+            }
+          ]
         }
       ]
     },
@@ -1315,19 +1294,22 @@
             "Zielstandort",
             "Geplante Ankunftszeit",
             "Tatsächliche Ankunftszeit",
-            "Laufweg (Stationen)"
+            "Gefahrgut-Klassifizierung",
+            "UN-Nummer",
+            "Temperaturvorgaben",
+            "Kühlpflicht-Indikator"
           ],
-          "beschreibung": "Repräsentiert eine Sendung, die zwischen Standorten transportiert wird. Eine Sendung kann direkt zum Empfänger gehen oder über mehrere Knoten im Netzwerk laufen."
+          "beschreibung": "Eine Sendung ist eine Transporteinheit, die von einem Startstandort zu einem Zielstandort befördert wird. Sie kann aus mehreren Packstücken bestehen und kann über mehrere Stationen im Netzwerk laufen. Sendungen können Gefahrgut oder temperaturgeführte Ware sein."
         },
         {
           "name": "Packstück",
           "attribute": [
             "Packstück-ID",
-            "Sendungs-ID",
             "Gewicht",
-            "Abmessungen"
+            "Abmessungen",
+            "Inhaltsbeschreibung"
           ],
-          "beschreibung": "Ein oder mehrere Packstücke bilden eine Sendung. Packstücke können zusammen oder getrennt weitergeleitet werden."
+          "beschreibung": "Ein Packstück ist eine physische Einheit innerhalb einer Sendung. Eine Sendung besteht aus einem oder mehreren Packstücken, die manchmal zusammen disponiert oder getrennt weitergeleitet werden."
         },
         {
           "name": "Standort",
@@ -1338,22 +1320,21 @@
             "Funktion",
             "Koordinaten"
           ],
-          "beschreibung": "Ein Ort im Logistiknetzwerk mit Adressdaten und einer oder mehreren Funktionen (Depot, Hub, Terminal, Verteilzentrum). Kann Hafen-, Bahn-Terminal oder regionales Verteilzentrum sein."
+          "beschreibung": "Ein Standort ist ein Knoten im Logistiknetzwerk mit Adressdaten. Standorte können verschiedene Funktionen erfüllen (Depot, Hub, Terminal) und manchmal mehrere Rollen gleichzeitig."
         },
         {
           "name": "Transport",
           "attribute": [
             "Transport-ID",
-            "Frachtführer-ID",
             "Startstandort",
             "Zielstandort",
-            "Transportmittel-Typ",
             "Geplante Abfahrtszeit",
             "Tatsächliche Abfahrtszeit",
             "Geplante Ankunftszeit",
-            "Tatsächliche Ankunftszeit"
+            "Tatsächliche Ankunftszeit",
+            "Transportmittel-Typ"
           ],
-          "beschreibung": "Eine Tour oder ein Transport, der von einem Frachtführer durchgeführt wird. Kann eine Teilstrecke oder den kompletten Lauf einer Sendung abdecken."
+          "beschreibung": "Ein Transport ist eine Bewegung von Waren zwischen zwei Standorten, durchgeführt von einem Frachtführer mit einem bestimmten Transportmittel. Ein Transport kann eine Teilstrecke einer Sendung darstellen."
         },
         {
           "name": "Frachtführer",
@@ -1363,88 +1344,58 @@
             "Kontaktdaten",
             "Verfügbare Verkehrsträger"
           ],
-          "beschreibung": "Ein Partner, der Transporte durchführt und mehrere Verkehrsträger (Lkw, Bahn, Schiff) einsetzen kann."
+          "beschreibung": "Ein Frachtführer ist ein Partner, der Transporte durchführt. Ein Frachtführer kann mehrere Verkehrsträger (Lkw, Bahn, Schiff) einsetzen."
         },
         {
           "name": "Transportmittel",
           "attribute": [
             "Transportmittel-ID",
             "Typ",
-            "Frachtführer-ID",
-            "Kapazität"
+            "Kapazität",
+            "Kennzeichen"
           ],
-          "beschreibung": "Ein konkretes Transportmittel (Lkw, Bahn, Schiff) oder dessen Typ, das von einem Frachtführer eingesetzt wird."
-        },
-        {
-          "name": "Gefahrgut",
-          "attribute": [
-            "Gefahrgut-ID",
-            "Sendungs-ID",
-            "UN-Nummer",
-            "Klassifizierung"
-          ],
-          "beschreibung": "Gefahrgutinformationen für Sendungen, die Gefahrgut enthalten. Erfasst UN-Nummer und Klassifizierung."
-        },
-        {
-          "name": "Temperaturvorgabe",
-          "attribute": [
-            "Temperaturvorgabe-ID",
-            "Sendungs-ID",
-            "Mindesttemperatur",
-            "Maximaltemperatur",
-            "Einheit"
-          ],
-          "beschreibung": "Temperaturanforderungen für kühlpflichtige Waren. Nicht jede Sendung hat solche Anforderungen."
-        },
-        {
-          "name": "Dienstleistung",
-          "attribute": [
-            "Dienstleistungs-ID",
-            "Name",
-            "Beschreibung"
-          ],
-          "beschreibung": "Zusätzliche Dienstleistungen, die für Sendungen gebucht werden können, z.B. Zollabwicklung, Avisierung, temperaturgeführter Transport."
-        },
-        {
-          "name": "Sendungs-Dienstleistung",
-          "attribute": [
-            "Sendungs-ID",
-            "Dienstleistungs-ID",
-            "Buchungsdatum"
-          ],
-          "beschreibung": "Zuordnung zwischen Sendungen und gebuchten Dienstleistungen."
-        },
-        {
-          "name": "Statusmeldung",
-          "attribute": [
-            "Statusmeldung-ID",
-            "Sendungs-ID",
-            "Transport-ID",
-            "Status",
-            "Zeitstempel",
-            "Standort"
-          ],
-          "beschreibung": "Dokumentiert Statusänderungen entlang des Laufwegs (z.B. übernommen, im Umschlag, verzollt, zugestellt). Kann sich auf Sendung oder Teilstrecke beziehen."
+          "beschreibung": "Ein Transportmittel ist ein Fahrzeug oder Transportgerät (Lkw, Bahn, Schiff), das für einen Transport eingesetzt wird."
         },
         {
           "name": "Kunde",
           "attribute": [
             "Kunden-ID",
             "Name",
-            "Kontaktdaten",
-            "Adresse"
+            "Adresse",
+            "Kontaktdaten"
           ],
-          "beschreibung": "Ein Auftraggeber oder Versender von Sendungen."
+          "beschreibung": "Ein Kunde ist ein Auftraggeber oder Geschäftspartner, der Transportdienstleistungen in Anspruch nimmt."
         },
         {
           "name": "Empfänger",
           "attribute": [
             "Empfänger-ID",
             "Name",
-            "Kontaktdaten",
-            "Adresse"
+            "Adresse",
+            "Kontaktdaten"
           ],
-          "beschreibung": "Der Zielempfänger einer Sendung. Kann auch als Kunde geführt werden, ist aber nicht immer einheitlich erfasst."
+          "beschreibung": "Ein Empfänger ist die Zielpartei einer Sendung. Ein Empfänger kann, muss aber nicht, auch als Kunde geführt werden."
+        },
+        {
+          "name": "Statusmeldung",
+          "attribute": [
+            "Statusmeldung-ID",
+            "Status-Typ",
+            "Zeitstempel",
+            "Standort",
+            "Notizen"
+          ],
+          "beschreibung": "Eine Statusmeldung dokumentiert ein Ereignis entlang des Laufwegs einer Sendung oder Teilstrecke, z.B. übernommen, im Umschlag, verzollt oder zugestellt."
+        },
+        {
+          "name": "Dienstleistung",
+          "attribute": [
+            "Dienstleistungs-ID",
+            "Name",
+            "Beschreibung",
+            "Kosten"
+          ],
+          "beschreibung": "Eine Dienstleistung ist eine zusätzliche Leistung, die zu einer Sendung gebucht werden kann, z.B. Zollabwicklung, Avisierung oder temperaturgeführter Transport."
         }
       ],
       "beziehungen": [
@@ -1457,117 +1408,111 @@
         {
           "von": "Sendung",
           "zu": "Standort",
-          "kardinalitaet": "M:1",
+          "kardinalitaet": "N:1",
           "beschreibung": "Eine Sendung hat einen Startstandort (Ursprung)."
         },
         {
           "von": "Sendung",
           "zu": "Standort",
-          "kardinalitaet": "M:1",
+          "kardinalitaet": "N:1",
           "beschreibung": "Eine Sendung hat einen Zielstandort (Empfänger)."
         },
         {
           "von": "Sendung",
-          "zu": "Gefahrgut",
-          "kardinalitaet": "1:1",
-          "beschreibung": "Eine Sendung kann Gefahrgut enthalten (optional)."
-        },
-        {
-          "von": "Sendung",
-          "zu": "Temperaturvorgabe",
-          "kardinalitaet": "1:1",
-          "beschreibung": "Eine Sendung kann Temperaturvorgaben haben (optional, nur für kühlpflichtige Ware)."
-        },
-        {
-          "von": "Sendung",
-          "zu": "Dienstleistung",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Sendung kann mehrere Dienstleistungen buchen; eine Dienstleistung kann für mehrere Sendungen gebucht werden."
-        },
-        {
-          "von": "Sendung",
-          "zu": "Statusmeldung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Eine Sendung kann mehrere Statusmeldungen haben."
-        },
-        {
-          "von": "Sendung",
           "zu": "Kunde",
-          "kardinalitaet": "M:1",
+          "kardinalitaet": "N:1",
           "beschreibung": "Eine Sendung wird von einem Kunden aufgegeben."
         },
         {
           "von": "Sendung",
           "zu": "Empfänger",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Eine Sendung hat einen Empfänger."
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Sendung hat einen Empfänger als Zielpartei."
         },
         {
-          "von": "Transport",
-          "zu": "Frachtführer",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Ein Transport wird von einem Frachtführer durchgeführt."
+          "von": "Sendung",
+          "zu": "Transport",
+          "kardinalitaet": "N:M",
+          "beschreibung": "Eine Sendung kann über mehrere Transporte (Teilstrecken) befördert werden; ein Transport kann mehrere Sendungen enthalten."
         },
         {
-          "von": "Transport",
-          "zu": "Transportmittel",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Ein Transport nutzt ein Transportmittel oder einen Transportmittel-Typ."
+          "von": "Sendung",
+          "zu": "Dienstleistung",
+          "kardinalitaet": "N:M",
+          "beschreibung": "Eine Sendung kann mehrere Dienstleistungen in Anspruch nehmen; eine Dienstleistung kann für mehrere Sendungen gebucht werden."
+        },
+        {
+          "von": "Sendung",
+          "zu": "Statusmeldung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Sendung hat mehrere Statusmeldungen entlang ihres Laufwegs."
         },
         {
           "von": "Transport",
           "zu": "Standort",
-          "kardinalitaet": "M:1",
+          "kardinalitaet": "N:1",
           "beschreibung": "Ein Transport hat einen Startstandort."
         },
         {
           "von": "Transport",
           "zu": "Standort",
-          "kardinalitaet": "M:1",
+          "kardinalitaet": "N:1",
           "beschreibung": "Ein Transport hat einen Zielstandort."
         },
         {
           "von": "Transport",
-          "zu": "Sendung",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Transport kann mehrere Sendungen befördern; eine Sendung kann über mehrere Transporte laufen."
+          "zu": "Frachtführer",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Transport wird von einem Frachtführer durchgeführt."
+        },
+        {
+          "von": "Transport",
+          "zu": "Transportmittel",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Transport nutzt ein Transportmittel."
         },
         {
           "von": "Transport",
           "zu": "Statusmeldung",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Transport kann mehrere Statusmeldungen haben (Statusmeldungen können sich auf Teilstrecken beziehen)."
+          "beschreibung": "Ein Transport kann mehrere Statusmeldungen haben, die sich auf die Teilstrecke beziehen."
         },
         {
           "von": "Frachtführer",
           "zu": "Transportmittel",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Frachtführer kann mehrere Verkehrsträger/Transportmittel einsetzen."
+          "kardinalitaet": "N:M",
+          "beschreibung": "Ein Frachtführer kann mehrere Verkehrsträger/Transportmittel einsetzen; ein Transportmittel kann von mehreren Frachtführern genutzt werden."
         },
         {
-          "von": "Packstück",
-          "zu": "Transport",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Packstücke können zusammen oder getrennt auf verschiedenen Transporten weitergeleitet werden."
+          "von": "Standort",
+          "zu": "Statusmeldung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "An einem Standort können mehrere Statusmeldungen registriert werden."
+        },
+        {
+          "von": "Empfänger",
+          "zu": "Kunde",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Empfänger kann auch als Kunde geführt werden, aber nicht alle Empfänger sind Kunden und nicht alle Kunden sind Empfänger."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Verantwortlichkeit für Transporte ist nicht eindeutig: Es ist unklar, ob das Unternehmen den kompletten Lauf oder nur einzelne Teilstrecken verantwortet. Dies beeinflusst die Datenmodellierung von Transport-Verantwortlichkeiten.",
+          "beschreibung": "Verantwortlichkeit für Transporte: Der Text erwähnt, dass nicht immer klar ist, ob das Unternehmen den kompletten Lauf oder nur einzelne Teilstrecken verantwortet. Es ist unklar, wie diese Verantwortlichkeit in der Datenstruktur abgebildet werden soll (z.B. als Attribut auf Transport oder als separate Entität).",
           "betroffene_elemente": [
             "Transport",
             "Frachtführer"
           ]
         },
         {
-          "beschreibung": "Beziehung zwischen Empfänger und Kunde ist nicht einheitlich: Es ist unklar, ob Empfänger immer schon als Kunde geführt werden oder ob es sich um separate Entitäten handelt.",
+          "beschreibung": "Beziehung Empfänger-Kunde: Der Text besagt, dass nicht einheitlich geklärt ist, ob Empfänger immer schon als Kunde geführt werden. Es ist unklar, ob Empfänger und Kunde separate Entitäten sein sollten oder ob eine Vererbungs-/Spezialisierungsbeziehung vorliegt.",
           "betroffene_elemente": [
-            "Kunde",
-            "Empfänger"
+            "Empfänger",
+            "Kunde"
           ]
         },
         {
-          "beschreibung": "Zuordnung von Statusmeldungen zu Sendung vs. Teilstrecke ist mehrdeutig: Der Text besagt, dass manche Statusmeldungen sich eher auf die Sendung beziehen, andere auf eine Teilstrecke. Es ist unklar, wie diese Unterscheidung technisch abgebildet werden soll.",
+          "beschreibung": "Statusmeldungen auf Sendungs- vs. Teilstreckenebene: Der Text erwähnt, dass manche Statusmeldungen sich eher auf die Sendung beziehen, andere auf eine Teilstrecke (Transport). Es ist unklar, wie diese Unterscheidung technisch umgesetzt werden soll (z.B. optionale Fremdschlüssel, separate Tabellen oder ein Attribut zur Klassifizierung).",
           "betroffene_elemente": [
             "Statusmeldung",
             "Sendung",
@@ -1575,33 +1520,29 @@
           ]
         },
         {
-          "beschreibung": "Umschlag und Zwischenstationen: Der Text erwähnt, dass Sendungen über mehrere Knoten laufen und unterwegs umgeschlagen werden können. Es ist unklar, ob Umschlagvorgänge als separate Entität oder als Statusmeldungen modelliert werden sollen.",
+          "beschreibung": "Temperaturvorgaben: Der Text erwähnt, dass kühlpflichtige Ware mit Temperaturvorgaben erfasst werden muss, aber nicht jede Sendung solche Anforderungen hat. Es ist unklar, ob Temperaturvorgaben als einfaches Attribut (z.B. Min/Max-Temperatur) oder als komplexere Struktur (z.B. separate Entität mit Zeitfenstern) modelliert werden sollen.",
           "betroffene_elemente": [
-            "Sendung",
-            "Standort",
-            "Transport",
-            "Statusmeldung"
+            "Sendung"
           ]
         },
         {
-          "beschreibung": "Transportmittel-Granularität: Es ist unklar, ob konkrete Transportmittel-Instanzen (z.B. spezifisches Fahrzeug mit Kennzeichen) oder nur Transportmittel-Typen (z.B. Lkw, Bahn, Schiff) erfasst werden sollen.",
-          "betroffene_elemente": [
-            "Transportmittel",
-            "Transport"
-          ]
-        },
-        {
-          "beschreibung": "Mehrfachfunktionen von Standorten: Der Text erwähnt, dass ein Standort vereinzelt mehrere Rollen erfüllen kann (z.B. gleichzeitig Depot und Hub). Es ist unklar, wie diese Mehrfachzuordnung technisch abgebildet werden soll (z.B. separate Attribute, Zuordnungstabelle).",
+          "beschreibung": "Mehrfachfunktionen von Standorten: Der Text erwähnt, dass ein Standort vereinzelt mehrere Rollen erfüllen kann (z.B. gleichzeitig Depot und Hub). Es ist unklar, wie diese Mehrfachzuordnung technisch umgesetzt werden soll (z.B. als separate Zuordnungstabelle oder als Attribut mit mehreren Werten).",
           "betroffene_elemente": [
             "Standort"
           ]
         },
         {
-          "beschreibung": "Temperaturvorgaben und Dienstleistungen: Es ist unklar, ob temperaturgeführter Transport als Dienstleistung oder als separate Temperaturvorgabe modelliert werden soll, oder ob beides notwendig ist.",
+          "beschreibung": "Umschlag während eines Transports: Der Text erwähnt, dass je nach Relation unterwegs umgeschlagen werden kann. Es ist unklar, ob dies als separater Transport modelliert wird oder ob ein Transport mehrere Umschlagpunkte haben kann.",
           "betroffene_elemente": [
-            "Temperaturvorgabe",
-            "Dienstleistung",
-            "Sendung"
+            "Transport",
+            "Standort"
+          ]
+        },
+        {
+          "beschreibung": "Disposition von Packstücken: Der Text erwähnt, dass Packstücke manchmal zusammen disponiert und manchmal getrennt weitergeleitet werden. Es ist unklar, wie diese Dispositionslogik in der Datenstruktur abgebildet werden soll.",
+          "betroffene_elemente": [
+            "Packstück",
+            "Transport"
           ]
         }
       ]
@@ -1609,245 +1550,77 @@
     "er_modell": {
       "entitaeten": [
         {
-          "name": "Standort",
-          "attribute": [
-            {
-              "name": "standort_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "adresse",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "koordinaten_lat",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "koordinaten_lon",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Standort_Funktion",
-          "attribute": [
-            {
-              "name": "standort_funktion_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "standort_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "funktion",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Kunde",
-          "attribute": [
-            {
-              "name": "kunde_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "kontaktdaten",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "adresse",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Empfänger",
-          "attribute": [
-            {
-              "name": "empfaenger_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "kontaktdaten",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "adresse",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "kunde_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
           "name": "Sendung",
           "attribute": [
             {
-              "name": "sendung_id",
-              "datentyp": "INTEGER",
+              "name": "SendungID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kunde_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "empfaenger_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "startstandort_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "zielstandort_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "geplante_ankunftszeit",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "tatsaechliche_ankunftszeit",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "erstellungsdatum",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Packstück",
-          "attribute": [
-            {
-              "name": "packstück_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "sendung_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "gewicht",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "hoehe",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "breite",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "tiefe",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Gefahrgut",
-          "attribute": [
-            {
-              "name": "gefahrgut_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "sendung_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "un_nummer",
+              "name": "KundenID",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "klassifizierung",
+              "name": "EmpfaengerID",
               "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "StartstandortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ZielstandortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "GeplanteAnkunftszeit",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "TatsaechlicheAnkunftszeit",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Kuehlpflicht",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "IstGefahrgut",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "GefahrgutKlassifizierung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "UNNummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Erstellungsdatum",
+              "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1857,54 +1630,96 @@
           "name": "Temperaturvorgabe",
           "attribute": [
             {
-              "name": "temperaturvorgabe_id",
-              "datentyp": "INTEGER",
+              "name": "TemperaturvorgabeID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "sendung_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "mindesttemperatur",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "maximaltemperatur",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "einheit",
+              "name": "SendungID",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "TemperaturMinGrad",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TemperaturMaxGrad",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bedingungstyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Toleranzbereich",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Gueltigvon",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Gueltigbis",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
         {
-          "name": "Dienstleistung",
+          "name": "Packstück",
           "attribute": [
             {
-              "name": "dienstleistung_id",
-              "datentyp": "INTEGER",
+              "name": "PackstückID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "name",
+              "name": "SendungID",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "beschreibung",
+              "name": "Gewicht",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Laenge",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Breite",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Hoehe",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Inhaltsbeschreibung",
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1912,28 +1727,22 @@
           ]
         },
         {
-          "name": "Sendung_Dienstleistung",
+          "name": "Disposition",
           "attribute": [
             {
-              "name": "sendung_dienstleistung_id",
-              "datentyp": "INTEGER",
+              "name": "DispositionID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "sendung_id",
-              "datentyp": "INTEGER",
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
-              "name": "dienstleistung_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "buchungsdatum",
+              "name": "Erstellungsdatum",
               "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1941,22 +1750,263 @@
           ]
         },
         {
-          "name": "Frachtführer",
+          "name": "DispositionPackstück",
           "attribute": [
             {
-              "name": "frachtführer_id",
-              "datentyp": "INTEGER",
+              "name": "DispositionPackstückID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "name",
+              "name": "DispositionID",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kontaktdaten",
+              "name": "PackstückID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "PackstückTracking",
+          "attribute": [
+            {
+              "name": "PackstückTrackingID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "PackstückID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "StandortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Zeitstempel",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Ereignistyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Standort",
+          "attribute": [
+            {
+              "name": "StandortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Strasse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Hausnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "PLZ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Stadt",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Land",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Breitengrad",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Laengengrad",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "StandortFunktion",
+          "attribute": [
+            {
+              "name": "StandortFunktionID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "StandortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Funktion",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Transport",
+          "attribute": [
+            {
+              "name": "TransportID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "StartstandortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ZielstandortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "FrachtführerID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TransportmittelID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "GeplanteAbfahrtszeit",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "TatsaechlicheAbfahrtszeit",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "GeplanteAnkunftszeit",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "TatsaechlicheAnkunftszeit",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Verantwortlichkeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Frachtführer",
+          "attribute": [
+            {
+              "name": "FrachtführerID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Strasse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Hausnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "PLZ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Stadt",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Land",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1967,133 +2017,175 @@
           "name": "Transportmittel",
           "attribute": [
             {
-              "name": "transportmittel_id",
-              "datentyp": "INTEGER",
+              "name": "TransportmittelID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "frachtführer_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "typ",
+              "name": "Typ",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kapazitaet",
+              "name": "Kapazitaet",
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Transport",
-          "attribute": [
-            {
-              "name": "transport_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
             },
             {
-              "name": "frachtführer_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "transportmittel_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "startstandort_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "zielstandort_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "geplante_abfahrtszeit",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "tatsaechliche_abfahrtszeit",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "geplante_ankunftszeit",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "tatsaechliche_ankunftszeit",
-              "datentyp": "TIMESTAMP",
+              "name": "Kennzeichen",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
           ]
         },
         {
-          "name": "Transport_Sendung",
+          "name": "FrachtführerTransportmittel",
           "attribute": [
             {
-              "name": "transport_sendung_id",
-              "datentyp": "INTEGER",
+              "name": "FrachtführerTransportmittelID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "transport_id",
-              "datentyp": "INTEGER",
+              "name": "FrachtführerID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "sendung_id",
-              "datentyp": "INTEGER",
+              "name": "TransportmittelID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
           ]
         },
         {
-          "name": "Packstück_Transport",
+          "name": "Kunde",
           "attribute": [
             {
-              "name": "packstück_transport_id",
-              "datentyp": "INTEGER",
+              "name": "KundenID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "packstück_id",
-              "datentyp": "INTEGER",
+              "name": "Name",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "transport_id",
-              "datentyp": "INTEGER",
+              "name": "Strasse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Hausnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "PLZ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Stadt",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Land",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Empfänger",
+          "attribute": [
+            {
+              "name": "EmpfaengerID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Strasse",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Hausnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "PLZ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Stadt",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Land",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -2101,77 +2193,155 @@
           "name": "Statusmeldung",
           "attribute": [
             {
-              "name": "statusmeldung_id",
-              "datentyp": "INTEGER",
+              "name": "StatusmeldungID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "sendung_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "transport_id",
-              "datentyp": "INTEGER",
+              "name": "SendungID",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "status",
+              "name": "TransportID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "StandortID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "StatusTyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "zeitstempel",
+              "name": "Zeitstempel",
               "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "standort_id",
+              "name": "Notizen",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Dienstleistung",
+          "attribute": [
+            {
+              "name": "DienstleistungsID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Kosten",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "SendungDienstleistung",
+          "attribute": [
+            {
+              "name": "SendungDienstleistungID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "SendungID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "DienstleistungsID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "SendungTransport",
+          "attribute": [
+            {
+              "name": "SendungTransportID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "SendungID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TransportID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Reihenfolge",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
           ]
+        },
+        {
+          "name": "PackstückTransport",
+          "attribute": [
+            {
+              "name": "PackstückTransportID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "PackstückID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TransportID",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
         }
       ],
       "beziehungen": [
-        {
-          "von": "Standort",
-          "zu": "Standort_Funktion",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Kunde",
-          "zu": "Sendung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Empfänger",
-          "zu": "Sendung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Kunde",
-          "zu": "Empfänger",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Standort",
-          "zu": "Sendung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": [
-            "rolle"
-          ]
-        },
         {
           "von": "Sendung",
           "zu": "Packstück",
@@ -2180,87 +2350,119 @@
         },
         {
           "von": "Sendung",
-          "zu": "Gefahrgut",
-          "kardinalitaet": "1:1",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Sendung",
           "zu": "Temperaturvorgabe",
-          "kardinalitaet": "1:1",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Sendung",
-          "zu": "Sendung_Dienstleistung",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Sendung",
+          "zu": "Empfänger",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Sendung",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": [
+            "StartstandortID"
+          ]
+        },
+        {
+          "von": "Sendung",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": [
+            "ZielstandortID"
+          ]
+        },
+        {
+          "von": "Sendung",
+          "zu": "Statusmeldung",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Dienstleistung",
-          "zu": "Sendung_Dienstleistung",
-          "kardinalitaet": "1:N",
+          "von": "Sendung",
+          "zu": "Dienstleistung",
+          "kardinalitaet": "N:M",
           "beziehungsattribute": []
         },
         {
-          "von": "Frachtführer",
+          "von": "Sendung",
           "zu": "Transport",
+          "kardinalitaet": "N:M",
+          "beziehungsattribute": [
+            "Reihenfolge"
+          ]
+        },
+        {
+          "von": "Packstück",
+          "zu": "Disposition",
+          "kardinalitaet": "N:M",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Packstück",
+          "zu": "PackstückTracking",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Packstück",
+          "zu": "Transport",
+          "kardinalitaet": "N:M",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Transport",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": [
+            "StartstandortID"
+          ]
+        },
+        {
+          "von": "Transport",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": [
+            "ZielstandortID"
+          ]
+        },
+        {
+          "von": "Transport",
+          "zu": "Frachtführer",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Transport",
+          "zu": "Transportmittel",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Transport",
+          "zu": "Statusmeldung",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Frachtführer",
           "zu": "Transportmittel",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Transportmittel",
-          "zu": "Transport",
-          "kardinalitaet": "1:N",
+          "kardinalitaet": "N:M",
           "beziehungsattribute": []
         },
         {
           "von": "Standort",
-          "zu": "Transport",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": [
-            "rolle"
-          ]
-        },
-        {
-          "von": "Transport",
-          "zu": "Transport_Sendung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Sendung",
-          "zu": "Transport_Sendung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Packstück",
-          "zu": "Packstück_Transport",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Transport",
-          "zu": "Packstück_Transport",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Sendung",
-          "zu": "Statusmeldung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Transport",
-          "zu": "Statusmeldung",
+          "zu": "StandortFunktion",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
@@ -2268,12 +2470,24 @@
           "von": "Standort",
           "zu": "Statusmeldung",
           "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Standort",
+          "zu": "PackstückTracking",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Empfänger",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         }
       ]
     },
     "critic_report": {
-      "qualitaet_ausreichend": false,
+      "qualitaet_ausreichend": true,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -2295,38 +2509,38 @@
         },
         {
           "criterion": "entitaets_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Kritische Entitäten fehlen oder sind unvollständig: (1) 'Umschlag' / 'Transshipment' ist im ER-Modell nicht als eigenständige Entität modelliert, obwohl der Anforderungstext explizit erwähnt, dass Sendungen 'unterwegs umgeschlagen werden können' und 'Umschlagpunkte' zentral sind. Die Tabelle 'transshipments' existiert zwar im LogicalSchema, ist aber im ER-Modell nicht dokumentiert. (2) 'Laufweg' / 'Sendungslaufweg' ist im ER-Modell nicht als eigenständige Entität modelliert, obwohl der Anforderungstext fordert: 'wo eine Sendung gestartet ist, über welche Stationen sie lief'. Die Tabelle 'shipment_routes' existiert im LogicalSchema, ist aber im ER-Modell nicht dokumentiert. (3) 'Packstückgruppe' ist im LogicalSchema vorhanden ('package_groups', 'package_group_members'), aber im ER-Modell nicht dokumentiert, obwohl der Anforderungstext erwähnt: 'Packstücke werden manchmal zusammen disponiert'. Dies deutet auf eine Diskrepanz zwischen ER-Modell und LogicalSchema hin.",
-          "korrekturanweisung": "Dokumentiere die fehlenden Entitäten im ER-Modell: (1) Füge 'Umschlag' / 'Transshipment' als eigenständige Entität mit Attributen (ID, von_transport_id, zu_transport_id, standort_id, zeitstempel, handling_type) hinzu. (2) Füge 'Sendungslaufweg' / 'Shipment_Route' als eigenständige Entität mit Attributen (ID, sendung_id, sequenznummer, standort_id, geplante_ankunftszeit, tatsächliche_ankunftszeit) hinzu. (3) Dokumentiere 'Packstückgruppe' und 'Packstückgruppenmitglied' im ER-Modell mit entsprechenden Beziehungen."
+          "erfuellt": true,
+          "beschreibung": "Alle 16 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: addresses, customers, recipients, carriers, locations, location_functions, transport_types, vehicles, carrier_vehicles, temperature_requirements, shipments, packages, dispositions, disposition_packages, package_tracking, transports, shipment_transports, package_transports, status_messages, services, shipment_services. Keine Entitäten fehlen.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unvollständig: (1) In der Tabelle 'customers' fehlt eine Beziehung zu 'locations' (location_id existiert, ist aber im ER-Modell nicht dokumentiert). (2) In der Tabelle 'recipients' fehlt eine Beziehung zu 'locations' (location_id existiert, ist aber im ER-Modell nicht dokumentiert). Der Anforderungstext erwähnt, dass Empfänger Adressdaten haben und möglicherweise an Standorten lokalisiert sind. (3) Die Tabelle 'packages_transports' enthält Attribute 'planned_departure_time' und 'actual_departure_time', die im ER-Modell nicht dokumentiert sind. (4) Die Tabelle 'shipment_routes' enthält Attribute 'planned_arrival_time' und 'actual_arrival_time', die im ER-Modell nicht dokumentiert sind. (5) Die Tabelle 'transshipments' enthält das Attribut 'handling_type', das im ER-Modell nicht dokumentiert ist.",
-          "korrekturanweisung": "Ergänze das ER-Modell um fehlende Attribute: (1) Dokumentiere location_id in der Entität 'Kunde' und 'Empfänger'. (2) Dokumentiere 'planned_departure_time' und 'actual_departure_time' in der Beziehung 'Packstück_Transport'. (3) Dokumentiere 'planned_arrival_time' und 'actual_arrival_time' in der Entität 'Sendungslaufweg'. (4) Dokumentiere 'handling_type' in der Entität 'Umschlag'."
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden. Temperaturvorgaben sind als separate Entität modelliert (temperature_requirements), Gefahrgut-Attribute (is_hazmat, hazmat_class, un_number) sind in shipments enthalten, Standortfunktionen sind als separate Tabelle (location_functions) modelliert. Dienstleistungen und deren Zuordnung zu Sendungen sind implementiert.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Mehrere Beziehungen sind im ER-Modell nicht dokumentiert oder fehlerhaft: (1) Die Beziehung zwischen 'Sendung' und 'Standort' für Zwischenstationen (via 'shipment_routes') ist im ER-Modell nicht explizit modelliert. (2) Die Beziehung zwischen 'Transport' und 'Transport' (Umschlag: from_transport_id, to_transport_id) ist im ER-Modell nicht dokumentiert. (3) Die Beziehung zwischen 'Packstück' und 'Packstückgruppe' (via 'package_group_members') ist im ER-Modell nicht dokumentiert. (4) Die Beziehung zwischen 'Kunde' und 'Empfänger' ist im ER-Modell als 1:N dokumentiert, aber der Anforderungstext ist unklar, ob diese Beziehung immer existiert ('Ob Empfänger immer schon als Kunde geführt werden, ist bei uns allerdings nicht einheitlich'). Im LogicalSchema ist 'customer_id' in 'recipients' nullable, was korrekt ist, aber im ER-Modell nicht als optional gekennzeichnet.",
-          "korrekturanweisung": "Korrigiere die Beziehungen im ER-Modell: (1) Dokumentiere die Beziehung 'Sendung' -> 'Sendungslaufweg' -> 'Standort' explizit. (2) Dokumentiere die Beziehung 'Transport' -> 'Umschlag' -> 'Transport' (Selbstreferenz). (3) Dokumentiere die Beziehung 'Packstück' -> 'Packstückgruppe' via 'Packstückgruppenmitglied'. (4) Markiere die Beziehung 'Kunde' -> 'Empfänger' als optional (0:N statt 1:N)."
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N-Beziehungen (z.B. shipments→packages), N:M-Beziehungen (z.B. shipment_transports, shipment_services, carrier_vehicles), optionale Fremdschlüssel für Beziehungen mit Optionalität (z.B. temperature_requirement_id in shipments). Die Beziehung Empfänger-Kunde ist korrekt als optionaler FK (customer_id in recipients) modelliert.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF) normalisiert. Alle Tabellen enthalten nur atomare Werte, es gibt keine Redundanzen, und alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von den Primärschlüsseln. Junction-Tables für M:N-Beziehungen sind korrekt implementiert (z.B. 'shipment_services', 'transport_shipments', 'packages_transports', 'package_group_members').",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen erkannt: Adressdaten sind normalisiert (addresses-Tabelle), Temperaturvorgaben sind separiert, Standortfunktionen sind ausgelagert. N:M-Beziehungen sind durch Junction-Tables aufgelöst (shipment_transports, shipment_services, carrier_vehicles, disposition_packages, package_transports). Keine transitiven Abhängigkeiten oder Anomalien.",
           "korrekturanweisung": ""
         }
       ],
-      "origin_step": "cmd"
+      "origin_step": null
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
     "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE carriers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_data VARCHAR(255),\n    CONSTRAINT pk_carriers PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    latitude DECIMAL(18,2),\n    longitude DECIMAL(18,2),\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_data VARCHAR(255),\n    address VARCHAR(255),\n    location_id INTEGER,\n    CONSTRAINT pk_customers PRIMARY KEY (id),\n    CONSTRAINT fk_customers_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE recipients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_data VARCHAR(255),\n    address VARCHAR(255),\n    customer_id INTEGER,\n    location_id INTEGER,\n    CONSTRAINT pk_recipients PRIMARY KEY (id),\n    CONSTRAINT fk_recipients_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_recipients_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE shipments (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    recipient_id INTEGER NOT NULL,\n    start_location_id INTEGER NOT NULL,\n    end_location_id INTEGER NOT NULL,\n    planned_arrival_time TIMESTAMP,\n    actual_arrival_time TIMESTAMP,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_shipments PRIMARY KEY (id),\n    CONSTRAINT fk_shipments_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_shipments_recipient_id FOREIGN KEY (recipient_id) REFERENCES recipients (id),\n    CONSTRAINT fk_shipments_start_location_id FOREIGN KEY (start_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_shipments_end_location_id FOREIGN KEY (end_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE hazardous_goods (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    un_number VARCHAR(255) NOT NULL,\n    classification VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_hazardous_goods PRIMARY KEY (id),\n    CONSTRAINT fk_hazardous_goods_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id)\n);\n\nCREATE TABLE location_functions (\n    id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    function VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_location_functions PRIMARY KEY (id),\n    CONSTRAINT fk_location_functions_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE package_groups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_package_groups PRIMARY KEY (id)\n);\n\nCREATE TABLE packages (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    weight DECIMAL(18,2),\n    height DECIMAL(18,2),\n    width DECIMAL(18,2),\n    depth DECIMAL(18,2),\n    CONSTRAINT pk_packages PRIMARY KEY (id),\n    CONSTRAINT fk_packages_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id)\n);\n\nCREATE TABLE package_group_members (\n    id INTEGER NOT NULL,\n    package_group_id INTEGER NOT NULL,\n    package_id INTEGER NOT NULL,\n    CONSTRAINT pk_package_group_members PRIMARY KEY (id),\n    CONSTRAINT fk_package_group_members_package_group_id FOREIGN KEY (package_group_id) REFERENCES package_groups (id),\n    CONSTRAINT fk_package_group_members_package_id FOREIGN KEY (package_id) REFERENCES packages (id)\n);\n\nCREATE TABLE vehicle_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_vehicle_types PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    carrier_id INTEGER NOT NULL,\n    vehicle_type_id INTEGER NOT NULL,\n    license_plate VARCHAR(255),\n    capacity DECIMAL(18,2),\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_carrier_id FOREIGN KEY (carrier_id) REFERENCES carriers (id),\n    CONSTRAINT fk_vehicles_vehicle_type_id FOREIGN KEY (vehicle_type_id) REFERENCES vehicle_types (id)\n);\n\nCREATE TABLE transports (\n    id INTEGER NOT NULL,\n    carrier_id INTEGER NOT NULL,\n    vehicle_id INTEGER,\n    start_location_id INTEGER NOT NULL,\n    end_location_id INTEGER NOT NULL,\n    planned_departure_time TIMESTAMP,\n    actual_departure_time TIMESTAMP,\n    planned_arrival_time TIMESTAMP,\n    actual_arrival_time TIMESTAMP,\n    CONSTRAINT pk_transports PRIMARY KEY (id),\n    CONSTRAINT fk_transports_carrier_id FOREIGN KEY (carrier_id) REFERENCES carriers (id),\n    CONSTRAINT fk_transports_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_transports_start_location_id FOREIGN KEY (start_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_transports_end_location_id FOREIGN KEY (end_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE packages_transports (\n    id INTEGER NOT NULL,\n    package_id INTEGER NOT NULL,\n    transport_id INTEGER NOT NULL,\n    sequence_number INTEGER,\n    planned_departure_time TIMESTAMP,\n    actual_departure_time TIMESTAMP,\n    CONSTRAINT pk_packages_transports PRIMARY KEY (id),\n    CONSTRAINT fk_packages_transports_package_id FOREIGN KEY (package_id) REFERENCES packages (id),\n    CONSTRAINT fk_packages_transports_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id)\n);\n\nCREATE TABLE services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_services PRIMARY KEY (id)\n);\n\nCREATE TABLE shipment_routes (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    sequence_number INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    planned_arrival_time TIMESTAMP,\n    actual_arrival_time TIMESTAMP,\n    CONSTRAINT pk_shipment_routes PRIMARY KEY (id),\n    CONSTRAINT fk_shipment_routes_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_routes_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE shipment_services (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    service_id INTEGER NOT NULL,\n    booked_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_shipment_services PRIMARY KEY (id),\n    CONSTRAINT fk_shipment_services_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_services_service_id FOREIGN KEY (service_id) REFERENCES services (id)\n);\n\nCREATE TABLE status_messages (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER,\n    transport_id INTEGER,\n    status VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    location_id INTEGER,\n    CONSTRAINT pk_status_messages PRIMARY KEY (id),\n    CONSTRAINT fk_status_messages_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_status_messages_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id),\n    CONSTRAINT fk_status_messages_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE temperature_requirements (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    min_temperature DECIMAL(18,2) NOT NULL,\n    max_temperature DECIMAL(18,2) NOT NULL,\n    unit VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_temperature_requirements PRIMARY KEY (id),\n    CONSTRAINT fk_temperature_requirements_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id)\n);\n\nCREATE TABLE transport_shipments (\n    id INTEGER NOT NULL,\n    transport_id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    CONSTRAINT pk_transport_shipments PRIMARY KEY (id),\n    CONSTRAINT fk_transport_shipments_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id),\n    CONSTRAINT fk_transport_shipments_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id)\n);\n\nCREATE TABLE transshipments (\n    id INTEGER NOT NULL,\n    from_transport_id INTEGER NOT NULL,\n    to_transport_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    handling_type VARCHAR(255),\n    CONSTRAINT pk_transshipments PRIMARY KEY (id),\n    CONSTRAINT fk_transshipments_from_transport_id FOREIGN KEY (from_transport_id) REFERENCES transports (id),\n    CONSTRAINT fk_transshipments_to_transport_id FOREIGN KEY (to_transport_id) REFERENCES transports (id),\n    CONSTRAINT fk_transshipments_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
+    "final_ddl": "CREATE TABLE addresses (\n    id INTEGER NOT NULL,\n    street VARCHAR(255),\n    house_number VARCHAR(255),\n    postal_code VARCHAR(255),\n    city VARCHAR(255),\n    country VARCHAR(255),\n    CONSTRAINT pk_addresses PRIMARY KEY (id)\n);\n\nCREATE TABLE carriers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address_id INTEGER,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_carriers PRIMARY KEY (id),\n    CONSTRAINT fk_carriers_address_id FOREIGN KEY (address_id) REFERENCES addresses (id)\n);\n\nCREATE TABLE transport_types (\n    id INTEGER NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    capacity DECIMAL(18,2),\n    CONSTRAINT pk_transport_types PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    transport_type_id INTEGER NOT NULL,\n    license_plate VARCHAR(255),\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_transport_type_id FOREIGN KEY (transport_type_id) REFERENCES transport_types (id)\n);\n\nCREATE TABLE carrier_vehicles (\n    carrier_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    CONSTRAINT pk_carrier_vehicles PRIMARY KEY (carrier_id, vehicle_id),\n    CONSTRAINT fk_carrier_vehicles_carrier_id FOREIGN KEY (carrier_id) REFERENCES carriers (id),\n    CONSTRAINT fk_carrier_vehicles_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address_id INTEGER,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id),\n    CONSTRAINT fk_customers_address_id FOREIGN KEY (address_id) REFERENCES addresses (id)\n);\n\nCREATE TABLE dispositions (\n    id INTEGER NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_dispositions PRIMARY KEY (id)\n);\n\nCREATE TABLE recipients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address_id INTEGER,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    customer_id INTEGER,\n    CONSTRAINT pk_recipients PRIMARY KEY (id),\n    CONSTRAINT fk_recipients_address_id FOREIGN KEY (address_id) REFERENCES addresses (id),\n    CONSTRAINT fk_recipients_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address_id INTEGER,\n    latitude DECIMAL(18,2),\n    longitude DECIMAL(18,2),\n    CONSTRAINT pk_locations PRIMARY KEY (id),\n    CONSTRAINT fk_locations_address_id FOREIGN KEY (address_id) REFERENCES addresses (id)\n);\n\nCREATE TABLE temperature_requirements (\n    id INTEGER NOT NULL,\n    temperature_min_celsius DECIMAL(18,2) NOT NULL,\n    temperature_max_celsius DECIMAL(18,2) NOT NULL,\n    condition_type VARCHAR(255),\n    tolerance_range DECIMAL(18,2),\n    valid_from TIMESTAMP,\n    valid_until TIMESTAMP,\n    CONSTRAINT pk_temperature_requirements PRIMARY KEY (id)\n);\n\nCREATE TABLE shipments (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    recipient_id INTEGER NOT NULL,\n    start_location_id INTEGER NOT NULL,\n    end_location_id INTEGER NOT NULL,\n    temperature_requirement_id INTEGER,\n    is_hazmat BOOLEAN NOT NULL,\n    hazmat_class VARCHAR(255),\n    un_number VARCHAR(255),\n    planned_arrival TIMESTAMP,\n    actual_arrival TIMESTAMP,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_shipments PRIMARY KEY (id),\n    CONSTRAINT fk_shipments_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_shipments_recipient_id FOREIGN KEY (recipient_id) REFERENCES recipients (id),\n    CONSTRAINT fk_shipments_start_location_id FOREIGN KEY (start_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_shipments_end_location_id FOREIGN KEY (end_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_shipments_temperature_requirement_id FOREIGN KEY (temperature_requirement_id) REFERENCES temperature_requirements (id)\n);\n\nCREATE TABLE packages (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    weight DECIMAL(18,2),\n    length DECIMAL(18,2),\n    width DECIMAL(18,2),\n    height DECIMAL(18,2),\n    content_description TEXT,\n    CONSTRAINT pk_packages PRIMARY KEY (id),\n    CONSTRAINT fk_packages_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id)\n);\n\nCREATE TABLE disposition_packages (\n    disposition_id INTEGER NOT NULL,\n    package_id INTEGER NOT NULL,\n    CONSTRAINT pk_disposition_packages PRIMARY KEY (disposition_id, package_id),\n    CONSTRAINT fk_disposition_packages_disposition_id FOREIGN KEY (disposition_id) REFERENCES dispositions (id),\n    CONSTRAINT fk_disposition_packages_package_id FOREIGN KEY (package_id) REFERENCES packages (id)\n);\n\nCREATE TABLE location_functions (\n    location_id INTEGER NOT NULL,\n    function VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_location_functions PRIMARY KEY (location_id, function),\n    CONSTRAINT fk_location_functions_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE package_tracking (\n    id INTEGER NOT NULL,\n    package_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    event_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_package_tracking PRIMARY KEY (id),\n    CONSTRAINT fk_package_tracking_package_id FOREIGN KEY (package_id) REFERENCES packages (id),\n    CONSTRAINT fk_package_tracking_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE transports (\n    id INTEGER NOT NULL,\n    start_location_id INTEGER NOT NULL,\n    end_location_id INTEGER NOT NULL,\n    carrier_id INTEGER NOT NULL,\n    vehicle_id INTEGER,\n    planned_departure TIMESTAMP,\n    actual_departure TIMESTAMP,\n    planned_arrival TIMESTAMP,\n    actual_arrival TIMESTAMP,\n    responsibility VARCHAR(255),\n    CONSTRAINT pk_transports PRIMARY KEY (id),\n    CONSTRAINT fk_transports_start_location_id FOREIGN KEY (start_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_transports_end_location_id FOREIGN KEY (end_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_transports_carrier_id FOREIGN KEY (carrier_id) REFERENCES carriers (id),\n    CONSTRAINT fk_transports_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n\nCREATE TABLE package_transports (\n    package_id INTEGER NOT NULL,\n    transport_id INTEGER NOT NULL,\n    CONSTRAINT pk_package_transports PRIMARY KEY (package_id, transport_id),\n    CONSTRAINT fk_package_transports_package_id FOREIGN KEY (package_id) REFERENCES packages (id),\n    CONSTRAINT fk_package_transports_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id)\n);\n\nCREATE TABLE services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    cost DECIMAL(18,2),\n    CONSTRAINT pk_services PRIMARY KEY (id)\n);\n\nCREATE TABLE shipment_services (\n    shipment_id INTEGER NOT NULL,\n    service_id INTEGER NOT NULL,\n    CONSTRAINT pk_shipment_services PRIMARY KEY (shipment_id, service_id),\n    CONSTRAINT fk_shipment_services_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_services_service_id FOREIGN KEY (service_id) REFERENCES services (id)\n);\n\nCREATE TABLE shipment_transports (\n    shipment_id INTEGER NOT NULL,\n    transport_id INTEGER NOT NULL,\n    sequence INTEGER,\n    CONSTRAINT pk_shipment_transports PRIMARY KEY (shipment_id, transport_id),\n    CONSTRAINT fk_shipment_transports_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_transports_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id)\n);\n\nCREATE TABLE status_messages (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER,\n    transport_id INTEGER,\n    location_id INTEGER,\n    status_type VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    notes TEXT,\n    CONSTRAINT pk_status_messages PRIMARY KEY (id),\n    CONSTRAINT fk_status_messages_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_status_messages_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id),\n    CONSTRAINT fk_status_messages_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
     "final_critic_report": {
-      "qualitaet_ausreichend": false,
+      "qualitaet_ausreichend": true,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -2348,63 +2562,63 @@
         },
         {
           "criterion": "entitaets_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Kritische Entitäten fehlen oder sind unvollständig: (1) 'Umschlag' / 'Transshipment' ist im ER-Modell nicht als eigenständige Entität modelliert, obwohl der Anforderungstext explizit erwähnt, dass Sendungen 'unterwegs umgeschlagen werden können' und 'Umschlagpunkte' zentral sind. Die Tabelle 'transshipments' existiert zwar im LogicalSchema, ist aber im ER-Modell nicht dokumentiert. (2) 'Laufweg' / 'Sendungslaufweg' ist im ER-Modell nicht als eigenständige Entität modelliert, obwohl der Anforderungstext fordert: 'wo eine Sendung gestartet ist, über welche Stationen sie lief'. Die Tabelle 'shipment_routes' existiert im LogicalSchema, ist aber im ER-Modell nicht dokumentiert. (3) 'Packstückgruppe' ist im LogicalSchema vorhanden ('package_groups', 'package_group_members'), aber im ER-Modell nicht dokumentiert, obwohl der Anforderungstext erwähnt: 'Packstücke werden manchmal zusammen disponiert'. Dies deutet auf eine Diskrepanz zwischen ER-Modell und LogicalSchema hin.",
-          "korrekturanweisung": "Dokumentiere die fehlenden Entitäten im ER-Modell: (1) Füge 'Umschlag' / 'Transshipment' als eigenständige Entität mit Attributen (ID, von_transport_id, zu_transport_id, standort_id, zeitstempel, handling_type) hinzu. (2) Füge 'Sendungslaufweg' / 'Shipment_Route' als eigenständige Entität mit Attributen (ID, sendung_id, sequenznummer, standort_id, geplante_ankunftszeit, tatsächliche_ankunftszeit) hinzu. (3) Dokumentiere 'Packstückgruppe' und 'Packstückgruppenmitglied' im ER-Modell mit entsprechenden Beziehungen."
+          "erfuellt": true,
+          "beschreibung": "Alle 16 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: addresses, customers, recipients, carriers, locations, location_functions, transport_types, vehicles, carrier_vehicles, temperature_requirements, shipments, packages, dispositions, disposition_packages, package_tracking, transports, shipment_transports, package_transports, status_messages, services, shipment_services. Keine Entitäten fehlen.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unvollständig: (1) In der Tabelle 'customers' fehlt eine Beziehung zu 'locations' (location_id existiert, ist aber im ER-Modell nicht dokumentiert). (2) In der Tabelle 'recipients' fehlt eine Beziehung zu 'locations' (location_id existiert, ist aber im ER-Modell nicht dokumentiert). Der Anforderungstext erwähnt, dass Empfänger Adressdaten haben und möglicherweise an Standorten lokalisiert sind. (3) Die Tabelle 'packages_transports' enthält Attribute 'planned_departure_time' und 'actual_departure_time', die im ER-Modell nicht dokumentiert sind. (4) Die Tabelle 'shipment_routes' enthält Attribute 'planned_arrival_time' und 'actual_arrival_time', die im ER-Modell nicht dokumentiert sind. (5) Die Tabelle 'transshipments' enthält das Attribut 'handling_type', das im ER-Modell nicht dokumentiert ist.",
-          "korrekturanweisung": "Ergänze das ER-Modell um fehlende Attribute: (1) Dokumentiere location_id in der Entität 'Kunde' und 'Empfänger'. (2) Dokumentiere 'planned_departure_time' und 'actual_departure_time' in der Beziehung 'Packstück_Transport'. (3) Dokumentiere 'planned_arrival_time' und 'actual_arrival_time' in der Entität 'Sendungslaufweg'. (4) Dokumentiere 'handling_type' in der Entität 'Umschlag'."
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden. Temperaturvorgaben sind als separate Entität modelliert (temperature_requirements), Gefahrgut-Attribute (is_hazmat, hazmat_class, un_number) sind in shipments enthalten, Standortfunktionen sind als separate Tabelle (location_functions) modelliert. Dienstleistungen und deren Zuordnung zu Sendungen sind implementiert.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Mehrere Beziehungen sind im ER-Modell nicht dokumentiert oder fehlerhaft: (1) Die Beziehung zwischen 'Sendung' und 'Standort' für Zwischenstationen (via 'shipment_routes') ist im ER-Modell nicht explizit modelliert. (2) Die Beziehung zwischen 'Transport' und 'Transport' (Umschlag: from_transport_id, to_transport_id) ist im ER-Modell nicht dokumentiert. (3) Die Beziehung zwischen 'Packstück' und 'Packstückgruppe' (via 'package_group_members') ist im ER-Modell nicht dokumentiert. (4) Die Beziehung zwischen 'Kunde' und 'Empfänger' ist im ER-Modell als 1:N dokumentiert, aber der Anforderungstext ist unklar, ob diese Beziehung immer existiert ('Ob Empfänger immer schon als Kunde geführt werden, ist bei uns allerdings nicht einheitlich'). Im LogicalSchema ist 'customer_id' in 'recipients' nullable, was korrekt ist, aber im ER-Modell nicht als optional gekennzeichnet.",
-          "korrekturanweisung": "Korrigiere die Beziehungen im ER-Modell: (1) Dokumentiere die Beziehung 'Sendung' -> 'Sendungslaufweg' -> 'Standort' explizit. (2) Dokumentiere die Beziehung 'Transport' -> 'Umschlag' -> 'Transport' (Selbstreferenz). (3) Dokumentiere die Beziehung 'Packstück' -> 'Packstückgruppe' via 'Packstückgruppenmitglied'. (4) Markiere die Beziehung 'Kunde' -> 'Empfänger' als optional (0:N statt 1:N)."
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N-Beziehungen (z.B. shipments→packages), N:M-Beziehungen (z.B. shipment_transports, shipment_services, carrier_vehicles), optionale Fremdschlüssel für Beziehungen mit Optionalität (z.B. temperature_requirement_id in shipments). Die Beziehung Empfänger-Kunde ist korrekt als optionaler FK (customer_id in recipients) modelliert.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF) normalisiert. Alle Tabellen enthalten nur atomare Werte, es gibt keine Redundanzen, und alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von den Primärschlüsseln. Junction-Tables für M:N-Beziehungen sind korrekt implementiert (z.B. 'shipment_services', 'transport_shipments', 'packages_transports', 'package_group_members').",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen erkannt: Adressdaten sind normalisiert (addresses-Tabelle), Temperaturvorgaben sind separiert, Standortfunktionen sind ausgelagert. N:M-Beziehungen sind durch Junction-Tables aufgelöst (shipment_transports, shipment_services, carrier_vehicles, disposition_packages, package_transports). Keine transitiven Abhängigkeiten oder Anomalien.",
           "korrekturanweisung": ""
         }
       ],
-      "origin_step": "cmd"
+      "origin_step": null
     },
     "error": null,
     "diskussionsverlauf": []
   },
   "telemetry": {
     "total_calls": 10,
-    "total_input_tokens": 99460,
-    "total_output_tokens": 41114,
-    "total_tokens": 140574,
+    "total_input_tokens": 117913,
+    "total_output_tokens": 42892,
+    "total_tokens": 160805,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1914,
-        "output_tokens": 3571,
+        "output_tokens": 3444,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 3,
-        "input_tokens": 16566,
-        "output_tokens": 13048,
+        "input_tokens": 30116,
+        "output_tokens": 18147,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 3,
-        "input_tokens": 30268,
-        "output_tokens": 15936,
+        "input_tokens": 31896,
+        "output_tokens": 15501,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 3,
-        "input_tokens": 50712,
-        "output_tokens": 8559,
+        "input_tokens": 53987,
+        "output_tokens": 5800,
         "cost_usd": 0.0
       }
     },
@@ -2415,7 +2629,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1914,
-        "output_tokens": 3571,
+        "output_tokens": 3444,
         "cost_usd": 0.0
       },
       {
@@ -2423,8 +2637,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5522,
-        "output_tokens": 4348,
+        "input_tokens": 5387,
+        "output_tokens": 4764,
         "cost_usd": 0.0
       },
       {
@@ -2432,8 +2646,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7981,
-        "output_tokens": 4378,
+        "input_tokens": 8583,
+        "output_tokens": 4897,
         "cost_usd": 0.0
       },
       {
@@ -2441,8 +2655,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 15976,
-        "output_tokens": 3107,
+        "input_tokens": 16962,
+        "output_tokens": 1727,
         "cost_usd": 0.0
       },
       {
@@ -2450,8 +2664,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5522,
-        "output_tokens": 4352,
+        "input_tokens": 11948,
+        "output_tokens": 5976,
         "cost_usd": 0.0
       },
       {
@@ -2459,8 +2673,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 11046,
-        "output_tokens": 5543,
+        "input_tokens": 10299,
+        "output_tokens": 5372,
         "cost_usd": 0.0
       },
       {
@@ -2468,8 +2682,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 17123,
-        "output_tokens": 3403,
+        "input_tokens": 17534,
+        "output_tokens": 3104,
         "cost_usd": 0.0
       },
       {
@@ -2477,8 +2691,8 @@
         "iteration": 2,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5522,
-        "output_tokens": 4348,
+        "input_tokens": 12781,
+        "output_tokens": 7407,
         "cost_usd": 0.0
       },
       {
@@ -2486,8 +2700,8 @@
         "iteration": 2,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 11241,
-        "output_tokens": 6015,
+        "input_tokens": 13014,
+        "output_tokens": 5232,
         "cost_usd": 0.0
       },
       {
@@ -2495,8 +2709,8 @@
         "iteration": 2,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 17613,
-        "output_tokens": 2049,
+        "input_tokens": 19491,
+        "output_tokens": 969,
         "cost_usd": 0.0
       }
     ]

@@ -68,19 +68,19 @@
               "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "address",
               "type": "TEXT",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             }
           ],
           "foreign_keys": []
@@ -116,19 +116,19 @@
               "name": "breed",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "birthdate",
               "type": "DATE",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "gender",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -173,7 +173,7 @@
               "nullable": false
             },
             {
-              "name": "costs",
+              "name": "cost",
               "type": "DECIMAL",
               "primary_key": false,
               "nullable": false
@@ -211,7 +211,7 @@
             "Geburtsdatum",
             "Geschlecht"
           ],
-          "beschreibung": "Tiere, die in der Praxis behandelt werden"
+          "beschreibung": "Tiere, die von Tierhaltern betreut werden"
         },
         {
           "name": "Behandlungstermin",
@@ -240,25 +240,19 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar ist, ob die Anschrift des Tierhalters aus mehreren Feldern (Straße, Hausnummer, PLZ, Ort) besteht oder als einzelnes Feld gespeichert wird",
+          "beschreibung": "Es ist unklar, ob die Anschrift des Tierhalters aus mehreren Komponenten (Straße, Hausnummer, Postleitzahl, Stadt) besteht oder als einzelnes Attribut gespeichert werden soll",
           "betroffene_elemente": [
             "Tierhalter"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob das Geschlecht des Tieres als binäres Feld (männlich/weiblich) oder mit weiteren Optionen (z.B. kastriert/sterilisiert) gespeichert werden soll",
-          "betroffene_elemente": [
-            "Tier"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob die Kosten für einen Termin als Gesamtbetrag oder aufgeschlüsselt nach Behandlungsarten gespeichert werden sollen",
+          "beschreibung": "Es ist nicht spezifiziert, ob ein Behandlungstermin auch einen Verweis auf den behandelnden Tierarzt oder die Praxis enthalten soll",
           "betroffene_elemente": [
             "Behandlungstermin"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob ein Termin auch eine Uhrzeit benötigt oder nur das Datum relevant ist",
+          "beschreibung": "Es ist unklar, ob die Kosten als Gesamtbetrag oder aufgeschlüsselt nach Leistungen gespeichert werden sollen",
           "betroffene_elemente": [
             "Behandlungstermin"
           ]
@@ -271,7 +265,7 @@
           "name": "Tierhalter",
           "attribute": [
             {
-              "name": "tierhalter_id",
+              "name": "halter_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -292,19 +286,19 @@
               "name": "telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "email_adresse",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "anschrift",
               "datentyp": "TEXT",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             }
           ]
         },
@@ -318,7 +312,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "tierhalter_id",
+              "name": "halter_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -339,19 +333,19 @@
               "name": "rasse",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "geburtsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "geschlecht",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             }
           ]
         },
@@ -436,25 +430,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Tierhalter, Tier, Behandlungstermin) sind als Tabellen (owners, animals, appointments) implementiert.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind im Schema vorhanden: Tierhalter (owners), Tier (animals), Behandlungstermin (appointments). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: Tierhalter (firstname, lastname, phone, email, address), Tier (name, species, breed, birthdate, gender), Behandlungstermin (appointment_date, reason, treatment, costs). Die Namenskonventionen folgen den Vorgaben (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt abgebildet: owners (firstname, lastname, phone, email, address), animals (name, species, breed, birthdate, gender), appointments (appointment_date, reason, treatment, cost). Die Attributnamen folgen der Konvention (snake_case, englisch). Datentypen sind angemessen gewählt (VARCHAR für Texte, DATE für Daten, DECIMAL für Kosten).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen owners und animals (owner_id FK), 1:N zwischen animals und appointments (animal_id FK). Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N zwischen owners und animals (über owner_id), 1:N zwischen animals und appointments (über animal_id). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Alle Attribute sind atomar, Fremdschlüssel sind korrekt platziert.",
+          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF). Es gibt keine Redundanzen, keine Anomalien und keine funktionalen Abhängigkeiten außerhalb der Primärschlüssel. Die Anschrift ist als atomares Attribut (TEXT) gespeichert, was der Anforderung entspricht (die Unklarheit im RequirementsReport wurde pragmatisch gelöst).",
           "korrekturanweisung": ""
         }
       ],
@@ -464,7 +458,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    address TEXT NOT NULL,\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE animals (\n    id INTEGER NOT NULL,\n    owner_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    species VARCHAR(255) NOT NULL,\n    breed VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    gender VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_animals PRIMARY KEY (id),\n    CONSTRAINT fk_animals_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    animal_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    reason TEXT NOT NULL,\n    treatment TEXT NOT NULL,\n    costs DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_animal_id FOREIGN KEY (animal_id) REFERENCES animals (id)\n);\n",
+    "final_ddl": "CREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT,\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE animals (\n    id INTEGER NOT NULL,\n    owner_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    species VARCHAR(255) NOT NULL,\n    breed VARCHAR(255),\n    birthdate DATE,\n    gender VARCHAR(255),\n    CONSTRAINT pk_animals PRIMARY KEY (id),\n    CONSTRAINT fk_animals_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    animal_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    reason TEXT NOT NULL,\n    treatment TEXT NOT NULL,\n    cost DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_animal_id FOREIGN KEY (animal_id) REFERENCES animals (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -489,25 +483,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Tierhalter, Tier, Behandlungstermin) sind als Tabellen (owners, animals, appointments) implementiert.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind im Schema vorhanden: Tierhalter (owners), Tier (animals), Behandlungstermin (appointments). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: Tierhalter (firstname, lastname, phone, email, address), Tier (name, species, breed, birthdate, gender), Behandlungstermin (appointment_date, reason, treatment, costs). Die Namenskonventionen folgen den Vorgaben (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt abgebildet: owners (firstname, lastname, phone, email, address), animals (name, species, breed, birthdate, gender), appointments (appointment_date, reason, treatment, cost). Die Attributnamen folgen der Konvention (snake_case, englisch). Datentypen sind angemessen gewählt (VARCHAR für Texte, DATE für Daten, DECIMAL für Kosten).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen owners und animals (owner_id FK), 1:N zwischen animals und appointments (animal_id FK). Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N zwischen owners und animals (über owner_id), 1:N zwischen animals und appointments (über animal_id). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Alle Attribute sind atomar, Fremdschlüssel sind korrekt platziert.",
+          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF). Es gibt keine Redundanzen, keine Anomalien und keine funktionalen Abhängigkeiten außerhalb der Primärschlüssel. Die Anschrift ist als atomares Attribut (TEXT) gespeichert, was der Anforderung entspricht (die Unklarheit im RequirementsReport wurde pragmatisch gelöst).",
           "korrekturanweisung": ""
         }
       ],
@@ -518,33 +512,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12270,
-    "total_output_tokens": 3362,
-    "total_tokens": 15632,
+    "total_input_tokens": 12098,
+    "total_output_tokens": 3363,
+    "total_tokens": 15461,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1472,
-        "output_tokens": 766,
+        "output_tokens": 688,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2277,
-        "output_tokens": 939,
+        "input_tokens": 2193,
+        "output_tokens": 937,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3393,
+        "input_tokens": 3391,
         "output_tokens": 921,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5128,
-        "output_tokens": 736,
+        "input_tokens": 5042,
+        "output_tokens": 817,
         "cost_usd": 0.0
       }
     },
@@ -555,7 +549,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1472,
-        "output_tokens": 766,
+        "output_tokens": 688,
         "cost_usd": 0.0
       },
       {
@@ -563,8 +557,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2277,
-        "output_tokens": 939,
+        "input_tokens": 2193,
+        "output_tokens": 937,
         "cost_usd": 0.0
       },
       {
@@ -572,7 +566,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3393,
+        "input_tokens": 3391,
         "output_tokens": 921,
         "cost_usd": 0.0
       },
@@ -581,8 +575,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5128,
-        "output_tokens": 736,
+        "input_tokens": 5042,
+        "output_tokens": 817,
         "cost_usd": 0.0
       }
     ]

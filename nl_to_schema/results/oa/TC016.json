@@ -253,7 +253,7 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Aktiv-Status wird als nachvollziehbar beschrieben, aber es ist unklar, ob dies ein einfaches Boolean-Feld (aktiv/inaktiv) oder ein Zeitstempel (z.B. Deaktivierungsdatum) sein soll.",
+          "beschreibung": "Der Aktiv-Status wird als 'nachvollziehbar' beschrieben, aber es ist unklar, ob dies ein einfaches Boolean-Flag (aktiv/inaktiv) oder ein komplexeres Konzept mit Zeitstempel oder Grund für Inaktivität sein soll.",
           "betroffene_elemente": [
             "Mitglied"
           ]
@@ -326,12 +326,6 @@
               "datentyp": "BOOLEAN",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "trainingsgruppe_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
             }
           ]
         },
@@ -365,12 +359,6 @@
             {
               "name": "ort",
               "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "trainer_id",
-              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -451,25 +439,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem ER-Modell (Mitglied, Trainingsgruppe, Trainer) sind als Tabellen implementiert. Die Abbildung ist vollständig und konsistent.",
+          "beschreibung": "Alle drei Entitäten aus dem ER-Modell (Mitglied, Trainingsgruppe, Trainer) sind als Tabellen implementiert. Die Zuordnung ist korrekt: Mitglied → members, Trainingsgruppe → training_groups, Trainer → trainers.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt: members (firstname, lastname, birthdate, joindate, email, phone, is_active, training_group_id), training_groups (name, weekday, time, location, trainer_id), trainers (firstname, lastname, email, phone). Namenskonventionen (snake_case, englisch) sind eingehalten.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt benannt nach Konvention (snake_case, englisch): firstname, lastname, birthdate, joindate, email, phone, is_active für members; name, weekday, time, location für training_groups; firstname, lastname, email, phone für trainers. Die Attribute sind korrekt typisiert (VARCHAR für Texte, DATE für Daten, BOOLEAN für is_active).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) N:1 Mitglied→Trainingsgruppe durch members.training_group_id (NOT NULL), (2) N:1 Trainingsgruppe→Trainer durch training_groups.trainer_id (NOT NULL). Kardinalitäten und Constraints sind konsistent.",
+          "beschreibung": "Beide Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) N:1 Mitglied-Trainingsgruppe durch training_group_id in members (NOT NULL, da jedes Mitglied genau einer Gruppe angehört); (2) N:1 Trainingsgruppe-Trainer durch trainer_id in training_groups (NOT NULL, da jede Gruppe genau einen Trainer hat). Die Kardinalitäten sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln. Keine Transitivabhängigkeiten vorhanden.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, es gibt keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist normalisiert und wartbar.",
           "korrekturanweisung": ""
         }
       ],
@@ -504,25 +492,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem ER-Modell (Mitglied, Trainingsgruppe, Trainer) sind als Tabellen implementiert. Die Abbildung ist vollständig und konsistent.",
+          "beschreibung": "Alle drei Entitäten aus dem ER-Modell (Mitglied, Trainingsgruppe, Trainer) sind als Tabellen implementiert. Die Zuordnung ist korrekt: Mitglied → members, Trainingsgruppe → training_groups, Trainer → trainers.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt: members (firstname, lastname, birthdate, joindate, email, phone, is_active, training_group_id), training_groups (name, weekday, time, location, trainer_id), trainers (firstname, lastname, email, phone). Namenskonventionen (snake_case, englisch) sind eingehalten.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt benannt nach Konvention (snake_case, englisch): firstname, lastname, birthdate, joindate, email, phone, is_active für members; name, weekday, time, location für training_groups; firstname, lastname, email, phone für trainers. Die Attribute sind korrekt typisiert (VARCHAR für Texte, DATE für Daten, BOOLEAN für is_active).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) N:1 Mitglied→Trainingsgruppe durch members.training_group_id (NOT NULL), (2) N:1 Trainingsgruppe→Trainer durch training_groups.trainer_id (NOT NULL). Kardinalitäten und Constraints sind konsistent.",
+          "beschreibung": "Beide Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) N:1 Mitglied-Trainingsgruppe durch training_group_id in members (NOT NULL, da jedes Mitglied genau einer Gruppe angehört); (2) N:1 Trainingsgruppe-Trainer durch trainer_id in training_groups (NOT NULL, da jede Gruppe genau einen Trainer hat). Die Kardinalitäten sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln. Keine Transitivabhängigkeiten vorhanden.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, es gibt keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist normalisiert und wartbar.",
           "korrekturanweisung": ""
         }
       ],
@@ -533,33 +521,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12583,
-    "total_output_tokens": 3641,
-    "total_tokens": 16224,
+    "total_input_tokens": 12395,
+    "total_output_tokens": 3627,
+    "total_tokens": 16022,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1487,
-        "output_tokens": 879,
+        "output_tokens": 882,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2341,
-        "output_tokens": 980,
+        "input_tokens": 2344,
+        "output_tokens": 907,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3461,
+        "input_tokens": 3364,
         "output_tokens": 970,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5294,
-        "output_tokens": 812,
+        "input_tokens": 5200,
+        "output_tokens": 868,
         "cost_usd": 0.0
       }
     },
@@ -570,7 +558,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1487,
-        "output_tokens": 879,
+        "output_tokens": 882,
         "cost_usd": 0.0
       },
       {
@@ -578,8 +566,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2341,
-        "output_tokens": 980,
+        "input_tokens": 2344,
+        "output_tokens": 907,
         "cost_usd": 0.0
       },
       {
@@ -587,7 +575,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3461,
+        "input_tokens": 3364,
         "output_tokens": 970,
         "cost_usd": 0.0
       },
@@ -596,8 +584,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5294,
-        "output_tokens": 812,
+        "input_tokens": 5200,
+        "output_tokens": 868,
         "cost_usd": 0.0
       }
     ]

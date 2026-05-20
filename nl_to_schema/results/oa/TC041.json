@@ -2,44 +2,54 @@
   "testfall_id": "TC041",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.6991412958626073,
-  "score_gesamt": 0.8194847775175644,
+  "score_semantisch": 0.35743589743589743,
+  "score_gesamt": 0.6144615384615385,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 7,
-    "pk_tabellen_mit_pk": 7,
-    "fk_referenzen_gesamt": 6,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 8,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.8571428571428571,
-      "recall": 0.8571428571428571,
-      "f1": 0.8571428571428571,
-      "matched": 6,
-      "nur_in_referenz": 1,
-      "nur_in_generiert": 1
+      "precision": 0.5,
+      "recall": 0.5714285714285714,
+      "f1": 0.5333333333333333,
+      "matched": 4,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 4
     },
     "attribut": {
-      "precision": 0.6071428571428571,
-      "recall": 0.5151515151515151,
-      "f1": 0.5573770491803278,
-      "matched": 17,
-      "nur_in_referenz": 16,
-      "nur_in_generiert": 11
+      "precision": 0.28125,
+      "recall": 0.2727272727272727,
+      "f1": 0.2769230769230769,
+      "matched": 9,
+      "nur_in_referenz": 24,
+      "nur_in_generiert": 23
     },
     "beziehung": {
-      "recall": 0.6666666666666666,
-      "matched": 4,
-      "nur_in_referenz": 2,
+      "recall": 0.16666666666666666,
+      "matched": 1,
+      "nur_in_referenz": 5,
       "nur_in_generiert": 0
     }
   },
   "abweichungen": [
     {
+      "element": "course_instructors",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
       "element": "course_offerings",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations",
       "typ": "tabelle",
       "fehlerklasse": null
     },
@@ -84,7 +94,22 @@
       "fehlerklasse": null
     },
     {
+      "element": "courses.duration_days",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "course_instructors.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_instructors.course_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_instructors.instructor_id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -124,12 +149,52 @@
       "fehlerklasse": null
     },
     {
+      "element": "registrations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.participant_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.course_offering_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.registration_timestamp",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_instructors → courses",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "course_instructors → instructors",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
       "element": "course_offerings → courses",
       "typ": "beziehung",
       "fehlerklasse": null
     },
     {
       "element": "registrations → course_offerings",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "registrations → participants",
       "typ": "beziehung",
       "fehlerklasse": null
     }
@@ -185,7 +250,7 @@
               "nullable": false
             },
             {
-              "name": "duration_hours",
+              "name": "duration",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -239,7 +304,7 @@
               "nullable": true
             },
             {
-              "name": "seats",
+              "name": "capacity",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -275,13 +340,83 @@
               "nullable": false
             },
             {
-              "name": "contact_info",
+              "name": "contact",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": []
+        },
+        {
+          "name": "course_assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "course_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "instructor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "course_id",
+              "references_table": "courses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "instructor_id",
+              "references_table": "instructors",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "course_instance_assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "course_instance_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "instructor_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "course_instance_id",
+              "references_table": "course_instances",
+              "references_column": "id"
+            },
+            {
+              "from_column": "instructor_id",
+              "references_table": "instructors",
+              "references_column": "id"
+            }
+          ]
         },
         {
           "name": "participants",
@@ -299,7 +434,7 @@
               "nullable": false
             },
             {
-              "name": "contact_info",
+              "name": "contact",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -308,7 +443,7 @@
           "foreign_keys": []
         },
         {
-          "name": "registrations",
+          "name": "enrollments",
           "columns": [
             {
               "name": "id",
@@ -329,7 +464,7 @@
               "nullable": false
             },
             {
-              "name": "registration_date",
+              "name": "enrollment_date",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
@@ -350,35 +485,6 @@
             {
               "from_column": "course_instance_id",
               "references_table": "course_instances",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "course_instructors",
-          "columns": [
-            {
-              "name": "course_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "instructor_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "course_id",
-              "references_table": "courses",
-              "references_column": "id"
-            },
-            {
-              "from_column": "instructor_id",
-              "references_table": "instructors",
               "references_column": "id"
             }
           ]
@@ -458,7 +564,7 @@
           "von": "Teilnehmender",
           "zu": "Anmeldung",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Teilnehmender kann mehrere Anmeldungen zu verschiedenen Kursdurchführungen haben."
+          "beschreibung": "Ein Teilnehmender kann sich für mehrere Kursdurchführungen anmelden, d.h. mehrere Anmeldungen haben."
         },
         {
           "von": "Kursdurchführung",
@@ -475,13 +581,13 @@
         {
           "von": "Kurs",
           "zu": "Fachbereich",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Jeder Kurs gehört zu genau einem Fachbereich."
+          "kardinalitaet": "M:1",
+          "beschreibung": "Jeder Kurs gehört zu einem Fachbereich; ein Fachbereich kann mehrere Kurse enthalten."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar ist, ob Lehrkräfte direkt für einen ganzen Kurs zuständig sind oder eher für einzelne Termine (Kursdurchführungen). Der Text sagt: 'Nicht ganz klar geregelt ist bisher, ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Termine'. Die Anforderung lautet, zunächst die übliche Planung abzubilden, aber diese ist nicht spezifiziert.",
+          "beschreibung": "Unklar ist, ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Kursdurchführungen (Termine). Der Text erwähnt, dass dies 'nicht ganz klar geregelt' ist und zunächst die 'übliche Planung des Instituts' abgebildet werden soll, ohne diese konkret zu definieren.",
           "betroffene_elemente": [
             "Lehrkraft",
             "Kurs",
@@ -489,23 +595,23 @@
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob der Ort (Durchführungsort) ein Attribut der Kursdurchführung ist oder ob es eine separate Entität 'Ort' oder 'Standort' gibt. Der Text sagt 'an verschiedenen Orten', aber es ist nicht klar, ob Orte wiederverwendbar sind oder wie sie zu verwalten sind.",
-          "betroffene_elemente": [
-            "Kursdurchführung",
-            "Ort"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, welche Attribute die Entität 'Teilnehmender' konkret haben soll. Der Text nennt nur implizit, dass Teilnehmende sich anmelden, aber keine spezifischen persönlichen Daten.",
-          "betroffene_elemente": [
-            "Teilnehmender"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob die Beziehung zwischen Lehrkraft und Kursdurchführung modelliert werden soll (falls Lehrkräfte für einzelne Termine zuständig sind) oder nur zwischen Lehrkraft und Kurs.",
+          "beschreibung": "Unklar ist, ob die Beziehung zwischen Lehrkraft und Kurs/Kursdurchführung eine direkte M:N-Beziehung ist oder ob eine Zwischentabelle (z.B. 'Kurszuweisung') notwendig ist, um zusätzliche Informationen wie Zuständigkeitsbereich oder Zeitraum zu speichern.",
           "betroffene_elemente": [
             "Lehrkraft",
+            "Kurs",
             "Kursdurchführung"
+          ]
+        },
+        {
+          "beschreibung": "Der Ort wird als Attribut der Kursdurchführung erwähnt ('an verschiedenen Orten'), aber es ist unklar, ob Orte als separate Entität modelliert werden sollen oder nur als einfaches Textfeld in der Kursdurchführung.",
+          "betroffene_elemente": [
+            "Kursdurchführung"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, welche Attribute die Entität 'Teilnehmender' konkret haben soll. Der Text erwähnt nur implizit, dass Teilnehmende sich anmelden, gibt aber keine Details zu erforderlichen Daten wie Name, Adresse, Kontaktdaten etc.",
+          "betroffene_elemente": [
+            "Teilnehmender"
           ]
         }
       ]
@@ -641,6 +747,52 @@
           ]
         },
         {
+          "name": "Kurszuweisung",
+          "attribute": [
+            {
+              "name": "kurszuweisung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kurs_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lehrkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Durchfuehrungszuweisung",
+          "attribute": [
+            {
+              "name": "durchfuehrungszuweisung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "durchfuehrung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "lehrkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
           "name": "Teilnehmender",
           "attribute": [
             {
@@ -714,8 +866,26 @@
         },
         {
           "von": "Kurs",
-          "zu": "Lehrkraft",
-          "kardinalitaet": "M:N",
+          "zu": "Kurszuweisung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Lehrkraft",
+          "zu": "Kurszuweisung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kursdurchführung",
+          "zu": "Durchfuehrungszuweisung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Lehrkraft",
+          "zu": "Durchfuehrungszuweisung",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
@@ -733,7 +903,7 @@
       ]
     },
     "critic_report": {
-      "qualitaet_ausreichend": false,
+      "qualitaet_ausreichend": true,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -755,38 +925,38 @@
         },
         {
           "criterion": "entitaets_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Die Entität 'Fachbereich' ist im LogicalSchema als 'departments' vorhanden, aber die Beziehung zwischen Lehrkraft und Kursdurchführung ist nicht modelliert. Das ERModell zeigt nur eine M:N-Beziehung zwischen Kurs und Lehrkraft (course_instructors), nicht zwischen Lehrkraft und Kursdurchführung. Der Anforderungstext ist hier mehrdeutig ('ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Termine'), aber das ERModell hat sich für die Kurs-Ebene entschieden. Das LogicalSchema folgt dieser Entscheidung korrekt. Allerdings fehlt eine explizite Dokumentation dieser Designentscheidung. Kritischer: Die Anmeldung (registrations) ist als eigenständige Entität mit eigenem PK modelliert, obwohl sie semantisch eine reine Assoziationstabelle für die M:N-Beziehung zwischen Teilnehmender und Kursdurchführung ist. Dies ist nicht falsch, aber ungewöhnlich und könnte zu Redundanz führen.",
-          "korrekturanweisung": "Überprüfen Sie, ob 'registrations' wirklich eine eigenständige Entität mit eigenem Primärschlüssel sein soll oder ob ein zusammengesetzter Primärschlüssel (participant_id, course_instance_id) ausreichend wäre. Falls Anmeldungen als Entität mit zusätzlichen Attributen (registration_date, status) modelliert werden sollen, ist die aktuelle Struktur akzeptabel, sollte aber dokumentiert werden."
+          "erfuellt": true,
+          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: departments (Fachbereich), courses (Kurs), course_instances (Kursdurchführung), instructors (Lehrkraft), course_assignments (Kurszuweisung), course_instance_assignments (Durchfuehrungszuweisung), participants (Teilnehmender), enrollments (Anmeldung). Die Namenskonvention (Plural, snake_case, englisch) ist konsistent eingehalten.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Mehrere Attribute aus dem RequirementsReport und ERModell sind nicht oder falsch benannt im LogicalSchema: (1) 'duration_hours' im LogicalSchema vs. 'dauer' im ERModell – die Einheit ist unklar (Stunden vs. allgemein). (2) 'seats' im LogicalSchema vs. 'plaetze' im ERModell – Namenskonvention ist englisch, aber die Semantik ist korrekt. (3) 'is_released' im LogicalSchema vs. 'freigabestatus' im ERModell – beide sind semantisch äquivalent. (4) Kritischer: Das Attribut 'contact_info' in 'instructors' und 'participants' ist zu vage. Der RequirementsReport nennt 'Kontaktdaten', aber nicht spezifiziert, ob dies E-Mail, Telefon, Adresse oder eine Kombination ist. Dies ist ein Attribut-Vollständigkeitsproblem, da die genaue Struktur der Kontaktdaten nicht definiert ist.",
-          "korrekturanweisung": "Klären Sie die Struktur von 'contact_info': Sollte es in spezifische Felder wie 'email', 'phone', 'address' aufgeteilt werden, oder bleibt es ein generisches VARCHAR-Feld? Falls letzteres, dokumentieren Sie das Format. Überprüfen Sie auch, ob 'duration_hours' die richtige Einheit ist oder ob 'duration_minutes' oder ein anderes Format besser passt."
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt typisiert. Beispiele: courses.title, courses.description, courses.duration, course_instances.startdate, course_instances.enddate, course_instances.capacity, course_instances.is_released, enrollments.enrollment_date, enrollments.status. Optionale Attribute (location, contact, description) sind korrekt als nullable markiert.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen Lehrkraft und Kursdurchführung ist nicht modelliert. Das ERModell zeigt nur eine M:N-Beziehung zwischen Kurs und Lehrkraft. Der Anforderungstext sagt: 'Die Kurse werden von Lehrkräften betreut. Eine Lehrkraft kann mehrere Kurse übernehmen, und ein Kurs kann je nach Planung auch von mehreren Lehrkräften begleitet werden.' Dies ist im LogicalSchema korrekt als 'course_instructors' abgebildet. ABER: Der Text enthält auch die Unklarheit: 'Nicht ganz klar geregelt ist bisher, ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Termine'. Das LogicalSchema hat sich implizit für die Kurs-Ebene entschieden, ohne diese Designentscheidung zu dokumentieren oder zu validieren. Dies ist ein konzeptioneller Fehler im ERModell (cmd), nicht im LogicalSchema selbst. Das LogicalSchema folgt dem ERModell korrekt. Allerdings: Die Beziehung zwischen Anmeldung und Kursdurchführung ist redundant modelliert – 'registrations' hat bereits 'course_instance_id', und die Beziehung ist 1:N. Dies ist korrekt, aber die Anmeldung sollte auch eine Beziehung zu Teilnehmender haben, was sie hat (participant_id). Die Struktur ist konsistent.",
-          "korrekturanweisung": "Validieren Sie mit dem Anforderungssteller, ob Lehrkräfte auf Kurs-Ebene oder auf Kursdurchführungs-Ebene zugeordnet werden sollen. Falls auf Kursdurchführungs-Ebene, müssen Sie eine neue Tabelle 'course_instance_instructors' hinzufügen und 'course_instructors' möglicherweise entfernen oder umstrukturieren."
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N (departments→courses, courses→course_instances, courses→course_assignments, instructors→course_assignments, course_instances→course_instance_assignments, instructors→course_instance_assignments, course_instances→enrollments, participants→enrollments). Die Kardinalitäten entsprechen den Anforderungen. Die Zwischentabellen (course_assignments, course_instance_assignments) sind korrekt für M:N-Beziehungen modelliert.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, keine Teilabhängigkeiten, und keine transitiven Abhängigkeiten. Die Fremdschlüssel sind korrekt platziert. Die Assoziationstabelle 'course_instructors' ist korrekt normalisiert mit zusammengesetztem Primärschlüssel. Die Tabelle 'registrations' ist ebenfalls normalisiert, auch wenn sie ein eigenständiges PK-Attribut hat.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Redundanzen erkannt. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Transitive Abhängigkeiten sind nicht vorhanden. Die Zwischentabellen (course_assignments, course_instance_assignments) sind korrekt normalisiert und enthalten nur Fremdschlüssel und einen künstlichen PK.",
           "korrekturanweisung": ""
         }
       ],
-      "origin_step": "cmd"
+      "origin_step": null
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 3,
+    "iteration": 2,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE departments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_departments PRIMARY KEY (id)\n);\n\nCREATE TABLE courses (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    duration_hours INTEGER NOT NULL,\n    department_id INTEGER NOT NULL,\n    CONSTRAINT pk_courses PRIMARY KEY (id),\n    CONSTRAINT fk_courses_department_id FOREIGN KEY (department_id) REFERENCES departments (id)\n);\n\nCREATE TABLE course_instances (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE NOT NULL,\n    location VARCHAR(255),\n    seats INTEGER NOT NULL,\n    is_released BOOLEAN NOT NULL,\n    CONSTRAINT pk_course_instances PRIMARY KEY (id),\n    CONSTRAINT fk_course_instances_course_id FOREIGN KEY (course_id) REFERENCES courses (id)\n);\n\nCREATE TABLE instructors (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_info VARCHAR(255),\n    CONSTRAINT pk_instructors PRIMARY KEY (id)\n);\n\nCREATE TABLE course_instructors (\n    course_id INTEGER NOT NULL,\n    instructor_id INTEGER NOT NULL,\n    CONSTRAINT pk_course_instructors PRIMARY KEY (course_id, instructor_id),\n    CONSTRAINT fk_course_instructors_course_id FOREIGN KEY (course_id) REFERENCES courses (id),\n    CONSTRAINT fk_course_instructors_instructor_id FOREIGN KEY (instructor_id) REFERENCES instructors (id)\n);\n\nCREATE TABLE participants (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_info VARCHAR(255),\n    CONSTRAINT pk_participants PRIMARY KEY (id)\n);\n\nCREATE TABLE registrations (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    course_instance_id INTEGER NOT NULL,\n    registration_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_registrations PRIMARY KEY (id),\n    CONSTRAINT fk_registrations_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_registrations_course_instance_id FOREIGN KEY (course_instance_id) REFERENCES course_instances (id)\n);\n",
+    "final_ddl": "CREATE TABLE departments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_departments PRIMARY KEY (id)\n);\n\nCREATE TABLE courses (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    duration INTEGER NOT NULL,\n    department_id INTEGER NOT NULL,\n    CONSTRAINT pk_courses PRIMARY KEY (id),\n    CONSTRAINT fk_courses_department_id FOREIGN KEY (department_id) REFERENCES departments (id)\n);\n\nCREATE TABLE instructors (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact VARCHAR(255),\n    CONSTRAINT pk_instructors PRIMARY KEY (id)\n);\n\nCREATE TABLE course_assignments (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    instructor_id INTEGER NOT NULL,\n    CONSTRAINT pk_course_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_course_assignments_course_id FOREIGN KEY (course_id) REFERENCES courses (id),\n    CONSTRAINT fk_course_assignments_instructor_id FOREIGN KEY (instructor_id) REFERENCES instructors (id)\n);\n\nCREATE TABLE course_instances (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE NOT NULL,\n    location VARCHAR(255),\n    capacity INTEGER NOT NULL,\n    is_released BOOLEAN NOT NULL,\n    CONSTRAINT pk_course_instances PRIMARY KEY (id),\n    CONSTRAINT fk_course_instances_course_id FOREIGN KEY (course_id) REFERENCES courses (id)\n);\n\nCREATE TABLE course_instance_assignments (\n    id INTEGER NOT NULL,\n    course_instance_id INTEGER NOT NULL,\n    instructor_id INTEGER NOT NULL,\n    CONSTRAINT pk_course_instance_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_course_instance_assignments_course_instance_id FOREIGN KEY (course_instance_id) REFERENCES course_instances (id),\n    CONSTRAINT fk_course_instance_assignments_instructor_id FOREIGN KEY (instructor_id) REFERENCES instructors (id)\n);\n\nCREATE TABLE participants (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact VARCHAR(255),\n    CONSTRAINT pk_participants PRIMARY KEY (id)\n);\n\nCREATE TABLE enrollments (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    course_instance_id INTEGER NOT NULL,\n    enrollment_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_enrollments PRIMARY KEY (id),\n    CONSTRAINT fk_enrollments_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_enrollments_course_instance_id FOREIGN KEY (course_instance_id) REFERENCES course_instances (id)\n);\n",
     "final_critic_report": {
-      "qualitaet_ausreichend": false,
+      "qualitaet_ausreichend": true,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -808,63 +978,63 @@
         },
         {
           "criterion": "entitaets_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Die Entität 'Fachbereich' ist im LogicalSchema als 'departments' vorhanden, aber die Beziehung zwischen Lehrkraft und Kursdurchführung ist nicht modelliert. Das ERModell zeigt nur eine M:N-Beziehung zwischen Kurs und Lehrkraft (course_instructors), nicht zwischen Lehrkraft und Kursdurchführung. Der Anforderungstext ist hier mehrdeutig ('ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Termine'), aber das ERModell hat sich für die Kurs-Ebene entschieden. Das LogicalSchema folgt dieser Entscheidung korrekt. Allerdings fehlt eine explizite Dokumentation dieser Designentscheidung. Kritischer: Die Anmeldung (registrations) ist als eigenständige Entität mit eigenem PK modelliert, obwohl sie semantisch eine reine Assoziationstabelle für die M:N-Beziehung zwischen Teilnehmender und Kursdurchführung ist. Dies ist nicht falsch, aber ungewöhnlich und könnte zu Redundanz führen.",
-          "korrekturanweisung": "Überprüfen Sie, ob 'registrations' wirklich eine eigenständige Entität mit eigenem Primärschlüssel sein soll oder ob ein zusammengesetzter Primärschlüssel (participant_id, course_instance_id) ausreichend wäre. Falls Anmeldungen als Entität mit zusätzlichen Attributen (registration_date, status) modelliert werden sollen, ist die aktuelle Struktur akzeptabel, sollte aber dokumentiert werden."
+          "erfuellt": true,
+          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: departments (Fachbereich), courses (Kurs), course_instances (Kursdurchführung), instructors (Lehrkraft), course_assignments (Kurszuweisung), course_instance_assignments (Durchfuehrungszuweisung), participants (Teilnehmender), enrollments (Anmeldung). Die Namenskonvention (Plural, snake_case, englisch) ist konsistent eingehalten.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Mehrere Attribute aus dem RequirementsReport und ERModell sind nicht oder falsch benannt im LogicalSchema: (1) 'duration_hours' im LogicalSchema vs. 'dauer' im ERModell – die Einheit ist unklar (Stunden vs. allgemein). (2) 'seats' im LogicalSchema vs. 'plaetze' im ERModell – Namenskonvention ist englisch, aber die Semantik ist korrekt. (3) 'is_released' im LogicalSchema vs. 'freigabestatus' im ERModell – beide sind semantisch äquivalent. (4) Kritischer: Das Attribut 'contact_info' in 'instructors' und 'participants' ist zu vage. Der RequirementsReport nennt 'Kontaktdaten', aber nicht spezifiziert, ob dies E-Mail, Telefon, Adresse oder eine Kombination ist. Dies ist ein Attribut-Vollständigkeitsproblem, da die genaue Struktur der Kontaktdaten nicht definiert ist.",
-          "korrekturanweisung": "Klären Sie die Struktur von 'contact_info': Sollte es in spezifische Felder wie 'email', 'phone', 'address' aufgeteilt werden, oder bleibt es ein generisches VARCHAR-Feld? Falls letzteres, dokumentieren Sie das Format. Überprüfen Sie auch, ob 'duration_hours' die richtige Einheit ist oder ob 'duration_minutes' oder ein anderes Format besser passt."
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt typisiert. Beispiele: courses.title, courses.description, courses.duration, course_instances.startdate, course_instances.enddate, course_instances.capacity, course_instances.is_released, enrollments.enrollment_date, enrollments.status. Optionale Attribute (location, contact, description) sind korrekt als nullable markiert.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen Lehrkraft und Kursdurchführung ist nicht modelliert. Das ERModell zeigt nur eine M:N-Beziehung zwischen Kurs und Lehrkraft. Der Anforderungstext sagt: 'Die Kurse werden von Lehrkräften betreut. Eine Lehrkraft kann mehrere Kurse übernehmen, und ein Kurs kann je nach Planung auch von mehreren Lehrkräften begleitet werden.' Dies ist im LogicalSchema korrekt als 'course_instructors' abgebildet. ABER: Der Text enthält auch die Unklarheit: 'Nicht ganz klar geregelt ist bisher, ob eine Lehrkraft direkt für einen ganzen Kurs zuständig ist oder eher für einzelne Termine'. Das LogicalSchema hat sich implizit für die Kurs-Ebene entschieden, ohne diese Designentscheidung zu dokumentieren oder zu validieren. Dies ist ein konzeptioneller Fehler im ERModell (cmd), nicht im LogicalSchema selbst. Das LogicalSchema folgt dem ERModell korrekt. Allerdings: Die Beziehung zwischen Anmeldung und Kursdurchführung ist redundant modelliert – 'registrations' hat bereits 'course_instance_id', und die Beziehung ist 1:N. Dies ist korrekt, aber die Anmeldung sollte auch eine Beziehung zu Teilnehmender haben, was sie hat (participant_id). Die Struktur ist konsistent.",
-          "korrekturanweisung": "Validieren Sie mit dem Anforderungssteller, ob Lehrkräfte auf Kurs-Ebene oder auf Kursdurchführungs-Ebene zugeordnet werden sollen. Falls auf Kursdurchführungs-Ebene, müssen Sie eine neue Tabelle 'course_instance_instructors' hinzufügen und 'course_instructors' möglicherweise entfernen oder umstrukturieren."
+          "erfuellt": true,
+          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N (departments→courses, courses→course_instances, courses→course_assignments, instructors→course_assignments, course_instances→course_instance_assignments, instructors→course_instance_assignments, course_instances→enrollments, participants→enrollments). Die Kardinalitäten entsprechen den Anforderungen. Die Zwischentabellen (course_assignments, course_instance_assignments) sind korrekt für M:N-Beziehungen modelliert.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, keine Teilabhängigkeiten, und keine transitiven Abhängigkeiten. Die Fremdschlüssel sind korrekt platziert. Die Assoziationstabelle 'course_instructors' ist korrekt normalisiert mit zusammengesetztem Primärschlüssel. Die Tabelle 'registrations' ist ebenfalls normalisiert, auch wenn sie ein eigenständiges PK-Attribut hat.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Redundanzen erkannt. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Transitive Abhängigkeiten sind nicht vorhanden. Die Zwischentabellen (course_assignments, course_instance_assignments) sind korrekt normalisiert und enthalten nur Fremdschlüssel und einen künstlichen PK.",
           "korrekturanweisung": ""
         }
       ],
-      "origin_step": "cmd"
+      "origin_step": null
     },
     "error": null,
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 10,
-    "total_input_tokens": 50379,
-    "total_output_tokens": 16662,
-    "total_tokens": 67041,
+    "total_calls": 7,
+    "total_input_tokens": 37074,
+    "total_output_tokens": 11360,
+    "total_tokens": 48434,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1672,
-        "output_tokens": 1528,
+        "output_tokens": 1546,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 3,
-        "input_tokens": 9795,
-        "output_tokens": 4455,
+        "calls": 2,
+        "input_tokens": 8960,
+        "output_tokens": 3913,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 3,
-        "input_tokens": 16533,
-        "output_tokens": 4856,
+        "calls": 2,
+        "input_tokens": 10635,
+        "output_tokens": 3400,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 3,
-        "input_tokens": 22379,
-        "output_tokens": 5823,
+        "calls": 2,
+        "input_tokens": 15807,
+        "output_tokens": 2501,
         "cost_usd": 0.0
       }
     },
@@ -875,7 +1045,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1672,
-        "output_tokens": 1528,
+        "output_tokens": 1546,
         "cost_usd": 0.0
       },
       {
@@ -883,8 +1053,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3265,
-        "output_tokens": 1554,
+        "input_tokens": 3283,
+        "output_tokens": 1638,
         "cost_usd": 0.0
       },
       {
@@ -892,8 +1062,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4324,
-        "output_tokens": 1562,
+        "input_tokens": 4430,
+        "output_tokens": 1566,
         "cost_usd": 0.0
       },
       {
@@ -901,8 +1071,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7488,
-        "output_tokens": 2130,
+        "input_tokens": 7616,
+        "output_tokens": 1485,
         "cost_usd": 0.0
       },
       {
@@ -910,8 +1080,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3265,
-        "output_tokens": 1450,
+        "input_tokens": 5677,
+        "output_tokens": 2275,
         "cost_usd": 0.0
       },
       {
@@ -919,8 +1089,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 6301,
-        "output_tokens": 1726,
+        "input_tokens": 6205,
+        "output_tokens": 1834,
         "cost_usd": 0.0
       },
       {
@@ -928,35 +1098,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7524,
-        "output_tokens": 1790,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "conceptual_model_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3265,
-        "output_tokens": 1451,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "logical_schema_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5908,
-        "output_tokens": 1568,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "oa_validator",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7367,
-        "output_tokens": 1903,
+        "input_tokens": 8191,
+        "output_tokens": 1016,
         "cost_usd": 0.0
       }
     ]

@@ -2,8 +2,8 @@
   "testfall_id": "TC088",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.21590909090909094,
-  "score_gesamt": 0.5295454545454545,
+  "score_semantisch": 0.21119934282584885,
+  "score_gesamt": 0.5267196056955094,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 12
     },
     "attribut": {
-      "precision": 0.1956521739130435,
-      "recall": 0.21428571428571427,
-      "f1": 0.20454545454545456,
-      "matched": 18,
-      "nur_in_referenz": 66,
-      "nur_in_generiert": 74
+      "precision": 0.1951219512195122,
+      "recall": 0.19047619047619047,
+      "f1": 0.1927710843373494,
+      "matched": 16,
+      "nur_in_referenz": 68,
+      "nur_in_generiert": 66
     },
     "beziehung": {
       "recall": 0.045454545454545456,
@@ -94,6 +94,11 @@
       "fehlerklasse": null
     },
     {
+      "element": "companies.company_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "companies.country_id",
       "typ": "attribut",
       "fehlerklasse": null
@@ -105,6 +110,16 @@
     },
     {
       "element": "companies.is_active",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "shipments.shipment_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "shipments.transport_mode",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -125,11 +140,6 @@
     },
     {
       "element": "contacts.is_active",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "shipments_trade_orders.id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -557,13 +567,13 @@
               "nullable": true
             },
             {
-              "name": "city",
+              "name": "postal_code",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "postal_code",
+              "name": "city",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -576,12 +586,6 @@
             },
             {
               "name": "email",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "company_type",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -621,36 +625,30 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "department",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": []
         },
         {
-          "name": "companies_contacts",
+          "name": "company_contacts",
           "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
             {
               "name": "company_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
             },
             {
               "name": "contact_id",
               "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "responsibility_area",
-              "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -682,19 +680,13 @@
               "nullable": false
             },
             {
-              "name": "description",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
               "name": "commodity_group",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "origin_country",
+              "name": "country_of_origin",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -724,14 +716,14 @@
               "nullable": false
             },
             {
-              "name": "company_id",
-              "type": "INTEGER",
+              "name": "country",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "country",
-              "type": "VARCHAR",
+              "name": "company_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             },
@@ -758,12 +750,6 @@
               "type": "DATE",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "created_at",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -778,6 +764,48 @@
               "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "incoterms",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "transport_modes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "purchase_orders",
@@ -795,7 +823,7 @@
               "nullable": false
             },
             {
-              "name": "supplier_id",
+              "name": "company_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -813,100 +841,32 @@
               "nullable": false
             },
             {
-              "name": "currency",
-              "type": "VARCHAR",
+              "name": "incoterm_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "payment_terms",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "incoterms",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "transport_type",
-              "type": "VARCHAR",
+              "name": "transport_mode_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "supplier_id",
+              "from_column": "company_id",
               "references_table": "companies",
               "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "sales_orders",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
             },
             {
-              "name": "order_number",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
+              "from_column": "incoterm_id",
+              "references_table": "incoterms",
+              "references_column": "id"
             },
             {
-              "name": "customer_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "status",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "order_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "currency",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "payment_terms",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "incoterms",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "transport_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "customer_id",
-              "references_table": "companies",
+              "from_column": "transport_mode_id",
+              "references_table": "transport_modes",
               "references_column": "id"
             }
           ]
@@ -949,12 +909,6 @@
               "type": "DECIMAL",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "item_number",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -966,6 +920,70 @@
             {
               "from_column": "article_id",
               "references_table": "articles",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "sales_orders",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "order_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "company_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "order_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "incoterm_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "transport_mode_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "company_id",
+              "references_table": "companies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "incoterm_id",
+              "references_table": "incoterms",
+              "references_column": "id"
+            },
+            {
+              "from_column": "transport_mode_id",
+              "references_table": "transport_modes",
               "references_column": "id"
             }
           ]
@@ -1006,12 +1024,6 @@
             {
               "name": "discount",
               "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "item_number",
-              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
@@ -1067,24 +1079,6 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "transport_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "incoterms",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "shipment_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": []
@@ -1093,15 +1087,21 @@
           "name": "shipment_purchase_orders",
           "columns": [
             {
-              "name": "shipment_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
+              "name": "shipment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "purchase_order_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
             }
           ],
@@ -1122,15 +1122,21 @@
           "name": "shipment_sales_orders",
           "columns": [
             {
-              "name": "shipment_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
+              "name": "shipment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "sales_order_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
             }
           ],
@@ -1173,27 +1179,15 @@
               "type": "DATE",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "file_path",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "description",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": []
         },
         {
-          "name": "purchase_order_documents",
+          "name": "document_purchase_orders",
           "columns": [
             {
-              "name": "purchase_order_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
@@ -1201,106 +1195,60 @@
             {
               "name": "document_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "purchase_order_id",
+              "type": "INTEGER",
+              "primary_key": false,
               "nullable": false
             }
           ],
           "foreign_keys": [
+            {
+              "from_column": "document_id",
+              "references_table": "documents",
+              "references_column": "id"
+            },
             {
               "from_column": "purchase_order_id",
               "references_table": "purchase_orders",
               "references_column": "id"
-            },
-            {
-              "from_column": "document_id",
-              "references_table": "documents",
-              "references_column": "id"
             }
           ]
         },
         {
-          "name": "sales_order_documents",
+          "name": "document_sales_orders",
           "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "document_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
             {
               "name": "sales_order_id",
               "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "document_id",
-              "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
             }
           ],
           "foreign_keys": [
+            {
+              "from_column": "document_id",
+              "references_table": "documents",
+              "references_column": "id"
+            },
             {
               "from_column": "sales_order_id",
               "references_table": "sales_orders",
-              "references_column": "id"
-            },
-            {
-              "from_column": "document_id",
-              "references_table": "documents",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "purchase_order_item_documents",
-          "columns": [
-            {
-              "name": "purchase_order_item_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "document_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "purchase_order_item_id",
-              "references_table": "purchase_order_items",
-              "references_column": "id"
-            },
-            {
-              "from_column": "document_id",
-              "references_table": "documents",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "sales_order_item_documents",
-          "columns": [
-            {
-              "name": "sales_order_item_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "document_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "sales_order_item_id",
-              "references_table": "sales_order_items",
-              "references_column": "id"
-            },
-            {
-              "from_column": "document_id",
-              "references_table": "documents",
               "references_column": "id"
             }
           ]
@@ -1348,7 +1296,7 @@
             "Gültig ab",
             "Gültig bis"
           ],
-          "beschreibung": "Preise für Artikel je nach Land oder Kunde in verschiedenen Währungen mit zeitlicher Gültigkeit"
+          "beschreibung": "Preise für Artikel in verschiedenen Währungen je nach Land oder Kunde mit zeitlicher Gültigkeit"
         },
         {
           "name": "Bestellung",
@@ -1363,7 +1311,7 @@
         {
           "name": "Auftrag",
           "attribute": [
-            "Auftragsnummer",
+            "Auftragnummer",
             "Kunde",
             "Status",
             "Datum"
@@ -1399,11 +1347,24 @@
             "Zielland",
             "Herkunftsland",
             "Währung",
-            "Zahlungsbedingung",
-            "Transportart",
-            "Incoterms"
+            "Zahlungsbedingung"
           ],
-          "beschreibung": "Sendungen für Lieferungen und Bezüge mit Länderangaben, Zahlungsbedingungen und Transportinformationen"
+          "beschreibung": "Sendungen für Lieferungen in verschiedene Länder oder Bezüge aus verschiedenen Ländern"
+        },
+        {
+          "name": "Incoterm",
+          "attribute": [
+            "Bezeichnung",
+            "Code"
+          ],
+          "beschreibung": "Incoterms für Auslandsgeschäfte"
+        },
+        {
+          "name": "Transportart",
+          "attribute": [
+            "Bezeichnung"
+          ],
+          "beschreibung": "Bevorzugte Transportarten für Sendungen"
         },
         {
           "name": "Dokument",
@@ -1429,34 +1390,46 @@
           "beschreibung": "Ein Ansprechpartner kann für mehrere Niederlassungen/Firmen zuständig sein"
         },
         {
-          "von": "Artikel",
-          "zu": "Artikelpreis",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Artikel hat mehrere Preise je nach Land, Kunde und Zeitraum"
-        },
-        {
           "von": "Bestellung",
-          "zu": "Bestellposition",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Eine Bestellung enthält mehrere Positionen"
+          "zu": "Firma",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Bestellung bezieht sich auf einen Lieferanten"
         },
         {
           "von": "Auftrag",
-          "zu": "Auftragsposition",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Auftrag enthält mehrere Positionen"
+          "zu": "Firma",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Auftrag bezieht sich auf einen Geschäftskunden"
+        },
+        {
+          "von": "Bestellposition",
+          "zu": "Bestellung",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Bestellposition gehört zu einer Bestellung"
         },
         {
           "von": "Bestellposition",
           "zu": "Artikel",
-          "kardinalitaet": "M:1",
+          "kardinalitaet": "N:1",
           "beschreibung": "Eine Bestellposition bezieht sich auf einen Artikel"
         },
         {
           "von": "Auftragsposition",
+          "zu": "Auftrag",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Auftragsposition gehört zu einem Auftrag"
+        },
+        {
+          "von": "Auftragsposition",
           "zu": "Artikel",
-          "kardinalitaet": "M:1",
+          "kardinalitaet": "N:1",
           "beschreibung": "Eine Auftragsposition bezieht sich auf einen Artikel"
+        },
+        {
+          "von": "Artikelpreis",
+          "zu": "Artikel",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Artikelpreis bezieht sich auf einen Artikel"
         },
         {
           "von": "Sendung",
@@ -1472,50 +1445,50 @@
         },
         {
           "von": "Bestellung",
-          "zu": "Dokument",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Bestellung kann mehrere Dokumente haben"
+          "zu": "Incoterm",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Bestellung kann einen Incoterm haben"
         },
         {
           "von": "Auftrag",
-          "zu": "Dokument",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Auftrag kann mehrere Dokumente haben"
-        },
-        {
-          "von": "Bestellposition",
-          "zu": "Dokument",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Bestellposition kann mehrere Dokumente haben"
-        },
-        {
-          "von": "Auftragsposition",
-          "zu": "Dokument",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Auftragsposition kann mehrere Dokumente haben"
+          "zu": "Incoterm",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Auftrag kann einen Incoterm haben"
         },
         {
           "von": "Bestellung",
-          "zu": "Firma",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Eine Bestellung bezieht sich auf einen Lieferanten"
+          "zu": "Transportart",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Bestellung kann eine bevorzugte Transportart haben"
         },
         {
           "von": "Auftrag",
-          "zu": "Firma",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Ein Auftrag bezieht sich auf einen Kunden"
+          "zu": "Transportart",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Auftrag kann eine bevorzugte Transportart haben"
+        },
+        {
+          "von": "Dokument",
+          "zu": "Bestellung",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Dokumente können sich auf Bestellungen beziehen (auf Vorgang oder Position)"
+        },
+        {
+          "von": "Dokument",
+          "zu": "Auftrag",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Dokumente können sich auf Aufträge beziehen (auf Vorgang oder Position)"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar, ob alte Preisstände historisch behalten oder überschrieben werden sollen. Nachvollziehbarkeit wird als wünschenswert, aber nicht als Anforderung formuliert.",
+          "beschreibung": "Unklar, ob alte Preisstände überschrieben oder historisch behalten werden sollen. Nachvollziehbarkeit wird als hilfreich erwähnt, aber keine klare Anforderung.",
           "betroffene_elemente": [
             "Artikelpreis"
           ]
         },
         {
-          "beschreibung": "Unklar, ob Dokumente auf Vorgang (Bestellung/Auftrag) oder Position oder beide Ebenen zugeordnet werden sollen. Text sagt: 'fachlich nicht immer sauber getrennt'.",
+          "beschreibung": "Unklar, ob Dokumente auf Vorgänge (Bestellung/Auftrag) oder auf einzelne Positionen bezogen werden oder beides möglich ist. Text sagt: 'Manche Dokumente gelten für den gesamten Vorgang, andere eher für einzelne Positionen, das ist fachlich nicht immer sauber getrennt.'",
           "betroffene_elemente": [
             "Dokument",
             "Bestellung",
@@ -1525,35 +1498,34 @@
           ]
         },
         {
-          "beschreibung": "Unklar, ob Zielland/Herkunftsland einer Sendung direkt erfasst werden soll oder aus Firma, Vorgang oder Sendung abgeleitet werden kann. Text sagt: 'Ob das immer direkt aus Firma, Vorgang oder Sendung kommen soll, ist offen'.",
+          "beschreibung": "Unklar, ob Zielland und Herkunftsland einer Sendung direkt aus der Firma, dem Vorgang (Bestellung/Auftrag) oder der Sendung selbst kommen sollen. Text sagt: 'Ob das immer direkt aus Firma, Vorgang oder Sendung kommen soll, ist offen.'",
           "betroffene_elemente": [
             "Sendung",
+            "Firma",
             "Bestellung",
-            "Auftrag",
+            "Auftrag"
+          ]
+        },
+        {
+          "beschreibung": "Unklar, ob ein Ansprechpartner nur bei einer Firma oder bei mehreren Firmen/Niederlassungen tätig sein kann. Text deutet auf M:N-Beziehung hin ('manchmal ist dieselbe Person für mehrere Niederlassungen zuständig'), aber Struktur ist nicht eindeutig.",
+          "betroffene_elemente": [
+            "Ansprechpartner",
             "Firma"
           ]
         },
         {
-          "beschreibung": "Unklar, ob Währung und Zahlungsbedingung auf Sendungsebene oder auf Positions-/Vorgangsebene erfasst werden sollen.",
-          "betroffene_elemente": [
-            "Sendung",
-            "Bestellung",
-            "Auftrag",
-            "Bestellposition",
-            "Auftragsposition"
-          ]
-        },
-        {
-          "beschreibung": "Unklar, ob ein Ansprechpartner mehrere Funktionen gleichzeitig ausüben kann oder ob die Zuordnung Ansprechpartner-Funktion eindeutig sein soll.",
-          "betroffene_elemente": [
-            "Ansprechpartner"
-          ]
-        },
-        {
-          "beschreibung": "Unklar, ob Niederlassungen als separate Entität modelliert werden sollen oder ob sie Teil der Firma-Stammdaten sind.",
+          "beschreibung": "Unklar, ob 'Niederlassung' eine separate Entität sein sollte oder ob es sich um verschiedene Firmen handelt. Text behandelt es implizit, aber nicht explizit.",
           "betroffene_elemente": [
             "Firma",
             "Ansprechpartner"
+          ]
+        },
+        {
+          "beschreibung": "Unklar, wie Währung und Zahlungsbedingung bei Sendungen mit mehreren Vorgängen (Bestellungen/Aufträgen) zu handhaben sind, wenn diese unterschiedliche Währungen/Bedingungen haben.",
+          "betroffene_elemente": [
+            "Sendung",
+            "Bestellung",
+            "Auftrag"
           ]
         }
       ]
@@ -1588,13 +1560,13 @@
               "pflichtfeld": false
             },
             {
-              "name": "stadt",
+              "name": "plz",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "postleitzahl",
+              "name": "stadt",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1607,12 +1579,6 @@
             },
             {
               "name": "email",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "firmentyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1651,12 +1617,6 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
-            },
-            {
-              "name": "abteilung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -1674,12 +1634,6 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "artikelbezeichnung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             },
             {
               "name": "warengruppe",
@@ -1717,14 +1671,14 @@
               "pflichtfeld": true
             },
             {
-              "name": "firma_id",
-              "datentyp": "INTEGER",
+              "name": "land",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "land",
-              "datentyp": "VARCHAR",
+              "name": "firma_id",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
@@ -1751,10 +1705,44 @@
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Incoterm",
+          "attribute": [
+            {
+              "name": "incoterm_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
             },
             {
-              "name": "erstellt_am",
-              "datentyp": "TIMESTAMP",
+              "name": "code",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Transportart",
+          "attribute": [
+            {
+              "name": "transportart_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1776,7 +1764,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "lieferant_id",
+              "name": "firma_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1788,91 +1776,20 @@
               "pflichtfeld": true
             },
             {
-              "name": "bestelldatum",
+              "name": "datum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "waehrung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "zahlungsbedingung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "incoterms",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "transportart",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Auftrag",
-          "attribute": [
-            {
-              "name": "auftrag_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "auftragsnummer",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "kunde_id",
+              "name": "incoterm_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "status",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "auftragsdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "waehrung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "zahlungsbedingung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "incoterms",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "transportart",
-              "datentyp": "VARCHAR",
+              "name": "transportart_id",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
@@ -1916,9 +1833,50 @@
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Auftrag",
+          "attribute": [
+            {
+              "name": "auftrag_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
             },
             {
-              "name": "positionsnummer",
+              "name": "auftragnummer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "firma_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "incoterm_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "transportart_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1963,12 +1921,6 @@
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": false
-            },
-            {
-              "name": "positionsnummer",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -2010,24 +1962,6 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
-            },
-            {
-              "name": "transportart",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "incoterms",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "sendungsdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -2053,38 +1987,20 @@
               "pflichtfeld": true
             },
             {
-              "name": "dokumentdatum",
+              "name": "datum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "dateipfad",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
         {
-          "name": "AnsprechpartnerFirma",
+          "name": "FirmaAnsprechpartner",
           "attribute": [
             {
-              "name": "ansprechpartner_firma_id",
+              "name": "firma_ansprechpartner_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "ansprechpartner_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
@@ -2094,10 +2010,10 @@
               "pflichtfeld": true
             },
             {
-              "name": "zustaendigkeit",
-              "datentyp": "VARCHAR",
+              "name": "ansprechpartner_id",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             }
           ]
         }
@@ -2106,19 +2022,7 @@
         {
           "von": "Firma",
           "zu": "Ansprechpartner",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Ansprechpartner",
-          "zu": "AnsprechpartnerFirma",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Firma",
-          "zu": "AnsprechpartnerFirma",
-          "kardinalitaet": "1:N",
+          "kardinalitaet": "M:N",
           "beziehungsattribute": []
         },
         {
@@ -2128,8 +2032,38 @@
           "beziehungsattribute": []
         },
         {
+          "von": "Firma",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
           "von": "Bestellung",
           "zu": "Bestellposition",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Artikel",
+          "zu": "Bestellposition",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Incoterm",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Transportart",
+          "zu": "Bestellung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Firma",
+          "zu": "Auftrag",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
@@ -2141,24 +2075,18 @@
         },
         {
           "von": "Artikel",
-          "zu": "Bestellposition",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Artikel",
           "zu": "Auftragsposition",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Firma",
-          "zu": "Bestellung",
+          "von": "Incoterm",
+          "zu": "Auftrag",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Firma",
+          "von": "Transportart",
           "zu": "Auftrag",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
@@ -2176,26 +2104,14 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Bestellung",
-          "zu": "Dokument",
+          "von": "Dokument",
+          "zu": "Bestellung",
           "kardinalitaet": "M:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Auftrag",
-          "zu": "Dokument",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Bestellposition",
-          "zu": "Dokument",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Auftragsposition",
-          "zu": "Dokument",
+          "von": "Dokument",
+          "zu": "Auftrag",
           "kardinalitaet": "M:N",
           "beziehungsattribute": []
         }
@@ -2225,25 +2141,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 10 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: companies, contacts, articles, article_prices, purchase_orders, sales_orders, purchase_order_items, sales_order_items, shipments, documents. Die M:N-Beziehung zwischen Ansprechpartner und Firma ist durch die Junction-Table companies_contacts korrekt modelliert.",
+          "beschreibung": "Alle 12 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: companies, contacts, articles, article_prices, incoterms, transport_modes, purchase_orders, purchase_order_items, sales_orders, sales_order_items, shipments, documents. Die Junction-Tabellen (company_contacts, shipment_purchase_orders, shipment_sales_orders, document_purchase_orders, document_sales_orders) sind ebenfalls vorhanden.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle geforderten Attribute aus dem RequirementsReport sind vorhanden und korrekt benannt nach Konvention (snake_case, englisch, Umlaute ersetzt). Beispiele: company_name, internal_number, commodity_group, origin_country, tariff_number, valid_from, valid_until, created_at, payment_terms, incoterms, transport_type, shipment_number, destination_country, document_type, document_number, document_date, file_path, responsibility_area.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden. Namenskonventionen sind konsistent (snake_case, englisch, Umlaute ersetzt). Beispiele: company_name, internal_number, tariff_number, valid_from, valid_until, payment_terms, shipment_number, document_type, document_number.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 15 Beziehungen aus dem ERModell sind korrekt im LogicalSchema implementiert: 1:N-Beziehungen durch FK, M:N-Beziehungen durch Junction-Tables (companies_contacts, shipment_purchase_orders, shipment_sales_orders, purchase_order_documents, sales_order_documents, purchase_order_item_documents, sales_order_item_documents). Kardinalitäten stimmen überein.",
+          "beschreibung": "Alle 16 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N-Beziehungen durch FK in der N-Seite (z.B. company_id in purchase_orders), M:N-Beziehungen durch Junction-Tabellen (z.B. company_contacts, shipment_purchase_orders). Kardinalitäten stimmen überein.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten. Die article_prices-Tabelle mit valid_from/valid_until und created_at ermöglicht Versionierung und Nachvollziehbarkeit von Preisänderungen, was die Anforderung 'Nachvollziehbarkeit wäre hilfreich' erfüllt. Junction-Tables sind korrekt normalisiert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine nicht-Schlüssel-Attribute hängen von Teilen des Schlüssels ab (2NF erfüllt). (2) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen (3NF erfüllt). Junction-Tabellen sind korrekt normalisiert. article_prices mit zeitlicher Gültigkeit (valid_from, valid_until) ist angemessen strukturiert.",
           "korrekturanweisung": ""
         }
       ],
@@ -2251,9 +2167,9 @@
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 2,
+    "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    internal_number VARCHAR(255) NOT NULL,\n    description VARCHAR(255),\n    commodity_group VARCHAR(255),\n    origin_country VARCHAR(255),\n    tariff_number VARCHAR(255),\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE companies (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    street VARCHAR(255),\n    city VARCHAR(255),\n    postal_code VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    company_type VARCHAR(255),\n    CONSTRAINT pk_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE article_prices (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    company_id INTEGER,\n    country VARCHAR(255),\n    currency VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_article_prices PRIMARY KEY (id),\n    CONSTRAINT fk_article_prices_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_prices_company_id FOREIGN KEY (company_id) REFERENCES companies (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    function VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    department VARCHAR(255),\n    CONSTRAINT pk_contacts PRIMARY KEY (id)\n);\n\nCREATE TABLE companies_contacts (\n    company_id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    responsibility_area VARCHAR(255),\n    CONSTRAINT pk_companies_contacts PRIMARY KEY (company_id, contact_id),\n    CONSTRAINT fk_companies_contacts_company_id FOREIGN KEY (company_id) REFERENCES companies (id),\n    CONSTRAINT fk_companies_contacts_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    document_type VARCHAR(255) NOT NULL,\n    document_number VARCHAR(255) NOT NULL,\n    document_date DATE NOT NULL,\n    file_path VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_documents PRIMARY KEY (id)\n);\n\nCREATE TABLE purchase_orders (\n    id INTEGER NOT NULL,\n    order_number VARCHAR(255) NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    order_date DATE NOT NULL,\n    currency VARCHAR(255),\n    payment_terms VARCHAR(255),\n    incoterms VARCHAR(255),\n    transport_type VARCHAR(255),\n    CONSTRAINT pk_purchase_orders PRIMARY KEY (id),\n    CONSTRAINT fk_purchase_orders_supplier_id FOREIGN KEY (supplier_id) REFERENCES companies (id)\n);\n\nCREATE TABLE purchase_order_documents (\n    purchase_order_id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    CONSTRAINT pk_purchase_order_documents PRIMARY KEY (purchase_order_id, document_id),\n    CONSTRAINT fk_purchase_order_documents_purchase_order_id FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders (id),\n    CONSTRAINT fk_purchase_order_documents_document_id FOREIGN KEY (document_id) REFERENCES documents (id)\n);\n\nCREATE TABLE purchase_order_items (\n    id INTEGER NOT NULL,\n    purchase_order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    discount DECIMAL(18,2),\n    item_number INTEGER,\n    CONSTRAINT pk_purchase_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_purchase_order_items_purchase_order_id FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders (id),\n    CONSTRAINT fk_purchase_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE purchase_order_item_documents (\n    purchase_order_item_id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    CONSTRAINT pk_purchase_order_item_documents PRIMARY KEY (purchase_order_item_id, document_id),\n    CONSTRAINT fk_purchase_order_item_documents_purchase_order_item_id FOREIGN KEY (purchase_order_item_id) REFERENCES purchase_order_items (id),\n    CONSTRAINT fk_purchase_order_item_documents_document_id FOREIGN KEY (document_id) REFERENCES documents (id)\n);\n\nCREATE TABLE sales_orders (\n    id INTEGER NOT NULL,\n    order_number VARCHAR(255) NOT NULL,\n    customer_id INTEGER NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    order_date DATE NOT NULL,\n    currency VARCHAR(255),\n    payment_terms VARCHAR(255),\n    incoterms VARCHAR(255),\n    transport_type VARCHAR(255),\n    CONSTRAINT pk_sales_orders PRIMARY KEY (id),\n    CONSTRAINT fk_sales_orders_customer_id FOREIGN KEY (customer_id) REFERENCES companies (id)\n);\n\nCREATE TABLE sales_order_documents (\n    sales_order_id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    CONSTRAINT pk_sales_order_documents PRIMARY KEY (sales_order_id, document_id),\n    CONSTRAINT fk_sales_order_documents_sales_order_id FOREIGN KEY (sales_order_id) REFERENCES sales_orders (id),\n    CONSTRAINT fk_sales_order_documents_document_id FOREIGN KEY (document_id) REFERENCES documents (id)\n);\n\nCREATE TABLE sales_order_items (\n    id INTEGER NOT NULL,\n    sales_order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    discount DECIMAL(18,2),\n    item_number INTEGER,\n    CONSTRAINT pk_sales_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_sales_order_items_sales_order_id FOREIGN KEY (sales_order_id) REFERENCES sales_orders (id),\n    CONSTRAINT fk_sales_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE sales_order_item_documents (\n    sales_order_item_id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    CONSTRAINT pk_sales_order_item_documents PRIMARY KEY (sales_order_item_id, document_id),\n    CONSTRAINT fk_sales_order_item_documents_sales_order_item_id FOREIGN KEY (sales_order_item_id) REFERENCES sales_order_items (id),\n    CONSTRAINT fk_sales_order_item_documents_document_id FOREIGN KEY (document_id) REFERENCES documents (id)\n);\n\nCREATE TABLE shipments (\n    id INTEGER NOT NULL,\n    shipment_number VARCHAR(255) NOT NULL,\n    destination_country VARCHAR(255),\n    origin_country VARCHAR(255),\n    currency VARCHAR(255),\n    payment_terms VARCHAR(255),\n    transport_type VARCHAR(255),\n    incoterms VARCHAR(255),\n    shipment_date DATE,\n    CONSTRAINT pk_shipments PRIMARY KEY (id)\n);\n\nCREATE TABLE shipment_purchase_orders (\n    shipment_id INTEGER NOT NULL,\n    purchase_order_id INTEGER NOT NULL,\n    CONSTRAINT pk_shipment_purchase_orders PRIMARY KEY (shipment_id, purchase_order_id),\n    CONSTRAINT fk_shipment_purchase_orders_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_purchase_orders_purchase_order_id FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders (id)\n);\n\nCREATE TABLE shipment_sales_orders (\n    shipment_id INTEGER NOT NULL,\n    sales_order_id INTEGER NOT NULL,\n    CONSTRAINT pk_shipment_sales_orders PRIMARY KEY (shipment_id, sales_order_id),\n    CONSTRAINT fk_shipment_sales_orders_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_sales_orders_sales_order_id FOREIGN KEY (sales_order_id) REFERENCES sales_orders (id)\n);\n",
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    internal_number VARCHAR(255) NOT NULL,\n    commodity_group VARCHAR(255),\n    country_of_origin VARCHAR(255),\n    tariff_number VARCHAR(255),\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE companies (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    street VARCHAR(255),\n    postal_code VARCHAR(255),\n    city VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE article_prices (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    country VARCHAR(255),\n    company_id INTEGER,\n    currency VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_article_prices PRIMARY KEY (id),\n    CONSTRAINT fk_article_prices_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_prices_company_id FOREIGN KEY (company_id) REFERENCES companies (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    function VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_contacts PRIMARY KEY (id)\n);\n\nCREATE TABLE company_contacts (\n    id INTEGER NOT NULL,\n    company_id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    CONSTRAINT pk_company_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_company_contacts_company_id FOREIGN KEY (company_id) REFERENCES companies (id),\n    CONSTRAINT fk_company_contacts_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    document_type VARCHAR(255) NOT NULL,\n    document_number VARCHAR(255) NOT NULL,\n    document_date DATE NOT NULL,\n    CONSTRAINT pk_documents PRIMARY KEY (id)\n);\n\nCREATE TABLE incoterms (\n    id INTEGER NOT NULL,\n    code VARCHAR(255) NOT NULL,\n    description VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_incoterms PRIMARY KEY (id)\n);\n\nCREATE TABLE transport_modes (\n    id INTEGER NOT NULL,\n    description VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_transport_modes PRIMARY KEY (id)\n);\n\nCREATE TABLE purchase_orders (\n    id INTEGER NOT NULL,\n    order_number VARCHAR(255) NOT NULL,\n    company_id INTEGER NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    order_date DATE NOT NULL,\n    incoterm_id INTEGER,\n    transport_mode_id INTEGER,\n    CONSTRAINT pk_purchase_orders PRIMARY KEY (id),\n    CONSTRAINT fk_purchase_orders_company_id FOREIGN KEY (company_id) REFERENCES companies (id),\n    CONSTRAINT fk_purchase_orders_incoterm_id FOREIGN KEY (incoterm_id) REFERENCES incoterms (id),\n    CONSTRAINT fk_purchase_orders_transport_mode_id FOREIGN KEY (transport_mode_id) REFERENCES transport_modes (id)\n);\n\nCREATE TABLE document_purchase_orders (\n    id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    purchase_order_id INTEGER NOT NULL,\n    CONSTRAINT pk_document_purchase_orders PRIMARY KEY (id),\n    CONSTRAINT fk_document_purchase_orders_document_id FOREIGN KEY (document_id) REFERENCES documents (id),\n    CONSTRAINT fk_document_purchase_orders_purchase_order_id FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders (id)\n);\n\nCREATE TABLE sales_orders (\n    id INTEGER NOT NULL,\n    order_number VARCHAR(255) NOT NULL,\n    company_id INTEGER NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    order_date DATE NOT NULL,\n    incoterm_id INTEGER,\n    transport_mode_id INTEGER,\n    CONSTRAINT pk_sales_orders PRIMARY KEY (id),\n    CONSTRAINT fk_sales_orders_company_id FOREIGN KEY (company_id) REFERENCES companies (id),\n    CONSTRAINT fk_sales_orders_incoterm_id FOREIGN KEY (incoterm_id) REFERENCES incoterms (id),\n    CONSTRAINT fk_sales_orders_transport_mode_id FOREIGN KEY (transport_mode_id) REFERENCES transport_modes (id)\n);\n\nCREATE TABLE document_sales_orders (\n    id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    sales_order_id INTEGER NOT NULL,\n    CONSTRAINT pk_document_sales_orders PRIMARY KEY (id),\n    CONSTRAINT fk_document_sales_orders_document_id FOREIGN KEY (document_id) REFERENCES documents (id),\n    CONSTRAINT fk_document_sales_orders_sales_order_id FOREIGN KEY (sales_order_id) REFERENCES sales_orders (id)\n);\n\nCREATE TABLE purchase_order_items (\n    id INTEGER NOT NULL,\n    purchase_order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    discount DECIMAL(18,2),\n    CONSTRAINT pk_purchase_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_purchase_order_items_purchase_order_id FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders (id),\n    CONSTRAINT fk_purchase_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE sales_order_items (\n    id INTEGER NOT NULL,\n    sales_order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    discount DECIMAL(18,2),\n    CONSTRAINT pk_sales_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_sales_order_items_sales_order_id FOREIGN KEY (sales_order_id) REFERENCES sales_orders (id),\n    CONSTRAINT fk_sales_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE shipments (\n    id INTEGER NOT NULL,\n    shipment_number VARCHAR(255) NOT NULL,\n    destination_country VARCHAR(255),\n    origin_country VARCHAR(255),\n    currency VARCHAR(255),\n    payment_terms VARCHAR(255),\n    CONSTRAINT pk_shipments PRIMARY KEY (id)\n);\n\nCREATE TABLE shipment_purchase_orders (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    purchase_order_id INTEGER NOT NULL,\n    CONSTRAINT pk_shipment_purchase_orders PRIMARY KEY (id),\n    CONSTRAINT fk_shipment_purchase_orders_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_purchase_orders_purchase_order_id FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders (id)\n);\n\nCREATE TABLE shipment_sales_orders (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    sales_order_id INTEGER NOT NULL,\n    CONSTRAINT pk_shipment_sales_orders PRIMARY KEY (id),\n    CONSTRAINT fk_shipment_sales_orders_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_sales_orders_sales_order_id FOREIGN KEY (sales_order_id) REFERENCES sales_orders (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -2278,25 +2194,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 10 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: companies, contacts, articles, article_prices, purchase_orders, sales_orders, purchase_order_items, sales_order_items, shipments, documents. Die M:N-Beziehung zwischen Ansprechpartner und Firma ist durch die Junction-Table companies_contacts korrekt modelliert.",
+          "beschreibung": "Alle 12 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: companies, contacts, articles, article_prices, incoterms, transport_modes, purchase_orders, purchase_order_items, sales_orders, sales_order_items, shipments, documents. Die Junction-Tabellen (company_contacts, shipment_purchase_orders, shipment_sales_orders, document_purchase_orders, document_sales_orders) sind ebenfalls vorhanden.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle geforderten Attribute aus dem RequirementsReport sind vorhanden und korrekt benannt nach Konvention (snake_case, englisch, Umlaute ersetzt). Beispiele: company_name, internal_number, commodity_group, origin_country, tariff_number, valid_from, valid_until, created_at, payment_terms, incoterms, transport_type, shipment_number, destination_country, document_type, document_number, document_date, file_path, responsibility_area.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden. Namenskonventionen sind konsistent (snake_case, englisch, Umlaute ersetzt). Beispiele: company_name, internal_number, tariff_number, valid_from, valid_until, payment_terms, shipment_number, document_type, document_number.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 15 Beziehungen aus dem ERModell sind korrekt im LogicalSchema implementiert: 1:N-Beziehungen durch FK, M:N-Beziehungen durch Junction-Tables (companies_contacts, shipment_purchase_orders, shipment_sales_orders, purchase_order_documents, sales_order_documents, purchase_order_item_documents, sales_order_item_documents). Kardinalitäten stimmen überein.",
+          "beschreibung": "Alle 16 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N-Beziehungen durch FK in der N-Seite (z.B. company_id in purchase_orders), M:N-Beziehungen durch Junction-Tabellen (z.B. company_contacts, shipment_purchase_orders). Kardinalitäten stimmen überein.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten. Die article_prices-Tabelle mit valid_from/valid_until und created_at ermöglicht Versionierung und Nachvollziehbarkeit von Preisänderungen, was die Anforderung 'Nachvollziehbarkeit wäre hilfreich' erfüllt. Junction-Tables sind korrekt normalisiert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine nicht-Schlüssel-Attribute hängen von Teilen des Schlüssels ab (2NF erfüllt). (2) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen (3NF erfüllt). Junction-Tabellen sind korrekt normalisiert. article_prices mit zeitlicher Gültigkeit (valid_from, valid_until) ist angemessen strukturiert.",
           "korrekturanweisung": ""
         }
       ],
@@ -2306,34 +2222,34 @@
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 7,
-    "total_input_tokens": 59969,
-    "total_output_tokens": 24343,
-    "total_tokens": 84312,
+    "total_calls": 4,
+    "total_input_tokens": 28862,
+    "total_output_tokens": 12189,
+    "total_tokens": 41051,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1908,
-        "output_tokens": 2456,
+        "output_tokens": 2768,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 2,
-        "input_tokens": 9058,
-        "output_tokens": 8750,
+        "calls": 1,
+        "input_tokens": 4849,
+        "output_tokens": 3862,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 2,
-        "input_tokens": 17774,
-        "output_tokens": 10155,
+        "calls": 1,
+        "input_tokens": 7244,
+        "output_tokens": 4667,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 2,
-        "input_tokens": 31229,
-        "output_tokens": 2982,
+        "calls": 1,
+        "input_tokens": 14861,
+        "output_tokens": 892,
         "cost_usd": 0.0
       }
     },
@@ -2344,7 +2260,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1908,
-        "output_tokens": 2456,
+        "output_tokens": 2768,
         "cost_usd": 0.0
       },
       {
@@ -2352,8 +2268,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4529,
-        "output_tokens": 4539,
+        "input_tokens": 4849,
+        "output_tokens": 3862,
         "cost_usd": 0.0
       },
       {
@@ -2361,8 +2277,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8065,
-        "output_tokens": 5074,
+        "input_tokens": 7244,
+        "output_tokens": 4667,
         "cost_usd": 0.0
       },
       {
@@ -2370,35 +2286,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 15769,
-        "output_tokens": 2022,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 1,
-        "agent_name": "conceptual_model_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4529,
-        "output_tokens": 4211,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 1,
-        "agent_name": "logical_schema_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 9709,
-        "output_tokens": 5081,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 1,
-        "agent_name": "oa_validator",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 15460,
-        "output_tokens": 960,
+        "input_tokens": 14861,
+        "output_tokens": 892,
         "cost_usd": 0.0
       }
     ]

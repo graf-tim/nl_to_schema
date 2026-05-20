@@ -2,8 +2,8 @@
   "testfall_id": "TC004",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.9733333333333334,
-  "score_gesamt": 0.984,
+  "score_semantisch": 0.9466666666666668,
+  "score_gesamt": 0.9680000000000001,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 0
     },
     "attribut": {
-      "precision": 0.9333333333333333,
-      "recall": 0.9333333333333333,
-      "f1": 0.9333333333333333,
-      "matched": 14,
-      "nur_in_referenz": 1,
-      "nur_in_generiert": 1
+      "precision": 0.8666666666666667,
+      "recall": 0.8666666666666667,
+      "f1": 0.8666666666666667,
+      "matched": 13,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
     },
     "beziehung": {
       "recall": 1.0,
@@ -38,6 +38,11 @@
     }
   },
   "abweichungen": [
+    {
+      "element": "books.price",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
     {
       "element": "books.stock_quantity",
       "typ": "attribut",
@@ -107,13 +112,13 @@
               "nullable": false
             },
             {
-              "name": "price",
+              "name": "saleprice",
               "type": "DECIMAL",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "stock",
+              "name": "stockquantity",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -191,7 +196,7 @@
             "Verkaufspreis",
             "Lagerbestand"
           ],
-          "beschreibung": "Bücher, die von der Buchhandlung angeboten werden. Jedes Buch gehört zu genau einem Verlag."
+          "beschreibung": "Bücher, die von Verlagen herausgegeben werden und in der Buchhandlung angeboten werden."
         },
         {
           "name": "Bestellung",
@@ -199,7 +204,7 @@
             "Bestelldatum",
             "Status"
           ],
-          "beschreibung": "Bestellungen von Kundinnen und Kunden. Jede Bestellung bezieht sich auf genau ein Buch."
+          "beschreibung": "Bestellungen von Kundinnen und Kunden für Bücher."
         }
       ],
       "beziehungen": [
@@ -207,7 +212,7 @@
           "von": "Verlag",
           "zu": "Buch",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Verlag kann viele Bücher herausgeben. Jedes Buch gehört genau zu einem Verlag."
+          "beschreibung": "Ein Verlag gibt viele Bücher heraus. Jedes Buch gehört genau zu einem Verlag."
         },
         {
           "von": "Buch",
@@ -216,7 +221,26 @@
           "beschreibung": "Ein Buch kann in vielen Bestellungen vorkommen. Jede Bestellung gehört genau zu einem Buch."
         }
       ],
-      "unklarheiten": []
+      "unklarheiten": [
+        {
+          "beschreibung": "Es ist unklar, ob Kundinnen und Kunden als separate Entität modelliert werden sollen oder ob nur die Bestellungen ohne explizite Kundeninformationen erfasst werden.",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht spezifiziert, ob die internationale Buchnummer (ISBN) eindeutig sein muss oder ob mehrere Bücher die gleiche ISBN haben können.",
+          "betroffene_elemente": [
+            "Buch"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, welche konkreten Werte der Status einer Bestellung annehmen kann (z.B. 'offen', 'versendet', 'geliefert').",
+          "betroffene_elemente": [
+            "Bestellung"
+          ]
+        }
+      ]
     },
     "er_modell": {
       "entitaeten": [
@@ -265,7 +289,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "internationale_buchnummer",
+              "name": "isbn",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -365,25 +389,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Verlag, Buch, Bestellung) sind als Tabellen implementiert. Keine Entität fehlt.",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Verlag, Buch, Bestellung) sind im LogicalSchema als Tabellen (publishers, books, orders) vorhanden. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: publishers (name, email, phone), books (title, isbn, publicationdate, price, stock, publisher_id), orders (orderdate, status, book_id). Namenskonventionen sind eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: publishers (name, email, phone), books (title, isbn, publicationdate, saleprice, stockquantity), orders (orderdate, status). Die Namenskonventionen (snake_case, englische Übersetzungen) sind konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide 1:N-Beziehungen sind korrekt implementiert: (1) Verlag:Buch über publisher_id in books-Tabelle, (2) Buch:Bestellung über book_id in orders-Tabelle. Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: (1) Verlag 1:N Buch via publisher_id in books-Tabelle, (2) Buch 1:N Bestellung via book_id in orders-Tabelle. Kardinalitäten und Fremdschlüssel entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Alle Attribute sind atomar und funktional abhängig vom Primärschlüssel.",
+          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, Abhängigkeiten sind funktional und nicht-transitiv. Die Struktur ist normalisiert und wartbar.",
           "korrekturanweisung": ""
         }
       ],
@@ -393,7 +417,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE publishers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_publishers PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    isbn VARCHAR(255) NOT NULL,\n    publicationdate DATE NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    stock INTEGER NOT NULL,\n    publisher_id INTEGER NOT NULL,\n    CONSTRAINT pk_books PRIMARY KEY (id),\n    CONSTRAINT fk_books_publisher_id FOREIGN KEY (publisher_id) REFERENCES publishers (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    book_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_book_id FOREIGN KEY (book_id) REFERENCES books (id)\n);\n",
+    "final_ddl": "CREATE TABLE publishers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_publishers PRIMARY KEY (id)\n);\n\nCREATE TABLE books (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    isbn VARCHAR(255) NOT NULL,\n    publicationdate DATE NOT NULL,\n    saleprice DECIMAL(18,2) NOT NULL,\n    stockquantity INTEGER NOT NULL,\n    publisher_id INTEGER NOT NULL,\n    CONSTRAINT pk_books PRIMARY KEY (id),\n    CONSTRAINT fk_books_publisher_id FOREIGN KEY (publisher_id) REFERENCES publishers (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    book_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_book_id FOREIGN KEY (book_id) REFERENCES books (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -418,25 +442,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Verlag, Buch, Bestellung) sind als Tabellen implementiert. Keine Entität fehlt.",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Verlag, Buch, Bestellung) sind im LogicalSchema als Tabellen (publishers, books, orders) vorhanden. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: publishers (name, email, phone), books (title, isbn, publicationdate, price, stock, publisher_id), orders (orderdate, status, book_id). Namenskonventionen sind eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: publishers (name, email, phone), books (title, isbn, publicationdate, saleprice, stockquantity), orders (orderdate, status). Die Namenskonventionen (snake_case, englische Übersetzungen) sind konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide 1:N-Beziehungen sind korrekt implementiert: (1) Verlag:Buch über publisher_id in books-Tabelle, (2) Buch:Bestellung über book_id in orders-Tabelle. Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: (1) Verlag 1:N Buch via publisher_id in books-Tabelle, (2) Buch 1:N Bestellung via book_id in orders-Tabelle. Kardinalitäten und Fremdschlüssel entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Alle Attribute sind atomar und funktional abhängig vom Primärschlüssel.",
+          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, Abhängigkeiten sind funktional und nicht-transitiv. Die Struktur ist normalisiert und wartbar.",
           "korrekturanweisung": ""
         }
       ],
@@ -447,33 +471,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 11124,
-    "total_output_tokens": 2977,
-    "total_tokens": 14101,
+    "total_input_tokens": 11573,
+    "total_output_tokens": 3222,
+    "total_tokens": 14795,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1474,
-        "output_tokens": 480,
+        "output_tokens": 687,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 1960,
-        "output_tokens": 947,
+        "input_tokens": 2186,
+        "output_tokens": 943,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3211,
-        "output_tokens": 773,
+        "input_tokens": 3207,
+        "output_tokens": 778,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 4479,
-        "output_tokens": 777,
+        "input_tokens": 4706,
+        "output_tokens": 814,
         "cost_usd": 0.0
       }
     },
@@ -484,7 +508,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1474,
-        "output_tokens": 480,
+        "output_tokens": 687,
         "cost_usd": 0.0
       },
       {
@@ -492,8 +516,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 1960,
-        "output_tokens": 947,
+        "input_tokens": 2186,
+        "output_tokens": 943,
         "cost_usd": 0.0
       },
       {
@@ -501,8 +525,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3211,
-        "output_tokens": 773,
+        "input_tokens": 3207,
+        "output_tokens": 778,
         "cost_usd": 0.0
       },
       {
@@ -510,8 +534,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4479,
-        "output_tokens": 777,
+        "input_tokens": 4706,
+        "output_tokens": 814,
         "cost_usd": 0.0
       }
     ]

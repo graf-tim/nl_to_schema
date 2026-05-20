@@ -2,38 +2,38 @@
   "testfall_id": "TC085",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.3235042735042735,
-  "score_gesamt": 0.5941025641025641,
+  "score_semantisch": 0.31049808429118775,
+  "score_gesamt": 0.5862988505747126,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 15,
-    "pk_tabellen_mit_pk": 15,
-    "fk_referenzen_gesamt": 23,
+    "pk_tabellen_gesamt": 16,
+    "pk_tabellen_mit_pk": 16,
+    "fk_referenzen_gesamt": 27,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.4,
+      "precision": 0.375,
       "recall": 0.5454545454545454,
-      "f1": 0.4615384615384615,
+      "f1": 0.4444444444444444,
       "matched": 6,
       "nur_in_referenz": 5,
-      "nur_in_generiert": 9
+      "nur_in_generiert": 10
     },
     "attribut": {
-      "precision": 0.24358974358974358,
-      "recall": 0.2878787878787879,
-      "f1": 0.2638888888888889,
-      "matched": 19,
-      "nur_in_referenz": 47,
-      "nur_in_generiert": 59
+      "precision": 0.20253164556962025,
+      "recall": 0.24242424242424243,
+      "f1": 0.2206896551724138,
+      "matched": 16,
+      "nur_in_referenz": 50,
+      "nur_in_generiert": 63
     },
     "beziehung": {
-      "recall": 0.16666666666666666,
-      "matched": 3,
-      "nur_in_referenz": 15,
+      "recall": 0.2222222222222222,
+      "matched": 4,
+      "nur_in_referenz": 14,
       "nur_in_generiert": 0
     }
   },
@@ -89,6 +89,21 @@
       "fehlerklasse": null
     },
     {
+      "element": "units.unit_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles.license_plate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "vehicles.payload_capacity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "vehicles.is_internal",
       "typ": "attribut",
       "fehlerklasse": null
@@ -109,7 +124,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "persons.unit_id",
+      "element": "persons.service_number",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -329,11 +344,6 @@
       "fehlerklasse": null
     },
     {
-      "element": "persons → units",
-      "typ": "beziehung",
-      "fehlerklasse": null
-    },
-    {
       "element": "persons_transport_orders → transport_orders",
       "typ": "beziehung",
       "fehlerklasse": null
@@ -380,7 +390,7 @@
     "logical_schema": {
       "tables": [
         {
-          "name": "materials",
+          "name": "commands",
           "columns": [
             {
               "name": "id",
@@ -393,30 +403,6 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "material_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "condition",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "hazard_class",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "storage_note",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": []
@@ -437,43 +423,19 @@
               "nullable": false
             },
             {
-              "name": "unit_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "demand_holders",
-          "columns": [
-            {
-              "name": "id",
+              "name": "command_id",
               "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "organization_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "description",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
             }
           ],
-          "foreign_keys": []
+          "foreign_keys": [
+            {
+              "from_column": "command_id",
+              "references_table": "commands",
+              "references_column": "id"
+            }
+          ]
         },
         {
           "name": "locations",
@@ -497,16 +459,22 @@
               "nullable": false
             },
             {
-              "name": "address",
-              "type": "VARCHAR",
+              "name": "command_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
           ],
-          "foreign_keys": []
+          "foreign_keys": [
+            {
+              "from_column": "command_id",
+              "references_table": "commands",
+              "references_column": "id"
+            }
+          ]
         },
         {
-          "name": "location_units",
+          "name": "departments",
           "columns": [
             {
               "name": "id",
@@ -515,20 +483,14 @@
               "nullable": false
             },
             {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "location_id",
               "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "unit_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "is_primary",
-              "type": "BOOLEAN",
               "primary_key": false,
               "nullable": false
             }
@@ -538,13 +500,56 @@
               "from_column": "location_id",
               "references_table": "locations",
               "references_column": "id"
-            },
-            {
-              "from_column": "unit_id",
-              "references_table": "units",
-              "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "materials",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "material_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "material_condition",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hazard_class",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "storage_note",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "tracking_method",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "stocks",
@@ -574,16 +579,10 @@
               "nullable": false
             },
             {
-              "name": "stock_type",
+              "name": "stock_condition",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "storage_label",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -595,6 +594,114 @@
             {
               "from_column": "location_id",
               "references_table": "locations",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "persons",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "unit_id",
+              "references_table": "units",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "vehicles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "registration",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "vehicle_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "payload",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "unit_id",
+              "references_table": "units",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "demand_carriers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "unit_id",
+              "references_table": "units",
               "references_column": "id"
             }
           ]
@@ -621,7 +728,7 @@
               "nullable": false
             },
             {
-              "name": "demand_holder_id",
+              "name": "demand_carrier_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": true
@@ -643,6 +750,12 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "source",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -652,8 +765,72 @@
               "references_column": "id"
             },
             {
-              "from_column": "demand_holder_id",
-              "references_table": "demand_holders",
+              "from_column": "demand_carrier_id",
+              "references_table": "demand_carriers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "transports",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "transport_number",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "origin_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "destination_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "vehicle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "transport_status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "timestamp",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "origin_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "destination_location_id",
+              "references_table": "locations",
+              "references_column": "id"
+            },
+            {
+              "from_column": "vehicle_id",
+              "references_table": "vehicles",
               "references_column": "id"
             }
           ]
@@ -674,8 +851,14 @@
               "nullable": false
             },
             {
-              "name": "shipment_date",
-              "type": "DATE",
+              "name": "transport_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "shipment_status",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
@@ -684,40 +867,17 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "origin_location_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "destination_location_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "shipment_reason",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
             }
           ],
           "foreign_keys": [
             {
+              "from_column": "transport_id",
+              "references_table": "transports",
+              "references_column": "id"
+            },
+            {
               "from_column": "material_request_id",
               "references_table": "material_requests",
-              "references_column": "id"
-            },
-            {
-              "from_column": "origin_location_id",
-              "references_table": "locations",
-              "references_column": "id"
-            },
-            {
-              "from_column": "destination_location_id",
-              "references_table": "locations",
               "references_column": "id"
             }
           ]
@@ -805,126 +965,7 @@
           ]
         },
         {
-          "name": "vehicles",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "license_plate",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "vehicle_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "payload_capacity",
-              "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "unit_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "unit_id",
-              "references_table": "units",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "persons",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "role",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "service_unit",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "transports",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "transport_number",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "shipment_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "vehicle_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "transport_status",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "shipment_id",
-              "references_table": "shipments",
-              "references_column": "id"
-            },
-            {
-              "from_column": "vehicle_id",
-              "references_table": "vehicles",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "transport_persons",
+          "name": "transport_personnel",
           "columns": [
             {
               "name": "id",
@@ -1022,14 +1063,14 @@
               "nullable": true
             },
             {
-              "name": "transport_id",
+              "name": "shipment_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "reason",
-              "type": "TEXT",
+              "name": "transport_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
@@ -1053,6 +1094,11 @@
             {
               "from_column": "confirmer_id",
               "references_table": "persons",
+              "references_column": "id"
+            },
+            {
+              "from_column": "shipment_id",
+              "references_table": "shipments",
               "references_column": "id"
             },
             {
@@ -1082,16 +1128,16 @@
           "attribute": [
             "Bestandsmenge",
             "Bestandstyp",
-            "Lagerkennzeichen"
+            "Lagerort"
           ],
-          "beschreibung": "Lagerhaltung von Materialien an Standorten. Unterscheidet zwischen Stückzahl und Menge/Los. Aus diesem Bestand werden Materialien entnommen."
+          "beschreibung": "Lagerhaltung von Materialien an einem Standort. Kann stückweise oder nach Menge/Los geführt werden."
         },
         {
           "name": "Standort",
           "attribute": [
             "Standortname",
             "Standorttyp",
-            "Adresse"
+            "Zuordnung_Verband"
           ],
           "beschreibung": "Orte, an denen Material lagert: Munitionslager, Umschlagpunkte, Werkstätten, vorgeschobene Versorgungsbasen, Feldlager, Depots. Gehört normalerweise zu einem militärischen Verband, arbeitet aber oft mit mehreren Dienststellen zusammen."
         },
@@ -1099,9 +1145,17 @@
           "name": "Einheit",
           "attribute": [
             "Einheitsbezeichnung",
-            "Einheitstyp"
+            "Verband"
           ],
-          "beschreibung": "Militärische Verbände und Dienststellen, die Material fordern, zurückgeben oder Umlagerungen melden. Können Fahrzeuge zugewiesen bekommen."
+          "beschreibung": "Militärische Organisationseinheit, die Material anfordert, zurückgibt oder Umlagerungen meldet."
+        },
+        {
+          "name": "Dienststelle",
+          "attribute": [
+            "Dienststellenbezeichnung",
+            "Standort"
+          ],
+          "beschreibung": "Organisatorische Einheit, die an einem Standort tätig ist. Mehrere Dienststellen können an einem Standort zusammenarbeiten."
         },
         {
           "name": "Materialforderung",
@@ -1109,9 +1163,10 @@
             "Forderungsnummer",
             "Zeitpunkt",
             "Priorität",
-            "Bearbeitungsstand"
+            "Bearbeitungsstand",
+            "Quelle"
           ],
-          "beschreibung": "Anforderung von Material durch Einheiten oder Bedarfsträger. Kann direkt von der Einheit oder über einen Bedarfsträger erfolgen."
+          "beschreibung": "Anforderung von Material durch eine Einheit oder einen Bedarfsträger. Kann direkt von der Einheit oder über einen Bedarfsträger erfolgen."
         },
         {
           "name": "Transport",
@@ -1121,33 +1176,34 @@
             "Zielort",
             "Transportstatus"
           ],
-          "beschreibung": "Bewegung von Gütern mit Fahrzeugen. Gehört zu einer Sendung und kann Fahrer sowie Begleitpersonal umfassen."
-        },
-        {
-          "name": "Sendung",
-          "attribute": [
-            "Sendungsnummer",
-            "Sendungsdatum"
-          ],
-          "beschreibung": "Zusammenfassung von Gütern, die zu einem Transport gehören. Ermöglicht Nachverfolgung, welche Güter zu welcher Sendung gehören und aus welchem Bestand sie entnommen wurden."
+          "beschreibung": "Bewegung von Gütern mit Fahrzeugen zwischen Standorten. Wird mit Fahrzeugen durchgeführt, teils im eigenen Bestand, teils durch zugewiesene Transportmittel anderer Verbände."
         },
         {
           "name": "Fahrzeug",
           "attribute": [
             "Kennzeichen",
             "Fahrzeugtyp",
-            "Nutzlast"
+            "Nutzlast",
+            "Zuordnung_Einheit"
           ],
-          "beschreibung": "Transportmittel für Güter. Kann im eigenen Bestand sein oder von anderen Verbänden zugewiesen sein. Hat oft eine Zuordnung zu einer Einheit, kann aber vorübergehend anders eingesetzt werden."
+          "beschreibung": "Transportmittel für Materialbewegungen. Hat Kennzeichen, Typ und Nutzlast. Oft einer Einheit zugeordnet, kann aber vorübergehend anders eingesetzt werden."
         },
         {
           "name": "Person",
           "attribute": [
             "Personenname",
             "Rolle",
-            "Dienststelle"
+            "Zuordnung_Einheit"
           ],
-          "beschreibung": "Fahrer, Begleitpersonal und Personen, die Materialbewegungen veranlassen oder bestätigen. Besonders wichtig bei Munition oder Gefahrgut."
+          "beschreibung": "Fahrer, Begleitpersonal oder Personen, die Bewegungen veranlassen oder bestätigen. Besonders wichtig bei Munition oder Gefahrgut."
+        },
+        {
+          "name": "Sendung",
+          "attribute": [
+            "Sendungsnummer",
+            "Sendungsstatus"
+          ],
+          "beschreibung": "Zusammenfassung von Gütern zu einer Transporteinheit. Muss nachvollziehbar machen, welche Güter zu welcher Sendung gehören und aus welchem Bestand sie entnommen wurden."
         },
         {
           "name": "Materialbewegung",
@@ -1158,7 +1214,14 @@
             "Veranlasser",
             "Bestätiger"
           ],
-          "beschreibung": "Historisierte Nachverfolgung jeder Bewegung von Material. Dokumentiert, wer die Bewegung veranlasst oder bestätigt hat. Historien werden nicht überschrieben."
+          "beschreibung": "Historisierte Aufzeichnung jeder Materialbewegung. Dokumentiert, wer die Bewegung veranlasst oder bestätigt hat. Historien sollen nicht überschrieben werden."
+        },
+        {
+          "name": "Verband",
+          "attribute": [
+            "Verbandsbezeichnung"
+          ],
+          "beschreibung": "Militärische Organisationseinheit, der Standorte und Einheiten zugeordnet sind."
         }
       ],
       "beziehungen": [
@@ -1172,43 +1235,37 @@
           "von": "Bestand",
           "zu": "Standort",
           "kardinalitaet": "N:1",
-          "beschreibung": "Mehrere Bestände können an einem Standort lagern."
+          "beschreibung": "Mehrere Bestände lagern an einem Standort."
         },
         {
           "von": "Standort",
-          "zu": "Einheit",
-          "kardinalitaet": "N:M",
-          "beschreibung": "Ein Standort gehört normalerweise zu einem Verband, arbeitet aber oft mit mehreren Dienststellen zusammen."
+          "zu": "Verband",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Standort gehört normalerweise zu einem militärischen Verband."
+        },
+        {
+          "von": "Dienststelle",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Mehrere Dienststellen können an einem Standort zusammenarbeiten."
         },
         {
           "von": "Einheit",
-          "zu": "Materialforderung",
-          "kardinalitaet": "1:N",
+          "zu": "Verband",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Einheit gehört zu einem Verband."
+        },
+        {
+          "von": "Materialforderung",
+          "zu": "Einheit",
+          "kardinalitaet": "N:1",
           "beschreibung": "Eine Einheit kann mehrere Materialforderungen stellen."
         },
         {
           "von": "Materialforderung",
-          "zu": "Sendung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Eine Materialforderung kann zu mehreren Sendungen führen oder eine Sendung kann mehrere Forderungen erfüllen."
-        },
-        {
-          "von": "Sendung",
-          "zu": "Material",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Sendung enthält mehrere Materialien, ein Material kann in mehreren Sendungen vorkommen. Teilmengen sind möglich."
-        },
-        {
-          "von": "Sendung",
-          "zu": "Bestand",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Materialien einer Sendung werden aus einem oder mehreren Beständen entnommen."
-        },
-        {
-          "von": "Sendung",
-          "zu": "Transport",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Eine Sendung wird durch einen oder mehrere Transporte durchgeführt."
+          "zu": "Bedarfsträger",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Materialforderung kann über einen Bedarfsträger laufen (alternativ direkt von Einheit)."
         },
         {
           "von": "Transport",
@@ -1217,16 +1274,34 @@
           "beschreibung": "Ein Transport wird mit einem Fahrzeug durchgeführt."
         },
         {
-          "von": "Fahrzeug",
-          "zu": "Einheit",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Ein Fahrzeug hat oft eine Zuordnung zu einer Einheit, kann aber vorübergehend anders eingesetzt werden."
-        },
-        {
           "von": "Transport",
           "zu": "Person",
           "kardinalitaet": "N:M",
-          "beschreibung": "Ein Transport hat Fahrer und möglicherweise Begleitpersonal."
+          "beschreibung": "Ein Transport hat einen oder mehrere Fahrer und optional Begleitpersonal. Eine Person kann mehrere Transporte durchführen."
+        },
+        {
+          "von": "Fahrzeug",
+          "zu": "Einheit",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Fahrzeug ist oft einer Einheit zugeordnet, kann aber vorübergehend anders eingesetzt werden."
+        },
+        {
+          "von": "Sendung",
+          "zu": "Transport",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Sendung wird mit einem Transport befördert."
+        },
+        {
+          "von": "Sendung",
+          "zu": "Material",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Eine Sendung enthält mehrere Materialien in verschiedenen Mengen (Teilmengen möglich)."
+        },
+        {
+          "von": "Sendung",
+          "zu": "Bestand",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Materialien einer Sendung werden aus einem oder mehreren Beständen entnommen."
         },
         {
           "von": "Materialbewegung",
@@ -1248,74 +1323,167 @@
         },
         {
           "von": "Materialbewegung",
-          "zu": "Transport",
+          "zu": "Sendung",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Materialbewegung kann mit einem Transport verbunden sein."
+          "beschreibung": "Eine Materialbewegung kann zu einer Sendung gehören."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unterscheidung zwischen Bedarfsträger und Einheit: Der Text erwähnt, dass Materialforderungen 'nicht immer klar' direkt von der Einheit oder über einen Bedarfsträger laufen. Unklar ist, ob Bedarfsträger eine separate Entität ist oder eine Rolle/Funktion einer Einheit.",
+          "beschreibung": "Unterscheidung zwischen Bedarfsträger und Einheit: Der Text erwähnt, dass Anforderungen 'direkt von der Einheit oder über einen Bedarfsträger' laufen können. Es ist unklar, ob Bedarfsträger eine separate Entität ist oder eine Rolle/Eigenschaft einer Einheit.",
           "betroffene_elemente": [
-            "Einheit",
             "Materialforderung",
+            "Einheit",
             "Bedarfsträger"
           ]
         },
         {
-          "beschreibung": "Beziehung zwischen Materialforderung und Sendung: Unklar ist, ob eine Forderung zu genau einer Sendung führt oder ob eine Sendung mehrere Forderungen erfüllen kann oder umgekehrt.",
+          "beschreibung": "Zuordnung von Fahrzeugen zu Verbänden: Der Text sagt, Fahrzeuge können 'zugewiesene Transportmittel anderer Verbände' sein. Es ist unklar, ob Fahrzeuge eine direkte Zuordnung zu Verbänden haben oder nur zu Einheiten.",
           "betroffene_elemente": [
-            "Materialforderung",
-            "Sendung"
+            "Fahrzeug",
+            "Verband",
+            "Einheit"
           ]
         },
         {
-          "beschreibung": "Veranlasser und Bestätiger bei Materialbewegungen: Der Text sagt, dass 'je nach Ablauf dieselbe Person sein kann oder auch nicht'. Unklar ist, ob beide Rollen immer besetzt sein müssen oder ob eine optional ist.",
+          "beschreibung": "Unterscheidung zwischen Veranlasser und Bestätiger: Der Text sagt, dass 'je nach Ablauf dieselbe Person sein kann oder auch nicht'. Es ist unklar, ob dies zwei separate Rollen sind oder ob eine Person beide Rollen in einer Bewegung haben kann.",
           "betroffene_elemente": [
             "Materialbewegung",
             "Person"
           ]
         },
         {
-          "beschreibung": "Historisierung: Der Text erwähnt, dass 'Historien nicht überschrieben werden', aber es ist unklar, wie Änderungen (z.B. Statusänderungen) dokumentiert werden sollen und ob jede Änderung eine neue Materialbewegung erzeugt.",
+          "beschreibung": "Granularität von Materialbewegungen: Unklar ist, ob jede Entnahme aus einem Bestand, jede Umlagerung oder jeder Transport als separate Materialbewegung erfasst wird, oder ob Bewegungen aggregiert werden können.",
           "betroffene_elemente": [
             "Materialbewegung",
+            "Sendung",
+            "Transport"
+          ]
+        },
+        {
+          "beschreibung": "Beziehung zwischen Materialforderung und Sendung: Der Text erwähnt Materialforderungen und Sendungen, aber nicht explizit, wie diese zusammenhängen. Unklar ist, ob eine Sendung eine oder mehrere Forderungen erfüllt.",
+          "betroffene_elemente": [
+            "Materialforderung",
+            "Sendung"
+          ]
+        },
+        {
+          "beschreibung": "Stückweise vs. Menge/Los-Führung: Der Text sagt, dass 'manche Dinge stückweise geführt, anderes eher nach Menge oder Los' wird und 'das muss im Alltag aber zusammen in einer Übersicht funktionieren'. Es ist unklar, wie diese unterschiedlichen Führungsarten technisch in einer Entität abgebildet werden sollen.",
+          "betroffene_elemente": [
             "Material",
             "Bestand"
           ]
         },
         {
-          "beschreibung": "Standort-Einheit-Beziehung: Der Text sagt, ein Standort 'gehört normalerweise zu einem militärischen Verband', aber 'arbeitet dort oft mehrere Dienststellen zusammen'. Unklar ist die genaue Kardinalität und ob es eine primäre Zuordnung gibt.",
-          "betroffene_elemente": [
-            "Standort",
-            "Einheit"
-          ]
-        },
-        {
-          "beschreibung": "Fahrzeugzuordnung: Fahrzeuge können 'im eigenen Bestand' sein oder 'durch zugewiesene Transportmittel anderer Verbände'. Unklar ist, wie diese unterschiedlichen Besitzverhältnisse modelliert werden und ob es eine separate Entität für Fahrzeugzuordnung braucht.",
-          "betroffene_elemente": [
-            "Fahrzeug",
-            "Einheit"
-          ]
-        },
-        {
-          "beschreibung": "Gefahrenklasse und Lagerhinweis: Der Text sagt, diese sollen 'bei sensiblen Gütern hinterlegt sein' und 'das nicht für alles gebraucht wird'. Unklar ist, ob diese Attribute optional sind oder ob es eine separate Entität für Gefahrgutinformationen geben sollte.",
+          "beschreibung": "Gefahrenklasse und Lagerhinweis: Der Text sagt, dass diese 'nicht für alles gebraucht wird'. Es ist unklar, ob diese Attribute optional sind oder nur für bestimmte Materialtypen relevant.",
           "betroffene_elemente": [
             "Material"
           ]
         },
         {
-          "beschreibung": "Umlagerungen: Der Text erwähnt, dass Einheiten 'Umlagerungen melden', aber es ist unklar, wie diese modelliert werden und ob sie als spezielle Transporte oder Materialbewegungen zu behandeln sind.",
+          "beschreibung": "Rückgabe von Material: Der Text erwähnt, dass Einheiten Material 'zurückgeben' können. Es ist unklar, ob dies als spezielle Materialbewegung oder als Rücktransport modelliert wird.",
           "betroffene_elemente": [
-            "Transport",
             "Materialbewegung",
-            "Bestand"
+            "Transport",
+            "Einheit"
           ]
         }
       ]
     },
     "er_modell": {
       "entitaeten": [
+        {
+          "name": "Verband",
+          "attribute": [
+            {
+              "name": "VerbandsID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Verbandsbezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Einheit",
+          "attribute": [
+            {
+              "name": "EinheitID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Einheitsbezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VerbandsID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Standort",
+          "attribute": [
+            {
+              "name": "StandortID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Standortname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Standorttyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VerbandsID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Dienststelle",
+          "attribute": [
+            {
+              "name": "DienststelleID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Dienststellenbezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "StandortID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
         {
           "name": "Material",
           "attribute": [
@@ -1354,6 +1522,12 @@
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "Fuehrungsart",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -1385,68 +1559,97 @@
               "pflichtfeld": true
             },
             {
-              "name": "Bestandstyp",
+              "name": "Bestandszustand",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "Lagerkennzeichen",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
         {
-          "name": "Standort",
+          "name": "Person",
           "attribute": [
             {
-              "name": "StandortID",
+              "name": "PersonID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Standortname",
+              "name": "Personenname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Standorttyp",
+              "name": "Rolle",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
-            {
-              "name": "Adresse",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Einheit",
-          "attribute": [
             {
               "name": "EinheitID",
               "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Fahrzeug",
+          "attribute": [
+            {
+              "name": "FahrzeugID",
+              "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Einheitsbezeichnung",
+              "name": "Kennzeichen",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Einheitstyp",
+              "name": "Fahrzeugtyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Nutzlast",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EinheitID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Bedarfstraeger",
+          "attribute": [
+            {
+              "name": "BedarfstraegerID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bedarfstraegerbezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EinheitID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1484,7 +1687,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Priorität",
+              "name": "Prioritaet",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1494,35 +1697,12 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Sendung",
-          "attribute": [
-            {
-              "name": "SendungsID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
             },
             {
-              "name": "Sendungsnummer",
+              "name": "Quelle",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "Sendungsdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "ForderungsID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -1542,18 +1722,6 @@
               "pflichtfeld": true
             },
             {
-              "name": "SendungsID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "FahrzeugID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
               "name": "StartortID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
@@ -1566,42 +1734,54 @@
               "pflichtfeld": true
             },
             {
+              "name": "FahrzeugID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
               "name": "Transportstatus",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Zeitstempel",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
         {
-          "name": "Fahrzeug",
+          "name": "Sendung",
           "attribute": [
             {
-              "name": "FahrzeugID",
+              "name": "SendungID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Kennzeichen",
+              "name": "Sendungsnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Fahrzeugtyp",
+              "name": "TransportID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Sendungsstatus",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Nutzlast",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "EinheitID",
+              "name": "ForderungsID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1609,31 +1789,89 @@
           ]
         },
         {
-          "name": "Person",
+          "name": "SendungMaterial",
           "attribute": [
+            {
+              "name": "SendungMaterialID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "SendungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MaterialID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Menge",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "SendungBestand",
+          "attribute": [
+            {
+              "name": "SendungBestandID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "SendungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BestandID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "EntnahmeMenge",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "TransportPersonal",
+          "attribute": [
+            {
+              "name": "TransportPersonalID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TransportID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
             {
               "name": "PersonID",
               "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Personenname",
-              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Rolle",
+              "name": "Funktion",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "Dienststelle",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -1695,131 +1933,39 @@
               "pflichtfeld": false
             },
             {
+              "name": "SendungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
               "name": "TransportID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
           ]
-        },
-        {
-          "name": "StandortEinheit",
-          "attribute": [
-            {
-              "name": "StandortEinheitID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "StandortID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "EinheitID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "IstPrimär",
-              "datentyp": "BOOLEAN",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "SendungMaterial",
-          "attribute": [
-            {
-              "name": "SendungMaterialID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "SendungsID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "MaterialID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Menge",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "SendungBestand",
-          "attribute": [
-            {
-              "name": "SendungBestandID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "SendungsID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "BestandID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "EntnahmeMenge",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "TransportPerson",
-          "attribute": [
-            {
-              "name": "TransportPersonID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "TransportID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "PersonID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Funktion",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
         }
       ],
       "beziehungen": [
+        {
+          "von": "Einheit",
+          "zu": "Verband",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Standort",
+          "zu": "Verband",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Dienststelle",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
         {
           "von": "Material",
           "zu": "Bestand",
@@ -1833,74 +1979,20 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Standort",
-          "zu": "StandortEinheit",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Einheit",
-          "zu": "StandortEinheit",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Einheit",
-          "zu": "Materialforderung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Einheit",
-          "zu": "Bedarfsträger",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Bedarfsträger",
-          "zu": "Materialforderung",
-          "kardinalitaet": "1:N",
+          "von": "Materialforderung",
+          "zu": "Einheit",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
           "von": "Materialforderung",
-          "zu": "Sendung",
-          "kardinalitaet": "1:N",
+          "zu": "Bedarfstraeger",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Sendung",
-          "zu": "SendungMaterial",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Material",
-          "zu": "SendungMaterial",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Sendung",
-          "zu": "SendungBestand",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Bestand",
-          "zu": "SendungBestand",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Sendung",
-          "zu": "Transport",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Transport",
-          "zu": "Fahrzeug",
+          "von": "Bedarfstraeger",
+          "zu": "Einheit",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
@@ -1911,31 +2003,79 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Transport",
-          "zu": "Standort",
+          "von": "Person",
+          "zu": "Einheit",
           "kardinalitaet": "N:1",
-          "beziehungsattribute": [
-            "Startort"
-          ]
-        },
-        {
-          "von": "Transport",
-          "zu": "Standort",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": [
-            "Zielort"
-          ]
-        },
-        {
-          "von": "Transport",
-          "zu": "TransportPerson",
-          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Person",
-          "zu": "TransportPerson",
-          "kardinalitaet": "1:N",
+          "von": "Transport",
+          "zu": "Fahrzeug",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Transport",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": [
+            "StartortID"
+          ]
+        },
+        {
+          "von": "Transport",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": [
+            "ZielortID"
+          ]
+        },
+        {
+          "von": "TransportPersonal",
+          "zu": "Transport",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "TransportPersonal",
+          "zu": "Person",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Sendung",
+          "zu": "Transport",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Sendung",
+          "zu": "Materialforderung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "SendungMaterial",
+          "zu": "Sendung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "SendungMaterial",
+          "zu": "Material",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "SendungBestand",
+          "zu": "Sendung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "SendungBestand",
+          "zu": "Bestand",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
@@ -1955,7 +2095,7 @@
           "zu": "Person",
           "kardinalitaet": "N:1",
           "beziehungsattribute": [
-            "Veranlasser"
+            "VeranlasserID"
           ]
         },
         {
@@ -1963,8 +2103,14 @@
           "zu": "Person",
           "kardinalitaet": "N:1",
           "beziehungsattribute": [
-            "Bestätiger"
+            "BestätigerID"
           ]
+        },
+        {
+          "von": "Materialbewegung",
+          "zu": "Sendung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
         },
         {
           "von": "Materialbewegung",
@@ -1998,26 +2144,56 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Bedarfsträger' (demand_holders) ist im LogicalSchema vorhanden, aber im ERModell nicht als separate Entität modelliert. Das ERModell erwähnt 'Bedarfsträger' nur in den Beziehungen, definiert aber keine Entität dafür. Dies führt zu einer Inkonsistenz zwischen konzeptionellem und logischem Modell. Zudem fehlt im LogicalSchema eine Beziehung zwischen 'demand_holders' und 'material_requests' (demand_holder_id ist vorhanden, aber die Beziehung ist nicht explizit dokumentiert).",
-          "korrekturanweisung": "Im ERModell muss 'Bedarfsträger' als eigenständige Entität mit Attributen (Name, Organisationstyp, Beschreibung) definiert werden. Die Beziehung zwischen Bedarfsträger und Materialforderung (1:N) muss explizit modelliert werden."
+          "beschreibung": "Die Entität 'Verband' (commands) fehlt in der Modellierung. Im Anforderungstext und RequirementsReport ist 'Verband' eine zentrale Entität, die Standorte und Einheiten organisiert. Das ER-Modell enthält 'Verband' explizit, das LogicalSchema jedoch nicht. Dies ist ein kritischer Fehler, da die Hierarchie Verband → Einheit/Standort nicht vollständig abgebildet ist.",
+          "korrekturanweisung": "Tabelle 'commands' muss in 'commands' (oder 'verbands') umbenannt oder explizit als Verband-Entität dokumentiert werden. Die Semantik muss klar sein."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Dienststelle' (departments) ist im LogicalSchema vorhanden, aber ihre Rolle ist unterbestimmt. Der Anforderungstext betont: 'praktisch arbeiten dort aber oft mehrere Dienststellen zusammen'. Das Schema modelliert nur eine N:1-Beziehung Dienststelle→Standort, nicht aber die Möglichkeit, dass mehrere Dienststellen an einem Standort zusammenarbeiten oder dass Dienststellen untereinander koordinieren. Dies ist eine unvollständige Abbildung der Anforderung.",
+          "korrekturanweisung": "Überprüfen Sie, ob Dienststellen als eigenständige Organisationseinheiten mit Koordinationsmechanismen modelliert werden müssen, oder ob sie nur als Verwaltungseinheiten eines Standorts fungieren. Ggf. ist eine M:N-Beziehung oder eine Koordinationstabelle erforderlich."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unvollständig:\n1. In der Tabelle 'shipments' fehlt das Attribut 'shipment_reason' im ERModell (ist aber im LogicalSchema vorhanden). Dies deutet auf eine Lücke in der konzeptionellen Modellierung hin.\n2. In der Tabelle 'material_movements' fehlt das Attribut 'reason' im ERModell (ist aber im LogicalSchema vorhanden).\n3. Die Tabelle 'locations' hat kein Attribut für die Zuordnung zu Einheiten direkt; stattdessen wird die Junction-Table 'location_units' verwendet. Dies ist korrekt modelliert, aber das ERModell dokumentiert dies nicht explizit.\n4. Das Attribut 'Grund' oder 'Grund der Bewegung' aus den Anforderungen wird nur teilweise durch 'reason' in 'material_movements' abgedeckt, nicht aber für Transporte oder Sendungen.",
-          "korrekturanweisung": "Alle Attribute aus dem LogicalSchema müssen im ERModell dokumentiert werden. Insbesondere 'shipment_reason' und 'reason' in 'material_movements' müssen explizit aufgeführt werden. Überprüfen Sie, ob alle Anforderungsattribute vollständig abgebildet sind."
+          "beschreibung": "In der Tabelle 'materials' fehlt das Attribut 'tracking_method' (Führungsart). Das ER-Modell enthält 'Fuehrungsart' als Pflichtfeld, das LogicalSchema hat 'tracking_method' als VARCHAR NOT NULL. Dies ist korrekt übersetzt, aber die Semantik ist kritisch: Der Anforderungstext sagt 'Manche Dinge werden stückweise geführt, anderes eher nach Menge oder Los, das muss im Alltag aber zusammen in einer Übersicht funktionieren.' Das Attribut ist vorhanden, aber es ist unklar, ob die Werte (z.B. 'piece', 'quantity', 'batch') ausreichend sind oder ob zusätzliche Metadaten erforderlich sind.",
+          "korrekturanweisung": "Dokumentieren Sie die zulässigen Werte für 'tracking_method' und stellen Sie sicher, dass die Unterscheidung zwischen stückweiser und mengenbasierter Führung in den Geschäftslogik-Constraints abgebildet ist."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "In der Tabelle 'stocks' fehlt ein Attribut zur Unterscheidung der Führungsart (stückweise vs. Menge/Los). Der Anforderungstext betont, dass 'manche Dinge stückweise geführt, anderes eher nach Menge oder Los' wird. Das Attribut 'quantity' in 'stocks' ist DECIMAL, was für Mengen geeignet ist, aber für stückweise Führung sollte es INTEGER sein. Es gibt keine Spalte, die angibt, wie ein Bestand geführt wird. Dies führt zu Mehrdeutigkeit bei der Interpretation von 'quantity'.",
+          "korrekturanweisung": "Fügen Sie ein Attribut 'tracking_method' oder 'unit_type' zur Tabelle 'stocks' hinzu, das angibt, ob der Bestand stückweise (INTEGER) oder nach Menge (DECIMAL) geführt wird. Alternativ: Nutzen Sie das 'tracking_method' aus der 'materials'-Tabelle als Referenz und dokumentieren Sie die Konsistenz."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Mehrere Beziehungsprobleme identifiziert:\n1. Die Beziehung zwischen 'Sendung' und 'Standort' (Startort/Zielort) ist im ERModell dokumentiert, aber im LogicalSchema sind 'origin_location_id' und 'destination_location_id' direkt in der Tabelle 'shipments' enthalten, nicht in 'transports'. Dies ist eine konzeptionelle Inkonsistenz: Laut Anforderungen gehören Startort und Zielort zu einem Transport, nicht zu einer Sendung.\n2. Die Beziehung zwischen 'Materialforderung' und 'Sendung' ist als 1:N modelliert (eine Forderung kann zu mehreren Sendungen führen), aber im LogicalSchema ist 'material_request_id' in 'shipments' nullable, was bedeutet, dass eine Sendung auch ohne Forderung existieren kann. Dies ist korrekt, aber die Kardinalität sollte präzisiert werden.\n3. Die Beziehung zwischen 'Transport' und 'Sendung' ist als 1:N modelliert, aber es ist unklar, ob ein Transport immer zu genau einer Sendung gehört oder ob mehrere Transporte eine Sendung durchführen können. Das LogicalSchema modelliert dies korrekt (shipment_id ist NOT NULL in transports), aber das ERModell ist mehrdeutig.",
-          "korrekturanweisung": "Korrigieren Sie die Modellierung von Startort und Zielort: Diese sollten in der Tabelle 'transports' sein, nicht in 'shipments'. Überprüfen Sie die Kardinalität zwischen Transport und Sendung und dokumentieren Sie sie explizit im ERModell."
+          "beschreibung": "Die Beziehung zwischen 'Materialforderung' und 'Sendung' ist nicht korrekt modelliert. Das ER-Modell zeigt 'Sendung → Materialforderung' als N:1 (eine Sendung erfüllt eine Forderung). Der Anforderungstext und RequirementsReport sind jedoch unklar: 'Beziehung zwischen Materialforderung und Sendung: Der Text erwähnt Materialforderungen und Sendungen, aber nicht explizit, wie diese zusammenhängen. Unklar ist, ob eine Sendung eine oder mehrere Forderungen erfüllt.' Das LogicalSchema modelliert dies als optional (material_request_id nullable), was suggeriert, dass eine Sendung auch ohne Forderung existieren kann. Dies ist semantisch fragwürdig und widerspricht der Anforderung, dass Sendungen Forderungen erfüllen.",
+          "korrekturanweisung": "Klären Sie die Kardinalität: Ist eine Sendung immer an eine Forderung gebunden (N:1, NOT NULL) oder kann sie auch unabhängig existieren (N:1, nullable)? Falls eine Sendung mehrere Forderungen erfüllen kann, ist eine M:N-Beziehung erforderlich."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'Transport' und 'Standort' ist unvollständig. Das LogicalSchema modelliert 'origin_location_id' und 'destination_location_id' als zwei separate Fremdschlüssel auf 'locations'. Dies ist korrekt, aber es fehlt eine semantische Unterscheidung: Der Anforderungstext erwähnt 'Startort' und 'Zielort', aber das Schema unterscheidet nicht zwischen verschiedenen Rollen eines Standorts (z.B. Lagerort, Umschlagpunkt, Werkstatt). Dies könnte zu Konsistenzproblemen führen, wenn z.B. ein Transport von einem Munitionslager zu einer Werkstatt führt, aber die Werkstatt nicht als Zielort konfiguriert ist.",
+          "korrekturanweisung": "Dokumentieren Sie, welche Standorttypen als Startort und Zielort zulässig sind. Ggf. ist eine Constraint-Definition erforderlich, um ungültige Kombinationen zu verhindern."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung 'Materialbewegung → Sendung' und 'Materialbewegung → Transport' sind beide optional (nullable). Der Anforderungstext sagt: 'Historien sollen nicht überschrieben werden' und 'bei jeder Bewegung sehen kann, wer sie veranlasst oder bestätigt hat'. Dies deutet darauf hin, dass jede Materialbewegung kontextualisiert sein muss. Wenn eine Bewegung weder zu einer Sendung noch zu einem Transport gehört, ist unklar, in welchem Kontext sie stattfindet. Dies ist eine unvollständige Modellierung der Anforderung.",
+          "korrekturanweisung": "Überprüfen Sie, ob jede Materialbewegung mindestens einen Kontext haben muss (Sendung ODER Transport ODER andere). Ggf. ist eine CHECK-Constraint erforderlich: (shipment_id IS NOT NULL OR transport_id IS NOT NULL)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'Fahrzeug' und 'Verband' ist nicht modelliert. Der Anforderungstext sagt: 'Transporte werden mit Fahrzeugen durchgeführt, teils im eigenen Bestand, teils durch zugewiesene Transportmittel anderer Verbände.' Das LogicalSchema modelliert nur 'Fahrzeug → Einheit' (N:1, nullable), nicht aber 'Fahrzeug → Verband'. Dies ist ein Fehler, da Fahrzeuge auch Verbänden zugeordnet sein können, nicht nur Einheiten.",
+          "korrekturanweisung": "Fügen Sie ein Attribut 'command_id' (oder 'verband_id') zur Tabelle 'vehicles' hinzu, um die Zuordnung zu einem Verband zu ermöglichen. Dokumentieren Sie die Semantik: Ist ein Fahrzeug einer Einheit oder einem Verband zugeordnet, oder beides?"
         },
         {
           "criterion": "normalisierung",
-          "erfuellt": false,
-          "beschreibung": "Normalisierungsprobleme identifiziert:\n1. Die Tabelle 'shipments' enthält sowohl 'origin_location_id' als auch 'destination_location_id', die konzeptionell zu einem Transport gehören, nicht zu einer Sendung. Dies führt zu Redundanz und Anomalien: Wenn mehrere Transporte eine Sendung durchführen, müssen Start- und Zielort mehrfach gespeichert werden oder sind inkonsistent.\n2. Die Tabelle 'material_movements' hat sowohl 'material_id' als auch 'stock_id', wobei 'stock_id' bereits 'material_id' impliziert (über die Beziehung stocks -> materials). Dies ist eine partielle Abhängigkeit und verstößt gegen die 3NF.\n3. Die Tabelle 'shipment_materials' und 'shipment_stocks' sind beide vorhanden und modellieren die Beziehung zwischen Sendung und Material/Bestand. Dies führt zu Redundanz: 'shipment_materials' speichert die Gesamtmenge, während 'shipment_stocks' die Entnahmen aus spezifischen Beständen speichert. Es ist unklar, wie diese konsistent gehalten werden.",
-          "korrekturanweisung": "1. Verschieben Sie 'origin_location_id' und 'destination_location_id' von 'shipments' zu 'transports'. 2. Entfernen Sie 'material_id' aus 'material_movements' oder dokumentieren Sie, warum es notwendig ist (z.B. für Performance). 3. Überprüfen Sie die Konsistenz zwischen 'shipment_materials' und 'shipment_stocks': Sollte 'shipment_materials' aus 'shipment_stocks' abgeleitet werden?"
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine offensichtlichen Anomalien wie transitive Abhängigkeiten oder Redundanzen. Junction-Tabellen sind korrekt für M:N-Beziehungen verwendet (z.B. 'shipment_materials', 'shipment_stocks', 'transport_personnel').",
+          "korrekturanweisung": ""
         }
       ],
       "origin_step": "cmd"
@@ -2026,7 +2202,7 @@
     "critic_report_c2": null,
     "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE demand_holders (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    organization_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_demand_holders PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location_type VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE units (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    unit_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_units PRIMARY KEY (id)\n);\n\nCREATE TABLE location_units (\n    id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    unit_id INTEGER NOT NULL,\n    is_primary BOOLEAN NOT NULL,\n    CONSTRAINT pk_location_units PRIMARY KEY (id),\n    CONSTRAINT fk_location_units_location_id FOREIGN KEY (location_id) REFERENCES locations (id),\n    CONSTRAINT fk_location_units_unit_id FOREIGN KEY (unit_id) REFERENCES units (id)\n);\n\nCREATE TABLE materials (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    material_type VARCHAR(255) NOT NULL,\n    condition VARCHAR(255) NOT NULL,\n    hazard_class VARCHAR(255),\n    storage_note TEXT,\n    CONSTRAINT pk_materials PRIMARY KEY (id)\n);\n\nCREATE TABLE stocks (\n    id INTEGER NOT NULL,\n    material_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    stock_type VARCHAR(255) NOT NULL,\n    storage_label VARCHAR(255),\n    CONSTRAINT pk_stocks PRIMARY KEY (id),\n    CONSTRAINT fk_stocks_material_id FOREIGN KEY (material_id) REFERENCES materials (id),\n    CONSTRAINT fk_stocks_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    service_unit VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE material_requests (\n    id INTEGER NOT NULL,\n    request_number VARCHAR(255) NOT NULL,\n    unit_id INTEGER NOT NULL,\n    demand_holder_id INTEGER,\n    timestamp TIMESTAMP NOT NULL,\n    priority VARCHAR(255) NOT NULL,\n    processing_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_material_requests PRIMARY KEY (id),\n    CONSTRAINT fk_material_requests_unit_id FOREIGN KEY (unit_id) REFERENCES units (id),\n    CONSTRAINT fk_material_requests_demand_holder_id FOREIGN KEY (demand_holder_id) REFERENCES demand_holders (id)\n);\n\nCREATE TABLE shipments (\n    id INTEGER NOT NULL,\n    shipment_number VARCHAR(255) NOT NULL,\n    shipment_date DATE NOT NULL,\n    material_request_id INTEGER,\n    origin_location_id INTEGER NOT NULL,\n    destination_location_id INTEGER NOT NULL,\n    shipment_reason VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_shipments PRIMARY KEY (id),\n    CONSTRAINT fk_shipments_material_request_id FOREIGN KEY (material_request_id) REFERENCES material_requests (id),\n    CONSTRAINT fk_shipments_origin_location_id FOREIGN KEY (origin_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_shipments_destination_location_id FOREIGN KEY (destination_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    vehicle_type VARCHAR(255) NOT NULL,\n    payload_capacity DECIMAL(18,2),\n    unit_id INTEGER,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_unit_id FOREIGN KEY (unit_id) REFERENCES units (id)\n);\n\nCREATE TABLE transports (\n    id INTEGER NOT NULL,\n    transport_number VARCHAR(255) NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    transport_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_transports PRIMARY KEY (id),\n    CONSTRAINT fk_transports_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_transports_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n\nCREATE TABLE material_movements (\n    id INTEGER NOT NULL,\n    movement_number VARCHAR(255) NOT NULL,\n    material_id INTEGER NOT NULL,\n    stock_id INTEGER NOT NULL,\n    movement_type VARCHAR(255) NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    initiator_id INTEGER NOT NULL,\n    confirmer_id INTEGER,\n    transport_id INTEGER,\n    reason TEXT,\n    CONSTRAINT pk_material_movements PRIMARY KEY (id),\n    CONSTRAINT fk_material_movements_material_id FOREIGN KEY (material_id) REFERENCES materials (id),\n    CONSTRAINT fk_material_movements_stock_id FOREIGN KEY (stock_id) REFERENCES stocks (id),\n    CONSTRAINT fk_material_movements_initiator_id FOREIGN KEY (initiator_id) REFERENCES persons (id),\n    CONSTRAINT fk_material_movements_confirmer_id FOREIGN KEY (confirmer_id) REFERENCES persons (id),\n    CONSTRAINT fk_material_movements_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id)\n);\n\nCREATE TABLE shipment_materials (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    material_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_shipment_materials PRIMARY KEY (id),\n    CONSTRAINT fk_shipment_materials_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_materials_material_id FOREIGN KEY (material_id) REFERENCES materials (id)\n);\n\nCREATE TABLE shipment_stocks (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    stock_id INTEGER NOT NULL,\n    withdrawal_quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_shipment_stocks PRIMARY KEY (id),\n    CONSTRAINT fk_shipment_stocks_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_stocks_stock_id FOREIGN KEY (stock_id) REFERENCES stocks (id)\n);\n\nCREATE TABLE transport_persons (\n    id INTEGER NOT NULL,\n    transport_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    function VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_transport_persons PRIMARY KEY (id),\n    CONSTRAINT fk_transport_persons_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id),\n    CONSTRAINT fk_transport_persons_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n",
+    "final_ddl": "CREATE TABLE commands (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_commands PRIMARY KEY (id)\n);\n\nCREATE TABLE units (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    command_id INTEGER NOT NULL,\n    CONSTRAINT pk_units PRIMARY KEY (id),\n    CONSTRAINT fk_units_command_id FOREIGN KEY (command_id) REFERENCES commands (id)\n);\n\nCREATE TABLE demand_carriers (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    unit_id INTEGER,\n    CONSTRAINT pk_demand_carriers PRIMARY KEY (id),\n    CONSTRAINT fk_demand_carriers_unit_id FOREIGN KEY (unit_id) REFERENCES units (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location_type VARCHAR(255) NOT NULL,\n    command_id INTEGER,\n    CONSTRAINT pk_locations PRIMARY KEY (id),\n    CONSTRAINT fk_locations_command_id FOREIGN KEY (command_id) REFERENCES commands (id)\n);\n\nCREATE TABLE departments (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    location_id INTEGER NOT NULL,\n    CONSTRAINT pk_departments PRIMARY KEY (id),\n    CONSTRAINT fk_departments_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE materials (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    material_type VARCHAR(255) NOT NULL,\n    material_condition VARCHAR(255) NOT NULL,\n    hazard_class VARCHAR(255),\n    storage_note TEXT,\n    tracking_method VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_materials PRIMARY KEY (id)\n);\n\nCREATE TABLE stocks (\n    id INTEGER NOT NULL,\n    material_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    stock_condition VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_stocks PRIMARY KEY (id),\n    CONSTRAINT fk_stocks_material_id FOREIGN KEY (material_id) REFERENCES materials (id),\n    CONSTRAINT fk_stocks_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    unit_id INTEGER,\n    CONSTRAINT pk_persons PRIMARY KEY (id),\n    CONSTRAINT fk_persons_unit_id FOREIGN KEY (unit_id) REFERENCES units (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    registration VARCHAR(255) NOT NULL,\n    vehicle_type VARCHAR(255) NOT NULL,\n    payload DECIMAL(18,2) NOT NULL,\n    unit_id INTEGER,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_unit_id FOREIGN KEY (unit_id) REFERENCES units (id)\n);\n\nCREATE TABLE transports (\n    id INTEGER NOT NULL,\n    transport_number VARCHAR(255) NOT NULL,\n    origin_location_id INTEGER NOT NULL,\n    destination_location_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    transport_status VARCHAR(255) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    CONSTRAINT pk_transports PRIMARY KEY (id),\n    CONSTRAINT fk_transports_origin_location_id FOREIGN KEY (origin_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_transports_destination_location_id FOREIGN KEY (destination_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_transports_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n\nCREATE TABLE material_requests (\n    id INTEGER NOT NULL,\n    request_number VARCHAR(255) NOT NULL,\n    unit_id INTEGER NOT NULL,\n    demand_carrier_id INTEGER,\n    timestamp TIMESTAMP NOT NULL,\n    priority VARCHAR(255) NOT NULL,\n    processing_status VARCHAR(255) NOT NULL,\n    source VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_material_requests PRIMARY KEY (id),\n    CONSTRAINT fk_material_requests_unit_id FOREIGN KEY (unit_id) REFERENCES units (id),\n    CONSTRAINT fk_material_requests_demand_carrier_id FOREIGN KEY (demand_carrier_id) REFERENCES demand_carriers (id)\n);\n\nCREATE TABLE shipments (\n    id INTEGER NOT NULL,\n    shipment_number VARCHAR(255) NOT NULL,\n    transport_id INTEGER NOT NULL,\n    shipment_status VARCHAR(255) NOT NULL,\n    material_request_id INTEGER,\n    CONSTRAINT pk_shipments PRIMARY KEY (id),\n    CONSTRAINT fk_shipments_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id),\n    CONSTRAINT fk_shipments_material_request_id FOREIGN KEY (material_request_id) REFERENCES material_requests (id)\n);\n\nCREATE TABLE material_movements (\n    id INTEGER NOT NULL,\n    movement_number VARCHAR(255) NOT NULL,\n    material_id INTEGER NOT NULL,\n    stock_id INTEGER NOT NULL,\n    movement_type VARCHAR(255) NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    timestamp TIMESTAMP NOT NULL,\n    initiator_id INTEGER NOT NULL,\n    confirmer_id INTEGER,\n    shipment_id INTEGER,\n    transport_id INTEGER,\n    CONSTRAINT pk_material_movements PRIMARY KEY (id),\n    CONSTRAINT fk_material_movements_material_id FOREIGN KEY (material_id) REFERENCES materials (id),\n    CONSTRAINT fk_material_movements_stock_id FOREIGN KEY (stock_id) REFERENCES stocks (id),\n    CONSTRAINT fk_material_movements_initiator_id FOREIGN KEY (initiator_id) REFERENCES persons (id),\n    CONSTRAINT fk_material_movements_confirmer_id FOREIGN KEY (confirmer_id) REFERENCES persons (id),\n    CONSTRAINT fk_material_movements_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_material_movements_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id)\n);\n\nCREATE TABLE shipment_materials (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    material_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_shipment_materials PRIMARY KEY (id),\n    CONSTRAINT fk_shipment_materials_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_materials_material_id FOREIGN KEY (material_id) REFERENCES materials (id)\n);\n\nCREATE TABLE shipment_stocks (\n    id INTEGER NOT NULL,\n    shipment_id INTEGER NOT NULL,\n    stock_id INTEGER NOT NULL,\n    withdrawal_quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_shipment_stocks PRIMARY KEY (id),\n    CONSTRAINT fk_shipment_stocks_shipment_id FOREIGN KEY (shipment_id) REFERENCES shipments (id),\n    CONSTRAINT fk_shipment_stocks_stock_id FOREIGN KEY (stock_id) REFERENCES stocks (id)\n);\n\nCREATE TABLE transport_personnel (\n    id INTEGER NOT NULL,\n    transport_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    function VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_transport_personnel PRIMARY KEY (id),\n    CONSTRAINT fk_transport_personnel_transport_id FOREIGN KEY (transport_id) REFERENCES transports (id),\n    CONSTRAINT fk_transport_personnel_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -2051,26 +2227,56 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Bedarfsträger' (demand_holders) ist im LogicalSchema vorhanden, aber im ERModell nicht als separate Entität modelliert. Das ERModell erwähnt 'Bedarfsträger' nur in den Beziehungen, definiert aber keine Entität dafür. Dies führt zu einer Inkonsistenz zwischen konzeptionellem und logischem Modell. Zudem fehlt im LogicalSchema eine Beziehung zwischen 'demand_holders' und 'material_requests' (demand_holder_id ist vorhanden, aber die Beziehung ist nicht explizit dokumentiert).",
-          "korrekturanweisung": "Im ERModell muss 'Bedarfsträger' als eigenständige Entität mit Attributen (Name, Organisationstyp, Beschreibung) definiert werden. Die Beziehung zwischen Bedarfsträger und Materialforderung (1:N) muss explizit modelliert werden."
+          "beschreibung": "Die Entität 'Verband' (commands) fehlt in der Modellierung. Im Anforderungstext und RequirementsReport ist 'Verband' eine zentrale Entität, die Standorte und Einheiten organisiert. Das ER-Modell enthält 'Verband' explizit, das LogicalSchema jedoch nicht. Dies ist ein kritischer Fehler, da die Hierarchie Verband → Einheit/Standort nicht vollständig abgebildet ist.",
+          "korrekturanweisung": "Tabelle 'commands' muss in 'commands' (oder 'verbands') umbenannt oder explizit als Verband-Entität dokumentiert werden. Die Semantik muss klar sein."
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Dienststelle' (departments) ist im LogicalSchema vorhanden, aber ihre Rolle ist unterbestimmt. Der Anforderungstext betont: 'praktisch arbeiten dort aber oft mehrere Dienststellen zusammen'. Das Schema modelliert nur eine N:1-Beziehung Dienststelle→Standort, nicht aber die Möglichkeit, dass mehrere Dienststellen an einem Standort zusammenarbeiten oder dass Dienststellen untereinander koordinieren. Dies ist eine unvollständige Abbildung der Anforderung.",
+          "korrekturanweisung": "Überprüfen Sie, ob Dienststellen als eigenständige Organisationseinheiten mit Koordinationsmechanismen modelliert werden müssen, oder ob sie nur als Verwaltungseinheiten eines Standorts fungieren. Ggf. ist eine M:N-Beziehung oder eine Koordinationstabelle erforderlich."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unvollständig:\n1. In der Tabelle 'shipments' fehlt das Attribut 'shipment_reason' im ERModell (ist aber im LogicalSchema vorhanden). Dies deutet auf eine Lücke in der konzeptionellen Modellierung hin.\n2. In der Tabelle 'material_movements' fehlt das Attribut 'reason' im ERModell (ist aber im LogicalSchema vorhanden).\n3. Die Tabelle 'locations' hat kein Attribut für die Zuordnung zu Einheiten direkt; stattdessen wird die Junction-Table 'location_units' verwendet. Dies ist korrekt modelliert, aber das ERModell dokumentiert dies nicht explizit.\n4. Das Attribut 'Grund' oder 'Grund der Bewegung' aus den Anforderungen wird nur teilweise durch 'reason' in 'material_movements' abgedeckt, nicht aber für Transporte oder Sendungen.",
-          "korrekturanweisung": "Alle Attribute aus dem LogicalSchema müssen im ERModell dokumentiert werden. Insbesondere 'shipment_reason' und 'reason' in 'material_movements' müssen explizit aufgeführt werden. Überprüfen Sie, ob alle Anforderungsattribute vollständig abgebildet sind."
+          "beschreibung": "In der Tabelle 'materials' fehlt das Attribut 'tracking_method' (Führungsart). Das ER-Modell enthält 'Fuehrungsart' als Pflichtfeld, das LogicalSchema hat 'tracking_method' als VARCHAR NOT NULL. Dies ist korrekt übersetzt, aber die Semantik ist kritisch: Der Anforderungstext sagt 'Manche Dinge werden stückweise geführt, anderes eher nach Menge oder Los, das muss im Alltag aber zusammen in einer Übersicht funktionieren.' Das Attribut ist vorhanden, aber es ist unklar, ob die Werte (z.B. 'piece', 'quantity', 'batch') ausreichend sind oder ob zusätzliche Metadaten erforderlich sind.",
+          "korrekturanweisung": "Dokumentieren Sie die zulässigen Werte für 'tracking_method' und stellen Sie sicher, dass die Unterscheidung zwischen stückweiser und mengenbasierter Führung in den Geschäftslogik-Constraints abgebildet ist."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "In der Tabelle 'stocks' fehlt ein Attribut zur Unterscheidung der Führungsart (stückweise vs. Menge/Los). Der Anforderungstext betont, dass 'manche Dinge stückweise geführt, anderes eher nach Menge oder Los' wird. Das Attribut 'quantity' in 'stocks' ist DECIMAL, was für Mengen geeignet ist, aber für stückweise Führung sollte es INTEGER sein. Es gibt keine Spalte, die angibt, wie ein Bestand geführt wird. Dies führt zu Mehrdeutigkeit bei der Interpretation von 'quantity'.",
+          "korrekturanweisung": "Fügen Sie ein Attribut 'tracking_method' oder 'unit_type' zur Tabelle 'stocks' hinzu, das angibt, ob der Bestand stückweise (INTEGER) oder nach Menge (DECIMAL) geführt wird. Alternativ: Nutzen Sie das 'tracking_method' aus der 'materials'-Tabelle als Referenz und dokumentieren Sie die Konsistenz."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Mehrere Beziehungsprobleme identifiziert:\n1. Die Beziehung zwischen 'Sendung' und 'Standort' (Startort/Zielort) ist im ERModell dokumentiert, aber im LogicalSchema sind 'origin_location_id' und 'destination_location_id' direkt in der Tabelle 'shipments' enthalten, nicht in 'transports'. Dies ist eine konzeptionelle Inkonsistenz: Laut Anforderungen gehören Startort und Zielort zu einem Transport, nicht zu einer Sendung.\n2. Die Beziehung zwischen 'Materialforderung' und 'Sendung' ist als 1:N modelliert (eine Forderung kann zu mehreren Sendungen führen), aber im LogicalSchema ist 'material_request_id' in 'shipments' nullable, was bedeutet, dass eine Sendung auch ohne Forderung existieren kann. Dies ist korrekt, aber die Kardinalität sollte präzisiert werden.\n3. Die Beziehung zwischen 'Transport' und 'Sendung' ist als 1:N modelliert, aber es ist unklar, ob ein Transport immer zu genau einer Sendung gehört oder ob mehrere Transporte eine Sendung durchführen können. Das LogicalSchema modelliert dies korrekt (shipment_id ist NOT NULL in transports), aber das ERModell ist mehrdeutig.",
-          "korrekturanweisung": "Korrigieren Sie die Modellierung von Startort und Zielort: Diese sollten in der Tabelle 'transports' sein, nicht in 'shipments'. Überprüfen Sie die Kardinalität zwischen Transport und Sendung und dokumentieren Sie sie explizit im ERModell."
+          "beschreibung": "Die Beziehung zwischen 'Materialforderung' und 'Sendung' ist nicht korrekt modelliert. Das ER-Modell zeigt 'Sendung → Materialforderung' als N:1 (eine Sendung erfüllt eine Forderung). Der Anforderungstext und RequirementsReport sind jedoch unklar: 'Beziehung zwischen Materialforderung und Sendung: Der Text erwähnt Materialforderungen und Sendungen, aber nicht explizit, wie diese zusammenhängen. Unklar ist, ob eine Sendung eine oder mehrere Forderungen erfüllt.' Das LogicalSchema modelliert dies als optional (material_request_id nullable), was suggeriert, dass eine Sendung auch ohne Forderung existieren kann. Dies ist semantisch fragwürdig und widerspricht der Anforderung, dass Sendungen Forderungen erfüllen.",
+          "korrekturanweisung": "Klären Sie die Kardinalität: Ist eine Sendung immer an eine Forderung gebunden (N:1, NOT NULL) oder kann sie auch unabhängig existieren (N:1, nullable)? Falls eine Sendung mehrere Forderungen erfüllen kann, ist eine M:N-Beziehung erforderlich."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'Transport' und 'Standort' ist unvollständig. Das LogicalSchema modelliert 'origin_location_id' und 'destination_location_id' als zwei separate Fremdschlüssel auf 'locations'. Dies ist korrekt, aber es fehlt eine semantische Unterscheidung: Der Anforderungstext erwähnt 'Startort' und 'Zielort', aber das Schema unterscheidet nicht zwischen verschiedenen Rollen eines Standorts (z.B. Lagerort, Umschlagpunkt, Werkstatt). Dies könnte zu Konsistenzproblemen führen, wenn z.B. ein Transport von einem Munitionslager zu einer Werkstatt führt, aber die Werkstatt nicht als Zielort konfiguriert ist.",
+          "korrekturanweisung": "Dokumentieren Sie, welche Standorttypen als Startort und Zielort zulässig sind. Ggf. ist eine Constraint-Definition erforderlich, um ungültige Kombinationen zu verhindern."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung 'Materialbewegung → Sendung' und 'Materialbewegung → Transport' sind beide optional (nullable). Der Anforderungstext sagt: 'Historien sollen nicht überschrieben werden' und 'bei jeder Bewegung sehen kann, wer sie veranlasst oder bestätigt hat'. Dies deutet darauf hin, dass jede Materialbewegung kontextualisiert sein muss. Wenn eine Bewegung weder zu einer Sendung noch zu einem Transport gehört, ist unklar, in welchem Kontext sie stattfindet. Dies ist eine unvollständige Modellierung der Anforderung.",
+          "korrekturanweisung": "Überprüfen Sie, ob jede Materialbewegung mindestens einen Kontext haben muss (Sendung ODER Transport ODER andere). Ggf. ist eine CHECK-Constraint erforderlich: (shipment_id IS NOT NULL OR transport_id IS NOT NULL)."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Die Beziehung zwischen 'Fahrzeug' und 'Verband' ist nicht modelliert. Der Anforderungstext sagt: 'Transporte werden mit Fahrzeugen durchgeführt, teils im eigenen Bestand, teils durch zugewiesene Transportmittel anderer Verbände.' Das LogicalSchema modelliert nur 'Fahrzeug → Einheit' (N:1, nullable), nicht aber 'Fahrzeug → Verband'. Dies ist ein Fehler, da Fahrzeuge auch Verbänden zugeordnet sein können, nicht nur Einheiten.",
+          "korrekturanweisung": "Fügen Sie ein Attribut 'command_id' (oder 'verband_id') zur Tabelle 'vehicles' hinzu, um die Zuordnung zu einem Verband zu ermöglichen. Dokumentieren Sie die Semantik: Ist ein Fahrzeug einer Einheit oder einem Verband zugeordnet, oder beides?"
         },
         {
           "criterion": "normalisierung",
-          "erfuellt": false,
-          "beschreibung": "Normalisierungsprobleme identifiziert:\n1. Die Tabelle 'shipments' enthält sowohl 'origin_location_id' als auch 'destination_location_id', die konzeptionell zu einem Transport gehören, nicht zu einer Sendung. Dies führt zu Redundanz und Anomalien: Wenn mehrere Transporte eine Sendung durchführen, müssen Start- und Zielort mehrfach gespeichert werden oder sind inkonsistent.\n2. Die Tabelle 'material_movements' hat sowohl 'material_id' als auch 'stock_id', wobei 'stock_id' bereits 'material_id' impliziert (über die Beziehung stocks -> materials). Dies ist eine partielle Abhängigkeit und verstößt gegen die 3NF.\n3. Die Tabelle 'shipment_materials' und 'shipment_stocks' sind beide vorhanden und modellieren die Beziehung zwischen Sendung und Material/Bestand. Dies führt zu Redundanz: 'shipment_materials' speichert die Gesamtmenge, während 'shipment_stocks' die Entnahmen aus spezifischen Beständen speichert. Es ist unklar, wie diese konsistent gehalten werden.",
-          "korrekturanweisung": "1. Verschieben Sie 'origin_location_id' und 'destination_location_id' von 'shipments' zu 'transports'. 2. Entfernen Sie 'material_id' aus 'material_movements' oder dokumentieren Sie, warum es notwendig ist (z.B. für Performance). 3. Überprüfen Sie die Konsistenz zwischen 'shipment_materials' und 'shipment_stocks': Sollte 'shipment_materials' aus 'shipment_stocks' abgeleitet werden?"
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine offensichtlichen Anomalien wie transitive Abhängigkeiten oder Redundanzen. Junction-Tabellen sind korrekt für M:N-Beziehungen verwendet (z.B. 'shipment_materials', 'shipment_stocks', 'transport_personnel').",
+          "korrekturanweisung": ""
         }
       ],
       "origin_step": "cmd"
@@ -2080,33 +2286,33 @@
   },
   "telemetry": {
     "total_calls": 10,
-    "total_input_tokens": 90858,
-    "total_output_tokens": 35545,
-    "total_tokens": 126403,
+    "total_input_tokens": 109388,
+    "total_output_tokens": 39300,
+    "total_tokens": 148688,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1880,
-        "output_tokens": 3055,
+        "output_tokens": 3300,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 3,
-        "input_tokens": 15258,
-        "output_tokens": 12200,
+        "input_tokens": 29475,
+        "output_tokens": 15709,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 3,
-        "input_tokens": 27853,
-        "output_tokens": 13272,
+        "input_tokens": 29185,
+        "output_tokens": 13073,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 3,
-        "input_tokens": 45867,
-        "output_tokens": 7018,
+        "input_tokens": 48848,
+        "output_tokens": 7218,
         "cost_usd": 0.0
       }
     },
@@ -2117,7 +2323,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1880,
-        "output_tokens": 3055,
+        "output_tokens": 3300,
         "cost_usd": 0.0
       },
       {
@@ -2125,8 +2331,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5086,
-        "output_tokens": 3982,
+        "input_tokens": 5351,
+        "output_tokens": 4619,
         "cost_usd": 0.0
       },
       {
@@ -2134,8 +2340,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7552,
-        "output_tokens": 4095,
+        "input_tokens": 8299,
+        "output_tokens": 4035,
         "cost_usd": 0.0
       },
       {
@@ -2143,8 +2349,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 14862,
-        "output_tokens": 2918,
+        "input_tokens": 16372,
+        "output_tokens": 2471,
         "cost_usd": 0.0
       },
       {
@@ -2152,8 +2358,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5086,
-        "output_tokens": 3982,
+        "input_tokens": 12385,
+        "output_tokens": 5386,
         "cost_usd": 0.0
       },
       {
@@ -2161,8 +2367,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 10342,
-        "output_tokens": 4730,
+        "input_tokens": 10534,
+        "output_tokens": 4365,
         "cost_usd": 0.0
       },
       {
@@ -2170,8 +2376,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 15497,
-        "output_tokens": 2148,
+        "input_tokens": 15925,
+        "output_tokens": 1980,
         "cost_usd": 0.0
       },
       {
@@ -2179,8 +2385,8 @@
         "iteration": 2,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5086,
-        "output_tokens": 4236,
+        "input_tokens": 11739,
+        "output_tokens": 5704,
         "cost_usd": 0.0
       },
       {
@@ -2188,8 +2394,8 @@
         "iteration": 2,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 9959,
-        "output_tokens": 4447,
+        "input_tokens": 10352,
+        "output_tokens": 4673,
         "cost_usd": 0.0
       },
       {
@@ -2197,8 +2403,8 @@
         "iteration": 2,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 15508,
-        "output_tokens": 1952,
+        "input_tokens": 16551,
+        "output_tokens": 2767,
         "cost_usd": 0.0
       }
     ]

@@ -2,8 +2,8 @@
   "testfall_id": "TC061",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.47926267281105994,
-  "score_gesamt": 0.687557603686636,
+  "score_semantisch": 0.4663594470046083,
+  "score_gesamt": 0.679815668202765,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 3
     },
     "attribut": {
-      "precision": 0.5,
-      "recall": 0.46875,
-      "f1": 0.4838709677419355,
-      "matched": 15,
-      "nur_in_referenz": 17,
-      "nur_in_generiert": 15
+      "precision": 0.4666666666666667,
+      "recall": 0.4375,
+      "f1": 0.45161290322580644,
+      "matched": 14,
+      "nur_in_referenz": 18,
+      "nur_in_generiert": 16
     },
     "beziehung": {
       "recall": 0.2857142857142857,
@@ -60,6 +60,11 @@
     },
     {
       "element": "subscriptions.promotion_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "subscriptions.acquisition_channel",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -215,14 +220,14 @@
               "nullable": false
             },
             {
-              "name": "price",
-              "type": "DECIMAL",
+              "name": "duration_option",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "duration",
-              "type": "VARCHAR",
+              "name": "price",
+              "type": "DECIMAL",
               "primary_key": false,
               "nullable": false
             }
@@ -284,7 +289,7 @@
               "name": "start_date",
               "type": "DATE",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "end_date",
@@ -346,12 +351,6 @@
               "nullable": false
             },
             {
-              "name": "campaign_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
               "name": "start_date",
               "type": "DATE",
               "primary_key": false,
@@ -364,10 +363,16 @@
               "nullable": true
             },
             {
-              "name": "acquisition_channel",
+              "name": "conclusion_channel",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "campaign_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -416,7 +421,7 @@
               "nullable": false
             },
             {
-              "name": "status",
+              "name": "success_status",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -483,9 +488,9 @@
           "attribute": [
             "Zahlungsdatum",
             "Betrag",
-            "Status"
+            "Erfolgsstatus"
           ],
-          "beschreibung": "Eine Zahlung, die zu einem Abo gehört, mit Information über Zeitpunkt, Betrag und Erfolg der Zahlung."
+          "beschreibung": "Eine Zahlung, die zu einem Abo gehört und Informationen über Zeitpunkt, Betrag und Erfolg enthält."
         }
       ],
       "beziehungen": [
@@ -511,7 +516,7 @@
           "von": "Aktion",
           "zu": "Abo-Variante",
           "kardinalitaet": "M:N",
-          "beschreibung": "Mehrere Abo-Varianten können in einer Aktion vorgesehen sein, und dieselbe Abo-Variante kann in verschiedenen Aktionen vorkommen."
+          "beschreibung": "Für Werbeaktionen können mehrere Abo-Varianten vorgesehen sein, und dieselbe Abo-Variante kann in verschiedenen Aktionen vorkommen."
         },
         {
           "von": "Abo",
@@ -523,12 +528,12 @@
           "von": "Aktion",
           "zu": "Abo",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Abo kann im Rahmen einer Aktion zustande kommen (optional, da nicht jedes Abo über eine Aktion abgeschlossen wird)."
+          "beschreibung": "Ein Abo kann über eine Aktion zustande gekommen sein (optional, da auch andere Abschlusskanäle möglich sind)."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Abschlusskanal wird als 'online, telefonisch oder im Rahmen einer Aktion' beschrieben. Unklar ist, ob 'Aktion' ein separater Kanal ist oder ob Aktionen auch online/telefonisch stattfinden können.",
+          "beschreibung": "Der Abschlusskanal wird als 'online, telefonisch oder im Rahmen einer Aktion' beschrieben. Unklar ist, ob 'Aktion' ein separater Kanal ist oder ob Aktionen nur online/telefonisch stattfinden können.",
           "betroffene_elemente": [
             "Abo",
             "Aktion",
@@ -536,33 +541,37 @@
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob jedes Abo über eine Aktion zustande kommen muss oder ob dies optional ist. Der Text deutet an, dass nicht jede Aktion unbegrenzt gültig ist, aber nicht, ob jedes Abo an eine Aktion gebunden sein muss.",
+          "beschreibung": "Unklar ist, ob jedes Abo mit einer Aktion verknüpft sein muss oder ob die Verknüpfung optional ist.",
           "betroffene_elemente": [
             "Abo",
             "Aktion"
           ]
         },
         {
-          "beschreibung": "Die Laufzeit wird bei Abo-Varianten erwähnt (monatlich, jährlich), aber unklar ist, ob dies ein festes Attribut der Variante ist oder ob die Laufzeit pro Abo-Abschluss variabel ist.",
+          "beschreibung": "Das Attribut 'Laufzeit' bei Abo-Variante ist mehrdeutig: Ist es die angebotene Laufzeitoption (z.B. 'monatlich' oder 'jährlich') oder die tatsächliche Dauer eines abgeschlossenen Abos?",
           "betroffene_elemente": [
             "Abo-Variante",
-            "Abo",
             "Laufzeit"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob das Enddatum eines Abos automatisch berechnet wird (Startdatum + Laufzeit) oder ob es separat gespeichert werden muss.",
+          "beschreibung": "Unklar ist, ob 'Enddatum' bei Abo ein tatsächliches Enddatum oder nur ein geplantes/erwartetes Enddatum ist, besonders bei laufenden Abos.",
           "betroffene_elemente": [
             "Abo",
-            "Startdatum",
             "Enddatum"
           ]
         },
         {
-          "beschreibung": "Unklar ist, wie die Beziehung zwischen Abo und Aktion modelliert werden soll: Soll jedes Abo optional einer Aktion zugeordnet sein, oder gibt es eine separate Zuordnungstabelle?",
+          "beschreibung": "Nicht spezifiziert ist, ob eine Aktion unbegrenzt gültig sein kann (kein Enddatum) oder ob ein Enddatum immer erforderlich ist.",
           "betroffene_elemente": [
-            "Abo",
-            "Aktion"
+            "Aktion",
+            "Enddatum"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, welche Zahlungsarten oder -methoden unterstützt werden und ob diese separat modelliert werden sollen.",
+          "betroffene_elemente": [
+            "Zahlung"
           ]
         }
       ]
@@ -614,14 +623,14 @@
               "pflichtfeld": true
             },
             {
-              "name": "preis",
-              "datentyp": "DECIMAL",
+              "name": "laufzeitoption",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "laufzeit",
-              "datentyp": "VARCHAR",
+              "name": "preis",
+              "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -678,12 +687,6 @@
               "pflichtfeld": true
             },
             {
-              "name": "aktion_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
               "name": "startdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
@@ -700,6 +703,12 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "aktion_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -722,7 +731,7 @@
               "name": "startdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             },
             {
               "name": "enddatum",
@@ -760,7 +769,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "status",
+              "name": "erfolgsstatus",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -831,25 +840,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: magazines, subscription_variants, customers, subscriptions, campaigns, payments. Die Abbildung ist vollständig und korrekt.",
+          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: magazines, subscription_variants, customers, subscriptions, campaigns, payments. Die Namenskonvention (Plural, snake_case, englisch) ist konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt abgebildet. Namenskonventionen (snake_case, englisch) sind konsistent eingehalten. Datentypen sind angemessen gewählt (VARCHAR für Texte, DATE für Daten, DECIMAL für Preise/Beträge, INTEGER für IDs).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt benannt: magazines (title, publication_frequency), subscription_variants (type, duration_option, price), customers (name, email, registration_date), subscriptions (start_date, end_date, conclusion_channel), campaigns (name, start_date, end_date), payments (payment_date, amount, success_status). Die Attributnamen folgen der snake_case-Konvention.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Beziehungen aus dem RequirementsReport sind korrekt im LogicalSchema abgebildet: (1) Zeitschrift→Abo-Variante (1:N via magazine_id FK), (2) Kunde→Abo (1:N via customer_id FK), (3) Abo-Variante→Abo (1:N via subscription_variant_id FK), (4) Aktion↔Abo-Variante (M:N via campaign_subscription_variants Junction-Table), (5) Abo→Zahlung (1:N via subscription_id FK), (6) Aktion→Abo (1:N via campaign_id FK, optional). Kardinalitäten und Optionalität sind korrekt modelliert.",
+          "beschreibung": "Alle 6 Beziehungen aus dem RequirementsReport sind korrekt im Schema abgebildet: (1) Zeitschrift→Abo-Variante (1:N via magazine_id FK), (2) Kunde→Abo (1:N via customer_id FK), (3) Abo-Variante→Abo (1:N via subscription_variant_id FK), (4) Aktion↔Abo-Variante (M:N via campaign_subscription_variants Junction-Table), (5) Abo→Zahlung (1:N via subscription_id FK), (6) Aktion→Abo (1:N via campaign_id FK, optional nullable). Kardinalitäten und Optionalität sind korrekt modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table campaign_subscription_variants ist korrekt für die M:N-Beziehung modelliert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen, (4) Junction-Table campaign_subscription_variants ist korrekt für M:N-Beziehung modelliert. Datentypen sind angemessen gewählt (DECIMAL für Preise/Beträge, DATE für Datumsangaben, VARCHAR für Texte).",
           "korrekturanweisung": ""
         }
       ],
@@ -859,7 +868,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE campaigns (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    CONSTRAINT pk_campaigns PRIMARY KEY (id)\n);\n\nCREATE TABLE magazines (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publication_frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_magazines PRIMARY KEY (id)\n);\n\nCREATE TABLE subscription_variants (\n    id INTEGER NOT NULL,\n    magazine_id INTEGER NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    duration VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_subscription_variants PRIMARY KEY (id),\n    CONSTRAINT fk_subscription_variants_magazine_id FOREIGN KEY (magazine_id) REFERENCES magazines (id)\n);\n\nCREATE TABLE campaign_subscription_variants (\n    campaign_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    CONSTRAINT pk_campaign_subscription_variants PRIMARY KEY (campaign_id, subscription_variant_id),\n    CONSTRAINT fk_campaign_subscription_variants_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id),\n    CONSTRAINT fk_campaign_subscription_variants_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE subscriptions (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    campaign_id INTEGER,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    acquisition_channel VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_subscriptions PRIMARY KEY (id),\n    CONSTRAINT fk_subscriptions_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_subscriptions_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id),\n    CONSTRAINT fk_subscriptions_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    subscription_id INTEGER NOT NULL,\n    payment_date DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_subscription_id FOREIGN KEY (subscription_id) REFERENCES subscriptions (id)\n);\n",
+    "final_ddl": "CREATE TABLE campaigns (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_campaigns PRIMARY KEY (id)\n);\n\nCREATE TABLE magazines (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    publication_frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_magazines PRIMARY KEY (id)\n);\n\nCREATE TABLE subscription_variants (\n    id INTEGER NOT NULL,\n    magazine_id INTEGER NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    duration_option VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_subscription_variants PRIMARY KEY (id),\n    CONSTRAINT fk_subscription_variants_magazine_id FOREIGN KEY (magazine_id) REFERENCES magazines (id)\n);\n\nCREATE TABLE campaign_subscription_variants (\n    campaign_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    CONSTRAINT pk_campaign_subscription_variants PRIMARY KEY (campaign_id, subscription_variant_id),\n    CONSTRAINT fk_campaign_subscription_variants_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id),\n    CONSTRAINT fk_campaign_subscription_variants_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE subscriptions (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    subscription_variant_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    conclusion_channel VARCHAR(255) NOT NULL,\n    campaign_id INTEGER,\n    CONSTRAINT pk_subscriptions PRIMARY KEY (id),\n    CONSTRAINT fk_subscriptions_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_subscriptions_subscription_variant_id FOREIGN KEY (subscription_variant_id) REFERENCES subscription_variants (id),\n    CONSTRAINT fk_subscriptions_campaign_id FOREIGN KEY (campaign_id) REFERENCES campaigns (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    subscription_id INTEGER NOT NULL,\n    payment_date DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    success_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_subscription_id FOREIGN KEY (subscription_id) REFERENCES subscriptions (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -884,25 +893,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: magazines, subscription_variants, customers, subscriptions, campaigns, payments. Die Abbildung ist vollständig und korrekt.",
+          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: magazines, subscription_variants, customers, subscriptions, campaigns, payments. Die Namenskonvention (Plural, snake_case, englisch) ist konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt abgebildet. Namenskonventionen (snake_case, englisch) sind konsistent eingehalten. Datentypen sind angemessen gewählt (VARCHAR für Texte, DATE für Daten, DECIMAL für Preise/Beträge, INTEGER für IDs).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt benannt: magazines (title, publication_frequency), subscription_variants (type, duration_option, price), customers (name, email, registration_date), subscriptions (start_date, end_date, conclusion_channel), campaigns (name, start_date, end_date), payments (payment_date, amount, success_status). Die Attributnamen folgen der snake_case-Konvention.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Beziehungen aus dem RequirementsReport sind korrekt im LogicalSchema abgebildet: (1) Zeitschrift→Abo-Variante (1:N via magazine_id FK), (2) Kunde→Abo (1:N via customer_id FK), (3) Abo-Variante→Abo (1:N via subscription_variant_id FK), (4) Aktion↔Abo-Variante (M:N via campaign_subscription_variants Junction-Table), (5) Abo→Zahlung (1:N via subscription_id FK), (6) Aktion→Abo (1:N via campaign_id FK, optional). Kardinalitäten und Optionalität sind korrekt modelliert.",
+          "beschreibung": "Alle 6 Beziehungen aus dem RequirementsReport sind korrekt im Schema abgebildet: (1) Zeitschrift→Abo-Variante (1:N via magazine_id FK), (2) Kunde→Abo (1:N via customer_id FK), (3) Abo-Variante→Abo (1:N via subscription_variant_id FK), (4) Aktion↔Abo-Variante (M:N via campaign_subscription_variants Junction-Table), (5) Abo→Zahlung (1:N via subscription_id FK), (6) Aktion→Abo (1:N via campaign_id FK, optional nullable). Kardinalitäten und Optionalität sind korrekt modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table campaign_subscription_variants ist korrekt für die M:N-Beziehung modelliert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen, (4) Junction-Table campaign_subscription_variants ist korrekt für M:N-Beziehung modelliert. Datentypen sind angemessen gewählt (DECIMAL für Preise/Beträge, DATE für Datumsangaben, VARCHAR für Texte).",
           "korrekturanweisung": ""
         }
       ],
@@ -913,33 +922,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 16865,
-    "total_output_tokens": 6072,
-    "total_tokens": 22937,
+    "total_input_tokens": 16929,
+    "total_output_tokens": 5839,
+    "total_tokens": 22768,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1650,
-        "output_tokens": 1549,
+        "output_tokens": 1571,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3278,
-        "output_tokens": 1864,
+        "input_tokens": 3302,
+        "output_tokens": 1551,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4304,
-        "output_tokens": 1692,
+        "input_tokens": 4310,
+        "output_tokens": 1696,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7633,
-        "output_tokens": 967,
+        "input_tokens": 7667,
+        "output_tokens": 1021,
         "cost_usd": 0.0
       }
     },
@@ -950,7 +959,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1650,
-        "output_tokens": 1549,
+        "output_tokens": 1571,
         "cost_usd": 0.0
       },
       {
@@ -958,8 +967,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3278,
-        "output_tokens": 1864,
+        "input_tokens": 3302,
+        "output_tokens": 1551,
         "cost_usd": 0.0
       },
       {
@@ -967,8 +976,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4304,
-        "output_tokens": 1692,
+        "input_tokens": 4310,
+        "output_tokens": 1696,
         "cost_usd": 0.0
       },
       {
@@ -976,8 +985,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7633,
-        "output_tokens": 967,
+        "input_tokens": 7667,
+        "output_tokens": 1021,
         "cost_usd": 0.0
       }
     ]

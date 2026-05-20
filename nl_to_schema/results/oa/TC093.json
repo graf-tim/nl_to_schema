@@ -2,47 +2,42 @@
   "testfall_id": "TC093",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.42369565217391314,
-  "score_gesamt": 0.6542173913043479,
+  "score_semantisch": 0.45046766169154234,
+  "score_gesamt": 0.6702805970149255,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 12,
-    "pk_tabellen_mit_pk": 12,
-    "fk_referenzen_gesamt": 16,
+    "pk_tabellen_gesamt": 14,
+    "pk_tabellen_mit_pk": 14,
+    "fk_referenzen_gesamt": 17,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
       "precision": 0.5,
-      "recall": 0.5454545454545454,
-      "f1": 0.5217391304347826,
-      "matched": 6,
-      "nur_in_referenz": 5,
-      "nur_in_generiert": 6
+      "recall": 0.6363636363636364,
+      "f1": 0.56,
+      "matched": 7,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 7
     },
     "attribut": {
-      "precision": 0.4444444444444444,
-      "recall": 0.4307692307692308,
-      "f1": 0.43750000000000006,
-      "matched": 28,
-      "nur_in_referenz": 37,
-      "nur_in_generiert": 35
+      "precision": 0.42028985507246375,
+      "recall": 0.4461538461538462,
+      "f1": 0.43283582089552236,
+      "matched": 29,
+      "nur_in_referenz": 36,
+      "nur_in_generiert": 40
     },
     "beziehung": {
-      "recall": 0.2,
-      "matched": 3,
-      "nur_in_referenz": 12,
-      "nur_in_generiert": 1
+      "recall": 0.26666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 11,
+      "nur_in_generiert": 0
     }
   },
   "abweichungen": [
-    {
-      "element": "sites",
-      "typ": "tabelle",
-      "fehlerklasse": null
-    },
     {
       "element": "persons",
       "typ": "tabelle",
@@ -61,6 +56,26 @@
     {
       "element": "visit_templates",
       "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "studies.lead_person_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sites.site_code",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sites.city",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "sites.is_active",
+      "typ": "attribut",
       "fehlerklasse": null
     },
     {
@@ -119,32 +134,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "site_studies.site_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "sites.id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "sites.name",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "sites.site_code",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "sites.city",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "sites.is_active",
+      "element": "participant_study_arms.study_arm_id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -274,11 +264,6 @@
       "fehlerklasse": null
     },
     {
-      "element": "site_studies → sites",
-      "typ": "beziehung",
-      "fehlerklasse": null
-    },
-    {
       "element": "studies → persons",
       "typ": "beziehung",
       "fehlerklasse": null
@@ -348,13 +333,13 @@
               "nullable": false
             },
             {
-              "name": "startdate",
+              "name": "start_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "enddate",
+              "name": "end_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": true
@@ -364,24 +349,12 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "medical_lead_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
             }
           ],
-          "foreign_keys": [
-            {
-              "from_column": "medical_lead_id",
-              "references_table": "study_personnel",
-              "references_column": "id"
-            }
-          ]
+          "foreign_keys": []
         },
         {
-          "name": "study_centers",
+          "name": "sites",
           "columns": [
             {
               "name": "id",
@@ -390,7 +363,7 @@
               "nullable": false
             },
             {
-              "name": "center_name",
+              "name": "name",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -402,7 +375,7 @@
               "nullable": false
             },
             {
-              "name": "contact_information",
+              "name": "address",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -411,7 +384,7 @@
           "foreign_keys": []
         },
         {
-          "name": "study_personnel",
+          "name": "study_staff",
           "columns": [
             {
               "name": "id",
@@ -432,7 +405,7 @@
               "nullable": false
             },
             {
-              "name": "contact_information",
+              "name": "contact_data",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -478,24 +451,12 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "care_center_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
             }
           ],
-          "foreign_keys": [
-            {
-              "from_column": "care_center_id",
-              "references_table": "study_centers",
-              "references_column": "id"
-            }
-          ]
+          "foreign_keys": []
         },
         {
-          "name": "treatment_arms",
+          "name": "study_protocols",
           "columns": [
             {
               "name": "id",
@@ -510,19 +471,7 @@
               "nullable": false
             },
             {
-              "name": "designation",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "description",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "dosage_information",
               "type": "TEXT",
               "primary_key": false,
               "nullable": true
@@ -546,7 +495,7 @@
               "nullable": false
             },
             {
-              "name": "study_id",
+              "name": "study_protocol_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -558,27 +507,22 @@
               "nullable": false
             },
             {
-              "name": "planned_timeframe",
-              "type": "VARCHAR",
+              "name": "planned_date",
+              "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "arm_specific_arm_id",
-              "type": "INTEGER",
+              "name": "is_arm_dependent",
+              "type": "BOOLEAN",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "study_id",
-              "references_table": "studies",
-              "references_column": "id"
-            },
-            {
-              "from_column": "arm_specific_arm_id",
-              "references_table": "treatment_arms",
+              "from_column": "study_protocol_id",
+              "references_table": "study_protocols",
               "references_column": "id"
             }
           ]
@@ -611,7 +555,7 @@
               "nullable": true
             },
             {
-              "name": "completeness",
+              "name": "is_complete",
               "type": "BOOLEAN",
               "primary_key": false,
               "nullable": true
@@ -643,6 +587,48 @@
           ]
         },
         {
+          "name": "treatment_arms",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "study_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "dosage_information",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "study_id",
+              "references_table": "studies",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
           "name": "participant_treatment_arms",
           "columns": [
             {
@@ -658,7 +644,7 @@
               "nullable": false
             },
             {
-              "name": "arm_id",
+              "name": "treatment_arm_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -670,7 +656,7 @@
               "nullable": false
             },
             {
-              "name": "enddate",
+              "name": "end_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": true
@@ -683,7 +669,42 @@
               "references_column": "id"
             },
             {
-              "from_column": "arm_id",
+              "from_column": "treatment_arm_id",
+              "references_table": "treatment_arms",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "visit_treatment_arms",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "visit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "treatment_arm_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "visit_id",
+              "references_table": "visits",
+              "references_column": "id"
+            },
+            {
+              "from_column": "treatment_arm_id",
               "references_table": "treatment_arms",
               "references_column": "id"
             }
@@ -711,13 +732,13 @@
               "nullable": false
             },
             {
-              "name": "startdate",
+              "name": "start_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "enddate",
+              "name": "end_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": true
@@ -759,7 +780,7 @@
               "nullable": false
             },
             {
-              "name": "center_id",
+              "name": "site_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -772,14 +793,14 @@
               "references_column": "id"
             },
             {
-              "from_column": "center_id",
-              "references_table": "study_centers",
+              "from_column": "site_id",
+              "references_table": "sites",
               "references_column": "id"
             }
           ]
         },
         {
-          "name": "study_staff",
+          "name": "study_staff_assignments",
           "columns": [
             {
               "name": "id",
@@ -794,8 +815,14 @@
               "nullable": false
             },
             {
-              "name": "personnel_id",
+              "name": "staff_id",
               "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_medical_lead",
+              "type": "BOOLEAN",
               "primary_key": false,
               "nullable": false
             }
@@ -807,8 +834,8 @@
               "references_column": "id"
             },
             {
-              "from_column": "personnel_id",
-              "references_table": "study_personnel",
+              "from_column": "staff_id",
+              "references_table": "study_staff",
               "references_column": "id"
             }
           ]
@@ -835,6 +862,12 @@
               "nullable": false
             },
             {
+              "name": "site_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "consent_date",
               "type": "DATE",
               "primary_key": false,
@@ -850,6 +883,11 @@
             {
               "from_column": "study_id",
               "references_table": "studies",
+              "references_column": "id"
+            },
+            {
+              "from_column": "site_id",
+              "references_table": "sites",
               "references_column": "id"
             }
           ]
@@ -875,20 +913,20 @@
         {
           "name": "Prüfzentrum",
           "attribute": [
-            "Zentrumsname",
+            "Name",
             "Standort",
-            "Kontaktinformationen"
+            "Adresse"
           ],
-          "beschreibung": "Einrichtung, an der eine Studie durchgeführt wird; eine Studie kann mit mehreren Zentren zusammenarbeiten"
+          "beschreibung": "Zentrum, an dem eine Studie durchgeführt wird; eine Studie kann mit mehreren Zentren zusammenarbeiten"
         },
         {
           "name": "Studienpersonal",
           "attribute": [
             "Name",
-            "Rolle (Arzt/Ärztin, Study Nurse, Koordinator)",
-            "Kontaktinformationen"
+            "Rolle (Arzt/Ärztin, Study Nurse, Koordinator/Koordinatorin)",
+            "Kontaktdaten"
           ],
-          "beschreibung": "Ärztinnen, Study Nurses oder Koordinatoren, die an einer Studie beteiligt sind"
+          "beschreibung": "Ärztinnen, Study Nurses, Koordinatoren und andere Fachpersonen, die an einer Studie beteiligt sind"
         },
         {
           "name": "Teilnehmender",
@@ -897,19 +935,9 @@
             "Randomisierungsnummer",
             "Geburtsdatum",
             "Geschlecht",
-            "Rekrutierungsstatus",
-            "Betreuungszentrum"
+            "Rekrutierungsstatus"
           ],
           "beschreibung": "Person, die nach Einwilligung an einer oder mehreren Studien teilnimmt"
-        },
-        {
-          "name": "Behandlungsarm",
-          "attribute": [
-            "Bezeichnung",
-            "Beschreibung",
-            "Dosierungsangaben"
-          ],
-          "beschreibung": "Behandlungszweig einer Studie, dem Teilnehmende zugeordnet werden"
         },
         {
           "name": "Visite",
@@ -921,18 +949,35 @@
             "Abweichungen",
             "Bemerkungen"
           ],
-          "beschreibung": "Geplante oder durchgeführte Untersuchung im Rahmen einer Studie, kann armspezifisch sein"
+          "beschreibung": "Geplante oder durchgeführte Besuch eines Teilnehmenden im Rahmen einer Studie"
+        },
+        {
+          "name": "Behandlungsarm",
+          "attribute": [
+            "Bezeichnung",
+            "Beschreibung",
+            "Dosierungsangaben"
+          ],
+          "beschreibung": "Behandlungsgruppe innerhalb einer Studie, der Teilnehmende zugeordnet werden"
         },
         {
           "name": "Unerwünschtes Ereignis",
           "attribute": [
             "Beschreibung",
-            "Startdatum",
-            "Enddatum",
+            "Startzeitpunkt",
+            "Endzeitpunkt",
             "Schweregrad",
             "Einschätzung des Zusammenhangs zur Behandlung"
           ],
-          "beschreibung": "Unerwünschtes Ereignis bei einem Teilnehmenden mit Zeitraum und Bewertung"
+          "beschreibung": "Unerwünschtes Ereignis, das bei einem Teilnehmenden während der Studie auftritt"
+        },
+        {
+          "name": "Prüfplan",
+          "attribute": [
+            "Visitenplan",
+            "Abhängigkeit vom Behandlungsarm"
+          ],
+          "beschreibung": "Plan mit vorgesehenen Visiten für eine Studie"
         }
       ],
       "beziehungen": [
@@ -945,20 +990,20 @@
         {
           "von": "Studie",
           "zu": "Studienpersonal",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Studie hat mehrere beteiligte Personen (Ärzte, Nurses, Koordinatoren); eine Person kann an mehreren Studien beteiligt sein"
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Studie hat mehrere beteiligte Personen (Ärzte, Nurses, Koordinatoren)"
         },
         {
           "von": "Studie",
           "zu": "Teilnehmender",
           "kardinalitaet": "M:N",
-          "beschreibung": "Eine Studie hat mehrere Teilnehmende; ein Teilnehmender kann in mehreren Studien vorkommen (selten, aber bei Registerprojekten möglich)"
+          "beschreibung": "Teilnehmende können in mehreren Studien vorkommen (selten, aber bei Registerprojekten möglich)"
         },
         {
-          "von": "Prüfzentrum",
-          "zu": "Teilnehmender",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Teilnehmender wird an einem Zentrum betreut"
+          "von": "Studie",
+          "zu": "Prüfplan",
+          "kardinalitaet": "1:1",
+          "beschreibung": "Jede Studie hat einen Prüfplan mit vorgesehenen Visiten"
         },
         {
           "von": "Studie",
@@ -967,81 +1012,102 @@
           "beschreibung": "Eine Studie kann mehrere Behandlungsarme haben"
         },
         {
-          "von": "Behandlungsarm",
-          "zu": "Teilnehmender",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Teilnehmende werden einem Arm zugeordnet; sie können im Verlauf wechseln (z.B. bei offenen Extensions)"
-        },
-        {
-          "von": "Studie",
+          "von": "Prüfplan",
           "zu": "Visite",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Studie hat einen Prüfplan mit vorgesehenen Visiten"
+          "beschreibung": "Ein Prüfplan enthält mehrere geplante Visiten (Screening, Baseline, etc.)"
         },
         {
-          "von": "Behandlungsarm",
-          "zu": "Visite",
+          "von": "Visite",
+          "zu": "Behandlungsarm",
           "kardinalitaet": "M:N",
-          "beschreibung": "Visiten können armspezifisch sein oder für alle Arme identisch"
+          "beschreibung": "Visiten können je nach Behandlungsarm unterschiedlich sein oder für alle Arme identisch"
         },
         {
           "von": "Teilnehmender",
           "zu": "Visite",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Teilnehmender hat mehrere durchgeführte oder geplante Visiten"
+        },
+        {
+          "von": "Teilnehmender",
+          "zu": "Behandlungsarm",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Teilnehmender absolviert mehrere Visiten; eine Visite wird von mehreren Teilnehmenden absolviert"
+          "beschreibung": "Ein Teilnehmender wird einem Behandlungsarm zugeordnet; kann im Verlauf wechseln (z.B. bei Extensions)"
+        },
+        {
+          "von": "Teilnehmender",
+          "zu": "Prüfzentrum",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Teilnehmender wird an einem Zentrum betreut; kann in mehreren Studien an verschiedenen Zentren sein"
         },
         {
           "von": "Teilnehmender",
           "zu": "Unerwünschtes Ereignis",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Teilnehmender kann mehrere unerwünschte Ereignisse haben"
+          "beschreibung": "Ein Teilnehmender kann mehrere unerwünschte Ereignisse erleben"
+        },
+        {
+          "von": "Unerwünschtes Ereignis",
+          "zu": "Behandlungsarm",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein unerwünschtes Ereignis wird im Kontext eines Behandlungsarms dokumentiert"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Zeitraum einer Studie: Unklar, ob 'Zeitraum' ein einzelnes Attribut (z.B. Dauer in Monaten) oder zwei separate Attribute (Startdatum und Enddatum) sein soll",
+          "beschreibung": "Ist die Zuordnung eines Teilnehmenden zu einem Behandlungsarm zeitlich begrenzt oder kann sie mehrfach wechseln? Der Text erwähnt Wechsel bei 'offenen Extensions', aber es ist unklar, ob dies als Versionshistorie oder als separate Zuordnungen modelliert werden soll.",
           "betroffene_elemente": [
-            "Studie"
-          ]
-        },
-        {
-          "beschreibung": "Randomisierungsnummer: Unklar, ob jeder Teilnehmende eine Randomisierungsnummer erhält oder nur diejenigen, die randomisiert werden. Text sagt 'Nicht jede Person bekommt sofort eine Randomisierung'",
-          "betroffene_elemente": [
-            "Teilnehmender"
-          ]
-        },
-        {
-          "beschreibung": "Rekrutierungsstatus: Unklar, welche konkreten Werte dieser Status annehmen kann (z.B. gescreent, randomisiert, ausgeschieden, abgeschlossen)",
-          "betroffene_elemente": [
-            "Teilnehmender"
-          ]
-        },
-        {
-          "beschreibung": "Armwechsel: Unklar, ob und wie Armwechsel von Teilnehmenden im Verlauf dokumentiert werden sollen (z.B. Zeitpunkt, Grund). Text sagt 'das muss aber nicht in jedem Projekt relevant sein'",
-          "betroffene_elemente": [
-            "Behandlungsarm",
-            "Teilnehmender"
-          ]
-        },
-        {
-          "beschreibung": "Visite und Behandlungsarm: Unklar, wie die Beziehung zwischen Visiten und Armen modelliert werden soll, wenn Visiten teilweise armspezifisch sind und teilweise nicht",
-          "betroffene_elemente": [
-            "Visite",
+            "Teilnehmender",
             "Behandlungsarm"
           ]
         },
         {
-          "beschreibung": "Medizinische Leitung: Unklar, ob dies ein einzelnes Attribut (Name einer Person) oder eine Beziehung zur Entität Studienpersonal sein soll",
+          "beschreibung": "Wie wird die Beziehung zwischen Visite und Behandlungsarm konkret modelliert? Der Text sagt, dass Visiten 'für alle Arme identisch' oder 'vom Behandlungsarm abhängig' sein können – ist dies ein Attribut der Visite oder eine separate Zuordnung?",
+          "betroffene_elemente": [
+            "Visite",
+            "Behandlungsarm",
+            "Prüfplan"
+          ]
+        },
+        {
+          "beschreibung": "Wer ist die 'medizinische Leitung' einer Studie? Ist dies eine spezifische Person aus dem Studienpersonal oder ein separates Attribut?",
           "betroffene_elemente": [
             "Studie",
             "Studienpersonal"
           ]
         },
         {
-          "beschreibung": "Unerwünschtes Ereignis und Behandlung: Unklar, ob unerwünschte Ereignisse an einen spezifischen Behandlungsarm oder nur an den Teilnehmenden gebunden sind",
+          "beschreibung": "Wie wird die Randomisierungsnummer vergeben? Ist sie optional (da 'nicht jede Person sofort eine Randomisierung' bekommt) oder wird sie später hinzugefügt?",
+          "betroffene_elemente": [
+            "Teilnehmender"
+          ]
+        },
+        {
+          "beschreibung": "Ist der Rekrutierungsstatus ein einfaches Attribut (z.B. 'gescreent', 'randomisiert', 'ausgeschieden') oder sollte es eine separate Entität mit Zeitstempel sein?",
+          "betroffene_elemente": [
+            "Teilnehmender"
+          ]
+        },
+        {
+          "beschreibung": "Wie wird die Beziehung zwischen Unerwünschtem Ereignis und Behandlung modelliert? Der Text erwähnt 'Einschätzung des Zusammenhangs zur Behandlung', aber es ist unklar, ob dies auf den Behandlungsarm oder auf ein spezifisches Medikament verweist.",
           "betroffene_elemente": [
             "Unerwünschtes Ereignis",
             "Behandlungsarm"
+          ]
+        },
+        {
+          "beschreibung": "Sollte die Prüfmedikation als separate Entität modelliert werden, oder ist sie Teil des Behandlungsarms?",
+          "betroffene_elemente": [
+            "Behandlungsarm"
+          ]
+        },
+        {
+          "beschreibung": "Wie wird dokumentiert, an welchem Zentrum ein Teilnehmender betreut wird, wenn eine Studie mit mehreren Zentren arbeitet? Ist dies eine 1:1-Zuordnung pro Studie oder kann ein Teilnehmender zwischen Zentren wechseln?",
+          "betroffene_elemente": [
+            "Teilnehmender",
+            "Prüfzentrum",
+            "Studie"
           ]
         }
       ]
@@ -1082,13 +1148,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "Startdatum",
+              "name": "Startzeitpunkt",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Enddatum",
+              "name": "Endzeitpunkt",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1098,12 +1164,6 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "MedizinischeLeitungPersonalID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -1117,7 +1177,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Zentrumsname",
+              "name": "Name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1129,7 +1189,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Kontaktinformationen",
+              "name": "Adresse",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1158,7 +1218,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Kontaktinformationen",
+              "name": "Kontaktdaten",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1203,12 +1263,111 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Prüfplan",
+          "attribute": [
+            {
+              "name": "PrüfplanID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
             },
             {
-              "name": "BetreuungszentralID",
+              "name": "StudieID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Visite",
+          "attribute": [
+            {
+              "name": "VisiteID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "PrüfplanID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Visitentyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "GeplantesZeitpunkt",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ArmabhängigkeitFlag",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "TeilnehmerVisite",
+          "attribute": [
+            {
+              "name": "TeilnehmerVisiteID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TeilnehmerID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VisiteID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TatsächlichesZeitpunkt",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Vollständigkeit",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Abweichungen",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Bemerkungen",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1248,88 +1407,6 @@
           ]
         },
         {
-          "name": "Visite",
-          "attribute": [
-            {
-              "name": "VisiteID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "StudieID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Visitentyp",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "GeplantesZeitfenster",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "ArmspezifischArmID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "TeilnehmerVisite",
-          "attribute": [
-            {
-              "name": "TeilnehmerVisiteID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "TeilnehmerID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "VisiteID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "TatsaechlichesDatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Vollstaendigkeit",
-              "datentyp": "BOOLEAN",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Abweichungen",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Bemerkungen",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
           "name": "TeilnehmerBehandlungsarm",
           "attribute": [
             {
@@ -1351,13 +1428,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "Zuordnungsdatum",
+              "name": "ZuordnungsDatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Enddatum",
+              "name": "EndDatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1365,7 +1442,30 @@
           ]
         },
         {
-          "name": "UnerwuenschteEreignis",
+          "name": "VisiteBehandlungsarm",
+          "attribute": [
+            {
+              "name": "VisiteArmID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VisiteID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ArmID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "UnerwünschteEreignis",
           "attribute": [
             {
               "name": "EreignisID",
@@ -1386,13 +1486,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "Startdatum",
+              "name": "Startzeitpunkt",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Enddatum",
+              "name": "Endzeitpunkt",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1412,10 +1512,10 @@
           ]
         },
         {
-          "name": "StudieStandort",
+          "name": "StudieZentrum",
           "attribute": [
             {
-              "name": "StudieStandortID",
+              "name": "StudieZentrumID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -1454,6 +1554,41 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "IstMedizinischeLeitung",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "TeilnehmerStudieZentrum",
+          "attribute": [
+            {
+              "name": "TeilnehmerStudieZentrumID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "TeilnehmerID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "StudieID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ZentrumID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -1479,7 +1614,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Einwilligungsdatum",
+              "name": "EinwilligungsDatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1490,44 +1625,30 @@
       "beziehungen": [
         {
           "von": "Studie",
-          "zu": "StudieStandort",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Prüfzentrum",
-          "zu": "StudieStandort",
-          "kardinalitaet": "1:N",
+          "zu": "Prüfzentrum",
+          "kardinalitaet": "M:N",
           "beziehungsattribute": []
         },
         {
           "von": "Studie",
-          "zu": "StudiePersonal",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Studienpersonal",
-          "zu": "StudiePersonal",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
+          "zu": "Studienpersonal",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "IstMedizinischeLeitung"
+          ]
         },
         {
           "von": "Studie",
-          "zu": "TeilnehmerStudie",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Teilnehmender",
-          "zu": "TeilnehmerStudie",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Prüfzentrum",
           "zu": "Teilnehmender",
-          "kardinalitaet": "1:N",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "EinwilligungsDatum"
+          ]
+        },
+        {
+          "von": "Studie",
+          "zu": "Prüfplan",
+          "kardinalitaet": "1:1",
           "beziehungsattribute": []
         },
         {
@@ -1537,53 +1658,59 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Teilnehmender",
-          "zu": "TeilnehmerBehandlungsarm",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Behandlungsarm",
-          "zu": "TeilnehmerBehandlungsarm",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Studie",
+          "von": "Prüfplan",
           "zu": "Visite",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Behandlungsarm",
-          "zu": "Visite",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": [
-            "ArmspezifischArmID"
-          ]
-        },
-        {
-          "von": "Teilnehmender",
-          "zu": "TeilnehmerVisite",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Visite",
-          "zu": "TeilnehmerVisite",
-          "kardinalitaet": "1:N",
+          "zu": "Behandlungsarm",
+          "kardinalitaet": "M:N",
           "beziehungsattribute": []
         },
         {
           "von": "Teilnehmender",
-          "zu": "UnerwuenschteEreignis",
+          "zu": "Visite",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "TatsächlichesZeitpunkt",
+            "Vollständigkeit",
+            "Abweichungen",
+            "Bemerkungen"
+          ]
+        },
+        {
+          "von": "Teilnehmender",
+          "zu": "Behandlungsarm",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "ZuordnungsDatum",
+            "EndDatum"
+          ]
+        },
+        {
+          "von": "Teilnehmender",
+          "zu": "Prüfzentrum",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Teilnehmender",
+          "zu": "UnerwünschteEreignis",
           "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "UnerwünschteEreignis",
+          "zu": "Behandlungsarm",
+          "kardinalitaet": "M:1",
           "beziehungsattribute": []
         }
       ]
     },
     "critic_report": {
-      "qualitaet_ausreichend": true,
+      "qualitaet_ausreichend": false,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -1602,41 +1729,17 @@
           "erfuellt": true,
           "beschreibung": "FK-Integritätsquote: 1.00",
           "korrekturanweisung": ""
-        },
-        {
-          "criterion": "entitaets_vollstaendigkeit",
-          "erfuellt": true,
-          "beschreibung": "Alle 7 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: studies, study_centers, study_personnel, participants, treatment_arms, visits (mit participant_visits), adverse_events. Zusätzliche Junction-Tabellen (study_sites, study_staff, participant_studies, participant_treatment_arms) sind korrekt für M:N-Beziehungen implementiert.",
-          "korrekturanweisung": ""
-        },
-        {
-          "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": true,
-          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt typisiert: studies (shortname, official_title, therapeutic_area, phase, startdate, enddate, status, medical_lead_id), study_centers (center_name, location, contact_information), study_personnel (name, role, contact_information), participants (screening_number, randomization_number, birthdate, gender, recruitment_status, care_center_id), treatment_arms (designation, description, dosage_information), visits (visit_type, planned_timeframe, arm_specific_arm_id), adverse_events (description, startdate, enddate, severity, relationship_to_treatment). Alle Datentypen sind angemessen (VARCHAR für kurze Texte, TEXT für längere, DATE für Datumsangaben, BOOLEAN für Vollständigkeit).",
-          "korrekturanweisung": ""
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: 1:N-Beziehungen (studies→treatment_arms, studies→visits, study_centers→participants), M:N-Beziehungen über Junction-Tabellen (study_sites für Studie↔Zentrum, study_staff für Studie↔Personal, participant_studies für Teilnehmer↔Studie, participant_treatment_arms für Teilnehmer↔Arm, participant_visits für Teilnehmer↔Visite). Die optionale Armspezifität von Visiten ist durch das nullable Feld arm_specific_arm_id korrekt modelliert.",
-          "korrekturanweisung": ""
-        },
-        {
-          "criterion": "normalisierung",
-          "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen erkannt: Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, und es gibt keine transitiven Abhängigkeiten. Junction-Tabellen sind korrekt normalisiert (z.B. participant_treatment_arms mit Fremdschlüsseln und Beziehungsattributen assignment_date, enddate).",
-          "korrekturanweisung": ""
         }
       ],
-      "origin_step": null
+      "origin_step": "lsd"
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE study_centers (\n    id INTEGER NOT NULL,\n    center_name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    contact_information VARCHAR(255),\n    CONSTRAINT pk_study_centers PRIMARY KEY (id)\n);\n\nCREATE TABLE participants (\n    id INTEGER NOT NULL,\n    screening_number VARCHAR(255) NOT NULL,\n    randomization_number VARCHAR(255),\n    birthdate DATE NOT NULL,\n    gender VARCHAR(255) NOT NULL,\n    recruitment_status VARCHAR(255) NOT NULL,\n    care_center_id INTEGER NOT NULL,\n    CONSTRAINT pk_participants PRIMARY KEY (id),\n    CONSTRAINT fk_participants_care_center_id FOREIGN KEY (care_center_id) REFERENCES study_centers (id)\n);\n\nCREATE TABLE adverse_events (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    description TEXT NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE,\n    severity VARCHAR(255) NOT NULL,\n    relationship_to_treatment VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_adverse_events PRIMARY KEY (id),\n    CONSTRAINT fk_adverse_events_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id)\n);\n\nCREATE TABLE study_personnel (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    contact_information VARCHAR(255),\n    CONSTRAINT pk_study_personnel PRIMARY KEY (id)\n);\n\nCREATE TABLE studies (\n    id INTEGER NOT NULL,\n    shortname VARCHAR(255) NOT NULL,\n    official_title VARCHAR(255) NOT NULL,\n    therapeutic_area VARCHAR(255) NOT NULL,\n    phase VARCHAR(255) NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE,\n    status VARCHAR(255) NOT NULL,\n    medical_lead_id INTEGER,\n    CONSTRAINT pk_studies PRIMARY KEY (id),\n    CONSTRAINT fk_studies_medical_lead_id FOREIGN KEY (medical_lead_id) REFERENCES study_personnel (id)\n);\n\nCREATE TABLE participant_studies (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    consent_date DATE NOT NULL,\n    CONSTRAINT pk_participant_studies PRIMARY KEY (id),\n    CONSTRAINT fk_participant_studies_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_participant_studies_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE treatment_arms (\n    id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    dosage_information TEXT,\n    CONSTRAINT pk_treatment_arms PRIMARY KEY (id),\n    CONSTRAINT fk_treatment_arms_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE participant_treatment_arms (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    arm_id INTEGER NOT NULL,\n    assignment_date DATE NOT NULL,\n    enddate DATE,\n    CONSTRAINT pk_participant_treatment_arms PRIMARY KEY (id),\n    CONSTRAINT fk_participant_treatment_arms_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_participant_treatment_arms_arm_id FOREIGN KEY (arm_id) REFERENCES treatment_arms (id)\n);\n\nCREATE TABLE visits (\n    id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    visit_type VARCHAR(255) NOT NULL,\n    planned_timeframe VARCHAR(255) NOT NULL,\n    arm_specific_arm_id INTEGER,\n    CONSTRAINT pk_visits PRIMARY KEY (id),\n    CONSTRAINT fk_visits_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_visits_arm_specific_arm_id FOREIGN KEY (arm_specific_arm_id) REFERENCES treatment_arms (id)\n);\n\nCREATE TABLE participant_visits (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    visit_id INTEGER NOT NULL,\n    actual_date DATE,\n    completeness BOOLEAN,\n    deviations TEXT,\n    remarks TEXT,\n    CONSTRAINT pk_participant_visits PRIMARY KEY (id),\n    CONSTRAINT fk_participant_visits_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_participant_visits_visit_id FOREIGN KEY (visit_id) REFERENCES visits (id)\n);\n\nCREATE TABLE study_sites (\n    id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    center_id INTEGER NOT NULL,\n    CONSTRAINT pk_study_sites PRIMARY KEY (id),\n    CONSTRAINT fk_study_sites_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_study_sites_center_id FOREIGN KEY (center_id) REFERENCES study_centers (id)\n);\n\nCREATE TABLE study_staff (\n    id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    personnel_id INTEGER NOT NULL,\n    CONSTRAINT pk_study_staff PRIMARY KEY (id),\n    CONSTRAINT fk_study_staff_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_study_staff_personnel_id FOREIGN KEY (personnel_id) REFERENCES study_personnel (id)\n);\n",
+    "final_ddl": "CREATE TABLE participants (\n    id INTEGER NOT NULL,\n    screening_number VARCHAR(255) NOT NULL,\n    randomization_number VARCHAR(255),\n    birthdate DATE NOT NULL,\n    gender VARCHAR(255) NOT NULL,\n    recruitment_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_participants PRIMARY KEY (id)\n);\n\nCREATE TABLE adverse_events (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    description TEXT NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    severity VARCHAR(255) NOT NULL,\n    relationship_to_treatment VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_adverse_events PRIMARY KEY (id),\n    CONSTRAINT fk_adverse_events_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id)\n);\n\nCREATE TABLE studies (\n    id INTEGER NOT NULL,\n    shortname VARCHAR(255) NOT NULL,\n    official_title VARCHAR(255) NOT NULL,\n    therapeutic_area VARCHAR(255) NOT NULL,\n    phase VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_studies PRIMARY KEY (id)\n);\n\nCREATE TABLE sites (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    CONSTRAINT pk_sites PRIMARY KEY (id)\n);\n\nCREATE TABLE participant_studies (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    site_id INTEGER NOT NULL,\n    consent_date DATE NOT NULL,\n    CONSTRAINT pk_participant_studies PRIMARY KEY (id),\n    CONSTRAINT fk_participant_studies_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_participant_studies_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_participant_studies_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE treatment_arms (\n    id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    dosage_information TEXT,\n    CONSTRAINT pk_treatment_arms PRIMARY KEY (id),\n    CONSTRAINT fk_treatment_arms_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE participant_treatment_arms (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    treatment_arm_id INTEGER NOT NULL,\n    assignment_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_participant_treatment_arms PRIMARY KEY (id),\n    CONSTRAINT fk_participant_treatment_arms_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_participant_treatment_arms_treatment_arm_id FOREIGN KEY (treatment_arm_id) REFERENCES treatment_arms (id)\n);\n\nCREATE TABLE study_protocols (\n    id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_study_protocols PRIMARY KEY (id),\n    CONSTRAINT fk_study_protocols_study_id FOREIGN KEY (study_id) REFERENCES studies (id)\n);\n\nCREATE TABLE visits (\n    id INTEGER NOT NULL,\n    study_protocol_id INTEGER NOT NULL,\n    visit_type VARCHAR(255) NOT NULL,\n    planned_date DATE NOT NULL,\n    is_arm_dependent BOOLEAN NOT NULL,\n    CONSTRAINT pk_visits PRIMARY KEY (id),\n    CONSTRAINT fk_visits_study_protocol_id FOREIGN KEY (study_protocol_id) REFERENCES study_protocols (id)\n);\n\nCREATE TABLE participant_visits (\n    id INTEGER NOT NULL,\n    participant_id INTEGER NOT NULL,\n    visit_id INTEGER NOT NULL,\n    actual_date DATE,\n    is_complete BOOLEAN,\n    deviations TEXT,\n    remarks TEXT,\n    CONSTRAINT pk_participant_visits PRIMARY KEY (id),\n    CONSTRAINT fk_participant_visits_participant_id FOREIGN KEY (participant_id) REFERENCES participants (id),\n    CONSTRAINT fk_participant_visits_visit_id FOREIGN KEY (visit_id) REFERENCES visits (id)\n);\n\nCREATE TABLE study_sites (\n    id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    site_id INTEGER NOT NULL,\n    CONSTRAINT pk_study_sites PRIMARY KEY (id),\n    CONSTRAINT fk_study_sites_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_study_sites_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE study_staff (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    contact_data VARCHAR(255),\n    CONSTRAINT pk_study_staff PRIMARY KEY (id)\n);\n\nCREATE TABLE study_staff_assignments (\n    id INTEGER NOT NULL,\n    study_id INTEGER NOT NULL,\n    staff_id INTEGER NOT NULL,\n    is_medical_lead BOOLEAN NOT NULL,\n    CONSTRAINT pk_study_staff_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_study_staff_assignments_study_id FOREIGN KEY (study_id) REFERENCES studies (id),\n    CONSTRAINT fk_study_staff_assignments_staff_id FOREIGN KEY (staff_id) REFERENCES study_staff (id)\n);\n\nCREATE TABLE visit_treatment_arms (\n    id INTEGER NOT NULL,\n    visit_id INTEGER NOT NULL,\n    treatment_arm_id INTEGER,\n    CONSTRAINT pk_visit_treatment_arms PRIMARY KEY (id),\n    CONSTRAINT fk_visit_treatment_arms_visit_id FOREIGN KEY (visit_id) REFERENCES visits (id),\n    CONSTRAINT fk_visit_treatment_arms_treatment_arm_id FOREIGN KEY (treatment_arm_id) REFERENCES treatment_arms (id)\n);\n",
     "final_critic_report": {
-      "qualitaet_ausreichend": true,
+      "qualitaet_ausreichend": false,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -1655,66 +1758,36 @@
           "erfuellt": true,
           "beschreibung": "FK-Integritätsquote: 1.00",
           "korrekturanweisung": ""
-        },
-        {
-          "criterion": "entitaets_vollstaendigkeit",
-          "erfuellt": true,
-          "beschreibung": "Alle 7 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: studies, study_centers, study_personnel, participants, treatment_arms, visits (mit participant_visits), adverse_events. Zusätzliche Junction-Tabellen (study_sites, study_staff, participant_studies, participant_treatment_arms) sind korrekt für M:N-Beziehungen implementiert.",
-          "korrekturanweisung": ""
-        },
-        {
-          "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": true,
-          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt typisiert: studies (shortname, official_title, therapeutic_area, phase, startdate, enddate, status, medical_lead_id), study_centers (center_name, location, contact_information), study_personnel (name, role, contact_information), participants (screening_number, randomization_number, birthdate, gender, recruitment_status, care_center_id), treatment_arms (designation, description, dosage_information), visits (visit_type, planned_timeframe, arm_specific_arm_id), adverse_events (description, startdate, enddate, severity, relationship_to_treatment). Alle Datentypen sind angemessen (VARCHAR für kurze Texte, TEXT für längere, DATE für Datumsangaben, BOOLEAN für Vollständigkeit).",
-          "korrekturanweisung": ""
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: 1:N-Beziehungen (studies→treatment_arms, studies→visits, study_centers→participants), M:N-Beziehungen über Junction-Tabellen (study_sites für Studie↔Zentrum, study_staff für Studie↔Personal, participant_studies für Teilnehmer↔Studie, participant_treatment_arms für Teilnehmer↔Arm, participant_visits für Teilnehmer↔Visite). Die optionale Armspezifität von Visiten ist durch das nullable Feld arm_specific_arm_id korrekt modelliert.",
-          "korrekturanweisung": ""
-        },
-        {
-          "criterion": "normalisierung",
-          "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen erkannt: Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, und es gibt keine transitiven Abhängigkeiten. Junction-Tabellen sind korrekt normalisiert (z.B. participant_treatment_arms mit Fremdschlüsseln und Beziehungsattributen assignment_date, enddate).",
-          "korrekturanweisung": ""
         }
       ],
-      "origin_step": null
+      "origin_step": "lsd"
     },
-    "error": null,
+    "error": "oa_validator_failed: 1 validation error for CriticReport\nfindings.2.criterion\n  Input should be 'syntaktische_korrektheit', 'pk_vollstaendigkeit', 'fk_integritaet', 'entitaets_vollstaendigkeit', 'attribut_vollstaendigkeit', 'beziehungs_korrektheit' or 'normalisierung' [type=literal_error, input_value='fk_vollstaendigkeit', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 4,
-    "total_input_tokens": 26135,
-    "total_output_tokens": 10449,
-    "total_tokens": 36584,
+    "total_calls": 3,
+    "total_input_tokens": 14055,
+    "total_output_tokens": 10554,
+    "total_tokens": 24609,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1931,
-        "output_tokens": 2304,
+        "output_tokens": 2672,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 4260,
-        "output_tokens": 3559,
+        "input_tokens": 4640,
+        "output_tokens": 4047,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 7052,
-        "output_tokens": 3502,
-        "cost_usd": 0.0
-      },
-      "oa_validator": {
-        "calls": 1,
-        "input_tokens": 12892,
-        "output_tokens": 1084,
+        "input_tokens": 7484,
+        "output_tokens": 3835,
         "cost_usd": 0.0
       }
     },
@@ -1725,7 +1798,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1931,
-        "output_tokens": 2304,
+        "output_tokens": 2672,
         "cost_usd": 0.0
       },
       {
@@ -1733,8 +1806,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4260,
-        "output_tokens": 3559,
+        "input_tokens": 4640,
+        "output_tokens": 4047,
         "cost_usd": 0.0
       },
       {
@@ -1742,17 +1815,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7052,
-        "output_tokens": 3502,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 0,
-        "agent_name": "oa_validator",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 12892,
-        "output_tokens": 1084,
+        "input_tokens": 7484,
+        "output_tokens": 3835,
         "cost_usd": 0.0
       }
     ]

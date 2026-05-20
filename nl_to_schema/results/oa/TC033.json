@@ -105,6 +105,12 @@
               "nullable": false
             },
             {
+              "name": "owner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "name",
               "type": "VARCHAR",
               "primary_key": false,
@@ -127,12 +133,6 @@
               "type": "TEXT",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "owner_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -207,7 +207,7 @@
             "Geschlecht",
             "besondere Hinweise"
           ],
-          "beschreibung": "Ein Hund, der vom Hundehotel betreut wird und genau einem Besitzer gehört."
+          "beschreibung": "Ein Hund, der im Hundehotel betreut wird. Besondere Hinweise umfassen Unverträglichkeiten und Medikamente."
         },
         {
           "name": "Aufenthalt",
@@ -235,21 +235,21 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Das Attribut 'besondere Hinweise' ist inhaltlich nicht präzise definiert. Es wird erwähnt, dass Unverträglichkeiten und Medikamente gespeichert werden sollen – unklar ist, ob dies als ein einzelnes Freitextfeld oder als strukturierte separate Attribute modelliert werden soll.",
+          "beschreibung": "Das Attribut 'besondere Hinweise' ist ein Freitextfeld, das sowohl Unverträglichkeiten als auch Medikamente enthält. Unklar ist, ob diese in separaten Attributen oder strukturiert gespeichert werden sollen.",
           "betroffene_elemente": [
             "Hund"
           ]
         },
         {
-          "beschreibung": "Für das Attribut 'Abreißtag' ist unklar, ob dieses optional sein kann (z.B. wenn ein Hund noch im Hotel ist) oder ob es immer einen Wert haben muss.",
+          "beschreibung": "Für den Aufenthalt wird erwähnt 'an welchem Tag er gebracht wurde' und 'an welchem Tag er wieder abgeholt wurde'. Unklar ist, ob dies Datumsangaben (nur Tag) oder Zeitstempel (Tag und Uhrzeit) sein sollen.",
           "betroffene_elemente": [
             "Aufenthalt"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob ein Besitzer eindeutig identifiziert werden kann (z.B. durch eine Kombination von Vorname und Nachname oder durch eine separate ID) oder ob Duplikate möglich sind.",
+          "beschreibung": "Unklar ist, ob ein Aufenthalt auch ohne Abreißtag (noch laufender Aufenthalt) gespeichert werden kann oder ob das Abreißtag-Feld immer gefüllt sein muss.",
           "betroffene_elemente": [
-            "Besitzer"
+            "Aufenthalt"
           ]
         }
       ]
@@ -301,6 +301,12 @@
               "pflichtfeld": true
             },
             {
+              "name": "besitzer_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
               "name": "name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
@@ -323,12 +329,6 @@
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": false
-            },
-            {
-              "name": "besitzer_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
             }
           ]
         },
@@ -407,25 +407,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: owners (Besitzer), dogs (Hund), stays (Aufenthalt). Keine Entität fehlt.",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Besitzer, Hund, Aufenthalt) sind im LogicalSchema als Tabellen (owners, dogs, stays) vorhanden.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: owners (firstname, lastname, phone, email), dogs (name, birthdate, gender, special_notes), stays (dog_id, arrival_date, departure_date, feeding_plan_required). Die Attributnamen folgen den Konventionen (snake_case, englisch). Das optionale Attribut 'special_notes' ist korrekt als nullable: true modelliert, und 'departure_date' ist ebenfalls nullable: true, was der Unklarheit im RequirementsReport entspricht (Hund kann noch im Hotel sein).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden: owners (firstname, lastname, phone, email), dogs (name, birthdate, gender, special_notes), stays (arrival_date, departure_date, feeding_plan_required). Die Attributnamen folgen den Konventionen (snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: (1) Besitzer 1:N Hund via dogs.owner_id (NOT NULL), (2) Hund 1:N Aufenthalt via stays.dog_id (NOT NULL). Die Kardinalitäten und Referenzen sind konsistent mit den Anforderungen.",
+          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N Besitzer→Hund (owner_id in dogs), 1:N Hund→Aufenthalt (dog_id in stays). Kardinalitäten und Fremdschlüssel sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar (keine Wiederholungsgruppen), (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Die Behandlung von 'special_notes' als einzelnes TEXT-Feld ist pragmatisch und entspricht der Anforderung (Freitextfeld für Unverträglichkeiten/Medikamente).",
+          "beschreibung": "Das Schema ist in 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, Abhängigkeiten sind funktional und nicht transitiv.",
           "korrekturanweisung": ""
         }
       ],
@@ -435,7 +435,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE dogs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    gender VARCHAR(255) NOT NULL,\n    special_notes TEXT,\n    owner_id INTEGER NOT NULL,\n    CONSTRAINT pk_dogs PRIMARY KEY (id),\n    CONSTRAINT fk_dogs_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE stays (\n    id INTEGER NOT NULL,\n    dog_id INTEGER NOT NULL,\n    arrival_date DATE NOT NULL,\n    departure_date DATE,\n    feeding_plan_required BOOLEAN NOT NULL,\n    CONSTRAINT pk_stays PRIMARY KEY (id),\n    CONSTRAINT fk_stays_dog_id FOREIGN KEY (dog_id) REFERENCES dogs (id)\n);\n",
+    "final_ddl": "CREATE TABLE owners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE dogs (\n    id INTEGER NOT NULL,\n    owner_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    gender VARCHAR(255) NOT NULL,\n    special_notes TEXT,\n    CONSTRAINT pk_dogs PRIMARY KEY (id),\n    CONSTRAINT fk_dogs_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE stays (\n    id INTEGER NOT NULL,\n    dog_id INTEGER NOT NULL,\n    arrival_date DATE NOT NULL,\n    departure_date DATE,\n    feeding_plan_required BOOLEAN NOT NULL,\n    CONSTRAINT pk_stays PRIMARY KEY (id),\n    CONSTRAINT fk_stays_dog_id FOREIGN KEY (dog_id) REFERENCES dogs (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -460,25 +460,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: owners (Besitzer), dogs (Hund), stays (Aufenthalt). Keine Entität fehlt.",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Besitzer, Hund, Aufenthalt) sind im LogicalSchema als Tabellen (owners, dogs, stays) vorhanden.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: owners (firstname, lastname, phone, email), dogs (name, birthdate, gender, special_notes), stays (dog_id, arrival_date, departure_date, feeding_plan_required). Die Attributnamen folgen den Konventionen (snake_case, englisch). Das optionale Attribut 'special_notes' ist korrekt als nullable: true modelliert, und 'departure_date' ist ebenfalls nullable: true, was der Unklarheit im RequirementsReport entspricht (Hund kann noch im Hotel sein).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden: owners (firstname, lastname, phone, email), dogs (name, birthdate, gender, special_notes), stays (arrival_date, departure_date, feeding_plan_required). Die Attributnamen folgen den Konventionen (snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: (1) Besitzer 1:N Hund via dogs.owner_id (NOT NULL), (2) Hund 1:N Aufenthalt via stays.dog_id (NOT NULL). Die Kardinalitäten und Referenzen sind konsistent mit den Anforderungen.",
+          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N Besitzer→Hund (owner_id in dogs), 1:N Hund→Aufenthalt (dog_id in stays). Kardinalitäten und Fremdschlüssel sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar (keine Wiederholungsgruppen), (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Die Behandlung von 'special_notes' als einzelnes TEXT-Feld ist pragmatisch und entspricht der Anforderung (Freitextfeld für Unverträglichkeiten/Medikamente).",
+          "beschreibung": "Das Schema ist in 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, Abhängigkeiten sind funktional und nicht transitiv.",
           "korrekturanweisung": ""
         }
       ],
@@ -489,20 +489,20 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 11935,
-    "total_output_tokens": 3413,
-    "total_tokens": 15348,
+    "total_input_tokens": 11981,
+    "total_output_tokens": 3166,
+    "total_tokens": 15147,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1475,
-        "output_tokens": 773,
+        "output_tokens": 796,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2275,
+        "input_tokens": 2298,
         "output_tokens": 858,
         "cost_usd": 0.0
       },
@@ -514,8 +514,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 4906,
-        "output_tokens": 964,
+        "input_tokens": 4929,
+        "output_tokens": 694,
         "cost_usd": 0.0
       }
     },
@@ -526,7 +526,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1475,
-        "output_tokens": 773,
+        "output_tokens": 796,
         "cost_usd": 0.0
       },
       {
@@ -534,7 +534,7 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2275,
+        "input_tokens": 2298,
         "output_tokens": 858,
         "cost_usd": 0.0
       },
@@ -552,8 +552,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4906,
-        "output_tokens": 964,
+        "input_tokens": 4929,
+        "output_tokens": 694,
         "cost_usd": 0.0
       }
     ]

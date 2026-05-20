@@ -2,8 +2,8 @@
   "testfall_id": "TC031",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.9272727272727272,
-  "score_gesamt": 0.9563636363636363,
+  "score_semantisch": 0.9454545454545455,
+  "score_gesamt": 0.9672727272727273,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 0
     },
     "attribut": {
-      "precision": 0.8181818181818182,
-      "recall": 0.8181818181818182,
-      "f1": 0.8181818181818182,
-      "matched": 18,
-      "nur_in_referenz": 4,
-      "nur_in_generiert": 4
+      "precision": 0.8636363636363636,
+      "recall": 0.8636363636363636,
+      "f1": 0.8636363636363636,
+      "matched": 19,
+      "nur_in_referenz": 3,
+      "nur_in_generiert": 3
     },
     "beziehung": {
       "recall": 1.0,
@@ -40,11 +40,6 @@
   "abweichungen": [
     {
       "element": "rentals.startdate",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "rentals.planned_enddate",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -212,13 +207,13 @@
               "nullable": false
             },
             {
-              "name": "rental_start",
+              "name": "rental_start_date",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "rental_end_planned",
+              "name": "planned_end_date",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
@@ -275,8 +270,8 @@
         {
           "name": "Ausleihe",
           "attribute": [
-            "Ausleihbeginn",
-            "planmäßiges Ausleihende"
+            "Ausleih-Startdatum",
+            "geplantes Enddatum"
           ],
           "beschreibung": "Repräsentiert einen Ausleihvorgang eines Fahrrads durch einen Kunden."
         }
@@ -303,19 +298,19 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Attribut 'aktueller Zustand' bei Fahrrad ist nicht näher spezifiziert. Unklar ist, ob dies ein einfacher Status (z.B. 'verfügbar', 'ausgeliehen', 'in Wartung') oder eine detaillierte Zustandsbeschreibung ist.",
+          "beschreibung": "Der Attribut 'aktueller Zustand' bei Fahrrad ist nicht näher spezifiziert. Unklar ist, ob dies ein einfacher Text (z.B. 'gut', 'beschädigt') oder ein strukturiertes Feld mit mehreren Komponenten sein soll.",
           "betroffene_elemente": [
             "Fahrrad"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob eine Ausleihe auch ein tatsächliches Rückgabedatum speichern soll oder nur das planmäßige Ausleihende. Die Anforderung erwähnt nur das planmäßige Ende.",
+          "beschreibung": "Unklar ist, ob eine Ausleihe auch ein tatsächliches Rückgabedatum haben soll oder nur das geplante Enddatum relevant ist.",
           "betroffene_elemente": [
             "Ausleihe"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob ein Kunde mehrere Ausleihen gleichzeitig haben kann oder ob es Beschränkungen gibt.",
+          "beschreibung": "Nicht spezifiziert ist, ob ein Kunde mehrere Ausleihen gleichzeitig haben kann oder ob es Beschränkungen gibt.",
           "betroffene_elemente": [
             "Kunde",
             "Ausleihe"
@@ -470,13 +465,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "ausleihbeginn",
+              "name": "ausleihStartdatum",
               "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "planmaessigesAusleihende",
+              "name": "geplantesEnddatum",
               "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -535,19 +530,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: stations (name, address, available_parking_spaces), bicycles (internal_number, brand, model, bicycle_type, current_condition, station_id), customers (firstname, lastname, email, phone, registration_date), rentals (bicycle_id, customer_id, rental_start, rental_end_planned). Attributnamen folgen der Konvention (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: stations (name, address, available_parking_spaces), bicycles (internal_number, brand, model, bicycle_type, current_condition), customers (firstname, lastname, email, phone, registration_date), rentals (rental_start_date, planned_end_date). Telefonnummer ist optional (nullable: true), was dem RequirementsReport entspricht.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Beziehungen aus dem RequirementsReport und ERModell sind korrekt im LogicalSchema implementiert: (1) Fahrrad N:1 Station via bicycles.station_id, (2) Ausleihe N:1 Fahrrad via rentals.bicycle_id, (3) Ausleihe N:1 Kunde via rentals.customer_id. Kardinalitäten und Fremdschlüssel sind konsistent.",
+          "beschreibung": "Alle drei Beziehungen aus dem ERModell sind korrekt implementiert: (1) Fahrrad N:1 Station via bicycles.station_id, (2) Ausleihe N:1 Fahrrad via rentals.bicycle_id, (3) Ausleihe N:1 Kunde via rentals.customer_id. Kardinalitäten und Fremdschlüssel-Constraints sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF): (1) Alle Tabellen haben einen Primärschlüssel, (2) Alle Nicht-Schlüssel-Attribute sind atomar und funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen, (4) N:M-Beziehungen sind nicht vorhanden (alle Beziehungen sind N:1), (5) Keine redundanten Daten. Das Schema ist gut normalisiert.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Alle Attribute sind atomar (keine zusammengesetzten oder wiederholten Gruppen), (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Die Struktur ist normalisiert und frei von Redundanzen.",
           "korrekturanweisung": ""
         }
       ],
@@ -557,7 +552,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE stations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    available_parking_spaces INTEGER NOT NULL,\n    CONSTRAINT pk_stations PRIMARY KEY (id)\n);\n\nCREATE TABLE bicycles (\n    id INTEGER NOT NULL,\n    internal_number VARCHAR(255) NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    bicycle_type VARCHAR(255) NOT NULL,\n    current_condition VARCHAR(255) NOT NULL,\n    station_id INTEGER NOT NULL,\n    CONSTRAINT pk_bicycles PRIMARY KEY (id),\n    CONSTRAINT fk_bicycles_station_id FOREIGN KEY (station_id) REFERENCES stations (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    bicycle_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    rental_start TIMESTAMP NOT NULL,\n    rental_end_planned TIMESTAMP NOT NULL,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_bicycle_id FOREIGN KEY (bicycle_id) REFERENCES bicycles (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n",
+    "final_ddl": "CREATE TABLE stations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    available_parking_spaces INTEGER NOT NULL,\n    CONSTRAINT pk_stations PRIMARY KEY (id)\n);\n\nCREATE TABLE bicycles (\n    id INTEGER NOT NULL,\n    internal_number VARCHAR(255) NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    bicycle_type VARCHAR(255) NOT NULL,\n    current_condition VARCHAR(255) NOT NULL,\n    station_id INTEGER NOT NULL,\n    CONSTRAINT pk_bicycles PRIMARY KEY (id),\n    CONSTRAINT fk_bicycles_station_id FOREIGN KEY (station_id) REFERENCES stations (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    bicycle_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    rental_start_date TIMESTAMP NOT NULL,\n    planned_end_date TIMESTAMP NOT NULL,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_bicycle_id FOREIGN KEY (bicycle_id) REFERENCES bicycles (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -588,19 +583,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: stations (name, address, available_parking_spaces), bicycles (internal_number, brand, model, bicycle_type, current_condition, station_id), customers (firstname, lastname, email, phone, registration_date), rentals (bicycle_id, customer_id, rental_start, rental_end_planned). Attributnamen folgen der Konvention (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: stations (name, address, available_parking_spaces), bicycles (internal_number, brand, model, bicycle_type, current_condition), customers (firstname, lastname, email, phone, registration_date), rentals (rental_start_date, planned_end_date). Telefonnummer ist optional (nullable: true), was dem RequirementsReport entspricht.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Beziehungen aus dem RequirementsReport und ERModell sind korrekt im LogicalSchema implementiert: (1) Fahrrad N:1 Station via bicycles.station_id, (2) Ausleihe N:1 Fahrrad via rentals.bicycle_id, (3) Ausleihe N:1 Kunde via rentals.customer_id. Kardinalitäten und Fremdschlüssel sind konsistent.",
+          "beschreibung": "Alle drei Beziehungen aus dem ERModell sind korrekt implementiert: (1) Fahrrad N:1 Station via bicycles.station_id, (2) Ausleihe N:1 Fahrrad via rentals.bicycle_id, (3) Ausleihe N:1 Kunde via rentals.customer_id. Kardinalitäten und Fremdschlüssel-Constraints sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF): (1) Alle Tabellen haben einen Primärschlüssel, (2) Alle Nicht-Schlüssel-Attribute sind atomar und funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen, (4) N:M-Beziehungen sind nicht vorhanden (alle Beziehungen sind N:1), (5) Keine redundanten Daten. Das Schema ist gut normalisiert.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Alle Attribute sind atomar (keine zusammengesetzten oder wiederholten Gruppen), (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Die Struktur ist normalisiert und frei von Redundanzen.",
           "korrekturanweisung": ""
         }
       ],
@@ -611,33 +606,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 13585,
-    "total_output_tokens": 4524,
-    "total_tokens": 18109,
+    "total_input_tokens": 13533,
+    "total_output_tokens": 4446,
+    "total_tokens": 17979,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1518,
-        "output_tokens": 1052,
+        "output_tokens": 1028,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2545,
-        "output_tokens": 1374,
+        "input_tokens": 2521,
+        "output_tokens": 1371,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3682,
-        "output_tokens": 1122,
+        "input_tokens": 3679,
+        "output_tokens": 1124,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5840,
-        "output_tokens": 976,
+        "input_tokens": 5815,
+        "output_tokens": 923,
         "cost_usd": 0.0
       }
     },
@@ -648,7 +643,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1518,
-        "output_tokens": 1052,
+        "output_tokens": 1028,
         "cost_usd": 0.0
       },
       {
@@ -656,8 +651,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2545,
-        "output_tokens": 1374,
+        "input_tokens": 2521,
+        "output_tokens": 1371,
         "cost_usd": 0.0
       },
       {
@@ -665,8 +660,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3682,
-        "output_tokens": 1122,
+        "input_tokens": 3679,
+        "output_tokens": 1124,
         "cost_usd": 0.0
       },
       {
@@ -674,8 +669,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5840,
-        "output_tokens": 976,
+        "input_tokens": 5815,
+        "output_tokens": 923,
         "cost_usd": 0.0
       }
     ]

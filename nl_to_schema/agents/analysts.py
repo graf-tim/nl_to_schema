@@ -18,13 +18,35 @@ logger = logging.getLogger(__name__)
 
 
 def requirements_analyst(state: WorkflowState) -> WorkflowState:
-    user_message = (
-        "Anforderungstext:\n"
-        "---\n"
-        f"{state.anforderungstext}\n"
-        "---\n\n"
-        "Erzeuge einen vollständigen RequirementsReport."
-    )
+    parts = ["Anforderungstext:", "---", state.anforderungstext, "---"]
+
+    if state.iteration > 0 and state.requirements_report is not None:
+        parts += [
+            "",
+            "Dein vorheriger RequirementsReport (zu überarbeiten):",
+            state.requirements_report.model_dump_json(indent=2),
+        ]
+
+    if state.iteration > 0 and state.critic_report is not None:
+        ra_findings = [
+            f for f in state.critic_report.findings
+            if f.criterion == "entitaets_vollstaendigkeit" and not f.erfuellt
+        ]
+        if ra_findings:
+            parts += [
+                "",
+                "Validator-Findings, die auf deinen RequirementsReport zurückgehen:",
+                *[
+                    f"- [{f.criterion}] {f.beschreibung} → {f.korrekturanweisung}"
+                    for f in ra_findings
+                ],
+                "",
+                "Adressiere diese Findings explizit im überarbeiteten RequirementsReport.",
+            ]
+
+    parts += ["", "Erzeuge einen vollständigen RequirementsReport."]
+    user_message = "\n".join(parts)
+
     try:
         report = call_structured(
             workflow_name=state.workflow_name,
@@ -45,13 +67,45 @@ def conceptual_model_designer(state: WorkflowState) -> WorkflowState:
         return state.model_copy(
             update={"error": "conceptual_model_designer: kein requirements_report vorhanden"}
         )
-    user_message = (
-        "Anforderungstext:\n"
-        f"---\n{state.anforderungstext}\n---\n\n"
-        "RequirementsReport:\n"
-        f"{state.requirements_report.model_dump_json(indent=2)}\n\n"
-        "Erzeuge ein vollständiges ERModell."
-    )
+
+    parts = [
+        "Anforderungstext:",
+        "---",
+        state.anforderungstext,
+        "---",
+        "",
+        "RequirementsReport:",
+        state.requirements_report.model_dump_json(indent=2),
+    ]
+
+    if state.iteration > 0 and state.er_modell is not None:
+        parts += [
+            "",
+            "Dein vorheriges ERModell (zu überarbeiten):",
+            state.er_modell.model_dump_json(indent=2),
+        ]
+
+    if state.iteration > 0 and state.critic_report is not None:
+        cmd_findings = [
+            f for f in state.critic_report.findings
+            if f.criterion in {"attribut_vollstaendigkeit", "beziehungs_korrektheit"}
+            and not f.erfuellt
+        ]
+        if cmd_findings:
+            parts += [
+                "",
+                "Validator-Findings, die auf dein ERModell zurückgehen:",
+                *[
+                    f"- [{f.criterion}] {f.beschreibung} → {f.korrekturanweisung}"
+                    for f in cmd_findings
+                ],
+                "",
+                "Adressiere diese Findings explizit im überarbeiteten ERModell.",
+            ]
+
+    parts += ["", "Erzeuge ein vollständiges ERModell."]
+    user_message = "\n".join(parts)
+
     try:
         er = call_structured(
             workflow_name=state.workflow_name,

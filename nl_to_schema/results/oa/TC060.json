@@ -393,7 +393,7 @@
               "nullable": false
             },
             {
-              "name": "created_at",
+              "name": "bid_at",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
@@ -402,7 +402,7 @@
               "name": "price",
               "type": "DECIMAL",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "message",
@@ -449,7 +449,7 @@
               "name": "awarded_at",
               "type": "TIMESTAMP",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -490,7 +490,7 @@
             "Beschreibung",
             "Status"
           ],
-          "beschreibung": "Anfragen für Arbeiten rund ums Haus, die von Kunden eingestellt werden. Status gibt an, ob offen oder vergeben"
+          "beschreibung": "Anfragen für Arbeiten rund ums Haus, die von Kunden eingestellt werden. Der Status gibt an, ob die Anfrage offen oder vergeben ist."
         },
         {
           "name": "Fachrichtung",
@@ -498,7 +498,7 @@
             "FachrichtungID",
             "Name"
           ],
-          "beschreibung": "Fachliche Richtungen wie Malerarbeiten, Sanitärreparaturen, Elektroaufträge"
+          "beschreibung": "Fachliche Richtungen wie Malerarbeiten, Sanitärreparaturen oder Elektroaufträge"
         },
         {
           "name": "Betrieb",
@@ -530,79 +530,82 @@
             "AnfrageID",
             "BetriebID"
           ],
-          "beschreibung": "Zuschlag für einen Betrieb pro Anfrage nach Entscheidung des Kunden"
+          "beschreibung": "Zuschlag für einen Betrieb bei einer Anfrage. Pro Anfrage gibt es maximal eine Vergabe."
         }
       ],
       "beziehungen": [
         {
-          "von": "Kunde",
-          "zu": "Anfrage",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Kunde kann mehrere Anfragen einstellen"
+          "von": "Anfrage",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Anfrage wird von genau einem Kunden eingestellt; ein Kunde kann mehrere Anfragen einstellen"
         },
         {
           "von": "Anfrage",
           "zu": "Fachrichtung",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Anfrage fällt in genau eine Fachrichtung"
+          "beschreibung": "Eine Anfrage fällt in genau eine Fachrichtung; eine Fachrichtung kann mehrere Anfragen haben"
         },
         {
           "von": "Betrieb",
           "zu": "Fachrichtung",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Betrieb kann mehrere Fachrichtungen abdecken, in einer Fachrichtung können mehrere Betriebe tätig sein"
+          "beschreibung": "Ein Betrieb kann mehrere Fachrichtungen abdecken; in einer Fachrichtung können mehrere Betriebe tätig sein"
         },
         {
-          "von": "Anfrage",
-          "zu": "Meldung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Auf eine Anfrage können sich mehrere Betriebe melden"
+          "von": "Meldung",
+          "zu": "Anfrage",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Meldung bezieht sich auf genau eine Anfrage; eine Anfrage kann mehrere Meldungen erhalten"
         },
         {
-          "von": "Betrieb",
-          "zu": "Meldung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Betrieb kann sich auf mehrere Anfragen melden"
+          "von": "Meldung",
+          "zu": "Betrieb",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Meldung kommt von genau einem Betrieb; ein Betrieb kann sich auf mehrere Anfragen melden"
         },
         {
-          "von": "Anfrage",
-          "zu": "Vergabe",
+          "von": "Vergabe",
+          "zu": "Anfrage",
           "kardinalitaet": "1:1",
-          "beschreibung": "Pro Anfrage gibt es am Ende nur eine Vergabe (optional, nicht jede Anfrage muss sofort vergeben sein)"
+          "beschreibung": "Eine Vergabe bezieht sich auf genau eine Anfrage; eine Anfrage hat maximal eine Vergabe"
         },
         {
-          "von": "Betrieb",
-          "zu": "Vergabe",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Betrieb kann mehrere Anfragen zugewiesen bekommen"
+          "von": "Vergabe",
+          "zu": "Betrieb",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Vergabe wird an genau einen Betrieb erteilt; ein Betrieb kann mehrere Vergaben erhalten"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar ist, ob Kunden auch Kontaktadresse, E-Mail und Telefonnummer speichern müssen wie Betriebe, oder ob nur der Name erfasst wird. Der Text sagt 'wer sie eingestellt hat', ohne Details zu nennen.",
+          "beschreibung": "Es ist unklar, ob Kunden ebenfalls Kontaktdaten (Adresse, E-Mail, Telefonnummer) speichern müssen oder nur Betriebe. Der Text erwähnt diese Daten nur für Betriebe explizit.",
           "betroffene_elemente": [
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob eine Anfrage mehrere Fachrichtungen haben kann oder nur eine. Der Text sagt 'in welche fachliche Richtung sie fällt' (Singular), aber es ist nicht explizit ausgeschlossen.",
+          "beschreibung": "Der Status einer Anfrage wird als 'offen' oder 'vergeben' beschrieben, aber es ist unklar, ob es weitere Statuszustände gibt (z.B. 'abgelehnt', 'storniert').",
           "betroffene_elemente": [
-            "Anfrage",
-            "Fachrichtung"
+            "Anfrage"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Vergabe automatisch eine bestimmte Meldung referenziert oder ob sie unabhängig davon erfasst wird. Der Text sagt 'welcher Betrieb den Zuschlag erhalten hat', aber nicht, ob dies an eine vorherige Meldung gebunden ist.",
+          "beschreibung": "Es ist nicht klar, ob die Nachricht in einer Meldung ein Pflichtfeld oder optional ist. Der Text sagt 'ob noch eine Nachricht mitgegeben wurde', was auf optional hindeutet.",
           "betroffene_elemente": [
-            "Vergabe",
             "Meldung"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob der Status 'offen' oder 'vergeben' in der Anfrage redundant ist oder ob er aus der Vergabe-Tabelle abgeleitet werden kann.",
+          "beschreibung": "Es ist unklar, ob eine Vergabe automatisch erfolgt oder ob ein Zeitstempel für die Vergabevergabe erfasst werden soll.",
           "betroffene_elemente": [
-            "Anfrage",
             "Vergabe"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht definiert, ob der Preis in einer Meldung ein Pflichtfeld ist oder ob Betriebe auch ohne Preisangabe angebote machen können.",
+          "betroffene_elemente": [
+            "Meldung"
           ]
         }
       ]
@@ -645,6 +648,23 @@
           ]
         },
         {
+          "name": "Fachrichtung",
+          "attribute": [
+            {
+              "name": "FachrichtungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
           "name": "Anfrage",
           "attribute": [
             {
@@ -679,23 +699,6 @@
             },
             {
               "name": "Status",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Fachrichtung",
-          "attribute": [
-            {
-              "name": "FachrichtungID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -768,7 +771,7 @@
               "name": "Preis",
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "Nachricht",
@@ -803,23 +806,6 @@
               "name": "Vergabedatum",
               "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "BetriebFachrichtung",
-          "attribute": [
-            {
-              "name": "BetriebID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "FachrichtungID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
               "pflichtfeld": true
             }
           ]
@@ -827,9 +813,9 @@
       ],
       "beziehungen": [
         {
-          "von": "Kunde",
-          "zu": "Anfrage",
-          "kardinalitaet": "1:N",
+          "von": "Anfrage",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
@@ -840,38 +826,32 @@
         },
         {
           "von": "Betrieb",
-          "zu": "BetriebFachrichtung",
-          "kardinalitaet": "1:N",
+          "zu": "Fachrichtung",
+          "kardinalitaet": "M:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Fachrichtung",
-          "zu": "BetriebFachrichtung",
-          "kardinalitaet": "1:N",
+          "von": "Meldung",
+          "zu": "Anfrage",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Anfrage",
-          "zu": "Meldung",
-          "kardinalitaet": "1:N",
+          "von": "Meldung",
+          "zu": "Betrieb",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Betrieb",
-          "zu": "Meldung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Anfrage",
-          "zu": "Vergabe",
+          "von": "Vergabe",
+          "zu": "Anfrage",
           "kardinalitaet": "1:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Betrieb",
-          "zu": "Vergabe",
-          "kardinalitaet": "1:N",
+          "von": "Vergabe",
+          "zu": "Betrieb",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         }
       ]
@@ -900,25 +880,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, specializations, businesses, requests, bids (Meldung), awards (Vergabe). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, specializations, businesses, requests, bids, awards. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Beispiele: 'created_at' für Erstellungsdatum, 'contact_address' für Kontaktadresse, 'phone_number' für Telefonnummer. Nullable-Markierungen entsprechen dem ER-Modell.",
+          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt abgebildet. Namenskonventionen (snake_case, englisch) sind konsistent eingehalten. Datentypen entsprechen den Anforderungen (TIMESTAMP für Datumsangaben, DECIMAL für Preis, TEXT für Beschreibungen).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 8 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N (customers→requests, requests→bids, businesses→bids, businesses→awards), N:1 (requests→specializations), M:N (businesses↔specializations via business_specializations), 1:1 (requests→awards, optional). Fremdschlüssel sind korrekt benannt und positioniert.",
+          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: N:1 Beziehungen (Anfrage→Kunde, Anfrage→Fachrichtung, Meldung→Anfrage, Meldung→Betrieb, Vergabe→Betrieb) über FK, M:N Beziehung (Betrieb↔Fachrichtung) über Junction-Table business_specializations, und 1:1 Beziehung (Vergabe→Anfrage) über FK mit Unique-Constraint impliziert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine nicht-Schlüssel-Attribute hängen von Teilen eines zusammengesetzten Schlüssels ab. (2) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. (3) Die Junction-Table 'business_specializations' ist korrekt für die M:N-Beziehung modelliert. Alle Abhängigkeiten sind funktional und nicht-redundant.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Junction-Table business_specializations ist korrekt für M:N Beziehung. Alle Attribute sind atomar. Keine Anomalien erkannt.",
           "korrekturanweisung": ""
         }
       ],
@@ -926,9 +906,9 @@
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 1,
+    "iteration": 2,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_address VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE specializations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_specializations PRIMARY KEY (id)\n);\n\nCREATE TABLE requests (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    specialization_id INTEGER NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    description TEXT NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_requests PRIMARY KEY (id),\n    CONSTRAINT fk_requests_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_requests_specialization_id FOREIGN KEY (specialization_id) REFERENCES specializations (id)\n);\n\nCREATE TABLE businesses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_address VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_businesses PRIMARY KEY (id)\n);\n\nCREATE TABLE awards (\n    id INTEGER NOT NULL,\n    request_id INTEGER NOT NULL,\n    business_id INTEGER NOT NULL,\n    awarded_at TIMESTAMP,\n    CONSTRAINT pk_awards PRIMARY KEY (id),\n    CONSTRAINT fk_awards_request_id FOREIGN KEY (request_id) REFERENCES requests (id),\n    CONSTRAINT fk_awards_business_id FOREIGN KEY (business_id) REFERENCES businesses (id)\n);\n\nCREATE TABLE bids (\n    id INTEGER NOT NULL,\n    request_id INTEGER NOT NULL,\n    business_id INTEGER NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    message TEXT,\n    CONSTRAINT pk_bids PRIMARY KEY (id),\n    CONSTRAINT fk_bids_request_id FOREIGN KEY (request_id) REFERENCES requests (id),\n    CONSTRAINT fk_bids_business_id FOREIGN KEY (business_id) REFERENCES businesses (id)\n);\n\nCREATE TABLE business_specializations (\n    business_id INTEGER NOT NULL,\n    specialization_id INTEGER NOT NULL,\n    CONSTRAINT pk_business_specializations PRIMARY KEY (business_id, specialization_id),\n    CONSTRAINT fk_business_specializations_business_id FOREIGN KEY (business_id) REFERENCES businesses (id),\n    CONSTRAINT fk_business_specializations_specialization_id FOREIGN KEY (specialization_id) REFERENCES specializations (id)\n);\n",
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_address VARCHAR(255),\n    email VARCHAR(255),\n    phone_number VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE specializations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_specializations PRIMARY KEY (id)\n);\n\nCREATE TABLE requests (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    specialization_id INTEGER NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    description TEXT NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_requests PRIMARY KEY (id),\n    CONSTRAINT fk_requests_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_requests_specialization_id FOREIGN KEY (specialization_id) REFERENCES specializations (id)\n);\n\nCREATE TABLE businesses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_address VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone_number VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_businesses PRIMARY KEY (id)\n);\n\nCREATE TABLE awards (\n    id INTEGER NOT NULL,\n    request_id INTEGER NOT NULL,\n    business_id INTEGER NOT NULL,\n    awarded_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_awards PRIMARY KEY (id),\n    CONSTRAINT fk_awards_request_id FOREIGN KEY (request_id) REFERENCES requests (id),\n    CONSTRAINT fk_awards_business_id FOREIGN KEY (business_id) REFERENCES businesses (id)\n);\n\nCREATE TABLE bids (\n    id INTEGER NOT NULL,\n    request_id INTEGER NOT NULL,\n    business_id INTEGER NOT NULL,\n    bid_at TIMESTAMP NOT NULL,\n    price DECIMAL(18,2),\n    message TEXT,\n    CONSTRAINT pk_bids PRIMARY KEY (id),\n    CONSTRAINT fk_bids_request_id FOREIGN KEY (request_id) REFERENCES requests (id),\n    CONSTRAINT fk_bids_business_id FOREIGN KEY (business_id) REFERENCES businesses (id)\n);\n\nCREATE TABLE business_specializations (\n    business_id INTEGER NOT NULL,\n    specialization_id INTEGER NOT NULL,\n    CONSTRAINT pk_business_specializations PRIMARY KEY (business_id, specialization_id),\n    CONSTRAINT fk_business_specializations_business_id FOREIGN KEY (business_id) REFERENCES businesses (id),\n    CONSTRAINT fk_business_specializations_specialization_id FOREIGN KEY (specialization_id) REFERENCES specializations (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -953,25 +933,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, specializations, businesses, requests, bids (Meldung), awards (Vergabe). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, specializations, businesses, requests, bids, awards. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Beispiele: 'created_at' für Erstellungsdatum, 'contact_address' für Kontaktadresse, 'phone_number' für Telefonnummer. Nullable-Markierungen entsprechen dem ER-Modell.",
+          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt abgebildet. Namenskonventionen (snake_case, englisch) sind konsistent eingehalten. Datentypen entsprechen den Anforderungen (TIMESTAMP für Datumsangaben, DECIMAL für Preis, TEXT für Beschreibungen).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 8 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N (customers→requests, requests→bids, businesses→bids, businesses→awards), N:1 (requests→specializations), M:N (businesses↔specializations via business_specializations), 1:1 (requests→awards, optional). Fremdschlüssel sind korrekt benannt und positioniert.",
+          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: N:1 Beziehungen (Anfrage→Kunde, Anfrage→Fachrichtung, Meldung→Anfrage, Meldung→Betrieb, Vergabe→Betrieb) über FK, M:N Beziehung (Betrieb↔Fachrichtung) über Junction-Table business_specializations, und 1:1 Beziehung (Vergabe→Anfrage) über FK mit Unique-Constraint impliziert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine nicht-Schlüssel-Attribute hängen von Teilen eines zusammengesetzten Schlüssels ab. (2) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. (3) Die Junction-Table 'business_specializations' ist korrekt für die M:N-Beziehung modelliert. Alle Abhängigkeiten sind funktional und nicht-redundant.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Junction-Table business_specializations ist korrekt für M:N Beziehung. Alle Attribute sind atomar. Keine Anomalien erkannt.",
           "korrekturanweisung": ""
         }
       ],
@@ -981,34 +961,34 @@
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 4,
-    "total_input_tokens": 17130,
-    "total_output_tokens": 6094,
-    "total_tokens": 23224,
+    "total_calls": 7,
+    "total_input_tokens": 35614,
+    "total_output_tokens": 10582,
+    "total_tokens": 46196,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1628,
-        "output_tokens": 1462,
+        "output_tokens": 1558,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 1,
-        "input_tokens": 3173,
-        "output_tokens": 2020,
+        "calls": 2,
+        "input_tokens": 8691,
+        "output_tokens": 3497,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 1,
-        "input_tokens": 4526,
-        "output_tokens": 1723,
+        "calls": 2,
+        "input_tokens": 9875,
+        "output_tokens": 3446,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 1,
-        "input_tokens": 7803,
-        "output_tokens": 889,
+        "calls": 2,
+        "input_tokens": 15420,
+        "output_tokens": 2081,
         "cost_usd": 0.0
       }
     },
@@ -1019,7 +999,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1628,
-        "output_tokens": 1462,
+        "output_tokens": 1558,
         "cost_usd": 0.0
       },
       {
@@ -1027,8 +1007,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3173,
-        "output_tokens": 2020,
+        "input_tokens": 3269,
+        "output_tokens": 1578,
         "cost_usd": 0.0
       },
       {
@@ -1036,7 +1016,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4526,
+        "input_tokens": 4337,
         "output_tokens": 1723,
         "cost_usd": 0.0
       },
@@ -1045,8 +1025,35 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7803,
-        "output_tokens": 889,
+        "input_tokens": 7710,
+        "output_tokens": 1229,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5422,
+        "output_tokens": 1919,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5538,
+        "output_tokens": 1723,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7710,
+        "output_tokens": 852,
         "cost_usd": 0.0
       }
     ]

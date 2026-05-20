@@ -2,8 +2,8 @@
   "testfall_id": "TC009",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.8933333333333333,
-  "score_gesamt": 0.9359999999999999,
+  "score_semantisch": 0.58,
+  "score_gesamt": 0.748,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -15,37 +15,32 @@
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "matched": 3,
-      "nur_in_referenz": 0,
-      "nur_in_generiert": 0
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
     },
     "attribut": {
-      "precision": 0.7333333333333333,
-      "recall": 0.7333333333333333,
-      "f1": 0.7333333333333333,
-      "matched": 11,
-      "nur_in_referenz": 4,
-      "nur_in_generiert": 4
+      "precision": 0.5333333333333333,
+      "recall": 0.5333333333333333,
+      "f1": 0.5333333333333333,
+      "matched": 8,
+      "nur_in_referenz": 7,
+      "nur_in_generiert": 7
     },
     "beziehung": {
-      "recall": 1.0,
-      "matched": 2,
-      "nur_in_referenz": 0,
+      "recall": 0.5,
+      "matched": 1,
+      "nur_in_referenz": 1,
       "nur_in_generiert": 0
     }
   },
   "abweichungen": [
     {
-      "element": "cleaning_jobs.job_date",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "cleaning_jobs.team_note",
-      "typ": "attribut",
+      "element": "cleaning_jobs",
+      "typ": "tabelle",
       "fehlerklasse": null
     },
     {
@@ -56,6 +51,36 @@
     {
       "element": "locations.access_note",
       "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.job_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs.team_note",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "cleaning_jobs → locations",
+      "typ": "beziehung",
       "fehlerklasse": null
     }
   ],
@@ -143,7 +168,7 @@
           ]
         },
         {
-          "name": "cleaning_jobs",
+          "name": "cleaning_services",
           "columns": [
             {
               "name": "id",
@@ -245,15 +270,15 @@
           ]
         },
         {
-          "beschreibung": "Es ist unklar, ob Einsatzorte eindeutig identifizierbar sein müssen oder ob mehrere Einsatzorte die gleiche Bezeichnung und Adresse haben können.",
+          "beschreibung": "Es ist unklar, ob Kunden eindeutig identifiziert werden sollen (z.B. durch eine Kundennummer) oder ob Name ausreichend ist.",
           "betroffene_elemente": [
-            "Einsatzort"
+            "Kunde"
           ]
         },
         {
-          "beschreibung": "Es ist nicht definiert, ob Kunden eindeutig identifizierbar sein müssen (z.B. durch Kundennummer) oder nur durch Name.",
+          "beschreibung": "Es ist nicht definiert, ob ein Einsatzort eindeutig durch die Adresse identifiziert wird oder ob eine separate ID notwendig ist.",
           "betroffene_elemente": [
-            "Kunde"
+            "Einsatzort"
           ]
         }
       ]
@@ -405,25 +430,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Kunde, Einsatzort, Reinigungseinsatz) sind als Tabellen (customers, locations, cleaning_jobs) im LogicalSchema vorhanden.",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Kunde, Einsatzort, Reinigungseinsatz) sind als Tabellen (customers, locations, cleaning_services) vorhanden. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt gemappt: Kunde (name, phone, email, address), Einsatzort (designation, address, accessibility_note), Reinigungseinsatz (date, status, notes). Die Namenskonventionen (snake_case, englisch) sind konsistent eingehalten.",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt abgebildet: Kunde (name, phone, email, address), Einsatzort (designation, address, accessibility_note), Reinigungseinsatz (date, status, notes). Datentypen entsprechen den Konventionen (VARCHAR für kurze Texte, TEXT für längere, DATE für Datumsangaben).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen customers und locations (via customer_id FK), sowie 1:N zwischen locations und cleaning_jobs (via location_id FK). Die Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide 1:N-Beziehungen sind korrekt implementiert: (1) Kunde → Einsatzort über customer_id (NOT NULL), (2) Einsatzort → Reinigungseinsatz über location_id (NOT NULL). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen, keine transitiven Abhängigkeiten, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln. Die Struktur ist normalisiert und vermeidet Anomalien.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine partiellen Abhängigkeiten und keine transitiven Abhängigkeiten. Jede Tabelle hat einen eindeutigen Primärschlüssel, und alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel.",
           "korrekturanweisung": ""
         }
       ],
@@ -433,7 +458,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    address TEXT NOT NULL,\n    accessibility_note TEXT,\n    CONSTRAINT pk_locations PRIMARY KEY (id),\n    CONSTRAINT fk_locations_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE cleaning_jobs (\n    id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    notes TEXT,\n    CONSTRAINT pk_cleaning_jobs PRIMARY KEY (id),\n    CONSTRAINT fk_cleaning_jobs_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    address TEXT NOT NULL,\n    accessibility_note TEXT,\n    CONSTRAINT pk_locations PRIMARY KEY (id),\n    CONSTRAINT fk_locations_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE cleaning_services (\n    id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    notes TEXT,\n    CONSTRAINT pk_cleaning_services PRIMARY KEY (id),\n    CONSTRAINT fk_cleaning_services_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -458,25 +483,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Kunde, Einsatzort, Reinigungseinsatz) sind als Tabellen (customers, locations, cleaning_jobs) im LogicalSchema vorhanden.",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Kunde, Einsatzort, Reinigungseinsatz) sind als Tabellen (customers, locations, cleaning_services) vorhanden. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt gemappt: Kunde (name, phone, email, address), Einsatzort (designation, address, accessibility_note), Reinigungseinsatz (date, status, notes). Die Namenskonventionen (snake_case, englisch) sind konsistent eingehalten.",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt abgebildet: Kunde (name, phone, email, address), Einsatzort (designation, address, accessibility_note), Reinigungseinsatz (date, status, notes). Datentypen entsprechen den Konventionen (VARCHAR für kurze Texte, TEXT für längere, DATE für Datumsangaben).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen customers und locations (via customer_id FK), sowie 1:N zwischen locations und cleaning_jobs (via location_id FK). Die Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide 1:N-Beziehungen sind korrekt implementiert: (1) Kunde → Einsatzort über customer_id (NOT NULL), (2) Einsatzort → Reinigungseinsatz über location_id (NOT NULL). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen, keine transitiven Abhängigkeiten, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln. Die Struktur ist normalisiert und vermeidet Anomalien.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine partiellen Abhängigkeiten und keine transitiven Abhängigkeiten. Jede Tabelle hat einen eindeutigen Primärschlüssel, und alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel.",
           "korrekturanweisung": ""
         }
       ],
@@ -487,20 +512,20 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12024,
-    "total_output_tokens": 3351,
-    "total_tokens": 15375,
+    "total_input_tokens": 12008,
+    "total_output_tokens": 3406,
+    "total_tokens": 15414,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1494,
-        "output_tokens": 856,
+        "output_tokens": 848,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2381,
+        "input_tokens": 2373,
         "output_tokens": 956,
         "cost_usd": 0.0
       },
@@ -512,8 +537,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 4909,
-        "output_tokens": 766,
+        "input_tokens": 4901,
+        "output_tokens": 829,
         "cost_usd": 0.0
       }
     },
@@ -524,7 +549,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1494,
-        "output_tokens": 856,
+        "output_tokens": 848,
         "cost_usd": 0.0
       },
       {
@@ -532,7 +557,7 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2381,
+        "input_tokens": 2373,
         "output_tokens": 956,
         "cost_usd": 0.0
       },
@@ -550,8 +575,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4909,
-        "output_tokens": 766,
+        "input_tokens": 4901,
+        "output_tokens": 829,
         "cost_usd": 0.0
       }
     ]

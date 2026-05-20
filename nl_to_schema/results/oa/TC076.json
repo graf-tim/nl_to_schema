@@ -2,33 +2,33 @@
   "testfall_id": "TC076",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.3801020408163266,
-  "score_gesamt": 0.628061224489796,
+  "score_semantisch": 0.4511550856901901,
+  "score_gesamt": 0.6706930514141141,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 18,
-    "pk_tabellen_mit_pk": 18,
-    "fk_referenzen_gesamt": 18,
+    "pk_tabellen_gesamt": 17,
+    "pk_tabellen_mit_pk": 17,
+    "fk_referenzen_gesamt": 17,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.5,
-      "recall": 0.6428571428571429,
-      "f1": 0.5625000000000001,
-      "matched": 9,
-      "nur_in_referenz": 5,
-      "nur_in_generiert": 9
+      "precision": 0.5882352941176471,
+      "recall": 0.7142857142857143,
+      "f1": 0.6451612903225806,
+      "matched": 10,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 7
     },
     "attribut": {
-      "precision": 0.24,
-      "recall": 0.25,
-      "f1": 0.24489795918367346,
-      "matched": 18,
-      "nur_in_referenz": 54,
-      "nur_in_generiert": 57
+      "precision": 0.32098765432098764,
+      "recall": 0.3611111111111111,
+      "f1": 0.33986928104575165,
+      "matched": 26,
+      "nur_in_referenz": 46,
+      "nur_in_generiert": 55
     },
     "beziehung": {
       "recall": 0.2857142857142857,
@@ -40,11 +40,6 @@
   "abweichungen": [
     {
       "element": "framework_agreements",
-      "typ": "tabelle",
-      "fehlerklasse": null
-    },
-    {
-      "element": "grid_zones",
       "typ": "tabelle",
       "fehlerklasse": null
     },
@@ -64,12 +59,12 @@
       "fehlerklasse": null
     },
     {
-      "element": "balance_groups.code",
+      "element": "grid_zones.commodity",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
-      "element": "market_partners.partner_type",
+      "element": "balance_groups.code",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -84,17 +79,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "products.product_type",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "contacts.firstname",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "contacts.lastname",
+      "element": "products.quality",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -134,27 +119,12 @@
       "fehlerklasse": null
     },
     {
-      "element": "schedules.schedule_date",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "schedules.version_number",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
       "element": "schedules.created_at",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "products_trading_venues.id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "balance_groups_trades.id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -190,21 +160,6 @@
     },
     {
       "element": "framework_agreements.terms_text",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "grid_zones.id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "grid_zones.name",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "grid_zones.commodity",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -429,14 +384,14 @@
               "nullable": false
             },
             {
-              "name": "type",
+              "name": "partner_type",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
               "name": "contact_data",
-              "type": "VARCHAR",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             }
@@ -459,10 +414,16 @@
               "nullable": false
             },
             {
-              "name": "name",
+              "name": "firstname",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
             },
             {
               "name": "title",
@@ -472,7 +433,7 @@
             },
             {
               "name": "contact_data",
-              "type": "VARCHAR",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             }
@@ -501,16 +462,10 @@
               "nullable": false
             },
             {
-              "name": "type",
+              "name": "product_type",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "quality",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
             },
             {
               "name": "description",
@@ -546,6 +501,42 @@
           "foreign_keys": []
         },
         {
+          "name": "contracts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contract_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "delivery_terms",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
           "name": "balance_groups",
           "columns": [
             {
@@ -570,7 +561,7 @@
           "foreign_keys": []
         },
         {
-          "name": "network_zones",
+          "name": "grid_zones",
           "columns": [
             {
               "name": "id",
@@ -618,6 +609,30 @@
           "foreign_keys": []
         },
         {
+          "name": "market_partner_roles",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
           "name": "deals",
           "columns": [
             {
@@ -633,10 +648,10 @@
               "nullable": false
             },
             {
-              "name": "broker_id",
+              "name": "product_id",
               "type": "INTEGER",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "trading_venue_id",
@@ -645,8 +660,20 @@
               "nullable": false
             },
             {
-              "name": "runtime",
-              "type": "VARCHAR",
+              "name": "contract_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "grid_zone_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "broker_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             },
@@ -663,6 +690,12 @@
               "nullable": false
             },
             {
+              "name": "runtime_days",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
               "name": "quantity",
               "type": "DECIMAL",
               "primary_key": false,
@@ -673,6 +706,12 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "quantity_unit",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
             },
             {
               "name": "price",
@@ -693,12 +732,6 @@
               "nullable": false
             },
             {
-              "name": "contract_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "business_type",
               "type": "VARCHAR",
               "primary_key": false,
@@ -706,7 +739,7 @@
             },
             {
               "name": "conclusion_date",
-              "type": "TIMESTAMP",
+              "type": "DATE",
               "primary_key": false,
               "nullable": false
             }
@@ -718,13 +751,28 @@
               "references_column": "id"
             },
             {
-              "from_column": "broker_id",
-              "references_table": "brokers",
+              "from_column": "product_id",
+              "references_table": "products",
               "references_column": "id"
             },
             {
               "from_column": "trading_venue_id",
               "references_table": "trading_venues",
+              "references_column": "id"
+            },
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "grid_zone_id",
+              "references_table": "grid_zones",
+              "references_column": "id"
+            },
+            {
+              "from_column": "broker_id",
+              "references_table": "brokers",
               "references_column": "id"
             }
           ]
@@ -733,20 +781,26 @@
           "name": "deal_market_partners",
           "columns": [
             {
-              "name": "deal_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "deal_id",
+              "type": "INTEGER",
+              "primary_key": false,
               "nullable": false
             },
             {
               "name": "market_partner_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
             },
             {
-              "name": "role",
-              "type": "VARCHAR",
+              "name": "role_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             }
@@ -761,63 +815,10 @@
               "from_column": "market_partner_id",
               "references_table": "market_partners",
               "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "deal_products",
-          "columns": [
-            {
-              "name": "deal_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
             },
             {
-              "name": "product_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "deal_id",
-              "references_table": "deals",
-              "references_column": "id"
-            },
-            {
-              "from_column": "product_id",
-              "references_table": "products",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "product_trading_venues",
-          "columns": [
-            {
-              "name": "product_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "trading_venue_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "product_id",
-              "references_table": "products",
-              "references_column": "id"
-            },
-            {
-              "from_column": "trading_venue_id",
-              "references_table": "trading_venues",
+              "from_column": "role_id",
+              "references_table": "market_partner_roles",
               "references_column": "id"
             }
           ]
@@ -826,16 +827,28 @@
           "name": "deal_balance_groups",
           "columns": [
             {
-              "name": "deal_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
+              "name": "deal_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "balance_group_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "share_percent",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -852,33 +865,87 @@
           ]
         },
         {
-          "name": "deal_network_zones",
+          "name": "product_trading_venues",
           "columns": [
             {
-              "name": "deal_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "network_zone_id",
+              "name": "product_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "trading_venue_id",
+              "type": "INTEGER",
+              "primary_key": false,
               "nullable": false
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "deal_id",
-              "references_table": "deals",
+              "from_column": "product_id",
+              "references_table": "products",
               "references_column": "id"
             },
             {
-              "from_column": "network_zone_id",
-              "references_table": "network_zones",
+              "from_column": "trading_venue_id",
+              "references_table": "trading_venues",
               "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "schedule_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "schedule_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "schedules",
@@ -896,7 +963,7 @@
               "nullable": false
             },
             {
-              "name": "date",
+              "name": "schedule_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -905,95 +972,35 @@
               "name": "position",
               "type": "INTEGER",
               "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "volume",
-              "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "volume_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "deal_id",
-              "references_table": "deals",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "nominations",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "deal_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "date",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "status",
-              "type": "VARCHAR",
-              "primary_key": false,
               "nullable": false
             },
             {
               "name": "volume",
               "type": "DECIMAL",
               "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "deal_id",
-              "references_table": "deals",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "confirmations",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
               "nullable": false
             },
             {
-              "name": "deal_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "date",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "status",
+              "name": "volume_unit",
               "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "schedule_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "change_timestamp",
+              "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
             }
@@ -1003,47 +1010,15 @@
               "from_column": "deal_id",
               "references_table": "deals",
               "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "schedule_adjustments",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
             },
             {
-              "name": "deal_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
+              "from_column": "schedule_type_id",
+              "references_table": "schedule_types",
+              "references_column": "id"
             },
             {
-              "name": "date",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "change",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "status",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "deal_id",
-              "references_table": "deals",
+              "from_column": "status_id",
+              "references_table": "schedule_statuses",
               "references_column": "id"
             }
           ]
@@ -1063,9 +1038,8 @@
             "Preis",
             "Waehrung",
             "Kauf_oder_Verkauf",
-            "Abschluss_Datum",
-            "Handelsplatz",
-            "Kontrakttyp"
+            "Abschlussdatum",
+            "Typ (Handelsgeschaeft oder Dienstleistung)"
           ],
           "beschreibung": "Zentrale Entität für Handelsabschlüsse im Energiehandel (Strom und Gas). Erfasst alle relevanten Vertragsbedingungen und Geschäftsparameter."
         },
@@ -1074,10 +1048,10 @@
           "attribute": [
             "Marktpartner_ID",
             "Name",
-            "Typ",
+            "Typ (Versorger, Stadtwerke, Industriekunde, Netzbetreiber, Broker)",
             "Kontaktdaten"
           ],
-          "beschreibung": "Geschäftspartner wie Versorger, Stadtwerke, Industriekunden, Netzbetreiber und Broker. Ein Marktpartner kann je nach Geschäft verschiedene Rollen einnehmen."
+          "beschreibung": "Geschäftspartner im Energiehandel, die in verschiedenen Rollen auftreten können (Gegenpartei, Kunde, Lieferant)."
         },
         {
           "name": "Ansprechpartner",
@@ -1087,18 +1061,17 @@
             "Titel",
             "Kontaktdaten"
           ],
-          "beschreibung": "Kontaktpersonen bei Marktpartnern. Sind nicht zwingend für jeden Fall vorhanden."
+          "beschreibung": "Kontaktpersonen bei Marktpartnern. Nicht immer vorhanden, aber hilfreich für die Geschäftsabwicklung."
         },
         {
           "name": "Produkt",
           "attribute": [
             "Produkt_ID",
             "Name",
-            "Typ",
-            "Qualitaet",
+            "Typ (Base, Peak, Stundenbaender, Gas mit Qualitaeten, strukturierte Lieferungen)",
             "Beschreibung"
           ],
-          "beschreibung": "Handelbare Energieprodukte wie Base, Peak, Stundenbaender, Gas mit bestimmten Qualitäten oder strukturierte Lieferungen."
+          "beschreibung": "Energieprodukte, die gehandelt werden. Ein Produkt kann an mehreren Handelsplätzen vorkommen."
         },
         {
           "name": "Handelsplatz",
@@ -1107,7 +1080,18 @@
             "Name",
             "Beschreibung"
           ],
-          "beschreibung": "Marktplätze, an denen Produkte gehandelt werden. Ein Produkt kann an mehreren Handelsplätzen vorkommen und ein Handelsplatz kann verschiedene Produkte haben."
+          "beschreibung": "Marktplätze, an denen Produkte gehandelt werden. Ein Handelsplatz kann verschiedene Produkte anbieten."
+        },
+        {
+          "name": "Kontrakt",
+          "attribute": [
+            "Kontrakt_ID",
+            "Typ (standardisiert oder bilateral)",
+            "Lieferbedingungen",
+            "Gueltig_ab",
+            "Gueltig_bis"
+          ],
+          "beschreibung": "Vertragliche Grundlagen für Geschäfte, entweder standardisierte Kontrakte oder bilaterale Vereinbarungen mit frei formulierten Bedingungen."
         },
         {
           "name": "Bilanzkreis",
@@ -1133,38 +1117,10 @@
             "Fahrplan_ID",
             "Datum",
             "Volumen",
-            "Position"
+            "Position (je nach Produkt mehrere pro Tag möglich)",
+            "Status (Nominierung, Bestätigung, angepasst)"
           ],
-          "beschreibung": "Dokumentation der Lieferpläne mit Datum und Volumen. Je nach Produkt sind mehrere Positionen pro Tag möglich."
-        },
-        {
-          "name": "Nominierung",
-          "attribute": [
-            "Nominierung_ID",
-            "Datum",
-            "Status",
-            "Volumen"
-          ],
-          "beschreibung": "Nominierungsschritt nach Vertragsabschluss mit Historisierung."
-        },
-        {
-          "name": "Bestaetigung",
-          "attribute": [
-            "Bestaetigung_ID",
-            "Datum",
-            "Status"
-          ],
-          "beschreibung": "Bestätigungsschritt nach Vertragsabschluss mit Historisierung."
-        },
-        {
-          "name": "Fahrplananpassung",
-          "attribute": [
-            "Fahrplananpassung_ID",
-            "Datum",
-            "Aenderung",
-            "Status"
-          ],
-          "beschreibung": "Anpassungen an Fahrplänen nach Vertragsabschluss mit Historisierung."
+          "beschreibung": "Detaillierte Lieferpläne mit Datum und Volumen. Dokumentiert Nominierung, Bestätigung und Anpassungen."
         },
         {
           "name": "Haendler",
@@ -1173,7 +1129,7 @@
             "Name",
             "Beschreibung"
           ],
-          "beschreibung": "Interne Handelseinheit oder Person, die Geschäfte abschließt."
+          "beschreibung": "Interne Handelspartei, die Geschäfte abschließt."
         },
         {
           "name": "Broker",
@@ -1190,25 +1146,25 @@
           "von": "Geschaeft",
           "zu": "Marktpartner",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Geschäft betrifft mindestens zwei Marktpartner (Gegenpartei, Kunde oder Lieferant). Ein Marktpartner kann in mehreren Geschäften involviert sein."
-        },
-        {
-          "von": "Marktpartner",
-          "zu": "Ansprechpartner",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Marktpartner kann mehrere Ansprechpartner haben. Ansprechpartner sind optional."
+          "beschreibung": "Ein Geschäft kann mehrere Marktpartner betreffen (Gegenpartei, Kunde, Lieferant). Ein Marktpartner kann in mehreren Geschäften auftreten."
         },
         {
           "von": "Geschaeft",
           "zu": "Produkt",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Geschäft betrifft ein oder mehrere Produkte. Ein Produkt kann in mehreren Geschäften gehandelt werden."
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Geschäft bezieht sich auf genau ein Produkt. Ein Produkt kann in mehreren Geschäften gehandelt werden."
         },
         {
-          "von": "Produkt",
+          "von": "Geschaeft",
           "zu": "Handelsplatz",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Produkt kann an mehreren Handelsplätzen vorkommen. Ein Handelsplatz kann verschiedene Produkte haben."
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Geschäft findet an einem Handelsplatz statt. Ein Handelsplatz kann mehrere Geschäfte haben."
+        },
+        {
+          "von": "Geschaeft",
+          "zu": "Kontrakt",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Geschäft basiert auf einem Kontrakt. Ein Kontrakt kann mehrere Geschäfte regeln."
         },
         {
           "von": "Geschaeft",
@@ -1219,313 +1175,94 @@
         {
           "von": "Geschaeft",
           "zu": "Netzzone",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Geschäft kann mehrere Netzzonen betreffen. Eine Netzzone kann mehrere Geschäfte enthalten."
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Geschäft betrifft eine Netzzone. Eine Netzzone kann mehrere Geschäfte betreffen."
         },
         {
           "von": "Geschaeft",
           "zu": "Fahrplan",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Geschäft kann mehrere Fahrpläne haben. Ein Fahrplan gehört zu einem Geschäft."
+          "beschreibung": "Ein Geschäft hat einen oder mehrere Fahrpläne. Ein Fahrplan gehört zu genau einem Geschäft."
         },
         {
           "von": "Geschaeft",
-          "zu": "Nominierung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Geschäft kann mehrere Nominierungen haben (Historisierung). Eine Nominierung gehört zu einem Geschäft."
-        },
-        {
-          "von": "Geschaeft",
-          "zu": "Bestaetigung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Geschäft kann mehrere Bestätigungen haben (Historisierung). Eine Bestätigung gehört zu einem Geschäft."
-        },
-        {
-          "von": "Geschaeft",
-          "zu": "Fahrplananpassung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Geschäft kann mehrere Fahrplananpassungen haben (Historisierung). Eine Fahrplananpassung gehört zu einem Geschäft."
-        },
-        {
-          "von": "Haendler",
-          "zu": "Geschaeft",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Händler schließt mehrere Geschäfte ab. Ein Geschäft wird von einem Händler abgeschlossen."
+          "zu": "Haendler",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Geschäft wird von genau einem Händler abgeschlossen. Ein Händler schließt mehrere Geschäfte ab."
         },
         {
           "von": "Geschaeft",
           "zu": "Broker",
           "kardinalitaet": "M:1",
-          "beschreibung": "Ein Geschäft kann über einen Broker zustande kommen oder direkt. Ein Broker kann mehrere Geschäfte vermitteln."
+          "beschreibung": "Ein Geschäft kann über einen Broker zustande kommen. Nicht jedes Geschäft hat einen Broker. Ein Broker kann mehrere Geschäfte vermitteln."
+        },
+        {
+          "von": "Marktpartner",
+          "zu": "Ansprechpartner",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Marktpartner kann mehrere Ansprechpartner haben. Ein Ansprechpartner gehört zu genau einem Marktpartner."
+        },
+        {
+          "von": "Produkt",
+          "zu": "Handelsplatz",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Produkt kann an mehreren Handelsplätzen vorkommen. Ein Handelsplatz kann verschiedene Produkte anbieten."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Abgrenzung zwischen Handelsgeschäft und Dienstleistung ist in der Praxis nicht immer sauber getrennt. Unklar ist, wie diese Unterscheidung in der Datenbank abgebildet werden soll.",
+          "beschreibung": "Abgrenzung zwischen Handelsgeschäft und Dienstleistung ist in der Praxis nicht immer sauber getrennt. Unklar ist, nach welchen Kriterien diese Unterscheidung erfolgen soll.",
           "betroffene_elemente": [
             "Geschaeft"
           ]
         },
         {
-          "beschreibung": "Menge kann sowohl als Gesamtmenge als auch als Leistung (z.B. kW/h) verstanden werden. Unklar ist, wie diese Unterscheidung dokumentiert und unterschieden werden soll.",
+          "beschreibung": "Menge kann sowohl als Gesamtmenge als auch als Leistung (z.B. kW, MWh/h) interpretiert werden. Unklar ist, wie diese Unterscheidung dokumentiert oder unterschieden werden soll.",
           "betroffene_elemente": [
             "Geschaeft",
             "Fahrplan"
           ]
         },
         {
-          "beschreibung": "Ein Geschäft kann mehreren Bilanzkreisen zugeordnet sein (z.B. bei internen Umbuchungen). Unklar ist, ob solche Umbuchungen bereits als eigenes Geschäft gelten oder nur später in der Abwicklung relevant werden.",
+          "beschreibung": "Ein Geschäft kann mehreren Bilanzkreisen zugeordnet sein (z.B. bei internen Umbuchungen). Unklar ist, ob solche Umbuchungen bereits als eigenes Geschäft gelten oder erst später in der Abwicklung relevant werden.",
           "betroffene_elemente": [
             "Geschaeft",
             "Bilanzkreis"
           ]
         },
         {
-          "beschreibung": "Bei Rahmenvereinbarungen ist unklar, ob jede einzelne Transaktion separat auf einen Broker verweisen muss oder ob die Referenz auf Rahmenvereinbarungsebene ausreicht.",
+          "beschreibung": "Historisierung von Nominierung, Bestätigung und Fahrplananpassungen ist gefordert, aber die genaue Form und Struktur ist nicht spezifiziert.",
           "betroffene_elemente": [
-            "Geschaeft",
-            "Broker"
-          ]
-        },
-        {
-          "beschreibung": "Ansprechpartner sind nicht zwingend für jeden Fall vorhanden. Unklar ist, wie mit fehlenden Ansprechpartnern umzugehen ist und ob diese optional sein sollen.",
-          "betroffene_elemente": [
-            "Ansprechpartner",
-            "Marktpartner"
-          ]
-        },
-        {
-          "beschreibung": "Nicht klar ist, wie die Rollen eines Marktpartners (Gegenpartei, Kunde, Lieferant) in einem Geschäft abgebildet werden sollen und ob diese explizit dokumentiert werden müssen.",
-          "betroffene_elemente": [
-            "Marktpartner",
+            "Fahrplan",
             "Geschaeft"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob Geschäfte für eigene Bilanzkreise und Geschäfte im Auftrag von Kunden unterschiedlich behandelt werden sollen oder wie diese Unterscheidung dokumentiert wird.",
+          "beschreibung": "Bei Rahmenvereinbarungen ist unklar, ob jede einzelne Transaktion separat auf den Broker verweisen muss oder ob die Referenz auf Rahmenvertragsebene ausreicht.",
           "betroffene_elemente": [
             "Geschaeft",
-            "Bilanzkreis"
+            "Broker",
+            "Kontrakt"
+          ]
+        },
+        {
+          "beschreibung": "Marktpartner können je nach Geschäft in verschiedenen Rollen auftreten (Gegenpartei, Kunde, Lieferant). Unklar ist, wie diese Rollen pro Geschäft dokumentiert werden sollen.",
+          "betroffene_elemente": [
+            "Geschaeft",
+            "Marktpartner"
+          ]
+        },
+        {
+          "beschreibung": "Ansprechpartner sind nicht immer vorhanden. Unklar ist, unter welchen Bedingungen sie erforderlich sind und wie mit fehlenden Ansprechpartnern umzugehen ist.",
+          "betroffene_elemente": [
+            "Ansprechpartner",
+            "Marktpartner"
           ]
         }
       ]
     },
     "er_modell": {
       "entitaeten": [
-        {
-          "name": "Haendler",
-          "attribute": [
-            {
-              "name": "Haendler_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Marktpartner",
-          "attribute": [
-            {
-              "name": "Marktpartner_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Typ",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Kontaktdaten",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Ansprechpartner",
-          "attribute": [
-            {
-              "name": "Ansprechpartner_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Marktpartner_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Titel",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Kontaktdaten",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Produkt",
-          "attribute": [
-            {
-              "name": "Produkt_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Typ",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Qualitaet",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Handelsplatz",
-          "attribute": [
-            {
-              "name": "Handelsplatz_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Bilanzkreis",
-          "attribute": [
-            {
-              "name": "Bilanzkreis_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Netzzone",
-          "attribute": [
-            {
-              "name": "Netzzone_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Broker",
-          "attribute": [
-            {
-              "name": "Broker_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
         {
           "name": "Geschaeft",
           "attribute": [
@@ -1536,26 +1273,8 @@
               "pflichtfeld": true
             },
             {
-              "name": "Haendler_ID",
+              "name": "Laufzeit_Tage",
               "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Broker_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Handelsplatz_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Laufzeit",
-              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
@@ -1584,6 +1303,12 @@
               "pflichtfeld": false
             },
             {
+              "name": "Mengeneinheit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
               "name": "Preis",
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
@@ -1602,8 +1327,8 @@
               "pflichtfeld": true
             },
             {
-              "name": "Kontrakttyp",
-              "datentyp": "VARCHAR",
+              "name": "Abschlussdatum",
+              "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
@@ -1614,72 +1339,9 @@
               "pflichtfeld": false
             },
             {
-              "name": "Abschluss_Datum",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Geschaeft_Marktpartner",
-          "attribute": [
-            {
-              "name": "Geschaeft_Marktpartner_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Geschaeft_ID",
+              "name": "Haendler_ID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Marktpartner_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Rolle",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Geschaeft_Produkt",
-          "attribute": [
-            {
-              "name": "Geschaeft_Produkt_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Geschaeft_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Produkt_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Produkt_Handelsplatz",
-          "attribute": [
-            {
-              "name": "Produkt_Handelsplatz_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
@@ -1693,52 +1355,227 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Geschaeft_Bilanzkreis",
-          "attribute": [
-            {
-              "name": "Geschaeft_Bilanzkreis_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
             },
             {
-              "name": "Geschaeft_ID",
+              "name": "Kontrakt_ID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Bilanzkreis_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Geschaeft_Netzzone",
-          "attribute": [
-            {
-              "name": "Geschaeft_Netzzone_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Geschaeft_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "Netzzone_ID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Broker_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Marktpartner",
+          "attribute": [
+            {
+              "name": "Marktpartner_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
               "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Marktpartner_Typ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Kontaktdaten",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Ansprechpartner",
+          "attribute": [
+            {
+              "name": "Ansprechpartner_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Marktpartner_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Titel",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Kontaktdaten",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Produkt",
+          "attribute": [
+            {
+              "name": "Produkt_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Produkt_Typ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Handelsplatz",
+          "attribute": [
+            {
+              "name": "Handelsplatz_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Kontrakt",
+          "attribute": [
+            {
+              "name": "Kontrakt_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Kontrakt_Typ",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Lieferbedingungen",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Gueltig_ab",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Gueltig_bis",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Bilanzkreis",
+          "attribute": [
+            {
+              "name": "Bilanzkreis_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Netzzone",
+          "attribute": [
+            {
+              "name": "Netzzone_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1767,7 +1604,7 @@
               "name": "Position",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             },
             {
               "name": "Volumen",
@@ -1776,31 +1613,14 @@
               "pflichtfeld": true
             },
             {
-              "name": "Volumentyp",
+              "name": "Volumeneinheit",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Nominierung",
-          "attribute": [
-            {
-              "name": "Nominierung_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Geschaeft_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Datum",
-              "datentyp": "TIMESTAMP",
+              "name": "Fahrplan_Typ",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
@@ -1811,72 +1631,158 @@
               "pflichtfeld": true
             },
             {
-              "name": "Volumen",
-              "datentyp": "DECIMAL",
+              "name": "Aenderungsdatum",
+              "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             }
           ]
         },
         {
-          "name": "Bestaetigung",
+          "name": "Haendler",
           "attribute": [
             {
-              "name": "Bestaetigung_ID",
+              "name": "Haendler_ID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Geschaeft_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Datum",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Status",
+              "name": "Name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Fahrplananpassung",
-          "attribute": [
-            {
-              "name": "Fahrplananpassung_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
             },
             {
-              "name": "Geschaeft_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Datum",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Aenderung",
+              "name": "Beschreibung",
               "datentyp": "TEXT",
               "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Broker",
+          "attribute": [
+            {
+              "name": "Broker_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Status",
+              "name": "Name",
               "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Marktpartner_Rolle",
+          "attribute": [
+            {
+              "name": "Rolle_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Rolle_Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Geschaeft_Marktpartner",
+          "attribute": [
+            {
+              "name": "Geschaeft_Marktpartner_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Geschaeft_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Marktpartner_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Rolle_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Geschaeft_Bilanzkreis",
+          "attribute": [
+            {
+              "name": "Geschaeft_Bilanzkreis_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Geschaeft_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Bilanzkreis_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Anteil_Prozent",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Produkt_Handelsplatz",
+          "attribute": [
+            {
+              "name": "Produkt_Handelsplatz_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Produkt_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Handelsplatz_ID",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1885,75 +1791,39 @@
       ],
       "beziehungen": [
         {
-          "von": "Haendler",
-          "zu": "Geschaeft",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Marktpartner",
-          "zu": "Ansprechpartner",
-          "kardinalitaet": "1:N",
+          "von": "Geschaeft",
+          "zu": "Haendler",
+          "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
           "von": "Geschaeft",
-          "zu": "Geschaeft_Marktpartner",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Marktpartner",
-          "zu": "Geschaeft_Marktpartner",
-          "kardinalitaet": "1:N",
+          "zu": "Produkt",
+          "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
           "von": "Geschaeft",
-          "zu": "Geschaeft_Produkt",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Produkt",
-          "zu": "Geschaeft_Produkt",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Produkt",
-          "zu": "Produkt_Handelsplatz",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Handelsplatz",
-          "zu": "Produkt_Handelsplatz",
-          "kardinalitaet": "1:N",
+          "zu": "Handelsplatz",
+          "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
           "von": "Geschaeft",
-          "zu": "Geschaeft_Bilanzkreis",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Bilanzkreis",
-          "zu": "Geschaeft_Bilanzkreis",
-          "kardinalitaet": "1:N",
+          "zu": "Kontrakt",
+          "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
           "von": "Geschaeft",
-          "zu": "Geschaeft_Netzzone",
-          "kardinalitaet": "1:N",
+          "zu": "Netzzone",
+          "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Netzzone",
-          "zu": "Geschaeft_Netzzone",
-          "kardinalitaet": "1:N",
+          "von": "Geschaeft",
+          "zu": "Broker",
+          "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
@@ -1963,26 +1833,50 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Geschaeft",
-          "zu": "Nominierung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Geschaeft",
-          "zu": "Bestaetigung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Geschaeft",
-          "zu": "Fahrplananpassung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Broker",
+          "von": "Geschaeft_Marktpartner",
           "zu": "Geschaeft",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Geschaeft_Marktpartner",
+          "zu": "Marktpartner",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Geschaeft_Marktpartner",
+          "zu": "Marktpartner_Rolle",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Geschaeft_Bilanzkreis",
+          "zu": "Geschaeft",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Geschaeft_Bilanzkreis",
+          "zu": "Bilanzkreis",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Produkt_Handelsplatz",
+          "zu": "Produkt",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Produkt_Handelsplatz",
+          "zu": "Handelsplatz",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Marktpartner",
+          "zu": "Ansprechpartner",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         }
@@ -2012,26 +1906,26 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Geschaeft' ist unvollständig. Laut Anforderungstext und ERModell soll ein Geschäft einem oder mehreren Bilanzkreisen zugeordnet sein (M:N-Beziehung). Das LogicalSchema implementiert dies korrekt über 'deal_balance_groups'. JEDOCH: Ein Geschäft kann auch mehrere Netzzonen betreffen (M:N-Beziehung), was ebenfalls korrekt über 'deal_network_zones' implementiert ist. Das Hauptproblem liegt darin, dass die Beziehung zwischen 'Geschaeft' und 'Marktpartner' nicht vollständig abgebildet ist: Ein Geschäft betrifft mindestens zwei Marktpartner (Gegenpartei, Kunde oder Lieferant), aber die 'deals'-Tabelle hat keine direkte Referenz zu Marktpartnern. Die Beziehung wird nur über die Junction-Table 'deal_market_partners' abgebildet. Dies ist zwar strukturell korrekt, aber es fehlt eine explizite Dokumentation, dass ein Geschäft MINDESTENS zwei Marktpartner haben muss (Geschäftslogik-Constraint). Zusätzlich: Die 'deals'-Tabelle hat eine Spalte 'trading_venue_id' als Pflichtfeld (NOT NULL), aber laut Anforderungstext ist der Handelsplatz ein Attribut des Geschäfts. Dies ist korrekt implementiert. KRITISCHER FEHLER: Die Beziehung zwischen 'Geschaeft' und 'Produkt' ist als M:N definiert (über 'deal_products'), aber die 'deals'-Tabelle hat keine Spalte, die angibt, welches Produkt das Geschäft betrifft. Ein Geschäft kann mehrere Produkte betreffen, aber es gibt keine Möglichkeit, ein einzelnes Produkt direkt in der 'deals'-Tabelle zu referenzieren. Dies ist ein Designfehler: Entweder sollte es eine 'product_id' in der 'deals'-Tabelle geben (wenn ein Geschäft nur ein Produkt betrifft), oder die M:N-Beziehung über 'deal_products' ist korrekt, aber dann fehlt eine Validierung, dass mindestens ein Produkt zugeordnet sein muss.",
-          "korrekturanweisung": "Überprüfen Sie die Beziehung zwischen 'deals' und 'products'. Wenn ein Geschäft mehrere Produkte betreffen kann, ist die Junction-Table 'deal_products' korrekt, aber es sollte eine Geschäftslogik-Regel geben, dass mindestens ein Produkt zugeordnet sein muss. Wenn ein Geschäft nur ein Produkt betrifft, sollte eine 'product_id'-Spalte in der 'deals'-Tabelle hinzugefügt werden."
+          "beschreibung": "Die Entität 'Marktpartner_Rolle' (im ER-Modell) wurde in das LogicalSchema als 'market_partner_roles' übernommen, ist aber konzeptionell nicht korrekt modelliert. Im ER-Modell ist 'Marktpartner_Rolle' eine eigenständige Entität mit Attributen 'Rolle_ID', 'Rolle_Name' und 'Beschreibung'. Im LogicalSchema ist dies korrekt als 'market_partner_roles' mit 'id', 'name' und 'description' abgebildet. JEDOCH: Die Anforderung besagt, dass Marktpartner 'je nach Geschäft mal als Gegenpartei, mal als Kunde oder Lieferant auftreten' können. Dies ist eine Rolle pro Geschäft-Marktpartner-Beziehung, nicht eine globale Eigenschaft des Marktpartners. Die Modellierung über 'deal_market_partners' mit 'role_id' ist korrekt. ABER: Es fehlt eine explizite Dokumentation, welche Rollen möglich sind (z.B. 'Gegenpartei', 'Kunde', 'Lieferant'). Die Tabelle 'market_partner_roles' ist leer konzeptionell – es gibt keine Vorgabe, welche Rollen existieren sollen. Dies ist ein konzeptionelles Defizit aus dem ER-Modell, das nicht vollständig spezifiziert wurde.",
+          "korrekturanweisung": "Im ER-Modell sollten die möglichen Rollen explizit aufgelistet werden (z.B. als Enumeration oder als vordefinierte Datensätze in 'market_partner_roles'). Dies ist ein Fehler im ER-Modell, nicht im LogicalSchema selbst."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Mehrere Attribute sind unvollständig oder fehlerhaft: (1) Die 'deals'-Tabelle hat ein Attribut 'runtime' vom Typ VARCHAR, aber laut Anforderungstext sollte 'Laufzeit' dokumentiert werden. VARCHAR ist für eine Laufzeit (z.B. '2024-01-01 bis 2024-12-31') nicht ideal; ein strukturiertes Format (z.B. zwei DATE-Spalten oder ein INTERVAL-Typ) wäre besser. (2) Die 'deals'-Tabelle hat 'quantity_type' und 'business_type', aber laut Anforderungstext ist unklar, ob die Menge als Gesamtmenge oder Leistung verstanden wird. Das Attribut 'quantity_type' adressiert dies, aber es ist optional (nullable: true), obwohl es für die Interpretation der Menge kritisch ist. (3) Die 'schedules'-Tabelle hat 'volume_type', was korrekt ist, aber auch optional. (4) Die 'deals'-Tabelle hat 'business_type' (optional), was die Unterscheidung zwischen Handelsgeschäft und Dienstleistung adressiert, aber laut Anforderungstext ist diese Unterscheidung in der Praxis nicht immer sauber getrennt. Das Attribut sollte Pflichtfeld sein oder es sollte eine Geschäftslogik-Regel geben. (5) Fehlende Attribute: Laut Anforderungstext sollen 'Nominierung', 'Bestaetigung' und 'Fahrplananpassung' historisiert werden. Die Tabellen 'nominations', 'confirmations' und 'schedule_adjustments' haben ein 'date'-Attribut (TIMESTAMP), aber es fehlt ein Attribut, das angibt, welche Version oder Iteration es ist (z.B. 'version_number' oder 'sequence_number'). Dies ist wichtig für die Historisierung.",
-          "korrekturanweisung": "1. Ändern Sie 'runtime' in der 'deals'-Tabelle in zwei separate Spalten 'contract_start_date' und 'contract_end_date' (beide DATE), oder verwenden Sie ein strukturiertes Format. 2. Machen Sie 'quantity_type' und 'business_type' in der 'deals'-Tabelle zu Pflichtfeldern (nullable: false) oder dokumentieren Sie, dass diese optional sind. 3. Fügen Sie ein 'version_number' oder 'sequence_number'-Attribut zu 'nominations', 'confirmations' und 'schedule_adjustments' hinzu, um die Historisierung zu unterstützen."
+          "beschreibung": "Mehrere kritische Attribute aus dem ER-Modell und den Anforderungen fehlen oder sind nicht korrekt abgebildet: (1) In der Tabelle 'deals' fehlt ein Attribut zur Dokumentation der Marktpartner-Rollen pro Geschäft. Dies wird zwar über 'deal_market_partners' gelöst, aber die Anforderung 'Marktpartner können je nach Geschäft in verschiedenen Rollen auftreten' ist nicht explizit dokumentiert. (2) Die Anforderung erwähnt 'Historisierung von Nominierung, Bestätigung und Fahrplananpassungen'. Im LogicalSchema ist 'schedules' mit 'schedule_type_id' und 'status_id' vorhanden, was Nominierung, Bestätigung und Anpassungen abbildet. ABER: Es fehlt ein Audit-Trail oder Versionierungsmechanismus. Die Spalte 'change_timestamp' dokumentiert nur den letzten Änderungszeitpunkt, nicht die komplette Historie. (3) Im ER-Modell ist 'Fahrplan_Typ' ein Pflichtfeld, im LogicalSchema ist 'schedule_type_id' ein Fremdschlüssel auf 'schedule_types'. Dies ist korrekt. (4) Im ER-Modell ist 'Status' ein VARCHAR-Pflichtfeld, im LogicalSchema ist 'status_id' ein Fremdschlüssel auf 'schedule_statuses'. Dies ist korrekt. ABER: Die Anforderung verlangt 'Historisierung', d.h. Nachverfolgung von Änderungen über die Zeit. Ein einzelner 'change_timestamp' reicht nicht aus – es sollte eine Audit-Tabelle oder ein Versionierungsmechanismus vorhanden sein.",
+          "korrekturanweisung": "Ergänze eine Audit-Tabelle 'schedule_history' oder 'schedule_versions' mit Spalten: id (PK), schedule_id (FK), old_status_id, new_status_id, changed_at (TIMESTAMP), changed_by (optional). Dies würde die Historisierung vollständig abbilden."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Mehrere Beziehungsfehler: (1) Die Beziehung zwischen 'Geschaeft' und 'Marktpartner' ist als M:N definiert (über 'deal_market_partners'), aber laut Anforderungstext betrifft ein Geschäft MINDESTENS zwei Marktpartner. Das LogicalSchema implementiert dies korrekt über die Junction-Table, aber es gibt keine Validierung, dass mindestens zwei Marktpartner zugeordnet sein müssen. (2) Die Beziehung zwischen 'Geschaeft' und 'Produkt' ist als M:N definiert (über 'deal_products'), aber die 'deals'-Tabelle hat keine direkte Referenz zu Produkten. Dies ist strukturell korrekt, aber es fehlt eine Validierung, dass mindestens ein Produkt zugeordnet sein muss. (3) Die Beziehung zwischen 'Geschaeft' und 'Broker' ist als M:1 definiert (ein Geschäft kann über einen Broker zustande kommen oder direkt). Das LogicalSchema implementiert dies korrekt mit 'broker_id' als optionales Feld in der 'deals'-Tabelle. JEDOCH: Laut Anforderungstext ist bei Rahmenvereinbarungen unklar, ob jede einzelne Transaktion separat auf einen Broker verweisen muss oder ob die Referenz auf Rahmenvereinbarungsebene ausreicht. Das LogicalSchema adressiert dies nicht explizit. (4) KRITISCHER FEHLER: Die Beziehung zwischen 'Geschaeft' und 'Handelsplatz' ist als 1:1 oder M:1 implementiert (über 'trading_venue_id' in der 'deals'-Tabelle), aber laut Anforderungstext und ERModell ist die Beziehung zwischen 'Produkt' und 'Handelsplatz' M:N (ein Produkt kann an mehreren Handelsplätzen vorkommen, ein Handelsplatz kann verschiedene Produkte haben). Das LogicalSchema implementiert dies korrekt über 'product_trading_venues'. ABER: Ein Geschäft hat einen Handelsplatz, aber ein Produkt kann an mehreren Handelsplätzen vorkommen. Dies bedeutet, dass ein Geschäft, das mehrere Produkte betrifft, möglicherweise mehrere Handelsplätze betreffen sollte. Das LogicalSchema erlaubt nur einen Handelsplatz pro Geschäft, was ein Designfehler ist.",
-          "korrekturanweisung": "1. Dokumentieren Sie, dass ein Geschäft mindestens zwei Marktpartner haben muss (Geschäftslogik-Constraint). 2. Dokumentieren Sie, dass ein Geschäft mindestens ein Produkt haben muss (Geschäftslogik-Constraint). 3. Überprüfen Sie die Beziehung zwischen 'Geschäft' und 'Handelsplatz'. Wenn ein Geschäft mehrere Produkte betreffen kann und jedes Produkt an mehreren Handelsplätzen vorkommen kann, sollte die Beziehung zwischen 'Geschäft' und 'Handelsplatz' möglicherweise M:N sein (über eine Junction-Table 'deal_trading_venues'). Alternativ: Wenn ein Geschäft nur einen Handelsplatz betrifft, ist die aktuelle Implementierung korrekt, aber dies sollte explizit dokumentiert werden."
+          "beschreibung": "Die Beziehung zwischen 'deals' und 'balance_groups' ist nicht korrekt modelliert. Im ER-Modell ist die Kardinalität 'Geschaeft' zu 'Bilanzkreis' als M:N definiert mit dem Attribut 'Anteil_Prozent' (Geschaeft_Bilanzkreis). Im LogicalSchema ist dies als 'deal_balance_groups' mit 'share_percent' korrekt abgebildet. JEDOCH: Die Anforderung besagt 'Ein Geschaeft kann einem Bilanzkreis zugeordnet sein, manchmal betrifft es aber mehrere, etwa wenn intern umgebucht wird.' Dies ist eine M:N-Beziehung, die korrekt modelliert ist. ABER: Es fehlt eine Klarstellung, ob 'share_percent' optional oder Pflichtfeld sein sollte. Im LogicalSchema ist 'share_percent' nullable=true, was bedeutet, dass ein Geschäft mehreren Bilanzkreisen zugeordnet sein kann, ohne dass die Anteile spezifiziert sind. Dies ist fachlich fragwürdig – wenn ein Geschäft mehreren Bilanzkreisen zugeordnet ist, sollten die Anteile dokumentiert sein. ZUSÄTZLICH: Die Anforderung erwähnt 'Netzzone' als separate Entität. Im LogicalSchema ist 'grid_zone_id' in 'deals' als M:1-Beziehung modelliert (ein Geschäft betrifft eine Netzzone). Dies ist korrekt gemäß ER-Modell. ABER: Es gibt keine Beziehung zwischen 'balance_groups' und 'grid_zones', obwohl diese regulatorisch oft zusammenhängen. Dies ist ein konzeptionelles Defizit.",
+          "korrekturanweisung": "Überprüfe, ob 'share_percent' in 'deal_balance_groups' ein Pflichtfeld sein sollte (nullable=false). Erwäge zusätzlich, eine Beziehung zwischen 'balance_groups' und 'grid_zones' zu modellieren, falls diese regulatorisch relevant ist."
         },
         {
           "criterion": "normalisierung",
-          "erfuellt": true,
-          "beschreibung": "Das Schema ist in der dritten Normalform (3NF) normalisiert. Alle Tabellen haben einen Primärschlüssel, es gibt keine Redundanzen, und alle Abhängigkeiten sind funktional. Junction-Tables für M:N-Beziehungen sind korrekt implementiert.",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "Das Schema ist grundsätzlich in 3NF, aber es gibt mehrere Normalisierungsprobleme: (1) In der Tabelle 'deals' sind 'delivery_start' und 'delivery_end' Pflichtfelder, aber 'runtime_days' ist optional und kann aus diesen beiden Feldern berechnet werden. Dies ist eine Redundanz und verstößt gegen die Normalisierung (Abhängigkeit von berechneten Feldern). (2) In der Tabelle 'market_partners' ist 'contact_data' ein TEXT-Feld, das unstrukturierte Kontaktdaten enthält. Dies sollte normalisiert werden in separate Felder wie 'email', 'phone', 'address' oder in eine separate Tabelle 'market_partner_contacts'. (3) In der Tabelle 'contacts' ist 'contact_data' ebenfalls ein TEXT-Feld mit unstrukturierten Daten. Dies sollte normalisiert werden. (4) Die Anforderung erwähnt 'Ansprechpartner sind nicht immer vorhanden'. Im LogicalSchema ist 'contacts.market_partner_id' ein NOT NULL Fremdschlüssel, aber alle Felder außer 'id' und 'market_partner_id' sind nullable. Dies ist korrekt modelliert, aber es gibt keine Constraint, dass mindestens eines der Felder (firstname, lastname, title, contact_data) gefüllt sein muss. Dies ist ein Datenqualitätsproblem, nicht direkt ein Normalisierungsproblem, aber es führt zu potenziell leeren Kontaktdatensätzen.",
+          "korrekturanweisung": "Entferne 'runtime_days' aus 'deals' oder mache es zu einem berechneten Feld (VIEW). Normalisiere 'contact_data' in 'market_partners' und 'contacts' in separate strukturierte Felder oder Tabellen. Erwäge einen CHECK-Constraint in 'contacts', dass mindestens eines der Felder (firstname, lastname, contact_data) NOT NULL sein muss."
         }
       ],
       "origin_step": "cmd"
@@ -2040,7 +1934,7 @@
     "critic_report_c2": null,
     "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE balance_groups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_balance_groups PRIMARY KEY (id)\n);\n\nCREATE TABLE brokers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_brokers PRIMARY KEY (id)\n);\n\nCREATE TABLE traders (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_traders PRIMARY KEY (id)\n);\n\nCREATE TABLE trading_venues (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_trading_venues PRIMARY KEY (id)\n);\n\nCREATE TABLE deals (\n    id INTEGER NOT NULL,\n    trader_id INTEGER NOT NULL,\n    broker_id INTEGER,\n    trading_venue_id INTEGER NOT NULL,\n    runtime VARCHAR(255),\n    delivery_start DATE NOT NULL,\n    delivery_end DATE NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    quantity_type VARCHAR(255),\n    price DECIMAL(18,2) NOT NULL,\n    currency VARCHAR(255) NOT NULL,\n    buy_or_sell VARCHAR(255) NOT NULL,\n    contract_type VARCHAR(255) NOT NULL,\n    business_type VARCHAR(255),\n    conclusion_date TIMESTAMP NOT NULL,\n    CONSTRAINT pk_deals PRIMARY KEY (id),\n    CONSTRAINT fk_deals_trader_id FOREIGN KEY (trader_id) REFERENCES traders (id),\n    CONSTRAINT fk_deals_broker_id FOREIGN KEY (broker_id) REFERENCES brokers (id),\n    CONSTRAINT fk_deals_trading_venue_id FOREIGN KEY (trading_venue_id) REFERENCES trading_venues (id)\n);\n\nCREATE TABLE confirmations (\n    id INTEGER NOT NULL,\n    deal_id INTEGER NOT NULL,\n    date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_confirmations PRIMARY KEY (id),\n    CONSTRAINT fk_confirmations_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id)\n);\n\nCREATE TABLE market_partners (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    contact_data VARCHAR(255),\n    CONSTRAINT pk_market_partners PRIMARY KEY (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    market_partner_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    title VARCHAR(255),\n    contact_data VARCHAR(255),\n    CONSTRAINT pk_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_contacts_market_partner_id FOREIGN KEY (market_partner_id) REFERENCES market_partners (id)\n);\n\nCREATE TABLE deal_balance_groups (\n    deal_id INTEGER NOT NULL,\n    balance_group_id INTEGER NOT NULL,\n    CONSTRAINT pk_deal_balance_groups PRIMARY KEY (deal_id, balance_group_id),\n    CONSTRAINT fk_deal_balance_groups_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id),\n    CONSTRAINT fk_deal_balance_groups_balance_group_id FOREIGN KEY (balance_group_id) REFERENCES balance_groups (id)\n);\n\nCREATE TABLE deal_market_partners (\n    deal_id INTEGER NOT NULL,\n    market_partner_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_deal_market_partners PRIMARY KEY (deal_id, market_partner_id),\n    CONSTRAINT fk_deal_market_partners_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id),\n    CONSTRAINT fk_deal_market_partners_market_partner_id FOREIGN KEY (market_partner_id) REFERENCES market_partners (id)\n);\n\nCREATE TABLE network_zones (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_network_zones PRIMARY KEY (id)\n);\n\nCREATE TABLE deal_network_zones (\n    deal_id INTEGER NOT NULL,\n    network_zone_id INTEGER NOT NULL,\n    CONSTRAINT pk_deal_network_zones PRIMARY KEY (deal_id, network_zone_id),\n    CONSTRAINT fk_deal_network_zones_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id),\n    CONSTRAINT fk_deal_network_zones_network_zone_id FOREIGN KEY (network_zone_id) REFERENCES network_zones (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    quality VARCHAR(255),\n    description TEXT,\n    CONSTRAINT pk_products PRIMARY KEY (id)\n);\n\nCREATE TABLE deal_products (\n    deal_id INTEGER NOT NULL,\n    product_id INTEGER NOT NULL,\n    CONSTRAINT pk_deal_products PRIMARY KEY (deal_id, product_id),\n    CONSTRAINT fk_deal_products_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id),\n    CONSTRAINT fk_deal_products_product_id FOREIGN KEY (product_id) REFERENCES products (id)\n);\n\nCREATE TABLE nominations (\n    id INTEGER NOT NULL,\n    deal_id INTEGER NOT NULL,\n    date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    volume DECIMAL(18,2),\n    CONSTRAINT pk_nominations PRIMARY KEY (id),\n    CONSTRAINT fk_nominations_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id)\n);\n\nCREATE TABLE product_trading_venues (\n    product_id INTEGER NOT NULL,\n    trading_venue_id INTEGER NOT NULL,\n    CONSTRAINT pk_product_trading_venues PRIMARY KEY (product_id, trading_venue_id),\n    CONSTRAINT fk_product_trading_venues_product_id FOREIGN KEY (product_id) REFERENCES products (id),\n    CONSTRAINT fk_product_trading_venues_trading_venue_id FOREIGN KEY (trading_venue_id) REFERENCES trading_venues (id)\n);\n\nCREATE TABLE schedule_adjustments (\n    id INTEGER NOT NULL,\n    deal_id INTEGER NOT NULL,\n    date TIMESTAMP NOT NULL,\n    change TEXT NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_schedule_adjustments PRIMARY KEY (id),\n    CONSTRAINT fk_schedule_adjustments_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id)\n);\n\nCREATE TABLE schedules (\n    id INTEGER NOT NULL,\n    deal_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    position INTEGER,\n    volume DECIMAL(18,2) NOT NULL,\n    volume_type VARCHAR(255),\n    CONSTRAINT pk_schedules PRIMARY KEY (id),\n    CONSTRAINT fk_schedules_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id)\n);\n",
+    "final_ddl": "CREATE TABLE balance_groups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_balance_groups PRIMARY KEY (id)\n);\n\nCREATE TABLE brokers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_brokers PRIMARY KEY (id)\n);\n\nCREATE TABLE market_partners (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    partner_type VARCHAR(255) NOT NULL,\n    contact_data TEXT,\n    CONSTRAINT pk_market_partners PRIMARY KEY (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    market_partner_id INTEGER NOT NULL,\n    firstname VARCHAR(255),\n    lastname VARCHAR(255),\n    title VARCHAR(255),\n    contact_data TEXT,\n    CONSTRAINT pk_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_contacts_market_partner_id FOREIGN KEY (market_partner_id) REFERENCES market_partners (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    contract_type VARCHAR(255) NOT NULL,\n    delivery_terms TEXT,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_contracts PRIMARY KEY (id)\n);\n\nCREATE TABLE traders (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_traders PRIMARY KEY (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    product_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_products PRIMARY KEY (id)\n);\n\nCREATE TABLE trading_venues (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_trading_venues PRIMARY KEY (id)\n);\n\nCREATE TABLE grid_zones (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_grid_zones PRIMARY KEY (id)\n);\n\nCREATE TABLE deals (\n    id INTEGER NOT NULL,\n    trader_id INTEGER NOT NULL,\n    product_id INTEGER NOT NULL,\n    trading_venue_id INTEGER NOT NULL,\n    contract_id INTEGER,\n    grid_zone_id INTEGER,\n    broker_id INTEGER,\n    delivery_start DATE NOT NULL,\n    delivery_end DATE NOT NULL,\n    runtime_days INTEGER,\n    quantity DECIMAL(18,2) NOT NULL,\n    quantity_type VARCHAR(255),\n    quantity_unit VARCHAR(255) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    currency VARCHAR(255) NOT NULL,\n    buy_or_sell VARCHAR(255) NOT NULL,\n    business_type VARCHAR(255),\n    conclusion_date DATE NOT NULL,\n    CONSTRAINT pk_deals PRIMARY KEY (id),\n    CONSTRAINT fk_deals_trader_id FOREIGN KEY (trader_id) REFERENCES traders (id),\n    CONSTRAINT fk_deals_product_id FOREIGN KEY (product_id) REFERENCES products (id),\n    CONSTRAINT fk_deals_trading_venue_id FOREIGN KEY (trading_venue_id) REFERENCES trading_venues (id),\n    CONSTRAINT fk_deals_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_deals_grid_zone_id FOREIGN KEY (grid_zone_id) REFERENCES grid_zones (id),\n    CONSTRAINT fk_deals_broker_id FOREIGN KEY (broker_id) REFERENCES brokers (id)\n);\n\nCREATE TABLE deal_balance_groups (\n    id INTEGER NOT NULL,\n    deal_id INTEGER NOT NULL,\n    balance_group_id INTEGER NOT NULL,\n    share_percent DECIMAL(18,2),\n    CONSTRAINT pk_deal_balance_groups PRIMARY KEY (id),\n    CONSTRAINT fk_deal_balance_groups_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id),\n    CONSTRAINT fk_deal_balance_groups_balance_group_id FOREIGN KEY (balance_group_id) REFERENCES balance_groups (id)\n);\n\nCREATE TABLE market_partner_roles (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_market_partner_roles PRIMARY KEY (id)\n);\n\nCREATE TABLE deal_market_partners (\n    id INTEGER NOT NULL,\n    deal_id INTEGER NOT NULL,\n    market_partner_id INTEGER NOT NULL,\n    role_id INTEGER NOT NULL,\n    CONSTRAINT pk_deal_market_partners PRIMARY KEY (id),\n    CONSTRAINT fk_deal_market_partners_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id),\n    CONSTRAINT fk_deal_market_partners_market_partner_id FOREIGN KEY (market_partner_id) REFERENCES market_partners (id),\n    CONSTRAINT fk_deal_market_partners_role_id FOREIGN KEY (role_id) REFERENCES market_partner_roles (id)\n);\n\nCREATE TABLE product_trading_venues (\n    id INTEGER NOT NULL,\n    product_id INTEGER NOT NULL,\n    trading_venue_id INTEGER NOT NULL,\n    CONSTRAINT pk_product_trading_venues PRIMARY KEY (id),\n    CONSTRAINT fk_product_trading_venues_product_id FOREIGN KEY (product_id) REFERENCES products (id),\n    CONSTRAINT fk_product_trading_venues_trading_venue_id FOREIGN KEY (trading_venue_id) REFERENCES trading_venues (id)\n);\n\nCREATE TABLE schedule_statuses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_schedule_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE schedule_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_schedule_types PRIMARY KEY (id)\n);\n\nCREATE TABLE schedules (\n    id INTEGER NOT NULL,\n    deal_id INTEGER NOT NULL,\n    schedule_date DATE NOT NULL,\n    position INTEGER NOT NULL,\n    volume DECIMAL(18,2) NOT NULL,\n    volume_unit VARCHAR(255) NOT NULL,\n    schedule_type_id INTEGER NOT NULL,\n    status_id INTEGER NOT NULL,\n    change_timestamp TIMESTAMP NOT NULL,\n    CONSTRAINT pk_schedules PRIMARY KEY (id),\n    CONSTRAINT fk_schedules_deal_id FOREIGN KEY (deal_id) REFERENCES deals (id),\n    CONSTRAINT fk_schedules_schedule_type_id FOREIGN KEY (schedule_type_id) REFERENCES schedule_types (id),\n    CONSTRAINT fk_schedules_status_id FOREIGN KEY (status_id) REFERENCES schedule_statuses (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -2065,26 +1959,26 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Geschaeft' ist unvollständig. Laut Anforderungstext und ERModell soll ein Geschäft einem oder mehreren Bilanzkreisen zugeordnet sein (M:N-Beziehung). Das LogicalSchema implementiert dies korrekt über 'deal_balance_groups'. JEDOCH: Ein Geschäft kann auch mehrere Netzzonen betreffen (M:N-Beziehung), was ebenfalls korrekt über 'deal_network_zones' implementiert ist. Das Hauptproblem liegt darin, dass die Beziehung zwischen 'Geschaeft' und 'Marktpartner' nicht vollständig abgebildet ist: Ein Geschäft betrifft mindestens zwei Marktpartner (Gegenpartei, Kunde oder Lieferant), aber die 'deals'-Tabelle hat keine direkte Referenz zu Marktpartnern. Die Beziehung wird nur über die Junction-Table 'deal_market_partners' abgebildet. Dies ist zwar strukturell korrekt, aber es fehlt eine explizite Dokumentation, dass ein Geschäft MINDESTENS zwei Marktpartner haben muss (Geschäftslogik-Constraint). Zusätzlich: Die 'deals'-Tabelle hat eine Spalte 'trading_venue_id' als Pflichtfeld (NOT NULL), aber laut Anforderungstext ist der Handelsplatz ein Attribut des Geschäfts. Dies ist korrekt implementiert. KRITISCHER FEHLER: Die Beziehung zwischen 'Geschaeft' und 'Produkt' ist als M:N definiert (über 'deal_products'), aber die 'deals'-Tabelle hat keine Spalte, die angibt, welches Produkt das Geschäft betrifft. Ein Geschäft kann mehrere Produkte betreffen, aber es gibt keine Möglichkeit, ein einzelnes Produkt direkt in der 'deals'-Tabelle zu referenzieren. Dies ist ein Designfehler: Entweder sollte es eine 'product_id' in der 'deals'-Tabelle geben (wenn ein Geschäft nur ein Produkt betrifft), oder die M:N-Beziehung über 'deal_products' ist korrekt, aber dann fehlt eine Validierung, dass mindestens ein Produkt zugeordnet sein muss.",
-          "korrekturanweisung": "Überprüfen Sie die Beziehung zwischen 'deals' und 'products'. Wenn ein Geschäft mehrere Produkte betreffen kann, ist die Junction-Table 'deal_products' korrekt, aber es sollte eine Geschäftslogik-Regel geben, dass mindestens ein Produkt zugeordnet sein muss. Wenn ein Geschäft nur ein Produkt betrifft, sollte eine 'product_id'-Spalte in der 'deals'-Tabelle hinzugefügt werden."
+          "beschreibung": "Die Entität 'Marktpartner_Rolle' (im ER-Modell) wurde in das LogicalSchema als 'market_partner_roles' übernommen, ist aber konzeptionell nicht korrekt modelliert. Im ER-Modell ist 'Marktpartner_Rolle' eine eigenständige Entität mit Attributen 'Rolle_ID', 'Rolle_Name' und 'Beschreibung'. Im LogicalSchema ist dies korrekt als 'market_partner_roles' mit 'id', 'name' und 'description' abgebildet. JEDOCH: Die Anforderung besagt, dass Marktpartner 'je nach Geschäft mal als Gegenpartei, mal als Kunde oder Lieferant auftreten' können. Dies ist eine Rolle pro Geschäft-Marktpartner-Beziehung, nicht eine globale Eigenschaft des Marktpartners. Die Modellierung über 'deal_market_partners' mit 'role_id' ist korrekt. ABER: Es fehlt eine explizite Dokumentation, welche Rollen möglich sind (z.B. 'Gegenpartei', 'Kunde', 'Lieferant'). Die Tabelle 'market_partner_roles' ist leer konzeptionell – es gibt keine Vorgabe, welche Rollen existieren sollen. Dies ist ein konzeptionelles Defizit aus dem ER-Modell, das nicht vollständig spezifiziert wurde.",
+          "korrekturanweisung": "Im ER-Modell sollten die möglichen Rollen explizit aufgelistet werden (z.B. als Enumeration oder als vordefinierte Datensätze in 'market_partner_roles'). Dies ist ein Fehler im ER-Modell, nicht im LogicalSchema selbst."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Mehrere Attribute sind unvollständig oder fehlerhaft: (1) Die 'deals'-Tabelle hat ein Attribut 'runtime' vom Typ VARCHAR, aber laut Anforderungstext sollte 'Laufzeit' dokumentiert werden. VARCHAR ist für eine Laufzeit (z.B. '2024-01-01 bis 2024-12-31') nicht ideal; ein strukturiertes Format (z.B. zwei DATE-Spalten oder ein INTERVAL-Typ) wäre besser. (2) Die 'deals'-Tabelle hat 'quantity_type' und 'business_type', aber laut Anforderungstext ist unklar, ob die Menge als Gesamtmenge oder Leistung verstanden wird. Das Attribut 'quantity_type' adressiert dies, aber es ist optional (nullable: true), obwohl es für die Interpretation der Menge kritisch ist. (3) Die 'schedules'-Tabelle hat 'volume_type', was korrekt ist, aber auch optional. (4) Die 'deals'-Tabelle hat 'business_type' (optional), was die Unterscheidung zwischen Handelsgeschäft und Dienstleistung adressiert, aber laut Anforderungstext ist diese Unterscheidung in der Praxis nicht immer sauber getrennt. Das Attribut sollte Pflichtfeld sein oder es sollte eine Geschäftslogik-Regel geben. (5) Fehlende Attribute: Laut Anforderungstext sollen 'Nominierung', 'Bestaetigung' und 'Fahrplananpassung' historisiert werden. Die Tabellen 'nominations', 'confirmations' und 'schedule_adjustments' haben ein 'date'-Attribut (TIMESTAMP), aber es fehlt ein Attribut, das angibt, welche Version oder Iteration es ist (z.B. 'version_number' oder 'sequence_number'). Dies ist wichtig für die Historisierung.",
-          "korrekturanweisung": "1. Ändern Sie 'runtime' in der 'deals'-Tabelle in zwei separate Spalten 'contract_start_date' und 'contract_end_date' (beide DATE), oder verwenden Sie ein strukturiertes Format. 2. Machen Sie 'quantity_type' und 'business_type' in der 'deals'-Tabelle zu Pflichtfeldern (nullable: false) oder dokumentieren Sie, dass diese optional sind. 3. Fügen Sie ein 'version_number' oder 'sequence_number'-Attribut zu 'nominations', 'confirmations' und 'schedule_adjustments' hinzu, um die Historisierung zu unterstützen."
+          "beschreibung": "Mehrere kritische Attribute aus dem ER-Modell und den Anforderungen fehlen oder sind nicht korrekt abgebildet: (1) In der Tabelle 'deals' fehlt ein Attribut zur Dokumentation der Marktpartner-Rollen pro Geschäft. Dies wird zwar über 'deal_market_partners' gelöst, aber die Anforderung 'Marktpartner können je nach Geschäft in verschiedenen Rollen auftreten' ist nicht explizit dokumentiert. (2) Die Anforderung erwähnt 'Historisierung von Nominierung, Bestätigung und Fahrplananpassungen'. Im LogicalSchema ist 'schedules' mit 'schedule_type_id' und 'status_id' vorhanden, was Nominierung, Bestätigung und Anpassungen abbildet. ABER: Es fehlt ein Audit-Trail oder Versionierungsmechanismus. Die Spalte 'change_timestamp' dokumentiert nur den letzten Änderungszeitpunkt, nicht die komplette Historie. (3) Im ER-Modell ist 'Fahrplan_Typ' ein Pflichtfeld, im LogicalSchema ist 'schedule_type_id' ein Fremdschlüssel auf 'schedule_types'. Dies ist korrekt. (4) Im ER-Modell ist 'Status' ein VARCHAR-Pflichtfeld, im LogicalSchema ist 'status_id' ein Fremdschlüssel auf 'schedule_statuses'. Dies ist korrekt. ABER: Die Anforderung verlangt 'Historisierung', d.h. Nachverfolgung von Änderungen über die Zeit. Ein einzelner 'change_timestamp' reicht nicht aus – es sollte eine Audit-Tabelle oder ein Versionierungsmechanismus vorhanden sein.",
+          "korrekturanweisung": "Ergänze eine Audit-Tabelle 'schedule_history' oder 'schedule_versions' mit Spalten: id (PK), schedule_id (FK), old_status_id, new_status_id, changed_at (TIMESTAMP), changed_by (optional). Dies würde die Historisierung vollständig abbilden."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Mehrere Beziehungsfehler: (1) Die Beziehung zwischen 'Geschaeft' und 'Marktpartner' ist als M:N definiert (über 'deal_market_partners'), aber laut Anforderungstext betrifft ein Geschäft MINDESTENS zwei Marktpartner. Das LogicalSchema implementiert dies korrekt über die Junction-Table, aber es gibt keine Validierung, dass mindestens zwei Marktpartner zugeordnet sein müssen. (2) Die Beziehung zwischen 'Geschaeft' und 'Produkt' ist als M:N definiert (über 'deal_products'), aber die 'deals'-Tabelle hat keine direkte Referenz zu Produkten. Dies ist strukturell korrekt, aber es fehlt eine Validierung, dass mindestens ein Produkt zugeordnet sein muss. (3) Die Beziehung zwischen 'Geschaeft' und 'Broker' ist als M:1 definiert (ein Geschäft kann über einen Broker zustande kommen oder direkt). Das LogicalSchema implementiert dies korrekt mit 'broker_id' als optionales Feld in der 'deals'-Tabelle. JEDOCH: Laut Anforderungstext ist bei Rahmenvereinbarungen unklar, ob jede einzelne Transaktion separat auf einen Broker verweisen muss oder ob die Referenz auf Rahmenvereinbarungsebene ausreicht. Das LogicalSchema adressiert dies nicht explizit. (4) KRITISCHER FEHLER: Die Beziehung zwischen 'Geschaeft' und 'Handelsplatz' ist als 1:1 oder M:1 implementiert (über 'trading_venue_id' in der 'deals'-Tabelle), aber laut Anforderungstext und ERModell ist die Beziehung zwischen 'Produkt' und 'Handelsplatz' M:N (ein Produkt kann an mehreren Handelsplätzen vorkommen, ein Handelsplatz kann verschiedene Produkte haben). Das LogicalSchema implementiert dies korrekt über 'product_trading_venues'. ABER: Ein Geschäft hat einen Handelsplatz, aber ein Produkt kann an mehreren Handelsplätzen vorkommen. Dies bedeutet, dass ein Geschäft, das mehrere Produkte betrifft, möglicherweise mehrere Handelsplätze betreffen sollte. Das LogicalSchema erlaubt nur einen Handelsplatz pro Geschäft, was ein Designfehler ist.",
-          "korrekturanweisung": "1. Dokumentieren Sie, dass ein Geschäft mindestens zwei Marktpartner haben muss (Geschäftslogik-Constraint). 2. Dokumentieren Sie, dass ein Geschäft mindestens ein Produkt haben muss (Geschäftslogik-Constraint). 3. Überprüfen Sie die Beziehung zwischen 'Geschäft' und 'Handelsplatz'. Wenn ein Geschäft mehrere Produkte betreffen kann und jedes Produkt an mehreren Handelsplätzen vorkommen kann, sollte die Beziehung zwischen 'Geschäft' und 'Handelsplatz' möglicherweise M:N sein (über eine Junction-Table 'deal_trading_venues'). Alternativ: Wenn ein Geschäft nur einen Handelsplatz betrifft, ist die aktuelle Implementierung korrekt, aber dies sollte explizit dokumentiert werden."
+          "beschreibung": "Die Beziehung zwischen 'deals' und 'balance_groups' ist nicht korrekt modelliert. Im ER-Modell ist die Kardinalität 'Geschaeft' zu 'Bilanzkreis' als M:N definiert mit dem Attribut 'Anteil_Prozent' (Geschaeft_Bilanzkreis). Im LogicalSchema ist dies als 'deal_balance_groups' mit 'share_percent' korrekt abgebildet. JEDOCH: Die Anforderung besagt 'Ein Geschaeft kann einem Bilanzkreis zugeordnet sein, manchmal betrifft es aber mehrere, etwa wenn intern umgebucht wird.' Dies ist eine M:N-Beziehung, die korrekt modelliert ist. ABER: Es fehlt eine Klarstellung, ob 'share_percent' optional oder Pflichtfeld sein sollte. Im LogicalSchema ist 'share_percent' nullable=true, was bedeutet, dass ein Geschäft mehreren Bilanzkreisen zugeordnet sein kann, ohne dass die Anteile spezifiziert sind. Dies ist fachlich fragwürdig – wenn ein Geschäft mehreren Bilanzkreisen zugeordnet ist, sollten die Anteile dokumentiert sein. ZUSÄTZLICH: Die Anforderung erwähnt 'Netzzone' als separate Entität. Im LogicalSchema ist 'grid_zone_id' in 'deals' als M:1-Beziehung modelliert (ein Geschäft betrifft eine Netzzone). Dies ist korrekt gemäß ER-Modell. ABER: Es gibt keine Beziehung zwischen 'balance_groups' und 'grid_zones', obwohl diese regulatorisch oft zusammenhängen. Dies ist ein konzeptionelles Defizit.",
+          "korrekturanweisung": "Überprüfe, ob 'share_percent' in 'deal_balance_groups' ein Pflichtfeld sein sollte (nullable=false). Erwäge zusätzlich, eine Beziehung zwischen 'balance_groups' und 'grid_zones' zu modellieren, falls diese regulatorisch relevant ist."
         },
         {
           "criterion": "normalisierung",
-          "erfuellt": true,
-          "beschreibung": "Das Schema ist in der dritten Normalform (3NF) normalisiert. Alle Tabellen haben einen Primärschlüssel, es gibt keine Redundanzen, und alle Abhängigkeiten sind funktional. Junction-Tables für M:N-Beziehungen sind korrekt implementiert.",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "Das Schema ist grundsätzlich in 3NF, aber es gibt mehrere Normalisierungsprobleme: (1) In der Tabelle 'deals' sind 'delivery_start' und 'delivery_end' Pflichtfelder, aber 'runtime_days' ist optional und kann aus diesen beiden Feldern berechnet werden. Dies ist eine Redundanz und verstößt gegen die Normalisierung (Abhängigkeit von berechneten Feldern). (2) In der Tabelle 'market_partners' ist 'contact_data' ein TEXT-Feld, das unstrukturierte Kontaktdaten enthält. Dies sollte normalisiert werden in separate Felder wie 'email', 'phone', 'address' oder in eine separate Tabelle 'market_partner_contacts'. (3) In der Tabelle 'contacts' ist 'contact_data' ebenfalls ein TEXT-Feld mit unstrukturierten Daten. Dies sollte normalisiert werden. (4) Die Anforderung erwähnt 'Ansprechpartner sind nicht immer vorhanden'. Im LogicalSchema ist 'contacts.market_partner_id' ein NOT NULL Fremdschlüssel, aber alle Felder außer 'id' und 'market_partner_id' sind nullable. Dies ist korrekt modelliert, aber es gibt keine Constraint, dass mindestens eines der Felder (firstname, lastname, title, contact_data) gefüllt sein muss. Dies ist ein Datenqualitätsproblem, nicht direkt ein Normalisierungsproblem, aber es führt zu potenziell leeren Kontaktdatensätzen.",
+          "korrekturanweisung": "Entferne 'runtime_days' aus 'deals' oder mache es zu einem berechneten Feld (VIEW). Normalisiere 'contact_data' in 'market_partners' und 'contacts' in separate strukturierte Felder oder Tabellen. Erwäge einen CHECK-Constraint in 'contacts', dass mindestens eines der Felder (firstname, lastname, contact_data) NOT NULL sein muss."
         }
       ],
       "origin_step": "cmd"
@@ -2094,33 +1988,33 @@
   },
   "telemetry": {
     "total_calls": 10,
-    "total_input_tokens": 91789,
-    "total_output_tokens": 37890,
-    "total_tokens": 129679,
+    "total_input_tokens": 101360,
+    "total_output_tokens": 36020,
+    "total_tokens": 137380,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1984,
-        "output_tokens": 3056,
+        "output_tokens": 2902,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 3,
-        "input_tokens": 15207,
-        "output_tokens": 15944,
+        "input_tokens": 27234,
+        "output_tokens": 13962,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 3,
-        "input_tokens": 28139,
-        "output_tokens": 12542,
+        "input_tokens": 28495,
+        "output_tokens": 11218,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 3,
-        "input_tokens": 46459,
-        "output_tokens": 6348,
+        "input_tokens": 43647,
+        "output_tokens": 7938,
         "cost_usd": 0.0
       }
     },
@@ -2131,7 +2025,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1984,
-        "output_tokens": 3056,
+        "output_tokens": 2902,
         "cost_usd": 0.0
       },
       {
@@ -2139,8 +2033,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5069,
-        "output_tokens": 5260,
+        "input_tokens": 4917,
+        "output_tokens": 3803,
         "cost_usd": 0.0
       },
       {
@@ -2148,8 +2042,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8216,
-        "output_tokens": 4220,
+        "input_tokens": 7391,
+        "output_tokens": 3088,
         "cost_usd": 0.0
       },
       {
@@ -2157,8 +2051,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 15530,
-        "output_tokens": 2192,
+        "input_tokens": 13926,
+        "output_tokens": 1917,
         "cost_usd": 0.0
       },
       {
@@ -2166,8 +2060,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5069,
-        "output_tokens": 5438,
+        "input_tokens": 10581,
+        "output_tokens": 5154,
         "cost_usd": 0.0
       },
       {
@@ -2175,8 +2069,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 10378,
-        "output_tokens": 4102,
+        "input_tokens": 9833,
+        "output_tokens": 3745,
         "cost_usd": 0.0
       },
       {
@@ -2184,8 +2078,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 15408,
-        "output_tokens": 1350,
+        "input_tokens": 14615,
+        "output_tokens": 3513,
         "cost_usd": 0.0
       },
       {
@@ -2193,8 +2087,8 @@
         "iteration": 2,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5069,
-        "output_tokens": 5246,
+        "input_tokens": 11736,
+        "output_tokens": 5005,
         "cost_usd": 0.0
       },
       {
@@ -2202,8 +2096,8 @@
         "iteration": 2,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 9545,
-        "output_tokens": 4220,
+        "input_tokens": 11271,
+        "output_tokens": 4385,
         "cost_usd": 0.0
       },
       {
@@ -2211,8 +2105,8 @@
         "iteration": 2,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 15521,
-        "output_tokens": 2806,
+        "input_tokens": 15106,
+        "output_tokens": 2508,
         "cost_usd": 0.0
       }
     ]

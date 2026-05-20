@@ -2,8 +2,8 @@
   "testfall_id": "TC003",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.8820861678004537,
-  "score_gesamt": 0.9292517006802722,
+  "score_semantisch": 0.8888888888888888,
+  "score_gesamt": 0.9333333333333333,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 1
     },
     "attribut": {
-      "precision": 0.7407407407407407,
+      "precision": 0.7692307692307693,
       "recall": 0.9090909090909091,
-      "f1": 0.8163265306122449,
+      "f1": 0.8333333333333333,
       "matched": 20,
       "nur_in_referenz": 2,
-      "nur_in_generiert": 7
+      "nur_in_generiert": 6
     },
     "beziehung": {
       "recall": 1.0,
@@ -222,37 +222,31 @@
           ]
         },
         {
-          "name": "enrollments",
+          "name": "member_course_sessions",
           "columns": [
             {
-              "name": "id",
+              "name": "member_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "member_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "course_session_id",
               "type": "INTEGER",
-              "primary_key": false,
+              "primary_key": true,
               "nullable": false
             },
             {
               "name": "enrollment_date",
-              "type": "TIMESTAMP",
+              "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "participation_status",
+              "name": "attendance_status",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -330,34 +324,28 @@
           "von": "Mitglied",
           "zu": "Kurstermin",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Mitglied kann an vielen Kursterminen teilnehmen; ein Kurstermin kann von vielen Mitgliedern besucht werden (impliziert durch Verwaltung von Kursterminen und verfügbaren Plätzen)"
+          "beschreibung": "Ein Mitglied kann an vielen Kursterminen teilnehmen; ein Kurstermin kann von vielen Mitgliedern besucht werden"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Es ist unklar, ob die Beziehung zwischen Mitglied und Kurstermin explizit modelliert werden soll (z.B. als Anmeldung/Buchung mit zusätzlichen Attributen wie Anmeldedatum oder Teilnahmestatus)",
+          "beschreibung": "Es ist unklar, ob die Beziehung zwischen Mitglied und Kurstermin explizit modelliert werden soll (z.B. als Anmeldung/Buchung mit zusätzlichen Attributen wie Anmeldedatum oder Anwesenheitsstatus)",
           "betroffene_elemente": [
             "Mitglied",
             "Kurstermin"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, wie die verfügbaren Plätze bei einem Kurstermin verwaltet werden (z.B. ob dies die Gesamtkapazität oder die noch verfügbare Anzahl darstellt)",
+          "beschreibung": "Es ist nicht spezifiziert, wie die verfügbaren Plätze bei einem Kurstermin verwaltet werden (z.B. ob dies die Gesamtkapazität oder die noch verfügbaren Plätze nach Anmeldungen darstellt)",
           "betroffene_elemente": [
             "Kurstermin"
           ]
         },
         {
-          "beschreibung": "Es ist unklar, ob ein Mitglied mehrere Trainer haben kann oder ob es eine direkte Beziehung zwischen Mitglied und Trainer gibt",
+          "beschreibung": "Es ist unklar, ob ein Trainer mehrere Kurse anbieten kann oder ob es weitere Einschränkungen gibt",
           "betroffene_elemente": [
-            "Mitglied",
-            "Trainer"
-          ]
-        },
-        {
-          "beschreibung": "Das Attribut 'Status (aktiv/inaktiv)' ist als Enumerationstyp definiert, aber es ist nicht klar, ob weitere Statuswerte möglich sind oder wie dieser Status verwaltet wird",
-          "betroffene_elemente": [
-            "Mitglied"
+            "Trainer",
+            "Kurs"
           ]
         }
       ]
@@ -405,7 +393,7 @@
             },
             {
               "name": "status",
-              "datentyp": "VARCHAR",
+              "datentyp": "BOOLEAN",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -515,41 +503,6 @@
               "pflichtfeld": true
             }
           ]
-        },
-        {
-          "name": "Anmeldung",
-          "attribute": [
-            {
-              "name": "anmeldung_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "mitglied_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "kurstermin_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "anmeldedatum",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "teilnahmestatus",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
         }
       ],
       "beziehungen": [
@@ -567,15 +520,12 @@
         },
         {
           "von": "Mitglied",
-          "zu": "Anmeldung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Kurstermin",
-          "zu": "Anmeldung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
+          "zu": "Kurstermin",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "anmeldedatum",
+            "anwesenheitsstatus"
+          ]
         }
       ]
     },
@@ -603,25 +553,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: members, courses, trainers, course_sessions und enrollments. Die Entität 'Anmeldung' wurde korrekt als 'enrollments' implementiert.",
+          "beschreibung": "Alle vier Entitäten aus dem Anforderungstext und ERModell sind im LogicalSchema vorhanden: members, courses, trainers, course_sessions. Die M:N-Beziehung zwischen Mitglied und Kurstermin ist durch die Junction-Table member_course_sessions korrekt modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Mitglied (firstname, lastname, email, birthdate, joindate, is_active), Kurs (name, description, duration_minutes), Trainer (firstname, lastname, email, phone), Kurstermin (session_date, start_time, available_seats). Die Anmeldung enthält enrollment_date und participation_status.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: members (firstname, lastname, email, birthdate, joindate, is_active), courses (name, description, duration_minutes), trainers (firstname, lastname, email, phone), course_sessions (course_id, trainer_id, session_date, start_time, available_seats). Die Junction-Table enthält zusätzliche Attribute (enrollment_date, attendance_status) zur Dokumentation der M:N-Beziehung, was dem ERModell entspricht.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen Kurs und Kurstermin (course_id FK), 1:N zwischen Trainer und Kurstermin (trainer_id FK), M:N zwischen Mitglied und Kurstermin über enrollments-Tabelle (member_id und course_session_id FKs).",
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: (1) Kurs 1:N Kurstermin via course_id FK; (2) Trainer 1:N Kurstermin via trainer_id FK; (3) Mitglied M:N Kurstermin via Junction-Table member_course_sessions mit korrekten FKs zu members und course_sessions. Kardinalitäten entsprechen dem ERModell und Anforderungstext.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Die enrollments-Tabelle ist eine korrekte Junction-Table für die M:N-Beziehung. Alle Attribute sind atomar und funktional abhängig von ihren Primärschlüsseln.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Redundanzen oder funktionalen Abhängigkeiten außerhalb der Schlüssel. Alle Attribute sind atomar. Die Junction-Table ist korrekt normalisiert und enthält nur die notwendigen Fremdschlüssel und Beziehungsattribute.",
           "korrekturanweisung": ""
         }
       ],
@@ -631,7 +581,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE courses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    duration_minutes INTEGER NOT NULL,\n    CONSTRAINT pk_courses PRIMARY KEY (id)\n);\n\nCREATE TABLE trainers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_trainers PRIMARY KEY (id)\n);\n\nCREATE TABLE course_sessions (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    trainer_id INTEGER NOT NULL,\n    session_date DATE NOT NULL,\n    start_time VARCHAR(255) NOT NULL,\n    available_seats INTEGER NOT NULL,\n    CONSTRAINT pk_course_sessions PRIMARY KEY (id),\n    CONSTRAINT fk_course_sessions_course_id FOREIGN KEY (course_id) REFERENCES courses (id),\n    CONSTRAINT fk_course_sessions_trainer_id FOREIGN KEY (trainer_id) REFERENCES trainers (id)\n);\n\nCREATE TABLE members (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    joindate DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_members PRIMARY KEY (id)\n);\n\nCREATE TABLE enrollments (\n    id INTEGER NOT NULL,\n    member_id INTEGER NOT NULL,\n    course_session_id INTEGER NOT NULL,\n    enrollment_date TIMESTAMP NOT NULL,\n    participation_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_enrollments PRIMARY KEY (id),\n    CONSTRAINT fk_enrollments_member_id FOREIGN KEY (member_id) REFERENCES members (id),\n    CONSTRAINT fk_enrollments_course_session_id FOREIGN KEY (course_session_id) REFERENCES course_sessions (id)\n);\n",
+    "final_ddl": "CREATE TABLE courses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    duration_minutes INTEGER NOT NULL,\n    CONSTRAINT pk_courses PRIMARY KEY (id)\n);\n\nCREATE TABLE trainers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_trainers PRIMARY KEY (id)\n);\n\nCREATE TABLE course_sessions (\n    id INTEGER NOT NULL,\n    course_id INTEGER NOT NULL,\n    trainer_id INTEGER NOT NULL,\n    session_date DATE NOT NULL,\n    start_time VARCHAR(255) NOT NULL,\n    available_seats INTEGER NOT NULL,\n    CONSTRAINT pk_course_sessions PRIMARY KEY (id),\n    CONSTRAINT fk_course_sessions_course_id FOREIGN KEY (course_id) REFERENCES courses (id),\n    CONSTRAINT fk_course_sessions_trainer_id FOREIGN KEY (trainer_id) REFERENCES trainers (id)\n);\n\nCREATE TABLE members (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    joindate DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_members PRIMARY KEY (id)\n);\n\nCREATE TABLE member_course_sessions (\n    member_id INTEGER NOT NULL,\n    course_session_id INTEGER NOT NULL,\n    enrollment_date DATE NOT NULL,\n    attendance_status VARCHAR(255),\n    CONSTRAINT pk_member_course_sessions PRIMARY KEY (member_id, course_session_id),\n    CONSTRAINT fk_member_course_sessions_member_id FOREIGN KEY (member_id) REFERENCES members (id),\n    CONSTRAINT fk_member_course_sessions_course_session_id FOREIGN KEY (course_session_id) REFERENCES course_sessions (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -656,25 +606,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: members, courses, trainers, course_sessions und enrollments. Die Entität 'Anmeldung' wurde korrekt als 'enrollments' implementiert.",
+          "beschreibung": "Alle vier Entitäten aus dem Anforderungstext und ERModell sind im LogicalSchema vorhanden: members, courses, trainers, course_sessions. Die M:N-Beziehung zwischen Mitglied und Kurstermin ist durch die Junction-Table member_course_sessions korrekt modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Mitglied (firstname, lastname, email, birthdate, joindate, is_active), Kurs (name, description, duration_minutes), Trainer (firstname, lastname, email, phone), Kurstermin (session_date, start_time, available_seats). Die Anmeldung enthält enrollment_date und participation_status.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: members (firstname, lastname, email, birthdate, joindate, is_active), courses (name, description, duration_minutes), trainers (firstname, lastname, email, phone), course_sessions (course_id, trainer_id, session_date, start_time, available_seats). Die Junction-Table enthält zusätzliche Attribute (enrollment_date, attendance_status) zur Dokumentation der M:N-Beziehung, was dem ERModell entspricht.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen Kurs und Kurstermin (course_id FK), 1:N zwischen Trainer und Kurstermin (trainer_id FK), M:N zwischen Mitglied und Kurstermin über enrollments-Tabelle (member_id und course_session_id FKs).",
+          "beschreibung": "Alle Beziehungen sind korrekt modelliert: (1) Kurs 1:N Kurstermin via course_id FK; (2) Trainer 1:N Kurstermin via trainer_id FK; (3) Mitglied M:N Kurstermin via Junction-Table member_course_sessions mit korrekten FKs zu members und course_sessions. Kardinalitäten entsprechen dem ERModell und Anforderungstext.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Die enrollments-Tabelle ist eine korrekte Junction-Table für die M:N-Beziehung. Alle Attribute sind atomar und funktional abhängig von ihren Primärschlüsseln.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Redundanzen oder funktionalen Abhängigkeiten außerhalb der Schlüssel. Alle Attribute sind atomar. Die Junction-Table ist korrekt normalisiert und enthält nur die notwendigen Fremdschlüssel und Beziehungsattribute.",
           "korrekturanweisung": ""
         }
       ],
@@ -685,33 +635,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 14431,
-    "total_output_tokens": 4579,
-    "total_tokens": 19010,
+    "total_input_tokens": 13558,
+    "total_output_tokens": 4317,
+    "total_tokens": 17875,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1492,
-        "output_tokens": 1015,
+        "output_tokens": 908,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2556,
-        "output_tokens": 1373,
+        "input_tokens": 2443,
+        "output_tokens": 1137,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3963,
-        "output_tokens": 1384,
+        "input_tokens": 3657,
+        "output_tokens": 1349,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 6420,
-        "output_tokens": 807,
+        "input_tokens": 5966,
+        "output_tokens": 923,
         "cost_usd": 0.0
       }
     },
@@ -722,7 +672,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1492,
-        "output_tokens": 1015,
+        "output_tokens": 908,
         "cost_usd": 0.0
       },
       {
@@ -730,8 +680,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2556,
-        "output_tokens": 1373,
+        "input_tokens": 2443,
+        "output_tokens": 1137,
         "cost_usd": 0.0
       },
       {
@@ -739,8 +689,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3963,
-        "output_tokens": 1384,
+        "input_tokens": 3657,
+        "output_tokens": 1349,
         "cost_usd": 0.0
       },
       {
@@ -748,8 +698,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 6420,
-        "output_tokens": 807,
+        "input_tokens": 5966,
+        "output_tokens": 923,
         "cost_usd": 0.0
       }
     ]

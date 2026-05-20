@@ -262,22 +262,27 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Das Attribut 'Status' des Termins wird als 'wahrgenommen oder ausgefallen' beschrieben. Unklar ist, ob es weitere Statuswerte gibt (z.B. 'geplant', 'verschoben') oder ob es sich um ein binäres Feld handelt.",
+          "beschreibung": "Das Attribut 'Status' des Termins wird als 'wahrgenommen oder ausgefallen' beschrieben, aber es ist unklar, ob es weitere Statuswerte gibt (z.B. 'geplant', 'verschoben', 'storniert') oder ob es sich um ein binäres Feld handelt",
           "betroffene_elemente": [
             "Termin"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Postanschrift als einzelnes Feld oder als mehrere Felder (Straße, Hausnummer, PLZ, Ort) gespeichert werden soll.",
+          "beschreibung": "Es ist nicht klar, ob ein Patient eindeutig identifiziert werden kann (z.B. durch eine Patienten-ID) oder ob die Kombination von Vorname und Nachname ausreicht",
           "betroffene_elemente": [
             "Patient"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob ein Patient mehrere Zahnärzte haben kann oder ob es eine Zuordnung eines Patienten zu einem Primärzahnarzt gibt.",
+          "beschreibung": "Es ist nicht spezifiziert, ob ein Zahnarzt eindeutig durch eine ID identifiziert wird oder ob die Kombination von Vorname und Nachname ausreicht",
           "betroffene_elemente": [
-            "Patient",
             "Zahnarzt"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Postanschrift als einzelnes Feld oder als mehrere Felder (Straße, Hausnummer, PLZ, Stadt) gespeichert werden soll",
+          "betroffene_elemente": [
+            "Patient"
           ]
         }
       ]
@@ -394,7 +399,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Tag",
+              "name": "Datum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -459,25 +464,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: patients (Patient), dentists (Zahnarzt), appointments (Termin). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: patients (Patient), dentists (Zahnarzt), appointments (Termin). Die Abbildung ist vollständig.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext und ERModell sind vorhanden:\n- patients: firstname, lastname, birthdate, phone, email, address (alle gemäß Konvention benannt)\n- dentists: firstname, lastname, phone, email, specialization (alle vorhanden)\n- appointments: patient_id, dentist_id, appointment_date, appointment_time, reason, status (alle vorhanden)\nDie Attributnamen folgen der snake_case-Konvention und sind englisch.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext und ERModell sind im LogicalSchema vorhanden:\n- patients: firstname, lastname, birthdate, phone, email, address (alle 6 Attribute)\n- dentists: firstname, lastname, phone, email, specialization (alle 5 Attribute)\n- appointments: patient_id, dentist_id, appointment_date, appointment_time, reason, status (alle 6 Attribute)\nDie Namenskonventionen sind korrekt (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide N:1-Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet:\n- Termin → Patient (N:1): patient_id als NOT NULL FK in appointments\n- Termin → Zahnarzt (N:1): dentist_id als NOT NULL FK in appointments\nDie Kardinalitäten sind durch die NOT NULL-Constraints korrekt implementiert.",
+          "beschreibung": "Die beiden N:1-Beziehungen aus dem ERModell sind korrekt im LogicalSchema implementiert:\n- Termin → Patient (N:1): appointments.patient_id → patients.id\n- Termin → Zahnarzt (N:1): appointments.dentist_id → dentists.id\nBeiden Fremdschlüssel sind NOT NULL, was die Kardinalität korrekt abbildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF):\n- Keine Redundanzen oder Anomalien erkennbar\n- Alle Attribute sind atomar (z.B. address als TEXT, nicht zerlegt)\n- Keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen\n- Die Postanschrift wird als einzelnes TEXT-Feld gespeichert (pragmatische Lösung für die Anforderung)\n- appointment_date und appointment_time sind separate Spalten (saubere Trennung von Datum und Zeit)",
+          "beschreibung": "Das Schema erfüllt die Anforderungen der 3. Normalform:\n- Keine Redundanzen oder Anomalien erkennbar\n- Alle Attribute sind atomar (z.B. address als TEXT, nicht zerlegt)\n- Keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen\n- Die Struktur ist normalisiert und wartbar",
           "korrekturanweisung": ""
         }
       ],
@@ -512,25 +517,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: patients (Patient), dentists (Zahnarzt), appointments (Termin). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: patients (Patient), dentists (Zahnarzt), appointments (Termin). Die Abbildung ist vollständig.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext und ERModell sind vorhanden:\n- patients: firstname, lastname, birthdate, phone, email, address (alle gemäß Konvention benannt)\n- dentists: firstname, lastname, phone, email, specialization (alle vorhanden)\n- appointments: patient_id, dentist_id, appointment_date, appointment_time, reason, status (alle vorhanden)\nDie Attributnamen folgen der snake_case-Konvention und sind englisch.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext und ERModell sind im LogicalSchema vorhanden:\n- patients: firstname, lastname, birthdate, phone, email, address (alle 6 Attribute)\n- dentists: firstname, lastname, phone, email, specialization (alle 5 Attribute)\n- appointments: patient_id, dentist_id, appointment_date, appointment_time, reason, status (alle 6 Attribute)\nDie Namenskonventionen sind korrekt (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide N:1-Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet:\n- Termin → Patient (N:1): patient_id als NOT NULL FK in appointments\n- Termin → Zahnarzt (N:1): dentist_id als NOT NULL FK in appointments\nDie Kardinalitäten sind durch die NOT NULL-Constraints korrekt implementiert.",
+          "beschreibung": "Die beiden N:1-Beziehungen aus dem ERModell sind korrekt im LogicalSchema implementiert:\n- Termin → Patient (N:1): appointments.patient_id → patients.id\n- Termin → Zahnarzt (N:1): appointments.dentist_id → dentists.id\nBeiden Fremdschlüssel sind NOT NULL, was die Kardinalität korrekt abbildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF):\n- Keine Redundanzen oder Anomalien erkennbar\n- Alle Attribute sind atomar (z.B. address als TEXT, nicht zerlegt)\n- Keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen\n- Die Postanschrift wird als einzelnes TEXT-Feld gespeichert (pragmatische Lösung für die Anforderung)\n- appointment_date und appointment_time sind separate Spalten (saubere Trennung von Datum und Zeit)",
+          "beschreibung": "Das Schema erfüllt die Anforderungen der 3. Normalform:\n- Keine Redundanzen oder Anomalien erkennbar\n- Alle Attribute sind atomar (z.B. address als TEXT, nicht zerlegt)\n- Keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen\n- Die Struktur ist normalisiert und wartbar",
           "korrekturanweisung": ""
         }
       ],
@@ -541,33 +546,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12452,
-    "total_output_tokens": 3672,
-    "total_tokens": 16124,
+    "total_input_tokens": 12620,
+    "total_output_tokens": 3690,
+    "total_tokens": 16310,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1489,
-        "output_tokens": 816,
+        "output_tokens": 899,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2280,
-        "output_tokens": 956,
+        "input_tokens": 2363,
+        "output_tokens": 957,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3461,
+        "input_tokens": 3462,
         "output_tokens": 961,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5222,
-        "output_tokens": 939,
+        "input_tokens": 5306,
+        "output_tokens": 873,
         "cost_usd": 0.0
       }
     },
@@ -578,7 +583,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1489,
-        "output_tokens": 816,
+        "output_tokens": 899,
         "cost_usd": 0.0
       },
       {
@@ -586,8 +591,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2280,
-        "output_tokens": 956,
+        "input_tokens": 2363,
+        "output_tokens": 957,
         "cost_usd": 0.0
       },
       {
@@ -595,7 +600,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3461,
+        "input_tokens": 3462,
         "output_tokens": 961,
         "cost_usd": 0.0
       },
@@ -604,8 +609,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5222,
-        "output_tokens": 939,
+        "input_tokens": 5306,
+        "output_tokens": 873,
         "cost_usd": 0.0
       }
     ]

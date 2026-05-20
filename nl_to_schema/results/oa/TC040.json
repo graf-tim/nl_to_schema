@@ -2,8 +2,8 @@
   "testfall_id": "TC040",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.7406349206349206,
-  "score_gesamt": 0.8443809523809525,
+  "score_semantisch": 0.736829745596869,
+  "score_gesamt": 0.8420978473581213,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 2
     },
     "attribut": {
-      "precision": 0.7142857142857143,
+      "precision": 0.6944444444444444,
       "recall": 0.6756756756756757,
-      "f1": 0.6944444444444444,
+      "f1": 0.684931506849315,
       "matched": 25,
       "nur_in_referenz": 12,
-      "nur_in_generiert": 10
+      "nur_in_generiert": 11
     },
     "beziehung": {
       "recall": 0.7142857142857143,
@@ -231,15 +231,21 @@
           "name": "vehicle_locations",
           "columns": [
             {
-              "name": "vehicle_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
+              "name": "vehicle_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "location_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
             }
           ],
@@ -344,6 +350,18 @@
               "nullable": false
             },
             {
+              "name": "pickup_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "return_location_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "pickup_timestamp",
               "type": "TIMESTAMP",
               "primary_key": false,
@@ -360,18 +378,6 @@
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "pickup_location_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "return_location_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -535,35 +541,35 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Verfügbarkeitsstatus eines Fahrzeugs (verfügbar, in Reinigung, in Werkstatt) ist erwähnt, aber es ist unklar, ob dies als einfaches Attribut oder als separate Entität mit Zeitstempel modelliert werden soll.",
+          "beschreibung": "Unklar ist, ob der Verfügbarkeitsstatus (verfügbar/nicht verfügbar wegen Reinigung/Werkstatt) als einfaches Attribut oder als separate Entität mit Gründen und Zeiträumen modelliert werden soll.",
           "betroffene_elemente": [
             "Fahrzeug"
           ]
         },
         {
-          "beschreibung": "Die Beziehung zwischen Fahrzeug und Standort ist als M:N modelliert (Fahrzeug an mehreren Standorten), aber es ist unklar, ob ein Fahrzeug tatsächlich an mehreren Standorten gleichzeitig verfügbar sein kann oder ob es sich um eine historische Zuordnung handelt.",
+          "beschreibung": "Unklar ist, ob die M:N-Beziehung zwischen Fahrzeug und Standort zusätzliche Attribute benötigt (z.B. Anzahl verfügbarer Fahrzeuge pro Standort, Verfügbarkeitsdatum).",
           "betroffene_elemente": [
             "Fahrzeug",
             "Standort"
           ]
         },
         {
-          "beschreibung": "Es ist unklar, ob die Übergabe- und Rücknahmestandorte bei einer Anmietung identisch sein müssen oder ob One-Way-Vermietungen möglich sind.",
+          "beschreibung": "Unklar ist, ob Übergabestandort und Rücknahmestandort immer unterschiedlich sein können oder ob sie identisch sein müssen. Die Modellierung als zwei separate N:1-Beziehungen zur gleichen Entität Standort ist mehrdeutig.",
           "betroffene_elemente": [
             "Anmietung",
             "Standort"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob die tatsächliche Rückgabezeitpunkt optional ist (kann NULL sein) oder ob dieser erst nach Rückgabe erfasst wird.",
+          "beschreibung": "Unklar ist, ob die Zusatzleistungen einen Preis haben und ob dieser pro Anmietung variabel ist oder fest definiert.",
           "betroffene_elemente": [
+            "Zusatzleistung",
             "Anmietung"
           ]
         },
         {
-          "beschreibung": "Für Zusatzleistungen ist unklar, ob diese einen Preis haben oder ob dieser separat pro Anmietung festgelegt wird.",
+          "beschreibung": "Unklar ist, ob die tatsächliche Rückgabezeitpunkt optional ist (kann NULL sein, wenn Fahrzeug noch nicht zurückgegeben wurde) oder ob es immer gespeichert werden muss.",
           "betroffene_elemente": [
-            "Zusatzleistung",
             "Anmietung"
           ]
         }
@@ -712,6 +718,59 @@
           ]
         },
         {
+          "name": "Anmietung",
+          "attribute": [
+            {
+              "name": "anmietungId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kundeId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fahrzeugId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "uebergabestandortId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ruecknahmestandortId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "uebernahmezeitpunkt",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geplanter_rueckgabezeitpunkt",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "tatsaechlicher_rueckgabezeitpunkt",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
           "name": "Zusatzleistung",
           "attribute": [
             {
@@ -735,71 +794,24 @@
           ]
         },
         {
-          "name": "Anmietung",
+          "name": "FahrzeugStandort",
           "attribute": [
             {
-              "name": "anmietungId",
+              "name": "fahrzeugStandortId",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "kundeId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
               "name": "fahrzeugId",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "uebernahmezeitpunkt",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "geplanter_rueckgabezeitpunkt",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "tatsaechlicher_rueckgabezeitpunkt",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "uebergabestandortId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "ruecknahmestandortId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Fahrzeug_Standort",
-          "attribute": [
-            {
-              "name": "fahrzeugId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
               "name": "standortId",
               "datentyp": "INTEGER",
-              "primaerschluessel": true,
+              "primaerschluessel": false,
               "pflichtfeld": true
             }
           ]
@@ -814,8 +826,14 @@
         },
         {
           "von": "Fahrzeug",
-          "zu": "Standort",
-          "kardinalitaet": "M:N",
+          "zu": "FahrzeugStandort",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Standort",
+          "zu": "FahrzeugStandort",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
@@ -834,17 +852,7 @@
           "von": "Anmietung",
           "zu": "Standort",
           "kardinalitaet": "N:1",
-          "beziehungsattribute": [
-            "Übergabestandort"
-          ]
-        },
-        {
-          "von": "Anmietung",
-          "zu": "Standort",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": [
-            "Rücknahmestandort"
-          ]
+          "beziehungsattribute": []
         },
         {
           "von": "Anmietung",
@@ -878,25 +886,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: manufacturers, locations, vehicles, customers, additional_services, rentals und vehicle_locations (Junction-Table für M:N-Beziehung).",
+          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: manufacturers, locations, vehicles, customers, additional_services, rentals. Die Junction-Table vehicle_locations ist korrekt für die M:N-Beziehung zwischen Fahrzeug und Standort implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell spezifizierten Attribute sind im LogicalSchema vorhanden und korrekt typisiert. Beispiele: license_plate, model_designation, year_of_manufacture, mileage, daily_price, availability_status für vehicles; birthdate, phone_number, email, driver_license_number für customers; pickup_timestamp, planned_return_timestamp, actual_return_timestamp für rentals.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt typisiert: Fahrzeug (license_plate, model_designation, year_of_manufacture, mileage, daily_price, availability_status, manufacturer_id), Standort (name, city, address), Hersteller (name), Kunde (name, birthdate, phone_number, email, driver_license_number), Anmietung (pickup_timestamp, planned_return_timestamp, actual_return_timestamp, pickup_location_id, return_location_id), Zusatzleistung (name, description). Alle Attribute folgen den Namenskonventionen (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: N:1 Fahrzeug→Hersteller (manufacturer_id), M:N Fahrzeug↔Standort (vehicle_locations), N:1 Anmietung→Kunde (customer_id), N:1 Anmietung→Fahrzeug (vehicle_id), N:1 Anmietung→Standort (pickup_location_id und return_location_id für Übergabe und Rücknahme), M:N Anmietung↔Zusatzleistung (rental_additional_services).",
+          "beschreibung": "Alle Beziehungen aus dem RequirementsReport sind korrekt implementiert: (1) Fahrzeug-Hersteller N:1 via manufacturer_id in vehicles, (2) Fahrzeug-Standort M:N via vehicle_locations Junction-Table, (3) Anmietung-Kunde N:1 via customer_id, (4) Anmietung-Fahrzeug N:1 via vehicle_id, (5) Anmietung-Standort N:1 zweifach (pickup_location_id und return_location_id für Übergabe und Rücknahme), (6) Anmietung-Zusatzleistung M:N via rental_additional_services Junction-Table. Die Kardinalitäten sind korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine Transitivabhängigkeiten. Junction-Tables für M:N-Beziehungen sind korrekt normalisiert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Wiederholungsgruppen), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel (keine partiellen Abhängigkeiten), (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Tables (vehicle_locations, rental_additional_services) sind korrekt normalisiert mit zusammengesetzten Primärschlüsseln.",
           "korrekturanweisung": ""
         }
       ],
@@ -906,7 +914,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE additional_services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_additional_services PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone_number VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    driver_license_number VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    model_designation VARCHAR(255) NOT NULL,\n    year_of_manufacture INTEGER NOT NULL,\n    mileage INTEGER NOT NULL,\n    daily_price DECIMAL(18,2) NOT NULL,\n    availability_status VARCHAR(255) NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    pickup_timestamp TIMESTAMP NOT NULL,\n    planned_return_timestamp TIMESTAMP NOT NULL,\n    actual_return_timestamp TIMESTAMP,\n    pickup_location_id INTEGER NOT NULL,\n    return_location_id INTEGER NOT NULL,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_rentals_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_rentals_pickup_location_id FOREIGN KEY (pickup_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_rentals_return_location_id FOREIGN KEY (return_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE rental_additional_services (\n    rental_id INTEGER NOT NULL,\n    additional_service_id INTEGER NOT NULL,\n    CONSTRAINT pk_rental_additional_services PRIMARY KEY (rental_id, additional_service_id),\n    CONSTRAINT fk_rental_additional_services_rental_id FOREIGN KEY (rental_id) REFERENCES rentals (id),\n    CONSTRAINT fk_rental_additional_services_additional_service_id FOREIGN KEY (additional_service_id) REFERENCES additional_services (id)\n);\n\nCREATE TABLE vehicle_locations (\n    vehicle_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    CONSTRAINT pk_vehicle_locations PRIMARY KEY (vehicle_id, location_id),\n    CONSTRAINT fk_vehicle_locations_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_vehicle_locations_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
+    "final_ddl": "CREATE TABLE additional_services (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_additional_services PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone_number VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    driver_license_number VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    model_designation VARCHAR(255) NOT NULL,\n    year_of_manufacture INTEGER NOT NULL,\n    mileage INTEGER NOT NULL,\n    daily_price DECIMAL(18,2) NOT NULL,\n    availability_status VARCHAR(255) NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE rentals (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    pickup_location_id INTEGER NOT NULL,\n    return_location_id INTEGER NOT NULL,\n    pickup_timestamp TIMESTAMP NOT NULL,\n    planned_return_timestamp TIMESTAMP NOT NULL,\n    actual_return_timestamp TIMESTAMP,\n    CONSTRAINT pk_rentals PRIMARY KEY (id),\n    CONSTRAINT fk_rentals_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_rentals_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_rentals_pickup_location_id FOREIGN KEY (pickup_location_id) REFERENCES locations (id),\n    CONSTRAINT fk_rentals_return_location_id FOREIGN KEY (return_location_id) REFERENCES locations (id)\n);\n\nCREATE TABLE rental_additional_services (\n    rental_id INTEGER NOT NULL,\n    additional_service_id INTEGER NOT NULL,\n    CONSTRAINT pk_rental_additional_services PRIMARY KEY (rental_id, additional_service_id),\n    CONSTRAINT fk_rental_additional_services_rental_id FOREIGN KEY (rental_id) REFERENCES rentals (id),\n    CONSTRAINT fk_rental_additional_services_additional_service_id FOREIGN KEY (additional_service_id) REFERENCES additional_services (id)\n);\n\nCREATE TABLE vehicle_locations (\n    id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    location_id INTEGER NOT NULL,\n    CONSTRAINT pk_vehicle_locations PRIMARY KEY (id),\n    CONSTRAINT fk_vehicle_locations_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_vehicle_locations_location_id FOREIGN KEY (location_id) REFERENCES locations (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -931,25 +939,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: manufacturers, locations, vehicles, customers, additional_services, rentals und vehicle_locations (Junction-Table für M:N-Beziehung).",
+          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: manufacturers, locations, vehicles, customers, additional_services, rentals. Die Junction-Table vehicle_locations ist korrekt für die M:N-Beziehung zwischen Fahrzeug und Standort implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell spezifizierten Attribute sind im LogicalSchema vorhanden und korrekt typisiert. Beispiele: license_plate, model_designation, year_of_manufacture, mileage, daily_price, availability_status für vehicles; birthdate, phone_number, email, driver_license_number für customers; pickup_timestamp, planned_return_timestamp, actual_return_timestamp für rentals.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt typisiert: Fahrzeug (license_plate, model_designation, year_of_manufacture, mileage, daily_price, availability_status, manufacturer_id), Standort (name, city, address), Hersteller (name), Kunde (name, birthdate, phone_number, email, driver_license_number), Anmietung (pickup_timestamp, planned_return_timestamp, actual_return_timestamp, pickup_location_id, return_location_id), Zusatzleistung (name, description). Alle Attribute folgen den Namenskonventionen (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: N:1 Fahrzeug→Hersteller (manufacturer_id), M:N Fahrzeug↔Standort (vehicle_locations), N:1 Anmietung→Kunde (customer_id), N:1 Anmietung→Fahrzeug (vehicle_id), N:1 Anmietung→Standort (pickup_location_id und return_location_id für Übergabe und Rücknahme), M:N Anmietung↔Zusatzleistung (rental_additional_services).",
+          "beschreibung": "Alle Beziehungen aus dem RequirementsReport sind korrekt implementiert: (1) Fahrzeug-Hersteller N:1 via manufacturer_id in vehicles, (2) Fahrzeug-Standort M:N via vehicle_locations Junction-Table, (3) Anmietung-Kunde N:1 via customer_id, (4) Anmietung-Fahrzeug N:1 via vehicle_id, (5) Anmietung-Standort N:1 zweifach (pickup_location_id und return_location_id für Übergabe und Rücknahme), (6) Anmietung-Zusatzleistung M:N via rental_additional_services Junction-Table. Die Kardinalitäten sind korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine Transitivabhängigkeiten. Junction-Tables für M:N-Beziehungen sind korrekt normalisiert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Wiederholungsgruppen), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel (keine partiellen Abhängigkeiten), (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Tables (vehicle_locations, rental_additional_services) sind korrekt normalisiert mit zusammengesetzten Primärschlüsseln.",
           "korrekturanweisung": ""
         }
       ],
@@ -960,33 +968,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 18152,
-    "total_output_tokens": 6713,
-    "total_tokens": 24865,
+    "total_input_tokens": 18267,
+    "total_output_tokens": 7039,
+    "total_tokens": 25306,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1666,
-        "output_tokens": 1622,
+        "output_tokens": 1633,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3367,
-        "output_tokens": 2199,
+        "input_tokens": 3378,
+        "output_tokens": 2272,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4700,
-        "output_tokens": 2009,
+        "input_tokens": 4728,
+        "output_tokens": 2046,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 8419,
-        "output_tokens": 883,
+        "input_tokens": 8495,
+        "output_tokens": 1088,
         "cost_usd": 0.0
       }
     },
@@ -997,7 +1005,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1666,
-        "output_tokens": 1622,
+        "output_tokens": 1633,
         "cost_usd": 0.0
       },
       {
@@ -1005,8 +1013,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3367,
-        "output_tokens": 2199,
+        "input_tokens": 3378,
+        "output_tokens": 2272,
         "cost_usd": 0.0
       },
       {
@@ -1014,8 +1022,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4700,
-        "output_tokens": 2009,
+        "input_tokens": 4728,
+        "output_tokens": 2046,
         "cost_usd": 0.0
       },
       {
@@ -1023,8 +1031,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8419,
-        "output_tokens": 883,
+        "input_tokens": 8495,
+        "output_tokens": 1088,
         "cost_usd": 0.0
       }
     ]

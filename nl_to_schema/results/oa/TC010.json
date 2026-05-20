@@ -281,20 +281,20 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Es ist unklar, ob das Attribut 'Tatsächliches-Rückgabedatum' in der Ausleihe NULL-Werte annehmen darf (für noch nicht zurückgegebene Filme) oder ob dies durch ein separates Statusfeld gelöst werden soll.",
+          "beschreibung": "Es ist unklar, ob das Attribut 'Tatsächliches-Rückgabedatum' in der Ausleihe NULL-Werte annehmen darf (für noch nicht zurückgegebene Filme) oder ob es immer einen Wert haben muss.",
           "betroffene_elemente": [
             "Ausleihe"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob ein Kunde mehrere Ausleihen gleichzeitig haben darf oder ob es Beschränkungen gibt.",
+          "beschreibung": "Es ist nicht spezifiziert, ob ein Kunde mehrere Ausleihen gleichzeitig haben kann oder ob es Beschränkungen gibt.",
           "betroffene_elemente": [
             "Ausleihe",
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Es ist unklar, ob die E-Mail-Adresse und Telefonnummer eindeutig sein müssen oder ob mehrere Kunden diese Werte teilen können.",
+          "beschreibung": "Es ist unklar, ob die E-Mail-Adresse und Telefonnummer eindeutig sein müssen oder ob mehrere Kunden dieselben Kontaktdaten haben können.",
           "betroffene_elemente": [
             "Kunde"
           ]
@@ -466,19 +466,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: films (title, publicationyear, genre, agerating), customers (firstname, lastname, email, phonenumber, registrationdate), rentals (customer_id, film_id, checkoutdate, duedate, returndate). Attributnamen folgen der Namenskonvention (snake_case, englisch). Das optionale returndate ist korrekt als nullable: true definiert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: films (title, publicationyear, genre, agerating), customers (firstname, lastname, email, phonenumber, registrationdate), rentals (customer_id, film_id, checkoutdate, duedate, returndate). Die Attributnamen folgen den Konventionen (snake_case, englisch). Das Attribut 'returndate' ist korrekt als nullable definiert (für noch nicht zurückgegebene Filme).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide N:1-Beziehungen sind korrekt implementiert: Ausleihe→Kunde (customer_id NOT NULL) und Ausleihe→Film (film_id NOT NULL). Die Fremdschlüssel sind in der rentals-Tabelle definiert und referenzieren die korrekten Primärschlüssel.",
+          "beschreibung": "Die beiden N:1-Beziehungen sind korrekt implementiert: (1) Ausleihe → Kunde über customer_id (NOT NULL), (2) Ausleihe → Film über film_id (NOT NULL). Beide Fremdschlüssel sind als NOT NULL definiert, was die Anforderung 'Eine Ausleihe gehört immer genau zu einer Person und genau zu einem Film' korrekt umsetzt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Jede Tabelle hat einen eindeutigen Primärschlüssel. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Die Ausleihe-Tabelle ist eine reine Assoziationstabelle mit Zusatzattributen (Datumsangaben), was dem Muster einer N:1-Beziehung mit Beziehungsattributen entspricht.",
           "korrekturanweisung": ""
         }
       ],
@@ -519,19 +519,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: films (title, publicationyear, genre, agerating), customers (firstname, lastname, email, phonenumber, registrationdate), rentals (customer_id, film_id, checkoutdate, duedate, returndate). Attributnamen folgen der Namenskonvention (snake_case, englisch). Das optionale returndate ist korrekt als nullable: true definiert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: films (title, publicationyear, genre, agerating), customers (firstname, lastname, email, phonenumber, registrationdate), rentals (customer_id, film_id, checkoutdate, duedate, returndate). Die Attributnamen folgen den Konventionen (snake_case, englisch). Das Attribut 'returndate' ist korrekt als nullable definiert (für noch nicht zurückgegebene Filme).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide N:1-Beziehungen sind korrekt implementiert: Ausleihe→Kunde (customer_id NOT NULL) und Ausleihe→Film (film_id NOT NULL). Die Fremdschlüssel sind in der rentals-Tabelle definiert und referenzieren die korrekten Primärschlüssel.",
+          "beschreibung": "Die beiden N:1-Beziehungen sind korrekt implementiert: (1) Ausleihe → Kunde über customer_id (NOT NULL), (2) Ausleihe → Film über film_id (NOT NULL). Beide Fremdschlüssel sind als NOT NULL definiert, was die Anforderung 'Eine Ausleihe gehört immer genau zu einer Person und genau zu einem Film' korrekt umsetzt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Jede Tabelle hat einen eindeutigen Primärschlüssel. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Die Ausleihe-Tabelle ist eine reine Assoziationstabelle mit Zusatzattributen (Datumsangaben), was dem Muster einer N:1-Beziehung mit Beziehungsattributen entspricht.",
           "korrekturanweisung": ""
         }
       ],
@@ -542,20 +542,20 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12162,
-    "total_output_tokens": 3515,
-    "total_tokens": 15677,
+    "total_input_tokens": 12158,
+    "total_output_tokens": 3569,
+    "total_tokens": 15727,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1490,
-        "output_tokens": 777,
+        "output_tokens": 775,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2298,
+        "input_tokens": 2296,
         "output_tokens": 1071,
         "cost_usd": 0.0
       },
@@ -567,8 +567,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5023,
-        "output_tokens": 812,
+        "input_tokens": 5021,
+        "output_tokens": 868,
         "cost_usd": 0.0
       }
     },
@@ -579,7 +579,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1490,
-        "output_tokens": 777,
+        "output_tokens": 775,
         "cost_usd": 0.0
       },
       {
@@ -587,7 +587,7 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2298,
+        "input_tokens": 2296,
         "output_tokens": 1071,
         "cost_usd": 0.0
       },
@@ -605,8 +605,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5023,
-        "output_tokens": 812,
+        "input_tokens": 5021,
+        "output_tokens": 868,
         "cost_usd": 0.0
       }
     ]

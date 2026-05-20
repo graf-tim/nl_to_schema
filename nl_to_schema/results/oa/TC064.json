@@ -2,8 +2,8 @@
   "testfall_id": "TC064",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.6864942528735632,
-  "score_gesamt": 0.8118965517241379,
+  "score_semantisch": 0.6681034482758621,
+  "score_gesamt": 0.8008620689655173,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 1
     },
     "attribut": {
-      "precision": 0.5476190476190477,
-      "recall": 0.5111111111111111,
-      "f1": 0.5287356321839081,
-      "matched": 23,
-      "nur_in_referenz": 22,
-      "nur_in_generiert": 19
+      "precision": 0.5,
+      "recall": 0.4666666666666667,
+      "f1": 0.4827586206896552,
+      "matched": 21,
+      "nur_in_referenz": 24,
+      "nur_in_generiert": 21
     },
     "beziehung": {
       "recall": 0.625,
@@ -74,6 +74,11 @@
       "fehlerklasse": null
     },
     {
+      "element": "customer_service_packages.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "customer_service_packages.start_date",
       "typ": "attribut",
       "fehlerklasse": null
@@ -115,6 +120,11 @@
     },
     {
       "element": "customers.customer_since",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contract_tariffs.id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -196,12 +206,6 @@
               "nullable": false
             },
             {
-              "name": "customer_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
@@ -218,6 +222,12 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "customer_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
             },
             {
               "name": "care_start_date",
@@ -349,47 +359,6 @@
           ]
         },
         {
-          "name": "contract_tariffs",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "contract_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "tariff_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "sequence",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "contract_id",
-              "references_table": "contracts",
-              "references_column": "id"
-            },
-            {
-              "from_column": "tariff_id",
-              "references_table": "tariffs",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
           "name": "invoices",
           "columns": [
             {
@@ -411,13 +380,13 @@
               "nullable": false
             },
             {
-              "name": "period_start",
+              "name": "period_start_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "period_end",
+              "name": "period_end_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -468,34 +437,75 @@
           "foreign_keys": []
         },
         {
-          "name": "customer_service_packages",
+          "name": "contract_tariffs",
           "columns": [
             {
-              "name": "id",
+              "name": "contract_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "customer_id",
+              "name": "tariff_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "sequence",
               "type": "INTEGER",
               "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "valid_from_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "valid_to_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contract_id",
+              "references_table": "contracts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "tariff_id",
+              "references_table": "tariffs",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "customer_service_packages",
+          "columns": [
+            {
+              "name": "customer_id",
+              "type": "INTEGER",
+              "primary_key": true,
               "nullable": false
             },
             {
               "name": "service_package_id",
               "type": "INTEGER",
-              "primary_key": false,
+              "primary_key": true,
               "nullable": false
             },
             {
-              "name": "valid_from",
+              "name": "valid_from_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "valid_until",
+              "name": "valid_to_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": true
@@ -569,7 +579,7 @@
             "Betrag",
             "Zahlungsstand"
           ],
-          "beschreibung": "Rechnung zu einem Vertrag mit Zahlungsinformationen und Zahlungsstand"
+          "beschreibung": "Rechnung zu einem Vertrag mit Zahlungsinformationen und Fälligkeitsstatus"
         },
         {
           "name": "Servicepaket",
@@ -578,7 +588,7 @@
             "Bezeichnung",
             "Beschreibung"
           ],
-          "beschreibung": "Zusatzangebot wie Wartung oder Ökostromoptionen, das von Kunden genutzt werden kann"
+          "beschreibung": "Zusatzangebot wie Wartung oder Ökostromoptionen, das Kunden nutzen können"
         }
       ],
       "beziehungen": [
@@ -629,19 +639,19 @@
           ]
         },
         {
-          "beschreibung": "Definition 'Offene Posten': Es ist unklar, ob 'offene Posten' ein spezifischer Zahlungsstand-Wert ist oder ob es sich um eine abgeleitete Information handelt (z.B. Rechnungen mit Status 'unbezahlt').",
+          "beschreibung": "Definition 'Offene Posten': Es ist unklar, ob dies ein Attribut der Rechnung ist oder eine abgeleitete Information basierend auf dem Zahlungsstand.",
           "betroffene_elemente": [
             "Rechnung"
           ]
         },
         {
-          "beschreibung": "Kontaktdaten-Struktur: Die 'Kontaktdaten' sind nicht weiter spezifiziert (z.B. Telefon, E-Mail, Adresse, Ansprechperson).",
+          "beschreibung": "Kontaktdaten: Die genaue Struktur von 'Kontaktdaten' (Telefon, E-Mail, Adresse etc.) ist nicht spezifiziert.",
           "betroffene_elemente": [
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Tarifzuordnung zu Verträgen: Es ist unklar, wie die M:N-Beziehung zwischen Vertrag und Tarif technisch abgebildet wird (z.B. ob eine Zwischentabelle mit Gültigkeitsdaten oder Reihenfolge nötig ist).",
+          "beschreibung": "Tarifzuordnung zu Verträgen: Es ist unklar, ob die M:N-Beziehung zwischen Vertrag und Tarif zusätzliche Attribute wie Gültigkeitsdatum oder Reihenfolge benötigt.",
           "betroffene_elemente": [
             "Vertrag",
             "Tarif"
@@ -673,12 +683,6 @@
               "pflichtfeld": true
             },
             {
-              "name": "Kundentyp",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
               "name": "Telefon",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
@@ -697,6 +701,12 @@
               "pflichtfeld": false
             },
             {
+              "name": "Kundentyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
               "name": "Betreuungsbeginn",
               "datentyp": "DATE",
               "primaerschluessel": false,
@@ -708,7 +718,7 @@
           "name": "Abnahmestelle",
           "attribute": [
             {
-              "name": "Abnahmestellen_ID",
+              "name": "Abnahmestellen-ID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -743,7 +753,7 @@
           "name": "Tarif",
           "attribute": [
             {
-              "name": "Tarif_ID",
+              "name": "Tarif-ID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -778,13 +788,13 @@
           "name": "Vertrag",
           "attribute": [
             {
-              "name": "Vertrags_ID",
+              "name": "Vertrags-ID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Abnahmestellen_ID",
+              "name": "Abnahmestellen-ID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -796,7 +806,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Geplantes_Ende",
+              "name": "Geplantes Ende",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -810,45 +820,16 @@
           ]
         },
         {
-          "name": "Vertrag_Tarif",
-          "attribute": [
-            {
-              "name": "Vertrag_Tarif_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Vertrags_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Tarif_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Reihenfolge",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
           "name": "Rechnung",
           "attribute": [
             {
-              "name": "Rechnungs_ID",
+              "name": "Rechnungs-ID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Vertrags_ID",
+              "name": "Vertrags-ID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -860,13 +841,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "Zeitraum_Von",
+              "name": "Zeitraum Von",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Zeitraum_Bis",
+              "name": "Zeitraum Bis",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -889,7 +870,7 @@
           "name": "Servicepaket",
           "attribute": [
             {
-              "name": "Paket_ID",
+              "name": "Paket-ID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -909,14 +890,43 @@
           ]
         },
         {
-          "name": "Kunde_Servicepaket",
+          "name": "Vertrag_Tarif",
           "attribute": [
             {
-              "name": "Kunde_Servicepaket_ID",
+              "name": "Vertrags-ID",
               "datentyp": "INTEGER",
-              "primaerschluessel": true,
+              "primaerschluessel": false,
               "pflichtfeld": true
             },
+            {
+              "name": "Tarif-ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Reihenfolge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Gültig Von",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Gültig Bis",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Kunde_Servicepaket",
+          "attribute": [
             {
               "name": "KundenID",
               "datentyp": "INTEGER",
@@ -924,19 +934,19 @@
               "pflichtfeld": true
             },
             {
-              "name": "Paket_ID",
+              "name": "Paket-ID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Gueltig_Von",
+              "name": "Gültig Von",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Gueltig_Bis",
+              "name": "Gültig Bis",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -962,7 +972,9 @@
           "zu": "Tarif",
           "kardinalitaet": "M:N",
           "beziehungsattribute": [
-            "Reihenfolge"
+            "Reihenfolge",
+            "Gültig Von",
+            "Gültig Bis"
           ]
         },
         {
@@ -976,8 +988,8 @@
           "zu": "Servicepaket",
           "kardinalitaet": "M:N",
           "beziehungsattribute": [
-            "Gueltig_Von",
-            "Gueltig_Bis"
+            "Gültig Von",
+            "Gültig Bis"
           ]
         }
       ]
@@ -1006,25 +1018,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema abgebildet: customers, consumption_points, tariffs, contracts, contract_tariffs, invoices, service_packages, customer_service_packages. Keine Entität fehlt.",
+          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, consumption_points, tariffs, contracts, invoices, service_packages. Zusätzlich sind die beiden M:N-Beziehungstabellen (contract_tariffs, customer_service_packages) korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Kontaktdaten wurden sinnvoll in phone, email, address aufgelöst. Zeitraum wurde in period_start und period_end aufgelöst. Gültigkeitsdaten für Servicepakete sind mit valid_from und valid_until vorhanden.",
+          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: Kundennummer→customer_number, Betreuungsbeginn→care_start_date, Zählernummer→meter_number, Energietyp→energy_type, Grundpreis→base_price, Arbeitspreis→work_price, Vertrags-ID→contract_id, Rechnungsdatum→invoice_date, Zeitraum→period_start_date/period_end_date, Zahlungsstand→payment_status. Gültigkeitsdaten in Junction Tables sind vorhanden (valid_from_date, valid_to_date).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt abgebildet: 1:N (Kunde→Abnahmestelle, Abnahmestelle→Vertrag, Vertrag→Rechnung), M:N (Vertrag↔Tarif via contract_tariffs, Kunde↔Servicepaket via customer_service_packages). Fremdschlüssel sind korrekt gesetzt und nicht nullable für 1:N-Beziehungen.",
+          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Kunde→Abnahmestelle (1:N via customer_id FK), (2) Abnahmestelle→Vertrag (1:N via consumption_point_id FK), (3) Vertrag↔Tarif (M:N via contract_tariffs Junction Table mit Composite PK), (4) Vertrag→Rechnung (1:N via contract_id FK), (5) Kunde↔Servicepaket (M:N via customer_service_packages Junction Table mit Composite PK und Gültigkeitsdaten).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten. Junction-Tables (contract_tariffs, customer_service_packages) sind korrekt normalisiert mit eigenem PK und FK-Paaren.",
+          "beschreibung": "Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Basis-Entitäten, (2) Junction Tables sind korrekt normalisiert mit Composite PKs und FKs, (3) Gültigkeitsdaten in M:N-Beziehungen sind angemessen modelliert, (4) Keine funktionalen Abhängigkeiten außerhalb des PK, (5) Keine Transitivitäten. Die Struktur unterstützt die Anforderung, dass Kunden Servicepakete im Laufe der Zeit wechseln können (via valid_from_date/valid_to_date).",
           "korrekturanweisung": ""
         }
       ],
@@ -1034,7 +1046,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    customer_number VARCHAR(255) NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    customer_type VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE consumption_points (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    meter_number VARCHAR(255) NOT NULL,\n    energy_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_consumption_points PRIMARY KEY (id),\n    CONSTRAINT fk_consumption_points_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    consumption_point_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    planned_end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_consumption_point_id FOREIGN KEY (consumption_point_id) REFERENCES consumption_points (id)\n);\n\nCREATE TABLE tariffs (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    base_price DECIMAL(18,2) NOT NULL,\n    work_price DECIMAL(18,2) NOT NULL,\n    product VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_tariffs PRIMARY KEY (id)\n);\n\nCREATE TABLE contract_tariffs (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    tariff_id INTEGER NOT NULL,\n    sequence INTEGER,\n    CONSTRAINT pk_contract_tariffs PRIMARY KEY (id),\n    CONSTRAINT fk_contract_tariffs_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_contract_tariffs_tariff_id FOREIGN KEY (tariff_id) REFERENCES tariffs (id)\n);\n\nCREATE TABLE service_packages (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_service_packages PRIMARY KEY (id)\n);\n\nCREATE TABLE customer_service_packages (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    service_package_id INTEGER NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_customer_service_packages PRIMARY KEY (id),\n    CONSTRAINT fk_customer_service_packages_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_customer_service_packages_service_package_id FOREIGN KEY (service_package_id) REFERENCES service_packages (id)\n);\n\nCREATE TABLE invoices (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    invoice_date DATE NOT NULL,\n    period_start DATE NOT NULL,\n    period_end DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    payment_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_invoices PRIMARY KEY (id),\n    CONSTRAINT fk_invoices_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id)\n);\n",
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    customer_number VARCHAR(255) NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    customer_type VARCHAR(255) NOT NULL,\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE consumption_points (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    meter_number VARCHAR(255) NOT NULL,\n    energy_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_consumption_points PRIMARY KEY (id),\n    CONSTRAINT fk_consumption_points_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    consumption_point_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    planned_end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_consumption_point_id FOREIGN KEY (consumption_point_id) REFERENCES consumption_points (id)\n);\n\nCREATE TABLE tariffs (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    base_price DECIMAL(18,2) NOT NULL,\n    work_price DECIMAL(18,2) NOT NULL,\n    product VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_tariffs PRIMARY KEY (id)\n);\n\nCREATE TABLE contract_tariffs (\n    contract_id INTEGER NOT NULL,\n    tariff_id INTEGER NOT NULL,\n    sequence INTEGER,\n    valid_from_date DATE,\n    valid_to_date DATE,\n    CONSTRAINT pk_contract_tariffs PRIMARY KEY (contract_id, tariff_id),\n    CONSTRAINT fk_contract_tariffs_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_contract_tariffs_tariff_id FOREIGN KEY (tariff_id) REFERENCES tariffs (id)\n);\n\nCREATE TABLE service_packages (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_service_packages PRIMARY KEY (id)\n);\n\nCREATE TABLE customer_service_packages (\n    customer_id INTEGER NOT NULL,\n    service_package_id INTEGER NOT NULL,\n    valid_from_date DATE NOT NULL,\n    valid_to_date DATE,\n    CONSTRAINT pk_customer_service_packages PRIMARY KEY (customer_id, service_package_id),\n    CONSTRAINT fk_customer_service_packages_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_customer_service_packages_service_package_id FOREIGN KEY (service_package_id) REFERENCES service_packages (id)\n);\n\nCREATE TABLE invoices (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    invoice_date DATE NOT NULL,\n    period_start_date DATE NOT NULL,\n    period_end_date DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    payment_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_invoices PRIMARY KEY (id),\n    CONSTRAINT fk_invoices_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -1059,25 +1071,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema abgebildet: customers, consumption_points, tariffs, contracts, contract_tariffs, invoices, service_packages, customer_service_packages. Keine Entität fehlt.",
+          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, consumption_points, tariffs, contracts, invoices, service_packages. Zusätzlich sind die beiden M:N-Beziehungstabellen (contract_tariffs, customer_service_packages) korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Kontaktdaten wurden sinnvoll in phone, email, address aufgelöst. Zeitraum wurde in period_start und period_end aufgelöst. Gültigkeitsdaten für Servicepakete sind mit valid_from und valid_until vorhanden.",
+          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: Kundennummer→customer_number, Betreuungsbeginn→care_start_date, Zählernummer→meter_number, Energietyp→energy_type, Grundpreis→base_price, Arbeitspreis→work_price, Vertrags-ID→contract_id, Rechnungsdatum→invoice_date, Zeitraum→period_start_date/period_end_date, Zahlungsstand→payment_status. Gültigkeitsdaten in Junction Tables sind vorhanden (valid_from_date, valid_to_date).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt abgebildet: 1:N (Kunde→Abnahmestelle, Abnahmestelle→Vertrag, Vertrag→Rechnung), M:N (Vertrag↔Tarif via contract_tariffs, Kunde↔Servicepaket via customer_service_packages). Fremdschlüssel sind korrekt gesetzt und nicht nullable für 1:N-Beziehungen.",
+          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Kunde→Abnahmestelle (1:N via customer_id FK), (2) Abnahmestelle→Vertrag (1:N via consumption_point_id FK), (3) Vertrag↔Tarif (M:N via contract_tariffs Junction Table mit Composite PK), (4) Vertrag→Rechnung (1:N via contract_id FK), (5) Kunde↔Servicepaket (M:N via customer_service_packages Junction Table mit Composite PK und Gültigkeitsdaten).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten. Junction-Tables (contract_tariffs, customer_service_packages) sind korrekt normalisiert mit eigenem PK und FK-Paaren.",
+          "beschreibung": "Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Basis-Entitäten, (2) Junction Tables sind korrekt normalisiert mit Composite PKs und FKs, (3) Gültigkeitsdaten in M:N-Beziehungen sind angemessen modelliert, (4) Keine funktionalen Abhängigkeiten außerhalb des PK, (5) Keine Transitivitäten. Die Struktur unterstützt die Anforderung, dass Kunden Servicepakete im Laufe der Zeit wechseln können (via valid_from_date/valid_to_date).",
           "korrekturanweisung": ""
         }
       ],
@@ -1088,33 +1100,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 18826,
-    "total_output_tokens": 7170,
-    "total_tokens": 25996,
+    "total_input_tokens": 18748,
+    "total_output_tokens": 6894,
+    "total_tokens": 25642,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1658,
-        "output_tokens": 1495,
+        "output_tokens": 1443,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3239,
-        "output_tokens": 2607,
+        "input_tokens": 3187,
+        "output_tokens": 2176,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 5071,
-        "output_tokens": 2197,
+        "input_tokens": 5076,
+        "output_tokens": 2213,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 8858,
-        "output_tokens": 871,
+        "input_tokens": 8827,
+        "output_tokens": 1062,
         "cost_usd": 0.0
       }
     },
@@ -1125,7 +1137,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1658,
-        "output_tokens": 1495,
+        "output_tokens": 1443,
         "cost_usd": 0.0
       },
       {
@@ -1133,8 +1145,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3239,
-        "output_tokens": 2607,
+        "input_tokens": 3187,
+        "output_tokens": 2176,
         "cost_usd": 0.0
       },
       {
@@ -1142,8 +1154,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5071,
-        "output_tokens": 2197,
+        "input_tokens": 5076,
+        "output_tokens": 2213,
         "cost_usd": 0.0
       },
       {
@@ -1151,8 +1163,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8858,
-        "output_tokens": 871,
+        "input_tokens": 8827,
+        "output_tokens": 1062,
         "cost_usd": 0.0
       }
     ]

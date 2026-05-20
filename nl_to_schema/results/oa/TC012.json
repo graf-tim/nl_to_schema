@@ -2,8 +2,8 @@
   "testfall_id": "TC012",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.982608695652174,
-  "score_gesamt": 0.9895652173913044,
+  "score_semantisch": 0.9652173913043478,
+  "score_gesamt": 0.9791304347826086,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 0
     },
     "attribut": {
-      "precision": 0.9565217391304348,
-      "recall": 0.9565217391304348,
-      "f1": 0.9565217391304348,
-      "matched": 22,
-      "nur_in_referenz": 1,
-      "nur_in_generiert": 1
+      "precision": 0.9130434782608695,
+      "recall": 0.9130434782608695,
+      "f1": 0.9130434782608695,
+      "matched": 21,
+      "nur_in_referenz": 2,
+      "nur_in_generiert": 2
     },
     "beziehung": {
       "recall": 1.0,
@@ -40,6 +40,11 @@
   "abweichungen": [
     {
       "element": "employees.entrydate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "orders.created_at",
       "typ": "attribut",
       "fehlerklasse": null
     }
@@ -137,7 +142,7 @@
               "nullable": false
             },
             {
-              "name": "created_at",
+              "name": "creation_date",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
@@ -205,7 +210,7 @@
               "name": "color",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "sale_price",
@@ -260,8 +265,7 @@
             "Glasstärke links",
             "Glasstärke rechts",
             "Farbe",
-            "Verkaufspreis",
-            "Auftrag"
+            "Verkaufspreis"
           ],
           "beschreibung": "Brille mit optischen und visuellen Eigenschaften, gehört zu genau einem Auftrag"
         },
@@ -273,7 +277,7 @@
             "Rolle",
             "Eintrittsdatum"
           ],
-          "beschreibung": "Mitarbeitende Person des Optikergeschäfts"
+          "beschreibung": "Mitarbeitende Person des Optikergeschäfts, die Aufträge anlegt"
         }
       ],
       "beziehungen": [
@@ -298,25 +302,26 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar ist, ob die Glasstärke links und rechts als separate Attribute oder als strukturiertes Attribut (z.B. Objekt) modelliert werden sollen",
-          "betroffene_elemente": [
-            "Brille"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob es weitere Statuskategorien neben 'offen', 'in Arbeit' und 'abgeholt' gibt oder ob diese Liste abschließend ist",
-          "betroffene_elemente": [
-            "Auftrag"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob Kunden eindeutig identifizierbar sein müssen (z.B. durch Kundennummer) oder ob Vorname und Nachname ausreichen",
+          "beschreibung": "Unklar ist, ob die Kundenidentifikation über eine eindeutige Kundennummer erfolgt oder ob Vorname und Nachname als Identifikator ausreichen",
           "betroffene_elemente": [
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob Brillen innerhalb eines Auftrags eindeutig identifizierbar sein müssen oder ob eine Reihenfolge/Nummerierung erforderlich ist",
+          "beschreibung": "Unklar ist, ob der Status eines Auftrags ein vordefiniertes Enum (offen, in Arbeit, abgeholt) ist oder ob weitere Statuswerte möglich sind",
+          "betroffene_elemente": [
+            "Auftrag"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob Brillen nach dem Abholen eines Auftrags gelöscht werden oder ob die Auftragshistorie mit allen Brillen erhalten bleibt",
+          "betroffene_elemente": [
+            "Brille",
+            "Auftrag"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob eine Brille auch ohne Auftrag existieren kann oder ob sie nur im Kontext eines Auftrags relevant ist",
           "betroffene_elemente": [
             "Brille"
           ]
@@ -467,7 +472,7 @@
               "name": "farbe",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             },
             {
               "name": "verkaufspreis",
@@ -529,25 +534,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem Anforderungstext und ERModell sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeiter), orders (Auftrag), glasses (Brille). Keine Entität fehlt.",
+          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeiter), orders (Auftrag), glasses (Brille). Keine Entität fehlt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: Kunde (firstname, lastname, phone, email, birthdate), Mitarbeiter (firstname, lastname, role, hire_date), Auftrag (created_at, status, customer_id, employee_id), Brille (frame_type, lens_strength_left, lens_strength_right, color, sale_price, order_id). Nullable-Flags entsprechen den Anforderungen (Telefon, E-Mail, Farbe optional).",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: customers (firstname, lastname, phone, email, birthdate), employees (firstname, lastname, role, hire_date), orders (creation_date, status, customer_id, employee_id), glasses (frame_type, lens_strength_left, lens_strength_right, color, sale_price, order_id). Attributnamen folgen den Konventionen (snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Beziehungen aus dem ERModell sind korrekt implementiert: 1:N Kunde→Auftrag (customer_id in orders), 1:N Mitarbeiter→Auftrag (employee_id in orders), 1:N Auftrag→Brille (order_id in glasses). Kardinalitäten und Fremdschlüssel sind konsistent.",
+          "beschreibung": "Alle drei Beziehungen aus dem ERModell sind korrekt implementiert: 1:N Kunde→Auftrag (customer_id in orders), 1:N Mitarbeiter→Auftrag (employee_id in orders), 1:N Auftrag→Brille (order_id in glasses). Kardinalitäten und Richtungen sind korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Alle Attribute sind atomar (keine zusammengesetzten Werte wie Glasstärke als Objekt), (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Keine Redundanzen erkannt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine unnötigen Denormalisierungen vorhanden.",
           "korrekturanweisung": ""
         }
       ],
@@ -557,7 +562,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    birthdate DATE,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    customer_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE glasses (\n    id INTEGER NOT NULL,\n    frame_type VARCHAR(255) NOT NULL,\n    lens_strength_left DECIMAL(18,2) NOT NULL,\n    lens_strength_right DECIMAL(18,2) NOT NULL,\n    color VARCHAR(255),\n    sale_price DECIMAL(18,2) NOT NULL,\n    order_id INTEGER NOT NULL,\n    CONSTRAINT pk_glasses PRIMARY KEY (id),\n    CONSTRAINT fk_glasses_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    birthdate DATE,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    creation_date TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    customer_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_orders_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE glasses (\n    id INTEGER NOT NULL,\n    frame_type VARCHAR(255) NOT NULL,\n    lens_strength_left DECIMAL(18,2) NOT NULL,\n    lens_strength_right DECIMAL(18,2) NOT NULL,\n    color VARCHAR(255) NOT NULL,\n    sale_price DECIMAL(18,2) NOT NULL,\n    order_id INTEGER NOT NULL,\n    CONSTRAINT pk_glasses PRIMARY KEY (id),\n    CONSTRAINT fk_glasses_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -582,25 +587,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem Anforderungstext und ERModell sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeiter), orders (Auftrag), glasses (Brille). Keine Entität fehlt.",
+          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeiter), orders (Auftrag), glasses (Brille). Keine Entität fehlt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: Kunde (firstname, lastname, phone, email, birthdate), Mitarbeiter (firstname, lastname, role, hire_date), Auftrag (created_at, status, customer_id, employee_id), Brille (frame_type, lens_strength_left, lens_strength_right, color, sale_price, order_id). Nullable-Flags entsprechen den Anforderungen (Telefon, E-Mail, Farbe optional).",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: customers (firstname, lastname, phone, email, birthdate), employees (firstname, lastname, role, hire_date), orders (creation_date, status, customer_id, employee_id), glasses (frame_type, lens_strength_left, lens_strength_right, color, sale_price, order_id). Attributnamen folgen den Konventionen (snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Beziehungen aus dem ERModell sind korrekt implementiert: 1:N Kunde→Auftrag (customer_id in orders), 1:N Mitarbeiter→Auftrag (employee_id in orders), 1:N Auftrag→Brille (order_id in glasses). Kardinalitäten und Fremdschlüssel sind konsistent.",
+          "beschreibung": "Alle drei Beziehungen aus dem ERModell sind korrekt implementiert: 1:N Kunde→Auftrag (customer_id in orders), 1:N Mitarbeiter→Auftrag (employee_id in orders), 1:N Auftrag→Brille (order_id in glasses). Kardinalitäten und Richtungen sind korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Alle Attribute sind atomar (keine zusammengesetzten Werte wie Glasstärke als Objekt), (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Keine Redundanzen erkannt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine unnötigen Denormalisierungen vorhanden.",
           "korrekturanweisung": ""
         }
       ],
@@ -611,20 +616,20 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 13664,
-    "total_output_tokens": 4149,
-    "total_tokens": 17813,
+    "total_input_tokens": 13654,
+    "total_output_tokens": 4112,
+    "total_tokens": 17766,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1526,
-        "output_tokens": 943,
+        "output_tokens": 938,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2522,
+        "input_tokens": 2517,
         "output_tokens": 1150,
         "cost_usd": 0.0
       },
@@ -636,8 +641,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5889,
-        "output_tokens": 899,
+        "input_tokens": 5884,
+        "output_tokens": 867,
         "cost_usd": 0.0
       }
     },
@@ -648,7 +653,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1526,
-        "output_tokens": 943,
+        "output_tokens": 938,
         "cost_usd": 0.0
       },
       {
@@ -656,7 +661,7 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2522,
+        "input_tokens": 2517,
         "output_tokens": 1150,
         "cost_usd": 0.0
       },
@@ -674,8 +679,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5889,
-        "output_tokens": 899,
+        "input_tokens": 5884,
+        "output_tokens": 867,
         "cost_usd": 0.0
       }
     ]

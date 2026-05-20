@@ -2,33 +2,33 @@
   "testfall_id": "TC089",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.4921558441558442,
-  "score_gesamt": 0.6952935064935065,
+  "score_semantisch": 0.4490204081632653,
+  "score_gesamt": 0.6694122448979591,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 13,
-    "pk_tabellen_mit_pk": 13,
-    "fk_referenzen_gesamt": 14,
+    "pk_tabellen_gesamt": 17,
+    "pk_tabellen_mit_pk": 17,
+    "fk_referenzen_gesamt": 22,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.6923076923076923,
-      "recall": 0.6,
-      "f1": 0.6428571428571429,
-      "matched": 9,
-      "nur_in_referenz": 6,
-      "nur_in_generiert": 4
+      "precision": 0.5882352941176471,
+      "recall": 0.6666666666666666,
+      "f1": 0.625,
+      "matched": 10,
+      "nur_in_referenz": 5,
+      "nur_in_generiert": 7
     },
     "attribut": {
-      "precision": 0.5625,
-      "recall": 0.4,
-      "f1": 0.4675324675324675,
-      "matched": 36,
-      "nur_in_referenz": 54,
-      "nur_in_generiert": 28
+      "precision": 0.3490566037735849,
+      "recall": 0.4111111111111111,
+      "f1": 0.3775510204081633,
+      "matched": 37,
+      "nur_in_referenz": 53,
+      "nur_in_generiert": 69
     },
     "beziehung": {
       "recall": 0.24,
@@ -38,11 +38,6 @@
     }
   },
   "abweichungen": [
-    {
-      "element": "staffs",
-      "typ": "tabelle",
-      "fehlerklasse": null
-    },
     {
       "element": "specialties",
       "typ": "tabelle",
@@ -66,6 +61,16 @@
     {
       "element": "lab_orders",
       "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "diagnoses.patient_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "diagnoses.appointment_id",
+      "typ": "attribut",
       "fehlerklasse": null
     },
     {
@@ -114,6 +119,11 @@
       "fehlerklasse": null
     },
     {
+      "element": "lab_results.result_value",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "lab_results.resulted_at",
       "typ": "attribut",
       "fehlerklasse": null
@@ -129,7 +139,12 @@
       "fehlerklasse": null
     },
     {
-      "element": "appointments.created_at",
+      "element": "emergency_contacts.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "emergency_contacts.lastname",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -154,32 +169,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "patients.created_at",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "patients.created_by_staff_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "staffs.id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "staffs.firstname",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "staffs.lastname",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "staffs.role",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -364,17 +354,17 @@
       "fehlerklasse": null
     },
     {
-      "element": "appointments → staffs",
+      "element": "diagnoses → appointments",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "diagnoses → patients",
       "typ": "beziehung",
       "fehlerklasse": null
     },
     {
       "element": "diagnoses → staffs",
-      "typ": "beziehung",
-      "fehlerklasse": null
-    },
-    {
-      "element": "documents → staffs",
       "typ": "beziehung",
       "fehlerklasse": null
     },
@@ -440,6 +430,48 @@
     "logical_schema": {
       "tables": [
         {
+          "name": "staff",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "department",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
           "name": "patients",
           "columns": [
             {
@@ -483,6 +515,18 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "updated_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": []
@@ -509,10 +553,22 @@
               "nullable": false
             },
             {
+              "name": "insurance_provider",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
               "name": "insurance_number",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -539,13 +595,7 @@
               "nullable": false
             },
             {
-              "name": "firstname",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "lastname",
+              "name": "name",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -567,6 +617,12 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -601,6 +657,12 @@
             {
               "name": "specialty",
               "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
             }
@@ -639,12 +701,76 @@
               "type": "TEXT",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_by",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
             {
               "from_column": "patient_id",
               "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "created_by",
+              "references_table": "staff",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "appointment_physicians",
+          "columns": [
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "physician_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "treatment_start",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "treatment_end",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "physician_id",
+              "references_table": "physicians",
               "references_column": "id"
             }
           ]
@@ -659,18 +785,6 @@
               "nullable": false
             },
             {
-              "name": "patient_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "appointment_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
               "name": "icd_code",
               "type": "VARCHAR",
               "primary_key": false,
@@ -683,10 +797,46 @@
               "nullable": true
             },
             {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "patient_diagnoses",
+          "columns": [
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
               "name": "diagnosis_type",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "diagnosis_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -696,8 +846,197 @@
               "references_column": "id"
             },
             {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "appointment_diagnoses",
+          "columns": [
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
               "from_column": "appointment_id",
               "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "medications",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "appointment_medications",
+          "columns": [
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "medication_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dosage",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "administration_notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "prescription_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "valid_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medication_id",
+              "references_table": "medications",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "patient_medications",
+          "columns": [
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "medication_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dosage",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "administration_notes",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "prescription_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "valid_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "medication_id",
+              "references_table": "medications",
               "references_column": "id"
             }
           ]
@@ -734,100 +1073,18 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
             {
               "from_column": "patient_id",
               "references_table": "patients",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "medications",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "appointment_medications",
-          "columns": [
-            {
-              "name": "appointment_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "medication_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "dosage",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "administration_notes",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "appointment_id",
-              "references_table": "appointments",
-              "references_column": "id"
-            },
-            {
-              "from_column": "medication_id",
-              "references_table": "medications",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "appointment_physicians",
-          "columns": [
-            {
-              "name": "appointment_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "physician_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "appointment_id",
-              "references_table": "appointments",
-              "references_column": "id"
-            },
-            {
-              "from_column": "physician_id",
-              "references_table": "physicians",
               "references_column": "id"
             }
           ]
@@ -845,6 +1102,12 @@
               "name": "appointment_id",
               "type": "INTEGER",
               "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
               "nullable": false
             },
             {
@@ -858,12 +1121,34 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "requested_by",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
             {
               "from_column": "appointment_id",
               "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "requested_by",
+              "references_table": "staff",
               "references_column": "id"
             }
           ]
@@ -890,8 +1175,8 @@
               "nullable": false
             },
             {
-              "name": "result_value",
-              "type": "VARCHAR",
+              "name": "measured_value",
+              "type": "DECIMAL",
               "primary_key": false,
               "nullable": true
             },
@@ -912,6 +1197,12 @@
               "type": "DATE",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -950,20 +1241,32 @@
               "nullable": false
             },
             {
-              "name": "file_content",
-              "type": "TEXT",
+              "name": "filename",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "filepath",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "document_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_by",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             },
             {
               "name": "created_at",
               "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "created_by",
-              "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             }
@@ -977,6 +1280,11 @@
             {
               "from_column": "appointment_id",
               "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "created_by",
+              "references_table": "staff",
               "references_column": "id"
             }
           ]
@@ -1113,26 +1421,26 @@
         {
           "von": "Patient",
           "zu": "Diagnose",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Patient kann mehrere Diagnosen haben (chronisch und akut)"
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Patient kann mehrere Diagnosen haben; Zuordnung zu Termin oder Patient unklar"
         },
         {
           "von": "Termin",
           "zu": "Diagnose",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Termin kann mehrere Diagnosen haben (optional, je nach Klärung der Zuordnung)"
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Termin kann mehrere Diagnosen haben; Zuordnung zu Termin oder Patient unklar"
         },
         {
           "von": "Termin",
           "zu": "Medikament",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Termin kann mehrere Medikamente verordnen; ein Medikament kann mehreren Terminen zugeordnet sein"
+          "beschreibung": "Ein Termin kann mehrere Medikamente verordnen; Dosierung und Hinweise können sich ändern"
         },
         {
           "von": "Patient",
           "zu": "Allergie",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Patient kann mehrere Allergien und Unverträglichkeiten haben"
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Patient kann mehrere Allergien/Unverträglichkeiten haben"
         },
         {
           "von": "Termin",
@@ -1150,53 +1458,47 @@
           "von": "Patient",
           "zu": "Dokument",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Patient kann mehrere Dokumente haben (allgemein oder terminbezogen)"
+          "beschreibung": "Ein Patient kann mehrere Dokumente haben, die sich allgemein auf ihn beziehen"
         },
         {
           "von": "Termin",
           "zu": "Dokument",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Termin kann mehrere Dokumente haben (optional, je nach Zuordnung)"
+          "beschreibung": "Ein Termin kann mehrere Dokumente haben, die sich auf diesen Termin beziehen"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Kardinalität Notfallkontakte: Unklar, ob ein Patient einen oder mehrere Notfallkontakte haben soll. Text: 'Ob ein Patient mehrere Notfallkontakte haben soll oder nur einen, ist intern noch nicht ganz einheitlich besprochen.'",
+          "beschreibung": "Kardinalität Notfallkontakte: Unklar, ob ein Patient einen oder mehrere Notfallkontakte haben soll; intern noch nicht einheitlich besprochen",
           "betroffene_elemente": [
             "Patient",
             "Notfallkontakt"
           ]
         },
         {
-          "beschreibung": "Zuordnung Diagnosen: Unklar, ob Diagnosen zum einzelnen Termin oder grundsätzlich zur Person abgelegt werden sollen. Text: 'Nicht ganz klar ist noch, ob Diagnosen eher zum einzelnen Termin oder eher grundsätzlich zur Person abgelegt werden sollen.'",
+          "beschreibung": "Diagnose-Zuordnung: Unklar, ob Diagnosen eher zum einzelnen Termin oder grundsätzlich zur Person abgelegt werden sollen; in der Realität gibt es akute und chronische Diagnosen",
           "betroffene_elemente": [
             "Diagnose",
-            "Termin",
-            "Patient"
+            "Patient",
+            "Termin"
           ]
         },
         {
-          "beschreibung": "Erfassung Allergien: Unklar, ob Allergien nur als Freitext oder als eigene strukturierte Einträge gepflegt werden sollen. Text: 'Ob Allergien nur als Freitext reichen oder als eigene Einträge gepflegt werden sollen, ist offen.'",
+          "beschreibung": "Allergie-Erfassung: Unklar, ob Allergien nur als Freitext reichen oder als eigene Einträge gepflegt werden sollen",
           "betroffene_elemente": [
             "Allergie"
           ]
         },
         {
-          "beschreibung": "Zuordnung Dokumente: Unklar, ob Dokumente sich auf einen Termin oder allgemein auf den Patienten beziehen. Text: 'Diese Unterlagen beziehen sich häufig auf einen Termin, manchmal aber eher allgemein auf den Patienten.'",
+          "beschreibung": "Dokument-Zuordnung: Unterlagen beziehen sich häufig auf einen Termin, manchmal aber eher allgemein auf den Patienten; Zuordnungslogik unklar",
           "betroffene_elemente": [
             "Dokument",
-            "Termin",
-            "Patient"
+            "Patient",
+            "Termin"
           ]
         },
         {
-          "beschreibung": "Versicherungsnummer optional: Unklar, wie mit fehlenden Versicherungsnummern umzugehen ist. Text: 'bei einigen liegt die Versicherungsnummer anfangs noch nicht vor'",
-          "betroffene_elemente": [
-            "Versicherung"
-          ]
-        },
-        {
-          "beschreibung": "Medikamentenverlauf: Unklar, wie Änderungen von Dosierung und Einnahmehinweisen im Verlauf versioniert oder dokumentiert werden sollen.",
+          "beschreibung": "Medikament-Versionierung: Dosierung und Einnahmehinweise können sich im Verlauf ändern; Unklar, wie Versionsgeschichte oder Änderungsverlauf abgebildet werden soll",
           "betroffene_elemente": [
             "Medikament",
             "Termin"
@@ -1216,7 +1518,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "Name",
+              "name": "Vorname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Nachname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1244,6 +1552,18 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "AktualisiertAm",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -1269,10 +1589,22 @@
               "pflichtfeld": true
             },
             {
+              "name": "Versicherungsanbieter",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
               "name": "Versicherungsnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -1314,6 +1646,12 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -1335,6 +1673,12 @@
             {
               "name": "Fachrichtung",
               "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1372,6 +1716,18 @@
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ErstelltVon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1385,19 +1741,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "PatientenID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "TerminID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "ICD_Code",
+              "name": "ICDCode",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1411,6 +1755,59 @@
             {
               "name": "Diagnosetyp",
               "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Medikament",
+          "attribute": [
+            {
+              "name": "MedikamentID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Dosierung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Einnahmehinweise",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "GültigAb",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "GültigBis",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1448,35 +1845,12 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
-            }
-          ]
-        },
-        {
-          "name": "Medikament",
-          "attribute": [
-            {
-              "name": "MedikamentID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
             },
             {
-              "name": "Name",
-              "datentyp": "VARCHAR",
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "Dosierung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Einnahmehinweise",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -1506,6 +1880,18 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "AngefordertVon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -1525,10 +1911,16 @@
               "pflichtfeld": true
             },
             {
-              "name": "Einzelwert",
+              "name": "TestName",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Messwert",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             },
             {
               "name": "Referenzbereich",
@@ -1547,6 +1939,12 @@
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -1578,20 +1976,32 @@
               "pflichtfeld": true
             },
             {
-              "name": "Dateiinhalt",
-              "datentyp": "TEXT",
+              "name": "Dateiname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Dateipfad",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
               "name": "Erstellungsdatum",
-              "datentyp": "TIMESTAMP",
+              "datentyp": "DATE",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "Ersteller",
               "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "ErstelltAm",
+              "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1602,7 +2012,7 @@
         {
           "von": "Patient",
           "zu": "Versicherung",
-          "kardinalitaet": "1:1",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
@@ -1618,37 +2028,58 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Patient",
-          "zu": "Diagnose",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Termin",
-          "zu": "Diagnose",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Patient",
-          "zu": "Allergie",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
           "von": "Termin",
           "zu": "Arzt",
           "kardinalitaet": "M:N",
-          "beziehungsattribute": []
+          "beziehungsattribute": [
+            "Rolle",
+            "BehandlungsBeginn",
+            "BehandlungsEnde"
+          ]
+        },
+        {
+          "von": "Patient",
+          "zu": "Diagnose",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "Feststellungsdatum",
+            "Status"
+          ]
+        },
+        {
+          "von": "Termin",
+          "zu": "Diagnose",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "Feststellungsdatum",
+            "Status"
+          ]
         },
         {
           "von": "Termin",
           "zu": "Medikament",
           "kardinalitaet": "M:N",
           "beziehungsattribute": [
-            "Dosierung",
-            "Einnahmehinweise"
+            "Verordnungsdatum",
+            "GültigAb",
+            "GültigBis"
           ]
+        },
+        {
+          "von": "Patient",
+          "zu": "Medikament",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "Verordnungsdatum",
+            "GültigAb",
+            "GültigBis"
+          ]
+        },
+        {
+          "von": "Patient",
+          "zu": "Allergie",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
         },
         {
           "von": "Termin",
@@ -1696,15 +2127,39 @@
           "erfuellt": true,
           "beschreibung": "FK-Integritätsquote: 1.00",
           "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Entität fehlt: 'Mitarbeiter/Staff' ist im LogicalSchema vorhanden (staff-Tabelle), aber im RequirementsReport und ERModell nicht als eigenständige Entität dokumentiert. Dies führt zu Inkonsistenzen bei der Nachverfolgung von Erstellern und Anforderern. Zusätzlich: Im ERModell ist 'Arzt' als separate Entität definiert, aber im LogicalSchema gibt es sowohl 'physicians' als auch 'staff'. Die Unterscheidung zwischen Ärzten und allgemeinem Personal ist im ER-Modell nicht klar modelliert.",
+          "korrekturanweisung": "1. Im RequirementsReport und ERModell explizit eine 'Mitarbeiter'- oder 'Staff'-Entität mit Attributen wie Name, Rolle, Fachrichtung definieren. 2. Klären, ob 'physicians' eine Spezialisierung von 'staff' ist oder eine separate Entität. 3. Konsistenz zwischen allen drei Artefakten (RequirementsReport, ERModell, LogicalSchema) herstellen."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere kritische Attribute fehlen oder sind inkonsistent: (1) Im LogicalSchema fehlt in der 'appointments'-Tabelle ein Fremdschlüssel zu 'physicians' – die Beziehung zwischen Termin und Arzt ist nicht direkt modelliert, sondern nur über die Junction-Table 'appointment_physicians'. Dies ist zwar normalisiert, aber die Anforderung 'bei welchem Arzt oder welcher Ärztin der Termin stattgefunden hat' wird nicht direkt abgebildet. (2) In 'lab_requests' ist 'patient_id' redundant, da die Beziehung über 'appointment_id' bereits hergestellt werden kann (wenn appointment_id NOT NULL ist). (3) Im ERModell hat 'Medikament' Attribute 'Dosierung' und 'Einnahmehinweise', aber im LogicalSchema sind diese nur in den Junction-Tables ('appointment_medications', 'patient_medications') vorhanden, nicht in der 'medications'-Tabelle selbst. Dies ist korrekt normalisiert, aber die Modellierung im ER-Modell ist irreführend. (4) 'Diagnose' im ER-Modell hat 'Diagnosetyp' als Attribut der Diagnose selbst, aber im LogicalSchema ist 'diagnosis_type' nur in den Junction-Tables vorhanden – dies ist eine Modellierungsinkongruenz.",
+          "korrekturanweisung": "1. Klären, ob 'appointment_physicians' die einzige Beziehung zwischen Termin und Arzt sein soll oder ob ein direkter FK nötig ist. 2. Überprüfen, ob 'patient_id' in 'lab_requests' redundant ist und ggf. entfernen oder dokumentieren. 3. Im ER-Modell präzisieren, dass 'Dosierung' und 'Einnahmehinweise' Beziehungsattribute sind, nicht Entitätsattribute von 'Medikament'. 4. Ebenso für 'Diagnosetyp': Klären, ob dies ein Entitätsattribut oder Beziehungsattribut ist."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Kardinalitäts- und Modellierungsfehler: (1) Patient-Versicherung: RequirementsReport und ERModell sagen '1:1' (ein Patient hat eine Versicherung), aber LogicalSchema modelliert '1:N' (insurances-Tabelle mit patient_id FK). Dies erlaubt mehrere Versicherungen pro Patient, was der Anforderung widerspricht. (2) Laboranforderung-Termin: Im ERModell ist 'TerminID' ein Pflichtfeld (pflichtfeld: true), aber im LogicalSchema ist 'appointment_id' nullable (nullable: true). Die Anforderung sagt 'Ein Termin kann mehrere Laboranforderungen auslösen', impliziert aber nicht, dass Laboranforderungen auch ohne Termin existieren können. (3) Diagnose-Zuordnung: Das Schema modelliert sowohl 'patient_diagnoses' als auch 'appointment_diagnoses', was die Anforderung 'Unklar, ob Diagnosen eher zum einzelnen Termin oder grundsätzlich zur Person abgelegt werden sollen' widerspiegelt. Dies ist eine ungelöste Anforderungsunklarheit, die im Schema zu Redundanz und Mehrdeutigkeit führt. (4) Medikament-Zuordnung: Analog zu Diagnosen gibt es sowohl 'appointment_medications' als auch 'patient_medications', was ebenfalls Redundanz und Mehrdeutigkeit erzeugt.",
+          "korrekturanweisung": "1. Kardinalität Patient-Versicherung klären: Wenn 1:1, dann 'insurance_id' als NOT NULL FK in 'patients' statt separate 'insurances'-Tabelle. Wenn 1:N, dann RequirementsReport und ERModell korrigieren. 2. 'appointment_id' in 'lab_requests' auf NOT NULL setzen oder dokumentieren, dass Laboranforderungen auch unabhängig von Terminen existieren können. 3. Anforderungsunklarheit 'Diagnose-Zuordnung' mit Stakeholdern klären und dann entweder nur 'patient_diagnoses' oder nur 'appointment_diagnoses' modellieren (oder eine klare Regel für die Nutzung definieren). 4. Analog für Medikamente: Klären, ob Medikamente auf Patient- oder Termin-Ebene verwaltet werden, und entsprechend redundante Junction-Table entfernen."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Normalisierungsprobleme: (1) Redundanz in 'lab_requests': Die Spalte 'patient_id' ist redundant, da jede Laboranforderung über 'appointment_id' auf einen Termin verweist, und jeder Termin über 'patient_id' auf einen Patienten verweist. Dies verletzt die 3NF. (2) Redundanz durch parallele Beziehungen: 'patient_diagnoses' und 'appointment_diagnoses' modellieren die gleiche semantische Information auf zwei verschiedene Arten. Dies führt zu Anomalien: Eine Diagnose könnte in beiden Tabellen für denselben Patienten/Termin existieren, oder es könnte Inkonsistenzen geben, welche Diagnose 'die richtige' ist. (3) Analog: 'appointment_medications' und 'patient_medications' erzeugen die gleiche Redundanz. (4) Fehlende Constraints: Es gibt keine Constraints, die sicherstellen, dass eine Diagnose nicht gleichzeitig in 'patient_diagnoses' und 'appointment_diagnoses' für denselben Patienten/Termin existiert. (5) 'appointment_time' als VARCHAR statt TIME: Dies ist zwar nicht falsch, aber suboptimal für Abfragen und Vergleiche.",
+          "korrekturanweisung": "1. 'patient_id' aus 'lab_requests' entfernen (wenn appointment_id NOT NULL ist) oder dokumentieren, dass Laboranforderungen auch ohne Termin existieren können. 2. Anforderungsunklarheit 'Diagnose-Zuordnung' mit Stakeholdern klären und dann eine der beiden Tabellen ('patient_diagnoses' oder 'appointment_diagnoses') entfernen oder eine klare Regel für die Nutzung definieren. 3. Analog für Medikamente. 4. Falls beide Tabellen notwendig sind, dann Constraints hinzufügen, die Redundanz verhindern. 5. 'appointment_time' in TIME oder TIMESTAMP ändern."
         }
       ],
-      "origin_step": "lsd"
+      "origin_step": "cmd"
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 1,
+    "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE allergies (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    substance VARCHAR(255) NOT NULL,\n    description TEXT,\n    severity VARCHAR(255),\n    CONSTRAINT pk_allergies PRIMARY KEY (id),\n    CONSTRAINT fk_allergies_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    reason_for_visit TEXT,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE medications (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medications PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_medications (\n    appointment_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    dosage VARCHAR(255),\n    administration_notes TEXT,\n    CONSTRAINT pk_appointment_medications PRIMARY KEY (appointment_id, medication_id),\n    CONSTRAINT fk_appointment_medications_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_medications_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n\nCREATE TABLE physicians (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    specialty VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_physicians PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_physicians (\n    appointment_id INTEGER NOT NULL,\n    physician_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointment_physicians PRIMARY KEY (appointment_id, physician_id),\n    CONSTRAINT fk_appointment_physicians_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_physicians_physician_id FOREIGN KEY (physician_id) REFERENCES physicians (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    appointment_id INTEGER,\n    icd_code VARCHAR(255) NOT NULL,\n    description TEXT,\n    diagnosis_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id),\n    CONSTRAINT fk_diagnoses_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_diagnoses_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    appointment_id INTEGER,\n    document_type VARCHAR(255) NOT NULL,\n    file_content TEXT,\n    created_at TIMESTAMP NOT NULL,\n    created_by VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_documents PRIMARY KEY (id),\n    CONSTRAINT fk_documents_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_documents_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id)\n);\n\nCREATE TABLE emergency_contacts (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    relationship VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_emergency_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_emergency_contacts_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE insurances (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    insurance_type VARCHAR(255) NOT NULL,\n    insurance_number VARCHAR(255),\n    CONSTRAINT pk_insurances PRIMARY KEY (id),\n    CONSTRAINT fk_insurances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE lab_requests (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER NOT NULL,\n    request_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_lab_requests PRIMARY KEY (id),\n    CONSTRAINT fk_lab_requests_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id)\n);\n\nCREATE TABLE lab_results (\n    id INTEGER NOT NULL,\n    lab_request_id INTEGER NOT NULL,\n    test_name VARCHAR(255) NOT NULL,\n    result_value VARCHAR(255),\n    reference_range VARCHAR(255),\n    assessment VARCHAR(255),\n    result_date DATE,\n    CONSTRAINT pk_lab_results PRIMARY KEY (id),\n    CONSTRAINT fk_lab_results_lab_request_id FOREIGN KEY (lab_request_id) REFERENCES lab_requests (id)\n);\n",
+    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    updated_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE allergies (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    substance VARCHAR(255) NOT NULL,\n    description TEXT,\n    severity VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_allergies PRIMARY KEY (id),\n    CONSTRAINT fk_allergies_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE staff (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    department VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_staff PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    reason_for_visit TEXT,\n    created_at TIMESTAMP NOT NULL,\n    created_by INTEGER,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_appointments_created_by FOREIGN KEY (created_by) REFERENCES staff (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    icd_code VARCHAR(255) NOT NULL,\n    description TEXT,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_diagnoses (\n    appointment_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    diagnosis_type VARCHAR(255) NOT NULL,\n    diagnosis_date DATE NOT NULL,\n    status VARCHAR(255),\n    CONSTRAINT pk_appointment_diagnoses PRIMARY KEY (appointment_id, diagnosis_id),\n    CONSTRAINT fk_appointment_diagnoses_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE medications (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_medications PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_medications (\n    appointment_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    dosage VARCHAR(255),\n    administration_notes TEXT,\n    prescription_date DATE NOT NULL,\n    valid_from DATE,\n    valid_until DATE,\n    CONSTRAINT pk_appointment_medications PRIMARY KEY (appointment_id, medication_id),\n    CONSTRAINT fk_appointment_medications_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_medications_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n\nCREATE TABLE physicians (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    specialty VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_physicians PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_physicians (\n    appointment_id INTEGER NOT NULL,\n    physician_id INTEGER NOT NULL,\n    role VARCHAR(255),\n    treatment_start TIMESTAMP,\n    treatment_end TIMESTAMP,\n    CONSTRAINT pk_appointment_physicians PRIMARY KEY (appointment_id, physician_id),\n    CONSTRAINT fk_appointment_physicians_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_physicians_physician_id FOREIGN KEY (physician_id) REFERENCES physicians (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    appointment_id INTEGER,\n    document_type VARCHAR(255) NOT NULL,\n    filename VARCHAR(255) NOT NULL,\n    filepath VARCHAR(255),\n    document_date DATE,\n    created_by INTEGER,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_documents PRIMARY KEY (id),\n    CONSTRAINT fk_documents_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_documents_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_documents_created_by FOREIGN KEY (created_by) REFERENCES staff (id)\n);\n\nCREATE TABLE emergency_contacts (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    relationship VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_emergency_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_emergency_contacts_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE insurances (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    insurance_type VARCHAR(255) NOT NULL,\n    insurance_provider VARCHAR(255),\n    insurance_number VARCHAR(255),\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_insurances PRIMARY KEY (id),\n    CONSTRAINT fk_insurances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE lab_requests (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER,\n    patient_id INTEGER NOT NULL,\n    request_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    requested_by INTEGER,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_lab_requests PRIMARY KEY (id),\n    CONSTRAINT fk_lab_requests_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_lab_requests_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_lab_requests_requested_by FOREIGN KEY (requested_by) REFERENCES staff (id)\n);\n\nCREATE TABLE lab_results (\n    id INTEGER NOT NULL,\n    lab_request_id INTEGER NOT NULL,\n    test_name VARCHAR(255) NOT NULL,\n    measured_value DECIMAL(18,2),\n    reference_range VARCHAR(255),\n    assessment VARCHAR(255),\n    result_date DATE,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_lab_results PRIMARY KEY (id),\n    CONSTRAINT fk_lab_results_lab_request_id FOREIGN KEY (lab_request_id) REFERENCES lab_requests (id)\n);\n\nCREATE TABLE patient_diagnoses (\n    patient_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    diagnosis_type VARCHAR(255) NOT NULL,\n    diagnosis_date DATE NOT NULL,\n    status VARCHAR(255),\n    CONSTRAINT pk_patient_diagnoses PRIMARY KEY (patient_id, diagnosis_id),\n    CONSTRAINT fk_patient_diagnoses_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_patient_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE patient_medications (\n    patient_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    dosage VARCHAR(255),\n    administration_notes TEXT,\n    prescription_date DATE NOT NULL,\n    valid_from DATE,\n    valid_until DATE,\n    CONSTRAINT pk_patient_medications PRIMARY KEY (patient_id, medication_id),\n    CONSTRAINT fk_patient_medications_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_patient_medications_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -1725,36 +2180,66 @@
           "erfuellt": true,
           "beschreibung": "FK-Integritätsquote: 1.00",
           "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Entität fehlt: 'Mitarbeiter/Staff' ist im LogicalSchema vorhanden (staff-Tabelle), aber im RequirementsReport und ERModell nicht als eigenständige Entität dokumentiert. Dies führt zu Inkonsistenzen bei der Nachverfolgung von Erstellern und Anforderern. Zusätzlich: Im ERModell ist 'Arzt' als separate Entität definiert, aber im LogicalSchema gibt es sowohl 'physicians' als auch 'staff'. Die Unterscheidung zwischen Ärzten und allgemeinem Personal ist im ER-Modell nicht klar modelliert.",
+          "korrekturanweisung": "1. Im RequirementsReport und ERModell explizit eine 'Mitarbeiter'- oder 'Staff'-Entität mit Attributen wie Name, Rolle, Fachrichtung definieren. 2. Klären, ob 'physicians' eine Spezialisierung von 'staff' ist oder eine separate Entität. 3. Konsistenz zwischen allen drei Artefakten (RequirementsReport, ERModell, LogicalSchema) herstellen."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere kritische Attribute fehlen oder sind inkonsistent: (1) Im LogicalSchema fehlt in der 'appointments'-Tabelle ein Fremdschlüssel zu 'physicians' – die Beziehung zwischen Termin und Arzt ist nicht direkt modelliert, sondern nur über die Junction-Table 'appointment_physicians'. Dies ist zwar normalisiert, aber die Anforderung 'bei welchem Arzt oder welcher Ärztin der Termin stattgefunden hat' wird nicht direkt abgebildet. (2) In 'lab_requests' ist 'patient_id' redundant, da die Beziehung über 'appointment_id' bereits hergestellt werden kann (wenn appointment_id NOT NULL ist). (3) Im ERModell hat 'Medikament' Attribute 'Dosierung' und 'Einnahmehinweise', aber im LogicalSchema sind diese nur in den Junction-Tables ('appointment_medications', 'patient_medications') vorhanden, nicht in der 'medications'-Tabelle selbst. Dies ist korrekt normalisiert, aber die Modellierung im ER-Modell ist irreführend. (4) 'Diagnose' im ER-Modell hat 'Diagnosetyp' als Attribut der Diagnose selbst, aber im LogicalSchema ist 'diagnosis_type' nur in den Junction-Tables vorhanden – dies ist eine Modellierungsinkongruenz.",
+          "korrekturanweisung": "1. Klären, ob 'appointment_physicians' die einzige Beziehung zwischen Termin und Arzt sein soll oder ob ein direkter FK nötig ist. 2. Überprüfen, ob 'patient_id' in 'lab_requests' redundant ist und ggf. entfernen oder dokumentieren. 3. Im ER-Modell präzisieren, dass 'Dosierung' und 'Einnahmehinweise' Beziehungsattribute sind, nicht Entitätsattribute von 'Medikament'. 4. Ebenso für 'Diagnosetyp': Klären, ob dies ein Entitätsattribut oder Beziehungsattribut ist."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Kardinalitäts- und Modellierungsfehler: (1) Patient-Versicherung: RequirementsReport und ERModell sagen '1:1' (ein Patient hat eine Versicherung), aber LogicalSchema modelliert '1:N' (insurances-Tabelle mit patient_id FK). Dies erlaubt mehrere Versicherungen pro Patient, was der Anforderung widerspricht. (2) Laboranforderung-Termin: Im ERModell ist 'TerminID' ein Pflichtfeld (pflichtfeld: true), aber im LogicalSchema ist 'appointment_id' nullable (nullable: true). Die Anforderung sagt 'Ein Termin kann mehrere Laboranforderungen auslösen', impliziert aber nicht, dass Laboranforderungen auch ohne Termin existieren können. (3) Diagnose-Zuordnung: Das Schema modelliert sowohl 'patient_diagnoses' als auch 'appointment_diagnoses', was die Anforderung 'Unklar, ob Diagnosen eher zum einzelnen Termin oder grundsätzlich zur Person abgelegt werden sollen' widerspiegelt. Dies ist eine ungelöste Anforderungsunklarheit, die im Schema zu Redundanz und Mehrdeutigkeit führt. (4) Medikament-Zuordnung: Analog zu Diagnosen gibt es sowohl 'appointment_medications' als auch 'patient_medications', was ebenfalls Redundanz und Mehrdeutigkeit erzeugt.",
+          "korrekturanweisung": "1. Kardinalität Patient-Versicherung klären: Wenn 1:1, dann 'insurance_id' als NOT NULL FK in 'patients' statt separate 'insurances'-Tabelle. Wenn 1:N, dann RequirementsReport und ERModell korrigieren. 2. 'appointment_id' in 'lab_requests' auf NOT NULL setzen oder dokumentieren, dass Laboranforderungen auch unabhängig von Terminen existieren können. 3. Anforderungsunklarheit 'Diagnose-Zuordnung' mit Stakeholdern klären und dann entweder nur 'patient_diagnoses' oder nur 'appointment_diagnoses' modellieren (oder eine klare Regel für die Nutzung definieren). 4. Analog für Medikamente: Klären, ob Medikamente auf Patient- oder Termin-Ebene verwaltet werden, und entsprechend redundante Junction-Table entfernen."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Normalisierungsprobleme: (1) Redundanz in 'lab_requests': Die Spalte 'patient_id' ist redundant, da jede Laboranforderung über 'appointment_id' auf einen Termin verweist, und jeder Termin über 'patient_id' auf einen Patienten verweist. Dies verletzt die 3NF. (2) Redundanz durch parallele Beziehungen: 'patient_diagnoses' und 'appointment_diagnoses' modellieren die gleiche semantische Information auf zwei verschiedene Arten. Dies führt zu Anomalien: Eine Diagnose könnte in beiden Tabellen für denselben Patienten/Termin existieren, oder es könnte Inkonsistenzen geben, welche Diagnose 'die richtige' ist. (3) Analog: 'appointment_medications' und 'patient_medications' erzeugen die gleiche Redundanz. (4) Fehlende Constraints: Es gibt keine Constraints, die sicherstellen, dass eine Diagnose nicht gleichzeitig in 'patient_diagnoses' und 'appointment_diagnoses' für denselben Patienten/Termin existiert. (5) 'appointment_time' als VARCHAR statt TIME: Dies ist zwar nicht falsch, aber suboptimal für Abfragen und Vergleiche.",
+          "korrekturanweisung": "1. 'patient_id' aus 'lab_requests' entfernen (wenn appointment_id NOT NULL ist) oder dokumentieren, dass Laboranforderungen auch ohne Termin existieren können. 2. Anforderungsunklarheit 'Diagnose-Zuordnung' mit Stakeholdern klären und dann eine der beiden Tabellen ('patient_diagnoses' oder 'appointment_diagnoses') entfernen oder eine klare Regel für die Nutzung definieren. 3. Analog für Medikamente. 4. Falls beide Tabellen notwendig sind, dann Constraints hinzufügen, die Redundanz verhindern. 5. 'appointment_time' in TIME oder TIMESTAMP ändern."
         }
       ],
-      "origin_step": "lsd"
+      "origin_step": "cmd"
     },
-    "error": "oa_validator_failed: 1 validation error for CriticReport\nfindings.2.criterion\n  Input should be 'syntaktische_korrektheit', 'pk_vollstaendigkeit', 'fk_integritaet', 'entitaets_vollstaendigkeit', 'attribut_vollstaendigkeit', 'beziehungs_korrektheit' or 'normalisierung' [type=literal_error, input_value='fk_vollstaendigkeit', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+    "error": null,
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 3,
-    "total_input_tokens": 12843,
-    "total_output_tokens": 8533,
-    "total_tokens": 21376,
+    "total_calls": 10,
+    "total_input_tokens": 96580,
+    "total_output_tokens": 38019,
+    "total_tokens": 134599,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1943,
-        "output_tokens": 2421,
+        "output_tokens": 2246,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 1,
-        "input_tokens": 4497,
-        "output_tokens": 3122,
+        "calls": 3,
+        "input_tokens": 22871,
+        "output_tokens": 12905,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 1,
-        "input_tokens": 6403,
-        "output_tokens": 2990,
+        "calls": 3,
+        "input_tokens": 27986,
+        "output_tokens": 14152,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 3,
+        "input_tokens": 43780,
+        "output_tokens": 8716,
         "cost_usd": 0.0
       }
     },
@@ -1765,7 +2250,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1943,
-        "output_tokens": 2421,
+        "output_tokens": 2246,
         "cost_usd": 0.0
       },
       {
@@ -1773,8 +2258,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4497,
-        "output_tokens": 3122,
+        "input_tokens": 4316,
+        "output_tokens": 3716,
         "cost_usd": 0.0
       },
       {
@@ -1782,8 +2267,71 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 6403,
-        "output_tokens": 2990,
+        "input_tokens": 7197,
+        "output_tokens": 3956,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 14165,
+        "output_tokens": 4137,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8764,
+        "output_tokens": 4464,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 11191,
+        "output_tokens": 4663,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 14242,
+        "output_tokens": 2161,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 9791,
+        "output_tokens": 4725,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 9598,
+        "output_tokens": 5533,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 15373,
+        "output_tokens": 2418,
         "cost_usd": 0.0
       }
     ]

@@ -2,33 +2,33 @@
   "testfall_id": "TC082",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.5368538630277093,
-  "score_gesamt": 0.7221123178166255,
+  "score_semantisch": 0.5186074429771909,
+  "score_gesamt": 0.7111644657863145,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 16,
-    "pk_tabellen_mit_pk": 16,
-    "fk_referenzen_gesamt": 18,
+    "pk_tabellen_gesamt": 18,
+    "pk_tabellen_mit_pk": 18,
+    "fk_referenzen_gesamt": 20,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.6875,
+      "precision": 0.6111111111111112,
       "recall": 0.7333333333333333,
-      "f1": 0.7096774193548386,
+      "f1": 0.6666666666666666,
       "matched": 11,
       "nur_in_referenz": 4,
-      "nur_in_generiert": 5
+      "nur_in_generiert": 7
     },
     "attribut": {
-      "precision": 0.4444444444444444,
-      "recall": 0.358974358974359,
-      "f1": 0.39716312056737585,
-      "matched": 28,
-      "nur_in_referenz": 50,
-      "nur_in_generiert": 35
+      "precision": 0.42028985507246375,
+      "recall": 0.3717948717948718,
+      "f1": 0.3945578231292517,
+      "matched": 29,
+      "nur_in_referenz": 49,
+      "nur_in_generiert": 40
     },
     "beziehung": {
       "recall": 0.47058823529411764,
@@ -60,6 +60,11 @@
     },
     {
       "element": "customers.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "customers.customer_type",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -119,11 +124,6 @@
       "fehlerklasse": null
     },
     {
-      "element": "sites.site_type",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "technicians.firstname",
       "typ": "attribut",
       "fehlerklasse": null
@@ -175,11 +175,6 @@
     },
     {
       "element": "devices.serial_number",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "devices.device_type",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -375,7 +370,7 @@
               "nullable": false
             },
             {
-              "name": "type",
+              "name": "site_type",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -417,7 +412,7 @@
               "nullable": false
             },
             {
-              "name": "type",
+              "name": "device_type",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -438,7 +433,7 @@
           "foreign_keys": []
         },
         {
-          "name": "device_site_history",
+          "name": "device_sites",
           "columns": [
             {
               "name": "id",
@@ -557,7 +552,7 @@
           "foreign_keys": []
         },
         {
-          "name": "device_radio_cells",
+          "name": "carriers",
           "columns": [
             {
               "name": "id",
@@ -566,30 +561,19 @@
               "nullable": false
             },
             {
-              "name": "device_id",
-              "type": "INTEGER",
+              "name": "designation",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "radio_cell_id",
-              "type": "INTEGER",
+              "name": "frequency_range",
+              "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             }
           ],
-          "foreign_keys": [
-            {
-              "from_column": "device_id",
-              "references_table": "devices",
-              "references_column": "id"
-            },
-            {
-              "from_column": "radio_cell_id",
-              "references_table": "radio_cells",
-              "references_column": "id"
-            }
-          ]
+          "foreign_keys": []
         },
         {
           "name": "radio_cell_frequency_bands",
@@ -627,6 +611,76 @@
           ]
         },
         {
+          "name": "radio_cell_carriers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "radio_cell_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "carrier_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "radio_cell_id",
+              "references_table": "radio_cells",
+              "references_column": "id"
+            },
+            {
+              "from_column": "carrier_id",
+              "references_table": "carriers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "device_radio_cells",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "device_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "radio_cell_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "device_id",
+              "references_table": "devices",
+              "references_column": "id"
+            },
+            {
+              "from_column": "radio_cell_id",
+              "references_table": "radio_cells",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
           "name": "customers",
           "columns": [
             {
@@ -637,12 +691,6 @@
             },
             {
               "name": "designation",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "customer_type",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -657,12 +705,6 @@
               "name": "id",
               "type": "INTEGER",
               "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "customer_id",
-              "type": "INTEGER",
-              "primary_key": false,
               "nullable": false
             },
             {
@@ -684,10 +726,10 @@
               "nullable": false
             },
             {
-              "name": "location_type",
-              "type": "VARCHAR",
+              "name": "customer_id",
+              "type": "INTEGER",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -718,6 +760,18 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "from_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "to_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -890,7 +944,7 @@
               "nullable": false
             },
             {
-              "name": "personnel_number",
+              "name": "designation",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -956,7 +1010,7 @@
             "Inbetriebnahme",
             "Außerbetriebnahme"
           ],
-          "beschreibung": "An einem Standort stehen verschiedene Geräte wie Antennen, Router oder Basisstationen. Manche Geräte werden ersetzt, die Historie ist wichtig."
+          "beschreibung": "An einem Standort stehen verschiedene Geräte wie Antennen, Router oder Basisstationen. Geräte werden irgendwann ersetzt, die Historie ist wichtig."
         },
         {
           "name": "Funkzelle",
@@ -966,7 +1020,7 @@
             "Sektorbezeichnung",
             "Status"
           ],
-          "beschreibung": "Funkzellen werden mit Kennung, Technologie (z.B. LTE oder 5G), Sektorbezeichnung und Status erfasst. Eine Funkzelle hängt an einem Standort."
+          "beschreibung": "Funkzellen werden mit Kennung, Technologie (z.B. LTE oder 5G), Sektorbezeichnung und Status erfasst. Eine Funkzelle hängt an einem Standort und nutzt ein oder mehrere Frequenzbänder."
         },
         {
           "name": "Frequenzband",
@@ -974,7 +1028,7 @@
             "Bezeichnung",
             "Frequenzbereich"
           ],
-          "beschreibung": "Frequenzbänder werden von Funkzellen genutzt. Ein Frequenzband kann in vielen Funkzellen verwendet werden."
+          "beschreibung": "Ein Frequenzband kann in vielen Funkzellen verwendet werden."
         },
         {
           "name": "Anschluss",
@@ -983,15 +1037,14 @@
             "Aktivierungsdatum",
             "Technischer Status"
           ],
-          "beschreibung": "Festnetzanschlüsse von Geschäftskunden mit Tarif, Aktivierungsdatum und technischem Status. Ein Kunde kann mehrere Anschlüsse haben."
+          "beschreibung": "Im Festnetzbereich gibt es Anschlüsse von Geschäftskunden. Ein Kunde kann mehrere Anschlüsse haben, manchmal an verschiedenen Standorten."
         },
         {
           "name": "Kunde",
           "attribute": [
-            "Bezeichnung",
-            "Kundentyp"
+            "Bezeichnung"
           ],
-          "beschreibung": "Geschäftskunden, die Festnetzanschlüsse nutzen und mehrere Anschlüsse an verschiedenen Standorten haben können."
+          "beschreibung": "Geschäftskunde, der einen oder mehrere Anschlüsse haben kann."
         },
         {
           "name": "Störung",
@@ -1001,15 +1054,15 @@
             "Beschreibung",
             "Bearbeitungsstand"
           ],
-          "beschreibung": "Störungen werden dokumentiert mit Meldedatum, Priorität, Beschreibung und aktuellem Bearbeitungsstand. Eine Störung betrifft mindestens einen Anschluss, manchmal auch direkt einen Standort oder eine Funkzelle."
+          "beschreibung": "Störungen werden dokumentiert mit Meldedatum, Priorität, Beschreibung und aktuellem Bearbeitungsstand. Eine Störung betrifft mindestens einen Anschluss, manchmal aber auch direkt einen Standort oder eine Funkzelle."
         },
         {
           "name": "Techniker",
           "attribute": [
             "Name",
-            "Personalien"
+            "Bezeichnung"
           ],
-          "beschreibung": "Techniker bearbeiten Störungen. Ein Techniker bearbeitet im Alltag mehrere Fälle parallel."
+          "beschreibung": "Techniker arbeiten an Störungen und bearbeiten im Alltag mehrere Fälle parallel."
         }
       ],
       "beziehungen": [
@@ -1017,13 +1070,13 @@
           "von": "Standort",
           "zu": "Gerät",
           "kardinalitaet": "1:N",
-          "beschreibung": "An einem Standort stehen verschiedene Geräte. Ein Gerät ist einem Standort zugeordnet."
+          "beschreibung": "An einem Standort stehen verschiedene Geräte."
         },
         {
           "von": "Standort",
           "zu": "Funkzelle",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Funkzelle hängt an einem Standort. Ein Standort kann mehrere Funkzellen haben."
+          "beschreibung": "Eine Funkzelle hängt an einem Standort."
         },
         {
           "von": "Funkzelle",
@@ -1035,7 +1088,7 @@
           "von": "Gerät",
           "zu": "Funkzelle",
           "kardinalitaet": "M:N",
-          "beschreibung": "Geräte sind für Funkzellen relevant. Eine Basisstation kann mehrere Zellen bedienen und eine Zelle kann über mehrere Komponenten laufen."
+          "beschreibung": "Geräte sind für Funkzellen relevant; eine Basisstation bedient mehrere Zellen und eine Zelle läuft über mehrere Komponenten."
         },
         {
           "von": "Kunde",
@@ -1047,13 +1100,13 @@
           "von": "Anschluss",
           "zu": "Standort",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Anschluss kann an verschiedenen Standorten sein. Ein Kunde kann Anschlüsse an verschiedenen Standorten haben."
+          "beschreibung": "Ein Anschluss kann an verschiedenen Standorten sein. Ein Kunde kann mehrere Anschlüsse an verschiedenen Standorten haben."
         },
         {
           "von": "Störung",
           "zu": "Anschluss",
           "kardinalitaet": "M:N",
-          "beschreibung": "Eine Störung betrifft mindestens einen Anschluss. Ein Anschluss kann von mehreren Störungen betroffen sein."
+          "beschreibung": "Eine Störung betrifft mindestens einen Anschluss, kann aber auch mehrere betreffen."
         },
         {
           "von": "Störung",
@@ -1071,19 +1124,19 @@
           "von": "Techniker",
           "zu": "Störung",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Techniker bearbeitet mehrere Störungen. Eine Störung kann von mehreren Technikern bearbeitet werden."
+          "beschreibung": "Techniker arbeiten an Störungen. Ein Techniker bearbeitet mehrere Fälle parallel."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar ist, ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht. Dies hat Auswirkungen auf die Modellierung der Beziehung zwischen Gerät und Standort (1:1 vs. 1:N mit Zeitstempel).",
+          "beschreibung": "Unklar ist, ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht. Dies hat Auswirkungen auf die Modellierung der Beziehung zwischen Gerät und Standort (1:N vs. M:N mit Zeitstempel).",
           "betroffene_elemente": [
             "Gerät",
             "Standort"
           ]
         },
         {
-          "beschreibung": "Teilweise wird in der Fachabteilung von Trägern gesprochen; ob das als separate Entität betrachtet werden muss oder ein Synonym für Frequenzband ist, ist offen.",
+          "beschreibung": "Teilweise wird in der Fachabteilung von Trägern gesprochen; ob das getrennt von Frequenzbändern betrachtet werden muss, ist offen.",
           "betroffene_elemente": [
             "Frequenzband"
           ]
@@ -1177,16 +1230,45 @@
               "pflichtfeld": true
             },
             {
-              "name": "ausserbetrienahme",
+              "name": "ausserbetriebnahme",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Geraet_Standort",
+          "attribute": [
+            {
+              "name": "geraet_standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geraet_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             },
             {
               "name": "standort_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "von_datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bis_datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1255,6 +1337,52 @@
           ]
         },
         {
+          "name": "Funkzelle_Frequenzband",
+          "attribute": [
+            {
+              "name": "funkzelle_frequenzband_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "funkzelle_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "frequenzband_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Geraet_Funkzelle",
+          "attribute": [
+            {
+              "name": "geraet_funkzelle_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geraet_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "funkzelle_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
           "name": "Kunde",
           "attribute": [
             {
@@ -1265,12 +1393,6 @@
             },
             {
               "name": "bezeichnung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "kundentyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1313,6 +1435,41 @@
           ]
         },
         {
+          "name": "Anschluss_Standort",
+          "attribute": [
+            {
+              "name": "anschluss_standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "anschluss_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "von_datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bis_datum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
           "name": "Störung",
           "attribute": [
             {
@@ -1348,6 +1505,75 @@
           ]
         },
         {
+          "name": "Stoerung_Anschluss",
+          "attribute": [
+            {
+              "name": "stoerung_anschluss_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "stoerung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "anschluss_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Stoerung_Standort",
+          "attribute": [
+            {
+              "name": "stoerung_standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "stoerung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "standort_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Stoerung_Funkzelle",
+          "attribute": [
+            {
+              "name": "stoerung_funkzelle_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "stoerung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "funkzelle_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
           "name": "Techniker",
           "attribute": [
             {
@@ -1363,10 +1589,33 @@
               "pflichtfeld": true
             },
             {
-              "name": "personalien",
+              "name": "bezeichnung",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Techniker_Stoerung",
+          "attribute": [
+            {
+              "name": "techniker_stoerung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "techniker_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "stoerung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         }
@@ -1374,26 +1623,44 @@
       "beziehungen": [
         {
           "von": "Standort",
+          "zu": "Funkzelle",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Geraet_Standort",
           "zu": "Gerät",
-          "kardinalitaet": "1:N",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Standort",
+          "von": "Geraet_Standort",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Funkzelle_Frequenzband",
           "zu": "Funkzelle",
-          "kardinalitaet": "1:N",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Funkzelle",
+          "von": "Funkzelle_Frequenzband",
           "zu": "Frequenzband",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Gerät",
+          "von": "Geraet_Funkzelle",
+          "zu": "Gerät",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Geraet_Funkzelle",
           "zu": "Funkzelle",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
@@ -1403,33 +1670,63 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Anschluss",
-          "zu": "Standort",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Störung",
+          "von": "Anschluss_Standort",
           "zu": "Anschluss",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Störung",
+          "von": "Anschluss_Standort",
           "zu": "Standort",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Störung",
-          "zu": "Funkzelle",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Techniker",
+          "von": "Stoerung_Anschluss",
           "zu": "Störung",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Stoerung_Anschluss",
+          "zu": "Anschluss",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Stoerung_Standort",
+          "zu": "Störung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Stoerung_Standort",
+          "zu": "Standort",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Stoerung_Funkzelle",
+          "zu": "Störung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Stoerung_Funkzelle",
+          "zu": "Funkzelle",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Techniker_Stoerung",
+          "zu": "Techniker",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Techniker_Stoerung",
+          "zu": "Störung",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         }
       ]
@@ -1458,38 +1755,26 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Gerät' ist unvollständig modelliert. Das ER-Modell und der Anforderungstext machen deutlich, dass ein Gerät zeitweise an verschiedene Standorte umziehen kann ('Manche Geräte werden irgendwann ersetzt, aber die Historie ist wichtig' und 'Nicht ganz klar ist, ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht'). Das LogicalSchema hat eine Tabelle 'device_site_history' mit from_date und to_date, was die Anforderung adressiert. Allerdings fehlt im ER-Modell diese Beziehung explizit als separate Entität/Beziehungstabelle. Das LogicalSchema hat dies korrekt umgesetzt, aber das ER-Modell zeigt nur eine 1:N-Beziehung von Standort zu Gerät mit standort_id im Gerät selbst. Dies ist ein konzeptioneller Fehler: Die 1:N-Beziehung im ER-Modell kann nicht die zeitliche Dimension (Geräte wechseln Standorte) abbilden. Das LogicalSchema korrigiert dies durch device_site_history, aber das ER-Modell ist fehlerhaft.",
-          "korrekturanweisung": "Im ER-Modell sollte die Beziehung zwischen Gerät und Standort als M:N-Beziehung mit Zeitstempel-Attributen (from_date, to_date) modelliert werden, nicht als 1:N mit standort_id direkt im Gerät. Das LogicalSchema hat dies korrekt umgesetzt (device_site_history), aber das ER-Modell ist inkonsistent."
+          "beschreibung": "Die Entität 'Träger' (Carrier) ist im LogicalSchema vorhanden, wird aber im RequirementsReport und ERModell nicht als eigenständige Entität aufgeführt. Der Anforderungstext erwähnt: 'Teilweise wird in der Fachabteilung auch von Trägern gesprochen; ob das getrennt betrachtet werden muss, ist offen.' Das Schema hat diese Unklarheit durch Einführung einer separaten 'carriers'-Tabelle gelöst, ohne dass dies im konzeptionellen Modell dokumentiert ist. Dies ist eine Abweichung zwischen ER-Modell und LogicalSchema.",
+          "korrekturanweisung": "Entweder (1) die 'carriers'-Tabelle aus dem LogicalSchema entfernen und Träger als Attribut oder Klassifizierung von Frequenzbändern modellieren, oder (2) die 'carriers'-Entität explizit ins ERModell aufnehmen und im RequirementsReport dokumentieren."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Das Attribut 'Personalien' in der Techniker-Entität ist vage und unzureichend. Der Anforderungstext spricht von 'Personalien', das LogicalSchema übersetzt dies zu 'personnel_number' (Personalennummer). Dies ist eine Interpretation, aber 'Personalien' ist ein sehr breiter Begriff (kann Name, Adresse, Geburtsdatum, etc. bedeuten). Das LogicalSchema hat nur 'personnel_number' als optionales Feld, was zu restriktiv ist. Zudem ist unklar, ob dies die einzige zusätzliche Information sein soll oder ob weitere Attribute fehlen.",
-          "korrekturanweisung": "Klärung erforderlich: Soll 'Personalien' nur die Personalennummer sein oder weitere Informationen (z.B. Abteilung, Qualifikation, Kontakt)? Das LogicalSchema sollte präziser sein oder das ER-Modell sollte expliziter definieren, welche Personalien-Attribute erfasst werden."
+          "beschreibung": "Die Tabelle 'devices' fehlt eine Fremdschlüssel-Referenz zu 'sites'. Laut Anforderungstext und ERModell sollen Geräte an Standorten stehen. Das LogicalSchema modelliert dies über die Junction-Table 'device_sites' mit Zeitstempel (von_datum, to_datum), was die Anforderung 'Manche Geräte werden irgendwann ersetzt, aber die Historie ist wichtig' und die Unklarheit 'ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht' korrekt adressiert. Allerdings fehlt in der 'devices'-Tabelle selbst kein kritisches Attribut – die Modellierung ist strukturell korrekt. Jedoch: Die 'devices'-Tabelle hat keine Fremdschlüssel, obwohl sie über 'device_sites' mit 'sites' verknüpft ist. Dies ist nicht falsch, aber die Struktur ist konsistent mit dem ER-Modell.",
+          "korrekturanweisung": "Keine Korrektur erforderlich – die Modellierung über Junction-Table ist korrekt."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen Gerät und Standort ist im ER-Modell als 1:N modelliert (mit standort_id im Gerät), aber das LogicalSchema implementiert dies als M:N mit Zeitstempel (device_site_history). Dies ist ein konzeptioneller Fehler im ER-Modell. Der Anforderungstext sagt: 'Nicht ganz klar ist, ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht.' Das LogicalSchema hat dies korrekt als M:N mit Zeitstempel interpretiert, aber das ER-Modell zeigt nur 1:N. Dies ist eine Inkonsistenz zwischen ER-Modell und LogicalSchema.",
-          "korrekturanweisung": "Das ER-Modell muss korrigiert werden: Die Beziehung Gerät-Standort sollte als M:N mit Zeitstempel-Attributen (from_date, to_date) modelliert werden, nicht als 1:N mit standort_id direkt im Gerät."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen Anschluss und Standort ist im ER-Modell als M:N definiert, aber das LogicalSchema hat keine explizite Tabelle 'connection_sites' mit Fremdschlüsseln. Moment - das LogicalSchema HAT 'connection_sites' mit connection_id und site_id. Dies ist korrekt. Aber das ER-Modell zeigt nur 'Anschluss' mit 'Standort' als M:N ohne weitere Details. Das ist konsistent. Allerdings: Der Anforderungstext sagt 'Unklar ist, ob Anschlüsse immer nur an Kundenstandorten oder auch an Netzstandorten referenziert werden sollen.' Das LogicalSchema hat 'location_type' in der connections-Tabelle, was versucht, dies zu adressieren. Aber dies ist eine schwache Lösung: location_type ist ein VARCHAR, der nur angibt, ob es ein Kundenstandort oder Netzstandort ist, aber nicht, welcher konkrete Standort gemeint ist. Die connection_sites-Tabelle referenziert nur site_id, nicht location_type. Dies ist eine Inkonsistenz.",
-          "korrekturanweisung": "Entweder: (1) location_type in connections entfernen und nur connection_sites verwenden, oder (2) location_type präzisieren und mit site_id kombinieren. Aktuell ist unklar, wie location_type und site_id zusammenhängen."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen Störung und Anschluss ist als M:N modelliert (incident_connections), aber der Anforderungstext sagt: 'Eine Störung betrifft mindestens einen Anschluss, manchmal aber auch direkt einen Standort oder eine Funkzelle.' Dies bedeutet, dass eine Störung MINDESTENS einen dieser drei Objekte betreffen muss (Anschluss ODER Standort ODER Funkzelle). Das LogicalSchema hat alle drei Beziehungen (incident_connections, incident_sites, incident_radio_cells), aber es gibt keine Constraint, die sicherstellt, dass mindestens eine dieser Beziehungen existiert. Dies ist ein Integritätsproblem: Eine Störung könnte ohne jede Beziehung existieren.",
-          "korrekturanweisung": "Entweder: (1) Eine CHECK-Constraint hinzufügen, die sicherstellt, dass mindestens eine der drei Beziehungen existiert, oder (2) Eine der Beziehungen als obligatorisch markieren (z.B. incident_connections mit NOT NULL). Dies ist eine Geschäftslogik-Anforderung, die im LogicalSchema nicht abgebildet ist."
+          "beschreibung": "KRITISCHER FEHLER: Die Beziehung zwischen 'Gerät' und 'Standort' ist im LogicalSchema als M:N mit Zeitstempel modelliert (device_sites mit from_date, to_date), was die Unklarheit aus dem Anforderungstext adressiert. Dies ist konzeptionell korrekt. JEDOCH: Im ERModell ist diese Beziehung als 'Geraet_Standort' mit Zeitstempel definiert, aber die Kardinalität und Semantik sind nicht explizit als 'zeitlich variabel' gekennzeichnet. Das ist eine Interpretation des Modells, die zwar sinnvoll ist, aber nicht aus dem RequirementsReport zwingend folgt. Der Anforderungstext sagt: 'Nicht ganz klar ist, ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht.' Das Schema hat sich für die M:N-Variante mit Zeitstempel entschieden, was eine Annahme darstellt, die hätte explizit geklärt werden müssen. ZWEITER FEHLER: Die Beziehung 'Störung betrifft mindestens einen Anschluss' ist im LogicalSchema als M:N modelliert (incident_connections), aber die Anforderung 'mindestens einen' ist nicht durch eine Constraint abgebildet. Eine Störung könnte theoretisch ohne Anschluss existieren, wenn nur incident_sites oder incident_radio_cells gefüllt sind. Dies widerspricht der Anforderung 'Eine Störung betrifft mindestens einen Anschluss, manchmal aber auch direkt einen Standort oder eine Funkzelle.'",
+          "korrekturanweisung": "1) Klären, ob Geräte tatsächlich zwischen Standorten wechseln können oder immer an einem Standort bleiben. Falls Wechsel möglich: Dokumentieren und ggf. Constraint hinzufügen. Falls nicht: Modellierung vereinfachen zu 1:N mit direktem FK in devices. 2) Für Störungen: Entweder (a) eine Constraint einführen, dass mindestens eine der drei Beziehungen (incident_connections, incident_sites, incident_radio_cells) gefüllt sein muss, oder (b) die Anforderung klären, ob Störungen auch ohne Anschluss existieren können."
         },
         {
           "criterion": "normalisierung",
-          "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen Primärschlüssel, keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen, und alle M:N-Beziehungen sind in separaten Junction-Tabellen modelliert. Keine Anomalien erkannt.",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "NORMALISIERUNGSFEHLER in der 'carriers'-Tabelle: Die Spalte 'frequency_range' ist redundant. Ein Träger sollte sich auf Frequenzbänder beziehen, nicht selbst einen Frequenzbereich haben. Dies deutet auf eine unklare Modellierung hin: Entweder sind Träger und Frequenzbänder dasselbe (dann sollte eine Tabelle entfernt werden), oder Träger sind ein Konzept auf höherer Ebene (z.B. Aggregation von Frequenzbändern). Die aktuelle Modellierung mit separaten Tabellen 'frequency_bands' und 'carriers', beide mit 'frequency_range', verstößt gegen die Normalisierung (potenzielle Redundanz und Anomalien). ZWEITER NORMALISIERUNGSFEHLER: Die Junction-Table 'radio_cell_carriers' existiert parallel zu 'radio_cell_frequency_bands'. Wenn Träger nur eine Klassifizierung von Frequenzbändern sind, ist diese Redundanz unnötig. Wenn Träger ein eigenständiges Konzept sind, sollte die Beziehung zwischen Trägern und Frequenzbändern explizit modelliert sein.",
+          "korrekturanweisung": "1) Klären Sie die Semantik von 'Träger' vs. 'Frequenzband'. 2) Falls Träger = Frequenzband: Entfernen Sie die 'carriers'-Tabelle und verwenden Sie nur 'frequency_bands'. 3) Falls Träger eine Aggregation sind: Modellieren Sie eine M:N-Beziehung zwischen 'carriers' und 'frequency_bands' und entfernen Sie 'frequency_range' aus 'carriers'. 4) Entfernen Sie redundante Junction-Tables."
         }
       ],
       "origin_step": "cmd"
@@ -1498,7 +1783,7 @@
     "critic_report_c2": null,
     "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    customer_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE connections (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    tariff VARCHAR(255) NOT NULL,\n    activation_date DATE NOT NULL,\n    technical_status VARCHAR(255) NOT NULL,\n    location_type VARCHAR(255),\n    CONSTRAINT pk_connections PRIMARY KEY (id),\n    CONSTRAINT fk_connections_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE sites (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    commissioning_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_sites PRIMARY KEY (id)\n);\n\nCREATE TABLE connection_sites (\n    id INTEGER NOT NULL,\n    connection_id INTEGER NOT NULL,\n    site_id INTEGER NOT NULL,\n    CONSTRAINT pk_connection_sites PRIMARY KEY (id),\n    CONSTRAINT fk_connection_sites_connection_id FOREIGN KEY (connection_id) REFERENCES connections (id),\n    CONSTRAINT fk_connection_sites_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE devices (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    commissioning_date DATE NOT NULL,\n    decommissioning_date DATE,\n    CONSTRAINT pk_devices PRIMARY KEY (id)\n);\n\nCREATE TABLE radio_cells (\n    id INTEGER NOT NULL,\n    identifier VARCHAR(255) NOT NULL,\n    technology VARCHAR(255) NOT NULL,\n    sector_designation VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    site_id INTEGER NOT NULL,\n    CONSTRAINT pk_radio_cells PRIMARY KEY (id),\n    CONSTRAINT fk_radio_cells_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE device_radio_cells (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    radio_cell_id INTEGER NOT NULL,\n    CONSTRAINT pk_device_radio_cells PRIMARY KEY (id),\n    CONSTRAINT fk_device_radio_cells_device_id FOREIGN KEY (device_id) REFERENCES devices (id),\n    CONSTRAINT fk_device_radio_cells_radio_cell_id FOREIGN KEY (radio_cell_id) REFERENCES radio_cells (id)\n);\n\nCREATE TABLE device_site_history (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    site_id INTEGER NOT NULL,\n    from_date DATE NOT NULL,\n    to_date DATE,\n    CONSTRAINT pk_device_site_history PRIMARY KEY (id),\n    CONSTRAINT fk_device_site_history_device_id FOREIGN KEY (device_id) REFERENCES devices (id),\n    CONSTRAINT fk_device_site_history_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE frequency_bands (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    frequency_range VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_frequency_bands PRIMARY KEY (id)\n);\n\nCREATE TABLE incidents (\n    id INTEGER NOT NULL,\n    report_date TIMESTAMP NOT NULL,\n    priority VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    processing_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_incidents PRIMARY KEY (id)\n);\n\nCREATE TABLE incident_connections (\n    id INTEGER NOT NULL,\n    incident_id INTEGER NOT NULL,\n    connection_id INTEGER NOT NULL,\n    CONSTRAINT pk_incident_connections PRIMARY KEY (id),\n    CONSTRAINT fk_incident_connections_incident_id FOREIGN KEY (incident_id) REFERENCES incidents (id),\n    CONSTRAINT fk_incident_connections_connection_id FOREIGN KEY (connection_id) REFERENCES connections (id)\n);\n\nCREATE TABLE incident_radio_cells (\n    id INTEGER NOT NULL,\n    incident_id INTEGER NOT NULL,\n    radio_cell_id INTEGER NOT NULL,\n    CONSTRAINT pk_incident_radio_cells PRIMARY KEY (id),\n    CONSTRAINT fk_incident_radio_cells_incident_id FOREIGN KEY (incident_id) REFERENCES incidents (id),\n    CONSTRAINT fk_incident_radio_cells_radio_cell_id FOREIGN KEY (radio_cell_id) REFERENCES radio_cells (id)\n);\n\nCREATE TABLE incident_sites (\n    id INTEGER NOT NULL,\n    incident_id INTEGER NOT NULL,\n    site_id INTEGER NOT NULL,\n    CONSTRAINT pk_incident_sites PRIMARY KEY (id),\n    CONSTRAINT fk_incident_sites_incident_id FOREIGN KEY (incident_id) REFERENCES incidents (id),\n    CONSTRAINT fk_incident_sites_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE radio_cell_frequency_bands (\n    id INTEGER NOT NULL,\n    radio_cell_id INTEGER NOT NULL,\n    frequency_band_id INTEGER NOT NULL,\n    CONSTRAINT pk_radio_cell_frequency_bands PRIMARY KEY (id),\n    CONSTRAINT fk_radio_cell_frequency_bands_radio_cell_id FOREIGN KEY (radio_cell_id) REFERENCES radio_cells (id),\n    CONSTRAINT fk_radio_cell_frequency_bands_frequency_band_id FOREIGN KEY (frequency_band_id) REFERENCES frequency_bands (id)\n);\n\nCREATE TABLE technicians (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    personnel_number VARCHAR(255),\n    CONSTRAINT pk_technicians PRIMARY KEY (id)\n);\n\nCREATE TABLE technician_incidents (\n    id INTEGER NOT NULL,\n    technician_id INTEGER NOT NULL,\n    incident_id INTEGER NOT NULL,\n    CONSTRAINT pk_technician_incidents PRIMARY KEY (id),\n    CONSTRAINT fk_technician_incidents_technician_id FOREIGN KEY (technician_id) REFERENCES technicians (id),\n    CONSTRAINT fk_technician_incidents_incident_id FOREIGN KEY (incident_id) REFERENCES incidents (id)\n);\n",
+    "final_ddl": "CREATE TABLE carriers (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    frequency_range VARCHAR(255),\n    CONSTRAINT pk_carriers PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE connections (\n    id INTEGER NOT NULL,\n    tariff VARCHAR(255) NOT NULL,\n    activation_date DATE NOT NULL,\n    technical_status VARCHAR(255) NOT NULL,\n    customer_id INTEGER NOT NULL,\n    CONSTRAINT pk_connections PRIMARY KEY (id),\n    CONSTRAINT fk_connections_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE sites (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    site_type VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    commissioning_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_sites PRIMARY KEY (id)\n);\n\nCREATE TABLE connection_sites (\n    id INTEGER NOT NULL,\n    connection_id INTEGER NOT NULL,\n    site_id INTEGER NOT NULL,\n    from_date DATE NOT NULL,\n    to_date DATE,\n    CONSTRAINT pk_connection_sites PRIMARY KEY (id),\n    CONSTRAINT fk_connection_sites_connection_id FOREIGN KEY (connection_id) REFERENCES connections (id),\n    CONSTRAINT fk_connection_sites_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE devices (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    device_type VARCHAR(255) NOT NULL,\n    commissioning_date DATE NOT NULL,\n    decommissioning_date DATE,\n    CONSTRAINT pk_devices PRIMARY KEY (id)\n);\n\nCREATE TABLE radio_cells (\n    id INTEGER NOT NULL,\n    identifier VARCHAR(255) NOT NULL,\n    technology VARCHAR(255) NOT NULL,\n    sector_designation VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    site_id INTEGER NOT NULL,\n    CONSTRAINT pk_radio_cells PRIMARY KEY (id),\n    CONSTRAINT fk_radio_cells_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE device_radio_cells (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    radio_cell_id INTEGER NOT NULL,\n    CONSTRAINT pk_device_radio_cells PRIMARY KEY (id),\n    CONSTRAINT fk_device_radio_cells_device_id FOREIGN KEY (device_id) REFERENCES devices (id),\n    CONSTRAINT fk_device_radio_cells_radio_cell_id FOREIGN KEY (radio_cell_id) REFERENCES radio_cells (id)\n);\n\nCREATE TABLE device_sites (\n    id INTEGER NOT NULL,\n    device_id INTEGER NOT NULL,\n    site_id INTEGER NOT NULL,\n    from_date DATE NOT NULL,\n    to_date DATE,\n    CONSTRAINT pk_device_sites PRIMARY KEY (id),\n    CONSTRAINT fk_device_sites_device_id FOREIGN KEY (device_id) REFERENCES devices (id),\n    CONSTRAINT fk_device_sites_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE frequency_bands (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    frequency_range VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_frequency_bands PRIMARY KEY (id)\n);\n\nCREATE TABLE incidents (\n    id INTEGER NOT NULL,\n    report_date TIMESTAMP NOT NULL,\n    priority VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    processing_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_incidents PRIMARY KEY (id)\n);\n\nCREATE TABLE incident_connections (\n    id INTEGER NOT NULL,\n    incident_id INTEGER NOT NULL,\n    connection_id INTEGER NOT NULL,\n    CONSTRAINT pk_incident_connections PRIMARY KEY (id),\n    CONSTRAINT fk_incident_connections_incident_id FOREIGN KEY (incident_id) REFERENCES incidents (id),\n    CONSTRAINT fk_incident_connections_connection_id FOREIGN KEY (connection_id) REFERENCES connections (id)\n);\n\nCREATE TABLE incident_radio_cells (\n    id INTEGER NOT NULL,\n    incident_id INTEGER NOT NULL,\n    radio_cell_id INTEGER NOT NULL,\n    CONSTRAINT pk_incident_radio_cells PRIMARY KEY (id),\n    CONSTRAINT fk_incident_radio_cells_incident_id FOREIGN KEY (incident_id) REFERENCES incidents (id),\n    CONSTRAINT fk_incident_radio_cells_radio_cell_id FOREIGN KEY (radio_cell_id) REFERENCES radio_cells (id)\n);\n\nCREATE TABLE incident_sites (\n    id INTEGER NOT NULL,\n    incident_id INTEGER NOT NULL,\n    site_id INTEGER NOT NULL,\n    CONSTRAINT pk_incident_sites PRIMARY KEY (id),\n    CONSTRAINT fk_incident_sites_incident_id FOREIGN KEY (incident_id) REFERENCES incidents (id),\n    CONSTRAINT fk_incident_sites_site_id FOREIGN KEY (site_id) REFERENCES sites (id)\n);\n\nCREATE TABLE radio_cell_carriers (\n    id INTEGER NOT NULL,\n    radio_cell_id INTEGER NOT NULL,\n    carrier_id INTEGER NOT NULL,\n    CONSTRAINT pk_radio_cell_carriers PRIMARY KEY (id),\n    CONSTRAINT fk_radio_cell_carriers_radio_cell_id FOREIGN KEY (radio_cell_id) REFERENCES radio_cells (id),\n    CONSTRAINT fk_radio_cell_carriers_carrier_id FOREIGN KEY (carrier_id) REFERENCES carriers (id)\n);\n\nCREATE TABLE radio_cell_frequency_bands (\n    id INTEGER NOT NULL,\n    radio_cell_id INTEGER NOT NULL,\n    frequency_band_id INTEGER NOT NULL,\n    CONSTRAINT pk_radio_cell_frequency_bands PRIMARY KEY (id),\n    CONSTRAINT fk_radio_cell_frequency_bands_radio_cell_id FOREIGN KEY (radio_cell_id) REFERENCES radio_cells (id),\n    CONSTRAINT fk_radio_cell_frequency_bands_frequency_band_id FOREIGN KEY (frequency_band_id) REFERENCES frequency_bands (id)\n);\n\nCREATE TABLE technicians (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    designation VARCHAR(255),\n    CONSTRAINT pk_technicians PRIMARY KEY (id)\n);\n\nCREATE TABLE technician_incidents (\n    id INTEGER NOT NULL,\n    technician_id INTEGER NOT NULL,\n    incident_id INTEGER NOT NULL,\n    CONSTRAINT pk_technician_incidents PRIMARY KEY (id),\n    CONSTRAINT fk_technician_incidents_technician_id FOREIGN KEY (technician_id) REFERENCES technicians (id),\n    CONSTRAINT fk_technician_incidents_incident_id FOREIGN KEY (incident_id) REFERENCES incidents (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -1523,38 +1808,26 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Gerät' ist unvollständig modelliert. Das ER-Modell und der Anforderungstext machen deutlich, dass ein Gerät zeitweise an verschiedene Standorte umziehen kann ('Manche Geräte werden irgendwann ersetzt, aber die Historie ist wichtig' und 'Nicht ganz klar ist, ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht'). Das LogicalSchema hat eine Tabelle 'device_site_history' mit from_date und to_date, was die Anforderung adressiert. Allerdings fehlt im ER-Modell diese Beziehung explizit als separate Entität/Beziehungstabelle. Das LogicalSchema hat dies korrekt umgesetzt, aber das ER-Modell zeigt nur eine 1:N-Beziehung von Standort zu Gerät mit standort_id im Gerät selbst. Dies ist ein konzeptioneller Fehler: Die 1:N-Beziehung im ER-Modell kann nicht die zeitliche Dimension (Geräte wechseln Standorte) abbilden. Das LogicalSchema korrigiert dies durch device_site_history, aber das ER-Modell ist fehlerhaft.",
-          "korrekturanweisung": "Im ER-Modell sollte die Beziehung zwischen Gerät und Standort als M:N-Beziehung mit Zeitstempel-Attributen (from_date, to_date) modelliert werden, nicht als 1:N mit standort_id direkt im Gerät. Das LogicalSchema hat dies korrekt umgesetzt (device_site_history), aber das ER-Modell ist inkonsistent."
+          "beschreibung": "Die Entität 'Träger' (Carrier) ist im LogicalSchema vorhanden, wird aber im RequirementsReport und ERModell nicht als eigenständige Entität aufgeführt. Der Anforderungstext erwähnt: 'Teilweise wird in der Fachabteilung auch von Trägern gesprochen; ob das getrennt betrachtet werden muss, ist offen.' Das Schema hat diese Unklarheit durch Einführung einer separaten 'carriers'-Tabelle gelöst, ohne dass dies im konzeptionellen Modell dokumentiert ist. Dies ist eine Abweichung zwischen ER-Modell und LogicalSchema.",
+          "korrekturanweisung": "Entweder (1) die 'carriers'-Tabelle aus dem LogicalSchema entfernen und Träger als Attribut oder Klassifizierung von Frequenzbändern modellieren, oder (2) die 'carriers'-Entität explizit ins ERModell aufnehmen und im RequirementsReport dokumentieren."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Das Attribut 'Personalien' in der Techniker-Entität ist vage und unzureichend. Der Anforderungstext spricht von 'Personalien', das LogicalSchema übersetzt dies zu 'personnel_number' (Personalennummer). Dies ist eine Interpretation, aber 'Personalien' ist ein sehr breiter Begriff (kann Name, Adresse, Geburtsdatum, etc. bedeuten). Das LogicalSchema hat nur 'personnel_number' als optionales Feld, was zu restriktiv ist. Zudem ist unklar, ob dies die einzige zusätzliche Information sein soll oder ob weitere Attribute fehlen.",
-          "korrekturanweisung": "Klärung erforderlich: Soll 'Personalien' nur die Personalennummer sein oder weitere Informationen (z.B. Abteilung, Qualifikation, Kontakt)? Das LogicalSchema sollte präziser sein oder das ER-Modell sollte expliziter definieren, welche Personalien-Attribute erfasst werden."
+          "beschreibung": "Die Tabelle 'devices' fehlt eine Fremdschlüssel-Referenz zu 'sites'. Laut Anforderungstext und ERModell sollen Geräte an Standorten stehen. Das LogicalSchema modelliert dies über die Junction-Table 'device_sites' mit Zeitstempel (von_datum, to_datum), was die Anforderung 'Manche Geräte werden irgendwann ersetzt, aber die Historie ist wichtig' und die Unklarheit 'ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht' korrekt adressiert. Allerdings fehlt in der 'devices'-Tabelle selbst kein kritisches Attribut – die Modellierung ist strukturell korrekt. Jedoch: Die 'devices'-Tabelle hat keine Fremdschlüssel, obwohl sie über 'device_sites' mit 'sites' verknüpft ist. Dies ist nicht falsch, aber die Struktur ist konsistent mit dem ER-Modell.",
+          "korrekturanweisung": "Keine Korrektur erforderlich – die Modellierung über Junction-Table ist korrekt."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen Gerät und Standort ist im ER-Modell als 1:N modelliert (mit standort_id im Gerät), aber das LogicalSchema implementiert dies als M:N mit Zeitstempel (device_site_history). Dies ist ein konzeptioneller Fehler im ER-Modell. Der Anforderungstext sagt: 'Nicht ganz klar ist, ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht.' Das LogicalSchema hat dies korrekt als M:N mit Zeitstempel interpretiert, aber das ER-Modell zeigt nur 1:N. Dies ist eine Inkonsistenz zwischen ER-Modell und LogicalSchema.",
-          "korrekturanweisung": "Das ER-Modell muss korrigiert werden: Die Beziehung Gerät-Standort sollte als M:N mit Zeitstempel-Attributen (from_date, to_date) modelliert werden, nicht als 1:N mit standort_id direkt im Gerät."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen Anschluss und Standort ist im ER-Modell als M:N definiert, aber das LogicalSchema hat keine explizite Tabelle 'connection_sites' mit Fremdschlüsseln. Moment - das LogicalSchema HAT 'connection_sites' mit connection_id und site_id. Dies ist korrekt. Aber das ER-Modell zeigt nur 'Anschluss' mit 'Standort' als M:N ohne weitere Details. Das ist konsistent. Allerdings: Der Anforderungstext sagt 'Unklar ist, ob Anschlüsse immer nur an Kundenstandorten oder auch an Netzstandorten referenziert werden sollen.' Das LogicalSchema hat 'location_type' in der connections-Tabelle, was versucht, dies zu adressieren. Aber dies ist eine schwache Lösung: location_type ist ein VARCHAR, der nur angibt, ob es ein Kundenstandort oder Netzstandort ist, aber nicht, welcher konkrete Standort gemeint ist. Die connection_sites-Tabelle referenziert nur site_id, nicht location_type. Dies ist eine Inkonsistenz.",
-          "korrekturanweisung": "Entweder: (1) location_type in connections entfernen und nur connection_sites verwenden, oder (2) location_type präzisieren und mit site_id kombinieren. Aktuell ist unklar, wie location_type und site_id zusammenhängen."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen Störung und Anschluss ist als M:N modelliert (incident_connections), aber der Anforderungstext sagt: 'Eine Störung betrifft mindestens einen Anschluss, manchmal aber auch direkt einen Standort oder eine Funkzelle.' Dies bedeutet, dass eine Störung MINDESTENS einen dieser drei Objekte betreffen muss (Anschluss ODER Standort ODER Funkzelle). Das LogicalSchema hat alle drei Beziehungen (incident_connections, incident_sites, incident_radio_cells), aber es gibt keine Constraint, die sicherstellt, dass mindestens eine dieser Beziehungen existiert. Dies ist ein Integritätsproblem: Eine Störung könnte ohne jede Beziehung existieren.",
-          "korrekturanweisung": "Entweder: (1) Eine CHECK-Constraint hinzufügen, die sicherstellt, dass mindestens eine der drei Beziehungen existiert, oder (2) Eine der Beziehungen als obligatorisch markieren (z.B. incident_connections mit NOT NULL). Dies ist eine Geschäftslogik-Anforderung, die im LogicalSchema nicht abgebildet ist."
+          "beschreibung": "KRITISCHER FEHLER: Die Beziehung zwischen 'Gerät' und 'Standort' ist im LogicalSchema als M:N mit Zeitstempel modelliert (device_sites mit from_date, to_date), was die Unklarheit aus dem Anforderungstext adressiert. Dies ist konzeptionell korrekt. JEDOCH: Im ERModell ist diese Beziehung als 'Geraet_Standort' mit Zeitstempel definiert, aber die Kardinalität und Semantik sind nicht explizit als 'zeitlich variabel' gekennzeichnet. Das ist eine Interpretation des Modells, die zwar sinnvoll ist, aber nicht aus dem RequirementsReport zwingend folgt. Der Anforderungstext sagt: 'Nicht ganz klar ist, ob ein Gerät immer genau einem Standort zugeordnet bleibt oder zeitweise auch an einen anderen umzieht.' Das Schema hat sich für die M:N-Variante mit Zeitstempel entschieden, was eine Annahme darstellt, die hätte explizit geklärt werden müssen. ZWEITER FEHLER: Die Beziehung 'Störung betrifft mindestens einen Anschluss' ist im LogicalSchema als M:N modelliert (incident_connections), aber die Anforderung 'mindestens einen' ist nicht durch eine Constraint abgebildet. Eine Störung könnte theoretisch ohne Anschluss existieren, wenn nur incident_sites oder incident_radio_cells gefüllt sind. Dies widerspricht der Anforderung 'Eine Störung betrifft mindestens einen Anschluss, manchmal aber auch direkt einen Standort oder eine Funkzelle.'",
+          "korrekturanweisung": "1) Klären, ob Geräte tatsächlich zwischen Standorten wechseln können oder immer an einem Standort bleiben. Falls Wechsel möglich: Dokumentieren und ggf. Constraint hinzufügen. Falls nicht: Modellierung vereinfachen zu 1:N mit direktem FK in devices. 2) Für Störungen: Entweder (a) eine Constraint einführen, dass mindestens eine der drei Beziehungen (incident_connections, incident_sites, incident_radio_cells) gefüllt sein muss, oder (b) die Anforderung klären, ob Störungen auch ohne Anschluss existieren können."
         },
         {
           "criterion": "normalisierung",
-          "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen Primärschlüssel, keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen, und alle M:N-Beziehungen sind in separaten Junction-Tabellen modelliert. Keine Anomalien erkannt.",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "NORMALISIERUNGSFEHLER in der 'carriers'-Tabelle: Die Spalte 'frequency_range' ist redundant. Ein Träger sollte sich auf Frequenzbänder beziehen, nicht selbst einen Frequenzbereich haben. Dies deutet auf eine unklare Modellierung hin: Entweder sind Träger und Frequenzbänder dasselbe (dann sollte eine Tabelle entfernt werden), oder Träger sind ein Konzept auf höherer Ebene (z.B. Aggregation von Frequenzbändern). Die aktuelle Modellierung mit separaten Tabellen 'frequency_bands' und 'carriers', beide mit 'frequency_range', verstößt gegen die Normalisierung (potenzielle Redundanz und Anomalien). ZWEITER NORMALISIERUNGSFEHLER: Die Junction-Table 'radio_cell_carriers' existiert parallel zu 'radio_cell_frequency_bands'. Wenn Träger nur eine Klassifizierung von Frequenzbändern sind, ist diese Redundanz unnötig. Wenn Träger ein eigenständiges Konzept sind, sollte die Beziehung zwischen Trägern und Frequenzbändern explizit modelliert sein.",
+          "korrekturanweisung": "1) Klären Sie die Semantik von 'Träger' vs. 'Frequenzband'. 2) Falls Träger = Frequenzband: Entfernen Sie die 'carriers'-Tabelle und verwenden Sie nur 'frequency_bands'. 3) Falls Träger eine Aggregation sind: Modellieren Sie eine M:N-Beziehung zwischen 'carriers' und 'frequency_bands' und entfernen Sie 'frequency_range' aus 'carriers'. 4) Entfernen Sie redundante Junction-Tables."
         }
       ],
       "origin_step": "cmd"
@@ -1564,33 +1837,33 @@
   },
   "telemetry": {
     "total_calls": 10,
-    "total_input_tokens": 64844,
-    "total_output_tokens": 24109,
-    "total_tokens": 88953,
+    "total_input_tokens": 81847,
+    "total_output_tokens": 29425,
+    "total_tokens": 111272,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1889,
-        "output_tokens": 1978,
+        "output_tokens": 1902,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 3,
-        "input_tokens": 11880,
-        "output_tokens": 6585,
+        "input_tokens": 20725,
+        "output_tokens": 11040,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 3,
-        "input_tokens": 18907,
-        "output_tokens": 9926,
+        "input_tokens": 23098,
+        "output_tokens": 10716,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 3,
-        "input_tokens": 32168,
-        "output_tokens": 5620,
+        "input_tokens": 36135,
+        "output_tokens": 5767,
         "cost_usd": 0.0
       }
     },
@@ -1601,7 +1874,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1889,
-        "output_tokens": 1978,
+        "output_tokens": 1902,
         "cost_usd": 0.0
       },
       {
@@ -1609,8 +1882,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3960,
-        "output_tokens": 2195,
+        "input_tokens": 3882,
+        "output_tokens": 2159,
         "cost_usd": 0.0
       },
       {
@@ -1618,8 +1891,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5222,
-        "output_tokens": 3184,
+        "input_tokens": 5174,
+        "output_tokens": 3143,
         "cost_usd": 0.0
       },
       {
@@ -1627,8 +1900,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 10486,
-        "output_tokens": 1396,
+        "input_tokens": 10319,
+        "output_tokens": 1801,
         "cost_usd": 0.0
       },
       {
@@ -1636,8 +1909,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3960,
-        "output_tokens": 2195,
+        "input_tokens": 7593,
+        "output_tokens": 4296,
         "cost_usd": 0.0
       },
       {
@@ -1645,8 +1918,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 6593,
-        "output_tokens": 3033,
+        "input_tokens": 8769,
+        "output_tokens": 3485,
         "cost_usd": 0.0
       },
       {
@@ -1654,8 +1927,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 10671,
-        "output_tokens": 1905,
+        "input_tokens": 12462,
+        "output_tokens": 1913,
         "cost_usd": 0.0
       },
       {
@@ -1663,8 +1936,8 @@
         "iteration": 2,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3960,
-        "output_tokens": 2195,
+        "input_tokens": 9250,
+        "output_tokens": 4585,
         "cost_usd": 0.0
       },
       {
@@ -1672,8 +1945,8 @@
         "iteration": 2,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7092,
-        "output_tokens": 3709,
+        "input_tokens": 9155,
+        "output_tokens": 4088,
         "cost_usd": 0.0
       },
       {
@@ -1681,8 +1954,8 @@
         "iteration": 2,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 11011,
-        "output_tokens": 2319,
+        "input_tokens": 13354,
+        "output_tokens": 2053,
         "cost_usd": 0.0
       }
     ]

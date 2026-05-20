@@ -2,38 +2,38 @@
   "testfall_id": "TC086",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.7413333333333333,
-  "score_gesamt": 0.8448,
+  "score_semantisch": 0.6599093851132687,
+  "score_gesamt": 0.7959456310679612,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 11,
-    "pk_tabellen_mit_pk": 11,
-    "fk_referenzen_gesamt": 13,
+    "pk_tabellen_gesamt": 12,
+    "pk_tabellen_mit_pk": 12,
+    "fk_referenzen_gesamt": 15,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.9090909090909091,
-      "recall": 0.7692307692307693,
-      "f1": 0.8333333333333333,
-      "matched": 10,
-      "nur_in_referenz": 3,
-      "nur_in_generiert": 1
+      "precision": 0.75,
+      "recall": 0.6923076923076923,
+      "f1": 0.7199999999999999,
+      "matched": 9,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 3
     },
     "attribut": {
-      "precision": 0.7045454545454546,
-      "recall": 0.5535714285714286,
-      "f1": 0.62,
-      "matched": 31,
-      "nur_in_referenz": 25,
-      "nur_in_generiert": 13
+      "precision": 0.6170212765957447,
+      "recall": 0.5178571428571429,
+      "f1": 0.5631067961165048,
+      "matched": 29,
+      "nur_in_referenz": 27,
+      "nur_in_generiert": 18
     },
     "beziehung": {
-      "recall": 0.8,
-      "matched": 12,
-      "nur_in_referenz": 3,
+      "recall": 0.7333333333333333,
+      "matched": 11,
+      "nur_in_referenz": 4,
       "nur_in_generiert": 0
     }
   },
@@ -45,6 +45,11 @@
     },
     {
       "element": "roles",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_team_roles",
       "typ": "tabelle",
       "fehlerklasse": null
     },
@@ -114,17 +119,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "person_team_roles.id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "person_team_roles.person_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "person_team_roles.role_id",
+      "element": "mission_milestones.milestone_date",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -164,6 +159,26 @@
       "fehlerklasse": null
     },
     {
+      "element": "person_team_roles.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_team_roles.person_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_team_roles.team_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_team_roles.role_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "milestone_types.id",
       "typ": "attribut",
       "fehlerklasse": null
@@ -190,6 +205,11 @@
     },
     {
       "element": "person_team_roles → roles",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "person_team_roles → teams",
       "typ": "beziehung",
       "fehlerklasse": null
     }
@@ -296,6 +316,66 @@
           ]
         },
         {
+          "name": "manufacturers",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "spacecrafts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "manufacturer_id",
+              "references_table": "manufacturers",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
           "name": "teams",
           "columns": [
             {
@@ -344,66 +424,6 @@
           "foreign_keys": []
         },
         {
-          "name": "manufacturers",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "description",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "spacecrafts",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "designation",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "spacecraft_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "manufacturer_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "manufacturer_id",
-              "references_table": "manufacturers",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
           "name": "milestones",
           "columns": [
             {
@@ -419,7 +439,7 @@
               "nullable": false
             },
             {
-              "name": "milestone_date",
+              "name": "date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -539,6 +559,41 @@
           ]
         },
         {
+          "name": "team_employees",
+          "columns": [
+            {
+              "name": "team_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "role_in_team",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "team_id",
+              "references_table": "teams",
+              "references_column": "id"
+            },
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
           "name": "mission_spacecrafts",
           "columns": [
             {
@@ -568,8 +623,14 @@
           ]
         },
         {
-          "name": "employee_team_roles",
+          "name": "mission_employees",
           "columns": [
+            {
+              "name": "mission_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
             {
               "name": "employee_id",
               "type": "INTEGER",
@@ -577,13 +638,7 @@
               "nullable": false
             },
             {
-              "name": "team_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "team_role",
+              "name": "role_in_mission",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -591,13 +646,13 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "employee_id",
-              "references_table": "employees",
+              "from_column": "mission_id",
+              "references_table": "missions",
               "references_column": "id"
             },
             {
-              "from_column": "team_id",
-              "references_table": "teams",
+              "from_column": "employee_id",
+              "references_table": "employees",
               "references_column": "id"
             }
           ]
@@ -649,7 +704,7 @@
             "bauart (z.B. Sonde, Orbiter, Lander, Rover)",
             "hersteller"
           ],
-          "beschreibung": "Flughardware oder Raumfahrzeuge, die in Missionen verwendet werden"
+          "beschreibung": "Flughardware und Raumfahrzeuge, die in Missionen verwendet werden"
         },
         {
           "name": "Hersteller",
@@ -657,7 +712,7 @@
             "name",
             "beschreibung"
           ],
-          "beschreibung": "Unternehmen oder Organisationen, die Raumfahrzeuge und Hardware herstellen"
+          "beschreibung": "Organisationen, die Raumfahrzeuge und Hardware herstellen"
         },
         {
           "name": "Meilenstein",
@@ -665,7 +720,7 @@
             "typ (z.B. Preliminary Design Review, Critical Design Review, Startfreigabe, Orbit Insertion)",
             "datum"
           ],
-          "beschreibung": "Wichtige Ereignisse und Überprüfungspunkte im Missionsablauf"
+          "beschreibung": "Wichtige Ereignisse und Überprüfungspunkte im Missionsverlauf"
         },
         {
           "name": "Risiko",
@@ -694,13 +749,13 @@
         {
           "von": "Team",
           "zu": "Mitarbeitender",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Team besteht aus mehreren Mitarbeitenden mit verschiedenen Rollen"
+          "kardinalitaet": "N:M",
+          "beschreibung": "Teams bestehen aus Mitarbeitenden mit verschiedenen Rollen; ein Mitarbeitender kann in mehreren Teams tätig sein"
         },
         {
           "von": "Mission",
           "zu": "Raumfahrzeug",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:M",
           "beschreibung": "Eine Mission verwendet eine oder mehrere Raumfahrzeuge; ein Raumfahrzeug kann in mehreren Missionen eingesetzt werden"
         },
         {
@@ -713,7 +768,7 @@
           "von": "Mission",
           "zu": "Meilenstein",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Mission hat mehrere Meilensteine; ein Meilenstein ist einer Mission zugeordnet"
+          "beschreibung": "Eine Mission hat mehrere Meilensteine; ein Meilenstein gehört zu einer Mission"
         },
         {
           "von": "Mission",
@@ -736,33 +791,29 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Hierarchie von Programmen und Unterprogrammen: Der Text erwähnt, dass manchmal von 'Unterprogrammen' gesprochen wird, aber es ist unklar, ob eine rekursive Hierarchie (Programm enthält Unterprogramme) oder nur zwei Ebenen modelliert werden sollen.",
+          "beschreibung": "Hierarchie von Programmen und Unterprogrammen: Der Text erwähnt, dass manchmal von 'Unterprogrammen' gesprochen wird, aber es ist unklar, ob eine hierarchische Struktur (Programm kann Unterprogramme enthalten) oder nur eine flache Zuordnung erforderlich ist.",
           "betroffene_elemente": [
-            "Programm"
+            "Programm",
+            "Mission"
           ]
         },
         {
-          "beschreibung": "Rollen von Mitarbeitenden: Es ist unklar, ob Rollen als separate Entität modelliert werden sollen oder nur als Attribut des Mitarbeitenden. Auch ist nicht klar, ob eine Person mehrere Rollen haben kann.",
-          "betroffene_elemente": [
-            "Mitarbeitender"
-          ]
-        },
-        {
-          "beschreibung": "Zuordnung von Rollen zu Teams vs. allgemein: Der Text erwähnt, dass nicht immer sauber getrennt ist, ob eine Person ihre Rolle allgemein hat oder nur für ein bestimmtes Team. Die genaue Modellierung dieser Unterscheidung ist unklar.",
+          "beschreibung": "Rollen von Mitarbeitenden: Es ist unklar, ob Rollen global (allgemein für eine Person) oder nur im Kontext eines Teams/einer Mission definiert sind. Der Text deutet an, dass dies 'nicht immer sauber getrennt' ist.",
           "betroffene_elemente": [
             "Mitarbeitender",
-            "Team"
+            "Team",
+            "Mission"
           ]
         },
         {
-          "beschreibung": "Eindeutigkeit von Meilensteinen pro Mission: Es ist unklar, ob ein Meilenstein-Typ pro Mission nur einmal vorkommen darf oder ob derselbe Typ mehrfach (z.B. nachgeholt oder wiederholt) auftreten kann.",
+          "beschreibung": "Eindeutigkeit von Meilensteinen: Der Text sagt, dass 'nicht ganz klar ist, ob ein Meilenstein nur einmal pro Mission vorkommt'. Es ist unklar, ob derselbe Meilenstein-Typ mehrfach in einer Mission auftreten kann (z.B. mehrere Design Reviews).",
           "betroffene_elemente": [
             "Meilenstein",
             "Mission"
           ]
         },
         {
-          "beschreibung": "Mehrfache Zuordnung von Risiken: Der Text sagt, dass Risiken 'meistens' einer Mission zugeordnet werden, 'manchmal aber eher' einem Hardwareteil oder Team. Es ist unklar, ob ein Risiko mehreren Entitäten gleichzeitig zugeordnet sein kann oder ob es sich um alternative Zuordnungen handelt.",
+          "beschreibung": "Zuordnung von Risiken: Risiken können Mission, Hardwareteil oder Team zugeordnet sein. Es ist unklar, ob ein Risiko mehreren dieser Entitäten gleichzeitig zugeordnet werden kann oder ob es sich um alternative Zuordnungen handelt.",
           "betroffene_elemente": [
             "Risiko",
             "Mission",
@@ -771,11 +822,11 @@
           ]
         },
         {
-          "beschreibung": "Hersteller-Zuordnung zu Missionen: Der Text sagt, dass 'einzelne Missionen mitunter Hardware von mehreren Herstellern nutzen', aber es ist unklar, ob die Beziehung zwischen Mission und Hersteller direkt oder nur über Raumfahrzeug modelliert werden soll.",
+          "beschreibung": "Hersteller-Hardware-Beziehung: Der Text sagt, dass 'einzelne Missionen mitunter Hardware von mehreren Herstellern nutzen', aber es ist unklar, ob ein Raumfahrzeug von mehreren Herstellern stammen kann oder ob mehrere separate Raumfahrzeuge von verschiedenen Herstellern verwendet werden.",
           "betroffene_elemente": [
-            "Mission",
+            "Raumfahrzeug",
             "Hersteller",
-            "Raumfahrzeug"
+            "Mission"
           ]
         }
       ]
@@ -903,10 +954,10 @@
               "pflichtfeld": true
             },
             {
-              "name": "rolle",
+              "name": "allgemeine_rolle",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             }
           ]
         },
@@ -1062,6 +1113,29 @@
           ]
         },
         {
+          "name": "Team_Mitarbeitender",
+          "attribute": [
+            {
+              "name": "team_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "mitarbeitender_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "rolle_im_team",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
           "name": "Mission_Raumfahrzeug",
           "attribute": [
             {
@@ -1079,10 +1153,10 @@
           ]
         },
         {
-          "name": "Team_Mitarbeitender",
+          "name": "Mission_Mitarbeitender",
           "attribute": [
             {
-              "name": "team_id",
+              "name": "mission_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -1092,6 +1166,12 @@
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
+            },
+            {
+              "name": "rolle_in_mission",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         }
@@ -1112,13 +1192,23 @@
         {
           "von": "Team",
           "zu": "Mitarbeitender",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
+          "kardinalitaet": "N:M",
+          "beziehungsattribute": [
+            "rolle_im_team"
+          ]
+        },
+        {
+          "von": "Mission",
+          "zu": "Mitarbeitender",
+          "kardinalitaet": "N:M",
+          "beziehungsattribute": [
+            "rolle_in_mission"
+          ]
         },
         {
           "von": "Mission",
           "zu": "Raumfahrzeug",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:M",
           "beziehungsattribute": []
         },
         {
@@ -1160,7 +1250,7 @@
       ]
     },
     "critic_report": {
-      "qualitaet_ausreichend": false,
+      "qualitaet_ausreichend": true,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -1179,17 +1269,41 @@
           "erfuellt": true,
           "beschreibung": "FK-Integritätsquote: 1.00",
           "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 8 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: programs, missions, teams, employees, spacecrafts, manufacturers, milestones, risks. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im Schema vorhanden und korrekt benannt: Mission (internal_name, description, planned_start, actual_start, mission_end, mission_type, program_id), Programm (name, description, parent_program_id), Team (name, discipline), Mitarbeitender (name, general_role), Raumfahrzeug (designation, type, manufacturer_id), Hersteller (name, description), Meilenstein (milestone_type, date, mission_id), Risiko (description, probability, impact, status, mission_id, spacecraft_id, team_id). Die Attributnamen folgen der Konvention (snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 11 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema implementiert: N:1 (Mission→Programm, Raumfahrzeug→Hersteller), M:N (Mission↔Team, Team↔Mitarbeitender, Mission↔Raumfahrzeug, Mission↔Mitarbeitender), 1:N (Mission→Meilenstein, Mission→Risiko, Raumfahrzeug→Risiko, Team→Risiko), N:1 (Programm→Programm für Hierarchie). Junction-Tables sind korrekt benannt und strukturiert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten erkannt. Alle Attribute sind atomar, Primärschlüssel sind eindeutig, und Fremdschlüssel sind korrekt gesetzt. Die Risiko-Tabelle mit optionalen FKs (mission_id, spacecraft_id, team_id) ist eine valide Implementierung der Anforderung, dass Risiken optional verschiedenen Entitäten zugeordnet werden können.",
+          "korrekturanweisung": ""
         }
       ],
-      "origin_step": "lsd"
+      "origin_step": null
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
     "iteration": 2,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    general_role VARCHAR(255),\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE teams (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    discipline VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_teams PRIMARY KEY (id)\n);\n\nCREATE TABLE employee_team_roles (\n    employee_id INTEGER NOT NULL,\n    team_id INTEGER NOT NULL,\n    team_role VARCHAR(255),\n    CONSTRAINT pk_employee_team_roles PRIMARY KEY (employee_id, team_id),\n    CONSTRAINT fk_employee_team_roles_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_team_roles_team_id FOREIGN KEY (team_id) REFERENCES teams (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE programs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    parent_program_id INTEGER,\n    CONSTRAINT pk_programs PRIMARY KEY (id),\n    CONSTRAINT fk_programs_parent_program_id FOREIGN KEY (parent_program_id) REFERENCES programs (id)\n);\n\nCREATE TABLE missions (\n    id INTEGER NOT NULL,\n    internal_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    planned_start DATE NOT NULL,\n    actual_start DATE,\n    mission_end DATE,\n    mission_type VARCHAR(255) NOT NULL,\n    program_id INTEGER NOT NULL,\n    CONSTRAINT pk_missions PRIMARY KEY (id),\n    CONSTRAINT fk_missions_program_id FOREIGN KEY (program_id) REFERENCES programs (id)\n);\n\nCREATE TABLE milestones (\n    id INTEGER NOT NULL,\n    milestone_type VARCHAR(255) NOT NULL,\n    milestone_date DATE NOT NULL,\n    mission_id INTEGER NOT NULL,\n    CONSTRAINT pk_milestones PRIMARY KEY (id),\n    CONSTRAINT fk_milestones_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id)\n);\n\nCREATE TABLE spacecrafts (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    spacecraft_type VARCHAR(255) NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_spacecrafts PRIMARY KEY (id),\n    CONSTRAINT fk_spacecrafts_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE mission_spacecrafts (\n    mission_id INTEGER NOT NULL,\n    spacecraft_id INTEGER NOT NULL,\n    CONSTRAINT pk_mission_spacecrafts PRIMARY KEY (mission_id, spacecraft_id),\n    CONSTRAINT fk_mission_spacecrafts_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_mission_spacecrafts_spacecraft_id FOREIGN KEY (spacecraft_id) REFERENCES spacecrafts (id)\n);\n\nCREATE TABLE mission_teams (\n    mission_id INTEGER NOT NULL,\n    team_id INTEGER NOT NULL,\n    CONSTRAINT pk_mission_teams PRIMARY KEY (mission_id, team_id),\n    CONSTRAINT fk_mission_teams_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_mission_teams_team_id FOREIGN KEY (team_id) REFERENCES teams (id)\n);\n\nCREATE TABLE risks (\n    id INTEGER NOT NULL,\n    description TEXT NOT NULL,\n    probability DECIMAL(18,2) NOT NULL,\n    impact DECIMAL(18,2) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    mission_id INTEGER,\n    spacecraft_id INTEGER,\n    team_id INTEGER,\n    CONSTRAINT pk_risks PRIMARY KEY (id),\n    CONSTRAINT fk_risks_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_risks_spacecraft_id FOREIGN KEY (spacecraft_id) REFERENCES spacecrafts (id),\n    CONSTRAINT fk_risks_team_id FOREIGN KEY (team_id) REFERENCES teams (id)\n);\n",
+    "final_ddl": "CREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    general_role VARCHAR(255),\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE programs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    parent_program_id INTEGER,\n    CONSTRAINT pk_programs PRIMARY KEY (id),\n    CONSTRAINT fk_programs_parent_program_id FOREIGN KEY (parent_program_id) REFERENCES programs (id)\n);\n\nCREATE TABLE missions (\n    id INTEGER NOT NULL,\n    internal_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    planned_start DATE NOT NULL,\n    actual_start DATE,\n    mission_end DATE,\n    mission_type VARCHAR(255) NOT NULL,\n    program_id INTEGER NOT NULL,\n    CONSTRAINT pk_missions PRIMARY KEY (id),\n    CONSTRAINT fk_missions_program_id FOREIGN KEY (program_id) REFERENCES programs (id)\n);\n\nCREATE TABLE milestones (\n    id INTEGER NOT NULL,\n    milestone_type VARCHAR(255) NOT NULL,\n    date DATE NOT NULL,\n    mission_id INTEGER NOT NULL,\n    CONSTRAINT pk_milestones PRIMARY KEY (id),\n    CONSTRAINT fk_milestones_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id)\n);\n\nCREATE TABLE mission_employees (\n    mission_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    role_in_mission VARCHAR(255),\n    CONSTRAINT pk_mission_employees PRIMARY KEY (mission_id, employee_id),\n    CONSTRAINT fk_mission_employees_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_mission_employees_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE spacecrafts (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_spacecrafts PRIMARY KEY (id),\n    CONSTRAINT fk_spacecrafts_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE mission_spacecrafts (\n    mission_id INTEGER NOT NULL,\n    spacecraft_id INTEGER NOT NULL,\n    CONSTRAINT pk_mission_spacecrafts PRIMARY KEY (mission_id, spacecraft_id),\n    CONSTRAINT fk_mission_spacecrafts_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_mission_spacecrafts_spacecraft_id FOREIGN KEY (spacecraft_id) REFERENCES spacecrafts (id)\n);\n\nCREATE TABLE teams (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    discipline VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_teams PRIMARY KEY (id)\n);\n\nCREATE TABLE mission_teams (\n    mission_id INTEGER NOT NULL,\n    team_id INTEGER NOT NULL,\n    CONSTRAINT pk_mission_teams PRIMARY KEY (mission_id, team_id),\n    CONSTRAINT fk_mission_teams_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_mission_teams_team_id FOREIGN KEY (team_id) REFERENCES teams (id)\n);\n\nCREATE TABLE risks (\n    id INTEGER NOT NULL,\n    description TEXT NOT NULL,\n    probability DECIMAL(18,2) NOT NULL,\n    impact DECIMAL(18,2) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    mission_id INTEGER,\n    spacecraft_id INTEGER,\n    team_id INTEGER,\n    CONSTRAINT pk_risks PRIMARY KEY (id),\n    CONSTRAINT fk_risks_mission_id FOREIGN KEY (mission_id) REFERENCES missions (id),\n    CONSTRAINT fk_risks_spacecraft_id FOREIGN KEY (spacecraft_id) REFERENCES spacecrafts (id),\n    CONSTRAINT fk_risks_team_id FOREIGN KEY (team_id) REFERENCES teams (id)\n);\n\nCREATE TABLE team_employees (\n    team_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    role_in_team VARCHAR(255),\n    CONSTRAINT pk_team_employees PRIMARY KEY (team_id, employee_id),\n    CONSTRAINT fk_team_employees_team_id FOREIGN KEY (team_id) REFERENCES teams (id),\n    CONSTRAINT fk_team_employees_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n",
     "final_critic_report": {
-      "qualitaet_ausreichend": false,
+      "qualitaet_ausreichend": true,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -1208,42 +1322,66 @@
           "erfuellt": true,
           "beschreibung": "FK-Integritätsquote: 1.00",
           "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle 8 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: programs, missions, teams, employees, spacecrafts, manufacturers, milestones, risks. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im Schema vorhanden und korrekt benannt: Mission (internal_name, description, planned_start, actual_start, mission_end, mission_type, program_id), Programm (name, description, parent_program_id), Team (name, discipline), Mitarbeitender (name, general_role), Raumfahrzeug (designation, type, manufacturer_id), Hersteller (name, description), Meilenstein (milestone_type, date, mission_id), Risiko (description, probability, impact, status, mission_id, spacecraft_id, team_id). Die Attributnamen folgen der Konvention (snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Alle 11 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema implementiert: N:1 (Mission→Programm, Raumfahrzeug→Hersteller), M:N (Mission↔Team, Team↔Mitarbeitender, Mission↔Raumfahrzeug, Mission↔Mitarbeitender), 1:N (Mission→Meilenstein, Mission→Risiko, Raumfahrzeug→Risiko, Team→Risiko), N:1 (Programm→Programm für Hierarchie). Junction-Tables sind korrekt benannt und strukturiert.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten erkannt. Alle Attribute sind atomar, Primärschlüssel sind eindeutig, und Fremdschlüssel sind korrekt gesetzt. Die Risiko-Tabelle mit optionalen FKs (mission_id, spacecraft_id, team_id) ist eine valide Implementierung der Anforderung, dass Risiken optional verschiedenen Entitäten zugeordnet werden können.",
+          "korrekturanweisung": ""
         }
       ],
-      "origin_step": "lsd"
+      "origin_step": null
     },
-    "error": "oa_validator_failed: 1 validation error for CriticReport\nfindings.2.criterion\n  Input should be 'syntaktische_korrektheit', 'pk_vollstaendigkeit', 'fk_integritaet', 'entitaets_vollstaendigkeit', 'attribut_vollstaendigkeit', 'beziehungs_korrektheit' or 'normalisierung' [type=literal_error, input_value='fk_vollstaendigkeit', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+    "error": null,
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 6,
-    "total_input_tokens": 32694,
-    "total_output_tokens": 13881,
-    "total_tokens": 46575,
+    "total_calls": 7,
+    "total_input_tokens": 47064,
+    "total_output_tokens": 15423,
+    "total_tokens": 62487,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1889,
-        "output_tokens": 2098,
+        "output_tokens": 2005,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 2,
-        "input_tokens": 8024,
-        "output_tokens": 4903,
+        "input_tokens": 11439,
+        "output_tokens": 5816,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 2,
         "input_tokens": 12707,
-        "output_tokens": 5145,
+        "output_tokens": 5415,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 1,
-        "input_tokens": 10074,
-        "output_tokens": 1735,
+        "calls": 2,
+        "input_tokens": 21029,
+        "output_tokens": 2187,
         "cost_usd": 0.0
       }
     },
@@ -1254,7 +1392,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1889,
-        "output_tokens": 2098,
+        "output_tokens": 2005,
         "cost_usd": 0.0
       },
       {
@@ -1262,8 +1400,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4012,
-        "output_tokens": 2342,
+        "input_tokens": 3917,
+        "output_tokens": 2604,
         "cost_usd": 0.0
       },
       {
@@ -1271,8 +1409,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5393,
-        "output_tokens": 2549,
+        "input_tokens": 5649,
+        "output_tokens": 2592,
         "cost_usd": 0.0
       },
       {
@@ -1280,8 +1418,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 10074,
-        "output_tokens": 1735,
+        "input_tokens": 10278,
+        "output_tokens": 1164,
         "cost_usd": 0.0
       },
       {
@@ -1289,8 +1427,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4012,
-        "output_tokens": 2561,
+        "input_tokens": 7522,
+        "output_tokens": 3212,
         "cost_usd": 0.0
       },
       {
@@ -1298,8 +1436,17 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7314,
-        "output_tokens": 2596,
+        "input_tokens": 7058,
+        "output_tokens": 2823,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 10751,
+        "output_tokens": 1023,
         "cost_usd": 0.0
       }
     ]

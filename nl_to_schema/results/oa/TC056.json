@@ -2,8 +2,8 @@
   "testfall_id": "TC056",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.5818181818181819,
-  "score_gesamt": 0.7490909090909091,
+  "score_semantisch": 0.34328358208955223,
+  "score_gesamt": 0.6059701492537314,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -15,31 +15,41 @@
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.7142857142857143,
-      "recall": 0.7142857142857143,
-      "f1": 0.7142857142857143,
-      "matched": 5,
-      "nur_in_referenz": 2,
-      "nur_in_generiert": 2
+      "precision": 0.42857142857142855,
+      "recall": 0.42857142857142855,
+      "f1": 0.42857142857142855,
+      "matched": 3,
+      "nur_in_referenz": 4,
+      "nur_in_generiert": 4
     },
     "attribut": {
-      "precision": 0.5,
-      "recall": 0.4166666666666667,
-      "f1": 0.45454545454545453,
-      "matched": 15,
-      "nur_in_referenz": 21,
-      "nur_in_generiert": 15
+      "precision": 0.3870967741935484,
+      "recall": 0.3333333333333333,
+      "f1": 0.3582089552238806,
+      "matched": 12,
+      "nur_in_referenz": 24,
+      "nur_in_generiert": 19
     },
     "beziehung": {
-      "recall": 0.5714285714285714,
-      "matched": 4,
-      "nur_in_referenz": 3,
+      "recall": 0.14285714285714285,
+      "matched": 1,
+      "nur_in_referenz": 6,
       "nur_in_generiert": 0
     }
   },
   "abweichungen": [
     {
+      "element": "staff_members",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
       "element": "participants",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_staff_members",
       "typ": "tabelle",
       "fehlerklasse": null
     },
@@ -64,12 +74,12 @@
       "fehlerklasse": null
     },
     {
-      "element": "offer_staff_members.id",
+      "element": "event_participants.participant_id",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
-      "element": "event_participants.participant_id",
+      "element": "staff_members.id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -129,6 +139,21 @@
       "fehlerklasse": null
     },
     {
+      "element": "offer_staff_members.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_staff_members.offer_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_staff_members.staff_member_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "offer_participants.id",
       "typ": "attribut",
       "fehlerklasse": null
@@ -159,12 +184,27 @@
       "fehlerklasse": null
     },
     {
+      "element": "events → staff_members",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
       "element": "offer_participants → offers",
       "typ": "beziehung",
       "fehlerklasse": null
     },
     {
       "element": "offer_participants → participants",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_staff_members → offers",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "offer_staff_members → staff_members",
       "typ": "beziehung",
       "fehlerklasse": null
     }
@@ -175,7 +215,7 @@
     "logical_schema": {
       "tables": [
         {
-          "name": "youths",
+          "name": "employees",
           "columns": [
             {
               "name": "id",
@@ -190,22 +230,10 @@
               "nullable": false
             },
             {
-              "name": "birthdate",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "contact",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "registration_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
             }
           ],
           "foreign_keys": []
@@ -238,10 +266,10 @@
               "nullable": false
             },
             {
-              "name": "age_group",
+              "name": "agegroup",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "capacity",
@@ -259,7 +287,7 @@
           "foreign_keys": []
         },
         {
-          "name": "staff",
+          "name": "youths",
           "columns": [
             {
               "name": "id",
@@ -270,6 +298,24 @@
             {
               "name": "name",
               "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "registration_date",
+              "type": "DATE",
               "primary_key": false,
               "nullable": false
             }
@@ -351,7 +397,7 @@
               "nullable": false
             },
             {
-              "name": "responsible_staff_id",
+              "name": "employee_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -359,8 +405,8 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "responsible_staff_id",
-              "references_table": "staff",
+              "from_column": "employee_id",
+              "references_table": "employees",
               "references_column": "id"
             }
           ]
@@ -407,16 +453,16 @@
           ]
         },
         {
-          "name": "offer_staff",
+          "name": "employee_offers",
           "columns": [
             {
-              "name": "offer_id",
+              "name": "employee_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "staff_id",
+              "name": "offer_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
@@ -424,13 +470,13 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "offer_id",
-              "references_table": "offers",
+              "from_column": "employee_id",
+              "references_table": "employees",
               "references_column": "id"
             },
             {
-              "from_column": "staff_id",
-              "references_table": "staff",
+              "from_column": "offer_id",
+              "references_table": "offers",
               "references_column": "id"
             }
           ]
@@ -440,41 +486,42 @@
     "requirements_report": {
       "entitaeten": [
         {
+          "name": "Angebot",
+          "attribute": [
+            "Name",
+            "Typ (Kurs oder offener Treff)",
+            "Wochentag",
+            "Altersgruppe",
+            "Platzanzahl",
+            "Anmeldung erforderlich"
+          ],
+          "beschreibung": "Regelmäßige Kurse und offene Treffs, die an bestimmten Wochentagen stattfinden und von Mitarbeitenden begleitet werden."
+        },
+        {
+          "name": "Mitarbeitende",
+          "attribute": [
+            "Name",
+            "Kontaktmöglichkeit"
+          ],
+          "beschreibung": "Personen, die Angebote betreuen und Veranstaltungen leiten. Ein Angebot kann von einer oder mehreren Personen betreut werden."
+        },
+        {
           "name": "Jugendliche",
           "attribute": [
             "Name",
             "Geburtsdatum",
             "Kontaktmöglichkeit",
-            "Anmeldungsdatum_Jugendzentrum"
+            "Anmeldungsdatum (Tag der ersten Anmeldung)"
           ],
-          "beschreibung": "Personen, die das Jugendzentrum besuchen und an Angeboten teilnehmen"
-        },
-        {
-          "name": "Angebot",
-          "attribute": [
-            "Name",
-            "Typ",
-            "Wochentag",
-            "Altersgruppe",
-            "Platzanzahl",
-            "Anmeldung_erforderlich"
-          ],
-          "beschreibung": "Regelmäßige Kurse und offene Treffs, die an bestimmten Wochentagen stattfinden"
-        },
-        {
-          "name": "Mitarbeitende",
-          "attribute": [
-            "Name"
-          ],
-          "beschreibung": "Personen, die Angebote und Veranstaltungen betreuen"
+          "beschreibung": "Teilnehmende des Jugendzentrums, die an Angeboten und Veranstaltungen teilnehmen."
         },
         {
           "name": "Teilnahme",
           "attribute": [
             "Startdatum",
-            "Aktiv"
+            "Aktiv (ja/nein)"
           ],
-          "beschreibung": "Dokumentation der Teilnahme eines Jugendlichen an einem Angebot"
+          "beschreibung": "Dokumentiert die Teilnahme eines Jugendlichen an einem Angebot, einschließlich Zeitpunkt des Einstiegs und aktueller Status."
         },
         {
           "name": "Veranstaltung",
@@ -482,103 +529,88 @@
             "Titel",
             "Beschreibung",
             "Datum",
-            "Verantwortliche_Person"
+            "Verantwortliche Person"
           ],
-          "beschreibung": "Besondere Ereignisse wie Ausflüge oder Ferienaktionen"
+          "beschreibung": "Besondere Veranstaltungen wie Ausflüge oder Ferienaktionen, die an einem bestimmten Datum stattfinden."
         },
         {
           "name": "Veranstaltungsteilnahme",
           "attribute": [
-            "Status"
+            "Status (Interesse oder fest eingeplant)"
           ],
-          "beschreibung": "Dokumentation der Teilnahme eines Jugendlichen an einer Veranstaltung mit Status (Interesse/fest eingeplant)"
+          "beschreibung": "Dokumentiert die Teilnahme eines Jugendlichen an einer Veranstaltung und den jeweiligen Stand (Interesse vs. Zusage)."
         }
       ],
       "beziehungen": [
         {
           "von": "Angebot",
           "zu": "Mitarbeitende",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Angebot wird von mindestens einem Mitarbeitenden betreut, ein Mitarbeitender kann mehrere Angebote betreuen"
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Angebot wird von mindestens einer Mitarbeiterin oder einem Mitarbeiter betreut; eine Person kann mehrere Angebote betreuen."
         },
         {
           "von": "Jugendliche",
-          "zu": "Angebot",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Jugendlicher kann an mehreren Angeboten teilnehmen, ein Angebot hat mehrere Jugendliche; Beziehung wird durch Teilnahme-Entität dokumentiert"
+          "zu": "Teilnahme",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Jugendlicher kann an mehreren Angeboten teilnehmen; jede Teilnahme ist einem Jugendlichen zugeordnet."
         },
         {
-          "von": "Teilnahme",
-          "zu": "Jugendliche",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Jede Teilnahme bezieht sich auf genau einen Jugendlichen"
-        },
-        {
-          "von": "Teilnahme",
-          "zu": "Angebot",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Jede Teilnahme bezieht sich auf genau ein Angebot"
-        },
-        {
-          "von": "Jugendliche",
-          "zu": "Veranstaltung",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Jugendlicher kann an mehreren Veranstaltungen teilnehmen, eine Veranstaltung kann mehrere Jugendliche haben; Beziehung wird durch Veranstaltungsteilnahme-Entität dokumentiert"
-        },
-        {
-          "von": "Veranstaltungsteilnahme",
-          "zu": "Jugendliche",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Jede Veranstaltungsteilnahme bezieht sich auf genau einen Jugendlichen"
-        },
-        {
-          "von": "Veranstaltungsteilnahme",
-          "zu": "Veranstaltung",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Jede Veranstaltungsteilnahme bezieht sich auf genau eine Veranstaltung"
+          "von": "Angebot",
+          "zu": "Teilnahme",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Angebot hat mehrere Teilnehmende; jede Teilnahme bezieht sich auf ein Angebot."
         },
         {
           "von": "Veranstaltung",
           "zu": "Mitarbeitende",
           "kardinalitaet": "N:1",
-          "beschreibung": "Jede Veranstaltung hat genau eine verantwortliche Person"
+          "beschreibung": "Jede Veranstaltung hat eine verantwortliche Person aus dem Team."
+        },
+        {
+          "von": "Jugendliche",
+          "zu": "Veranstaltungsteilnahme",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Jugendlicher kann an mehreren Veranstaltungen teilnehmen; jede Veranstaltungsteilnahme ist einem Jugendlichen zugeordnet."
+        },
+        {
+          "von": "Veranstaltung",
+          "zu": "Veranstaltungsteilnahme",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Veranstaltung kann mehrere Teilnehmende haben; jede Veranstaltungsteilnahme bezieht sich auf eine Veranstaltung."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Typ eines Angebots wird erwähnt (Kurs vs. offener Treff), aber es ist unklar, ob dies als separates Attribut oder als Klassifizierung zu modellieren ist",
+          "beschreibung": "Unklar ist, ob die Betreuung eines Angebots durch mehrere Mitarbeitende als M:N-Beziehung (mehrere Mitarbeitende pro Angebot, mehrere Angebote pro Mitarbeitende) oder als 1:N-Beziehung (ein Angebot hat mehrere Mitarbeitende, aber jede Mitarbeiterin/jeder Mitarbeiter betreut nur ein Angebot) zu modellieren ist. Der Text sagt: 'Manche Angebote werden von einer Person betreut, bei anderen helfen mehrere Mitarbeitende zusammen', was auf M:N hindeutet.",
           "betroffene_elemente": [
-            "Angebot"
-          ]
-        },
-        {
-          "beschreibung": "Bei Mitarbeitenden sind nur der Name erwähnt. Weitere Attribute wie Kontaktdaten, Qualifikationen oder Verfügbarkeiten sind nicht spezifiziert",
-          "betroffene_elemente": [
+            "Angebot",
             "Mitarbeitende"
           ]
         },
         {
-          "beschreibung": "Die genaue Bedeutung von 'Kontaktmöglichkeit' bei Jugendlichen ist unklar (Telefon, E-Mail, Adresse, etc.)",
+          "beschreibung": "Unklar ist, ob 'Kontaktmöglichkeit' ein einzelnes Attribut (z.B. Telefonnummer oder E-Mail) oder mehrere Kontaktmöglichkeiten pro Person sein können.",
           "betroffene_elemente": [
-            "Jugendliche"
+            "Jugendliche",
+            "Mitarbeitende"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob ein Angebot an mehreren Wochentagen stattfinden kann oder nur an einem festen Wochentag",
+          "beschreibung": "Unklar ist, ob die Altersgruppe als Freitext, Kategorien (z.B. '12-14 Jahre') oder als Referenz zu einer separaten Entität 'Altersgruppe' zu modellieren ist.",
           "betroffene_elemente": [
             "Angebot"
           ]
         },
         {
-          "beschreibung": "Der Status bei Veranstaltungsteilnahmen wird als 'Interesse' oder 'fest eingeplant' beschrieben, aber die genauen möglichen Werte und deren Bedeutung sind nicht präzisiert",
+          "beschreibung": "Unklar ist, ob 'Platzanzahl' eine exakte Zahl oder eine ungefähre Angabe (z.B. 'ca. 15') sein soll und wie diese zu speichern ist.",
           "betroffene_elemente": [
-            "Veranstaltungsteilnahme"
+            "Angebot"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Altersgruppe als Textfeld (z.B. '12-14 Jahre') oder als strukturierte Daten (Mindestalter, Maximalalter) zu speichern ist",
+          "beschreibung": "Unklar ist, ob die Verantwortliche Person einer Veranstaltung auch gleichzeitig Mitarbeitende des Jugendzentrums sein muss oder ob es externe Personen sein können.",
           "betroffene_elemente": [
-            "Angebot"
+            "Veranstaltung",
+            "Mitarbeitende"
           ]
         }
       ]
@@ -586,10 +618,10 @@
     "er_modell": {
       "entitaeten": [
         {
-          "name": "Jugendliche",
+          "name": "Mitarbeitende",
           "attribute": [
             {
-              "name": "jugendliche_id",
+              "name": "mitarbeitende_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -601,22 +633,10 @@
               "pflichtfeld": true
             },
             {
-              "name": "geburtsdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
               "name": "kontaktmoeglichkeit",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
-            },
-            {
-              "name": "anmeldungsdatum_jugendzentrum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
             }
           ]
         },
@@ -651,7 +671,7 @@
               "name": "altersgruppe",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "platzanzahl",
@@ -668,10 +688,10 @@
           ]
         },
         {
-          "name": "Mitarbeitende",
+          "name": "Jugendliche",
           "attribute": [
             {
-              "name": "mitarbeitende_id",
+              "name": "jugendliche_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -679,6 +699,24 @@
             {
               "name": "name",
               "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "kontaktmoeglichkeit",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "anmeldungsdatum",
+              "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -747,7 +785,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "verantwortliche_person_id",
+              "name": "mitarbeitende_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -809,45 +847,45 @@
       ],
       "beziehungen": [
         {
-          "von": "Teilnahme",
-          "zu": "Jugendliche",
-          "kardinalitaet": "N:1",
+          "von": "Angebot",
+          "zu": "Angebot_Mitarbeitende",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Teilnahme",
-          "zu": "Angebot",
-          "kardinalitaet": "N:1",
+          "von": "Mitarbeitende",
+          "zu": "Angebot_Mitarbeitende",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Angebot_Mitarbeitende",
-          "zu": "Angebot",
-          "kardinalitaet": "N:1",
+          "von": "Jugendliche",
+          "zu": "Teilnahme",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Angebot_Mitarbeitende",
-          "zu": "Mitarbeitende",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Veranstaltungsteilnahme",
-          "zu": "Jugendliche",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Veranstaltungsteilnahme",
-          "zu": "Veranstaltung",
-          "kardinalitaet": "N:1",
+          "von": "Angebot",
+          "zu": "Teilnahme",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Veranstaltung",
           "zu": "Mitarbeitende",
           "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Jugendliche",
+          "zu": "Veranstaltungsteilnahme",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Veranstaltung",
+          "zu": "Veranstaltungsteilnahme",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         }
       ]
@@ -876,25 +914,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: youths, offers, staff, participations, events, event_participations. Zusätzlich existiert die Junction-Table offer_staff für die M:N-Beziehung zwischen Angeboten und Mitarbeitenden. Keine Entitäten fehlen.",
+          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: employees (Mitarbeitende), offers (Angebot), youths (Jugendliche), participations (Teilnahme), events (Veranstaltung), event_participations (Veranstaltungsteilnahme). Zusätzlich existiert die Junction-Table employee_offers für die M:N-Beziehung zwischen Angeboten und Mitarbeitenden.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch): youths (name, birthdate, contact, registration_date), offers (name, type, weekday, age_group, capacity, registration_required), staff (name), participations (start_date, is_active), events (title, description, date, responsible_staff_id), event_participations (status). Keine Attribute fehlen.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Angebot (name, type, weekday, agegroup, capacity, registration_required), Mitarbeitende (name, contact), Jugendliche (name, birthdate, contact, registration_date), Teilnahme (start_date, is_active), Veranstaltung (title, description, date, employee_id), Veranstaltungsteilnahme (status). Die Attributnamen folgen den Konventionen (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem RequirementsReport sind korrekt implementiert: (1) M:N Angebot-Mitarbeitende via offer_staff mit Composite-PK, (2) M:N Jugendliche-Angebot via participations mit zusätzlichen Attributen (start_date, is_active), (3) N:1 Teilnahme→Jugendliche und Teilnahme→Angebot, (4) M:N Jugendliche-Veranstaltung via event_participations mit Status-Attribut, (5) N:1 Veranstaltung→Mitarbeitende. Kardinalitäten sind korrekt.",
+          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: (1) Angebot-Mitarbeitende (M:N via employee_offers), (2) Jugendliche-Teilnahme (1:N), (3) Angebot-Teilnahme (1:N), (4) Veranstaltung-Mitarbeitende (N:1 via employee_id), (5) Jugendliche-Veranstaltungsteilnahme (1:N), (6) Veranstaltung-Veranstaltungsteilnahme (1:N). Kardinalitäten sind korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Alle Tabellen haben einen eindeutigen PK, (2) Keine partiellen Abhängigkeiten von Composite-Keys (offer_staff hat nur FK-Spalten), (3) Keine transitiven Abhängigkeiten (z.B. keine Redundanz wie 'Mitarbeitendername' in offer_staff), (4) Alle Attribute sind atomar. Die Struktur ist normalisiert und frei von Anomalien.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Alle Tabellen haben einen eindeutigen Primärschlüssel. (2) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit). (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. (4) Die Junction-Table employee_offers ist korrekt normalisiert für die M:N-Beziehung. (5) Keine redundanten Daten oder Anomalien erkennbar.",
           "korrekturanweisung": ""
         }
       ],
@@ -904,7 +942,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE youths (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    contact VARCHAR(255),\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_youths PRIMARY KEY (id)\n);\n\nCREATE TABLE staff (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_staff PRIMARY KEY (id)\n);\n\nCREATE TABLE events (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    date DATE NOT NULL,\n    responsible_staff_id INTEGER NOT NULL,\n    CONSTRAINT pk_events PRIMARY KEY (id),\n    CONSTRAINT fk_events_responsible_staff_id FOREIGN KEY (responsible_staff_id) REFERENCES staff (id)\n);\n\nCREATE TABLE event_participations (\n    id INTEGER NOT NULL,\n    youth_id INTEGER NOT NULL,\n    event_id INTEGER NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_event_participations PRIMARY KEY (id),\n    CONSTRAINT fk_event_participations_youth_id FOREIGN KEY (youth_id) REFERENCES youths (id),\n    CONSTRAINT fk_event_participations_event_id FOREIGN KEY (event_id) REFERENCES events (id)\n);\n\nCREATE TABLE offers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    weekday VARCHAR(255) NOT NULL,\n    age_group VARCHAR(255) NOT NULL,\n    capacity INTEGER,\n    registration_required BOOLEAN NOT NULL,\n    CONSTRAINT pk_offers PRIMARY KEY (id)\n);\n\nCREATE TABLE offer_staff (\n    offer_id INTEGER NOT NULL,\n    staff_id INTEGER NOT NULL,\n    CONSTRAINT pk_offer_staff PRIMARY KEY (offer_id, staff_id),\n    CONSTRAINT fk_offer_staff_offer_id FOREIGN KEY (offer_id) REFERENCES offers (id),\n    CONSTRAINT fk_offer_staff_staff_id FOREIGN KEY (staff_id) REFERENCES staff (id)\n);\n\nCREATE TABLE participations (\n    id INTEGER NOT NULL,\n    youth_id INTEGER NOT NULL,\n    offer_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_participations PRIMARY KEY (id),\n    CONSTRAINT fk_participations_youth_id FOREIGN KEY (youth_id) REFERENCES youths (id),\n    CONSTRAINT fk_participations_offer_id FOREIGN KEY (offer_id) REFERENCES offers (id)\n);\n",
+    "final_ddl": "CREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact VARCHAR(255),\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE offers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    weekday VARCHAR(255) NOT NULL,\n    agegroup VARCHAR(255),\n    capacity INTEGER,\n    registration_required BOOLEAN NOT NULL,\n    CONSTRAINT pk_offers PRIMARY KEY (id)\n);\n\nCREATE TABLE employee_offers (\n    employee_id INTEGER NOT NULL,\n    offer_id INTEGER NOT NULL,\n    CONSTRAINT pk_employee_offers PRIMARY KEY (employee_id, offer_id),\n    CONSTRAINT fk_employee_offers_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_offers_offer_id FOREIGN KEY (offer_id) REFERENCES offers (id)\n);\n\nCREATE TABLE youths (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    contact VARCHAR(255),\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_youths PRIMARY KEY (id)\n);\n\nCREATE TABLE events (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    date DATE NOT NULL,\n    employee_id INTEGER NOT NULL,\n    CONSTRAINT pk_events PRIMARY KEY (id),\n    CONSTRAINT fk_events_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE event_participations (\n    id INTEGER NOT NULL,\n    youth_id INTEGER NOT NULL,\n    event_id INTEGER NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_event_participations PRIMARY KEY (id),\n    CONSTRAINT fk_event_participations_youth_id FOREIGN KEY (youth_id) REFERENCES youths (id),\n    CONSTRAINT fk_event_participations_event_id FOREIGN KEY (event_id) REFERENCES events (id)\n);\n\nCREATE TABLE participations (\n    id INTEGER NOT NULL,\n    youth_id INTEGER NOT NULL,\n    offer_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_participations PRIMARY KEY (id),\n    CONSTRAINT fk_participations_youth_id FOREIGN KEY (youth_id) REFERENCES youths (id),\n    CONSTRAINT fk_participations_offer_id FOREIGN KEY (offer_id) REFERENCES offers (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -929,25 +967,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: youths, offers, staff, participations, events, event_participations. Zusätzlich existiert die Junction-Table offer_staff für die M:N-Beziehung zwischen Angeboten und Mitarbeitenden. Keine Entitäten fehlen.",
+          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: employees (Mitarbeitende), offers (Angebot), youths (Jugendliche), participations (Teilnahme), events (Veranstaltung), event_participations (Veranstaltungsteilnahme). Zusätzlich existiert die Junction-Table employee_offers für die M:N-Beziehung zwischen Angeboten und Mitarbeitenden.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch): youths (name, birthdate, contact, registration_date), offers (name, type, weekday, age_group, capacity, registration_required), staff (name), participations (start_date, is_active), events (title, description, date, responsible_staff_id), event_participations (status). Keine Attribute fehlen.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Angebot (name, type, weekday, agegroup, capacity, registration_required), Mitarbeitende (name, contact), Jugendliche (name, birthdate, contact, registration_date), Teilnahme (start_date, is_active), Veranstaltung (title, description, date, employee_id), Veranstaltungsteilnahme (status). Die Attributnamen folgen den Konventionen (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem RequirementsReport sind korrekt implementiert: (1) M:N Angebot-Mitarbeitende via offer_staff mit Composite-PK, (2) M:N Jugendliche-Angebot via participations mit zusätzlichen Attributen (start_date, is_active), (3) N:1 Teilnahme→Jugendliche und Teilnahme→Angebot, (4) M:N Jugendliche-Veranstaltung via event_participations mit Status-Attribut, (5) N:1 Veranstaltung→Mitarbeitende. Kardinalitäten sind korrekt.",
+          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: (1) Angebot-Mitarbeitende (M:N via employee_offers), (2) Jugendliche-Teilnahme (1:N), (3) Angebot-Teilnahme (1:N), (4) Veranstaltung-Mitarbeitende (N:1 via employee_id), (5) Jugendliche-Veranstaltungsteilnahme (1:N), (6) Veranstaltung-Veranstaltungsteilnahme (1:N). Kardinalitäten sind korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Alle Tabellen haben einen eindeutigen PK, (2) Keine partiellen Abhängigkeiten von Composite-Keys (offer_staff hat nur FK-Spalten), (3) Keine transitiven Abhängigkeiten (z.B. keine Redundanz wie 'Mitarbeitendername' in offer_staff), (4) Alle Attribute sind atomar. Die Struktur ist normalisiert und frei von Anomalien.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Alle Tabellen haben einen eindeutigen Primärschlüssel. (2) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit). (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. (4) Die Junction-Table employee_offers ist korrekt normalisiert für die M:N-Beziehung. (5) Keine redundanten Daten oder Anomalien erkennbar.",
           "korrekturanweisung": ""
         }
       ],
@@ -958,33 +996,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 17810,
-    "total_output_tokens": 6171,
-    "total_tokens": 23981,
+    "total_input_tokens": 18017,
+    "total_output_tokens": 6461,
+    "total_tokens": 24478,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1667,
-        "output_tokens": 1693,
+        "output_tokens": 1835,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3431,
-        "output_tokens": 1807,
+        "input_tokens": 3477,
+        "output_tokens": 1836,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4629,
-        "output_tokens": 1681,
+        "input_tokens": 4670,
+        "output_tokens": 1714,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 8083,
-        "output_tokens": 990,
+        "input_tokens": 8203,
+        "output_tokens": 1076,
         "cost_usd": 0.0
       }
     },
@@ -995,7 +1033,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1667,
-        "output_tokens": 1693,
+        "output_tokens": 1835,
         "cost_usd": 0.0
       },
       {
@@ -1003,8 +1041,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3431,
-        "output_tokens": 1807,
+        "input_tokens": 3477,
+        "output_tokens": 1836,
         "cost_usd": 0.0
       },
       {
@@ -1012,8 +1050,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4629,
-        "output_tokens": 1681,
+        "input_tokens": 4670,
+        "output_tokens": 1714,
         "cost_usd": 0.0
       },
       {
@@ -1021,8 +1059,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8083,
-        "output_tokens": 990,
+        "input_tokens": 8203,
+        "output_tokens": 1076,
         "cost_usd": 0.0
       }
     ]

@@ -203,27 +203,21 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Es ist unklar, ob ein Buch eine eindeutige Identifikation (z.B. ISBN oder interne ID) benötigt. Der Text erwähnt nur Titel, Erscheinungsjahr und Beschreibung.",
+          "beschreibung": "Es ist unklar, ob Bücher eindeutig identifiziert werden können (z.B. durch ISBN oder eine eindeutige Buch-ID). Der Text nennt nur Titel, Erscheinungsjahr und Beschreibung, was nicht garantiert eindeutig ist.",
           "betroffene_elemente": [
             "Buch"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob mehrere Bücher mit identischem Titel, Erscheinungsjahr und Autor möglich sind oder ob diese Kombination eindeutig sein soll.",
+          "beschreibung": "Es ist unklar, ob mehrere Exemplare desselben Buches separat erfasst werden oder ob nur eine Buch-Entität pro Titel/Autor-Kombination existiert.",
           "betroffene_elemente": [
             "Buch"
           ]
         },
         {
-          "beschreibung": "Es ist unklar, ob Autoren eine eindeutige Identifikation benötigen oder ob die Kombination aus Vorname, Nachname und Geburtsdatum als eindeutig angenommen wird.",
+          "beschreibung": "Es ist unklar, ob Autoren eindeutig identifiziert werden können (z.B. durch eine Autor-ID). Vorname und Nachname könnten nicht eindeutig sein.",
           "betroffene_elemente": [
             "Autor"
-          ]
-        },
-        {
-          "beschreibung": "Es ist nicht definiert, ob die Bezeichnung eines Regals eindeutig sein muss oder ob mehrere Regale die gleiche Bezeichnung haben können.",
-          "betroffene_elemente": [
-            "Regal"
           ]
         }
       ]
@@ -231,28 +225,69 @@
     "er_modell": {
       "entitaeten": [
         {
-          "name": "Autor",
+          "name": "Buch",
           "attribute": [
             {
-              "name": "autorID",
+              "name": "buch_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Vorname",
+              "name": "titel",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Nachname",
+              "name": "erscheinungsjahr",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "autor_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "regal_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Autor",
+          "attribute": [
+            {
+              "name": "autor_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "vorname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Geburtsdatum",
+              "name": "nachname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "geburtsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -263,61 +298,20 @@
           "name": "Regal",
           "attribute": [
             {
-              "name": "regalID",
+              "name": "regal_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Bezeichnung",
+              "name": "bezeichnung",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Standortbereich",
+              "name": "standortbereich",
               "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Buch",
-          "attribute": [
-            {
-              "name": "buchID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Titel",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Erscheinungsjahr",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "autorID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "regalID",
-              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -363,25 +357,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Buch, Autor, Regal) sind als Tabellen implementiert. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Buch, Autor, Regal) sind im LogicalSchema als Tabellen (books, authors, shelves) vorhanden. Die Kardinalitäten (N:1 Beziehungen) sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: authors (firstname, lastname, birthdate), shelves (designation, location_area), books (title, publicationyear, description). Die Attributnamen folgen der Konvention (snake_case, englische Kurzformen). Optionale Felder (birthdate, description) sind korrekt als nullable markiert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: authors (firstname, lastname, birthdate), shelves (designation, location_area), books (title, publicationyear, description, author_id, shelf_id). Nullable-Flags entsprechen den Anforderungen (birthdate und description sind optional).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide N:1-Beziehungen aus dem ERModell sind korrekt implementiert: Buch→Autor (author_id NOT NULL) und Buch→Regal (shelf_id NOT NULL). Die Fremdschlüssel sind als NOT NULL definiert, was die Kardinalität 'genau ein' korrekt abbildet.",
+          "beschreibung": "Beide N:1-Beziehungen sind korrekt implementiert: Buch→Autor (author_id NOT NULL) und Buch→Regal (shelf_id NOT NULL). Dies entspricht den Anforderungen, dass jedes Buch genau einen Autor und genau ein Regal hat.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Die N:1-Beziehungen sind durch Fremdschlüssel korrekt modelliert, nicht durch Junction Tables (was für N:1 auch nicht erforderlich ist).",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Die Struktur mit drei separaten Entitäten und zwei N:1-Beziehungen ist optimal normalisiert.",
           "korrekturanweisung": ""
         }
       ],
@@ -416,25 +410,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Buch, Autor, Regal) sind als Tabellen implementiert. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Buch, Autor, Regal) sind im LogicalSchema als Tabellen (books, authors, shelves) vorhanden. Die Kardinalitäten (N:1 Beziehungen) sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: authors (firstname, lastname, birthdate), shelves (designation, location_area), books (title, publicationyear, description). Die Attributnamen folgen der Konvention (snake_case, englische Kurzformen). Optionale Felder (birthdate, description) sind korrekt als nullable markiert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: authors (firstname, lastname, birthdate), shelves (designation, location_area), books (title, publicationyear, description, author_id, shelf_id). Nullable-Flags entsprechen den Anforderungen (birthdate und description sind optional).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide N:1-Beziehungen aus dem ERModell sind korrekt implementiert: Buch→Autor (author_id NOT NULL) und Buch→Regal (shelf_id NOT NULL). Die Fremdschlüssel sind als NOT NULL definiert, was die Kardinalität 'genau ein' korrekt abbildet.",
+          "beschreibung": "Beide N:1-Beziehungen sind korrekt implementiert: Buch→Autor (author_id NOT NULL) und Buch→Regal (shelf_id NOT NULL). Dies entspricht den Anforderungen, dass jedes Buch genau einen Autor und genau ein Regal hat.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Die N:1-Beziehungen sind durch Fremdschlüssel korrekt modelliert, nicht durch Junction Tables (was für N:1 auch nicht erforderlich ist).",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Die Struktur mit drei separaten Entitäten und zwei N:1-Beziehungen ist optimal normalisiert.",
           "korrekturanweisung": ""
         }
       ],
@@ -445,33 +439,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 11465,
-    "total_output_tokens": 2986,
-    "total_tokens": 14451,
+    "total_input_tokens": 11333,
+    "total_output_tokens": 2918,
+    "total_tokens": 14251,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1475,
-        "output_tokens": 761,
+        "output_tokens": 703,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2263,
-        "output_tokens": 730,
+        "input_tokens": 2199,
+        "output_tokens": 728,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3115,
+        "input_tokens": 3113,
         "output_tokens": 700,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 4612,
-        "output_tokens": 795,
+        "input_tokens": 4546,
+        "output_tokens": 787,
         "cost_usd": 0.0
       }
     },
@@ -482,7 +476,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1475,
-        "output_tokens": 761,
+        "output_tokens": 703,
         "cost_usd": 0.0
       },
       {
@@ -490,8 +484,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2263,
-        "output_tokens": 730,
+        "input_tokens": 2199,
+        "output_tokens": 728,
         "cost_usd": 0.0
       },
       {
@@ -499,7 +493,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3115,
+        "input_tokens": 3113,
         "output_tokens": 700,
         "cost_usd": 0.0
       },
@@ -508,8 +502,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4612,
-        "output_tokens": 795,
+        "input_tokens": 4546,
+        "output_tokens": 787,
         "cost_usd": 0.0
       }
     ]

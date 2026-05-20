@@ -114,13 +114,13 @@
               "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": []
@@ -278,7 +278,7 @@
           ]
         },
         {
-          "beschreibung": "Eindeutigkeit von Personendaten: Sind Vorname und Nachname eindeutig oder können mehrere Personen den gleichen Namen haben? Ist die E-Mail-Adresse eindeutig?",
+          "beschreibung": "Eindeutigkeit von Personendaten: Sind E-Mail-Adresse oder Telefonnummer eindeutig, oder können mehrere Personen die gleichen Kontaktdaten haben?",
           "betroffene_elemente": [
             "Person"
           ]
@@ -290,16 +290,14 @@
           ]
         },
         {
-          "beschreibung": "Kosten-Attribut: Können Kosten null oder leer sein (z.B. bei noch nicht abgeschlossenen Terminen)? Welche Währung und Genauigkeit (Dezimalstellen)?",
+          "beschreibung": "Kosten-Attribut: Sollen Kosten optional sein (NULL-Werte erlaubt) oder ist ein Wert immer erforderlich? Welche Genauigkeit (z.B. Dezimalstellen) ist notwendig?",
           "betroffene_elemente": [
             "Werkstatttermin"
           ]
         },
         {
-          "beschreibung": "Erforderlichkeit von Attributen: Welche Attribute sind Pflichtfelder und welche optional?",
+          "beschreibung": "Zeitliche Auflösung des Termins: Soll nur das Datum oder auch die Uhrzeit des Werkstatttermins gespeichert werden?",
           "betroffene_elemente": [
-            "Person",
-            "Fahrzeug",
             "Werkstatttermin"
           ]
         }
@@ -332,13 +330,13 @@
               "name": "Telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             },
             {
               "name": "EMail",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             }
           ]
         },
@@ -399,7 +397,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Tag",
+              "name": "Termin",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -464,25 +462,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Person, Fahrzeug, Werkstatttermin) sind im LogicalSchema als Tabellen (persons, vehicles, appointments) vorhanden.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext (Person, Fahrzeug, Werkstatttermin) sind als Tabellen implementiert. Keine Entitäten fehlen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport und ERModell sind vorhanden: persons (firstname, lastname, phone, email), vehicles (license_plate, brand, model, year_of_manufacture, person_id), appointments (vehicle_id, appointment_date, description, is_completed, costs). Datentypen und Nullable-Definitionen entsprechen dem ERModell.",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: persons (firstname, lastname, phone, email), vehicles (license_plate, brand, model, year_of_manufacture, person_id), appointments (appointment_date, description, is_completed, costs). Die Namenskonventionen sind korrekt (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide N:1-Beziehungen sind korrekt implementiert: (1) vehicles.person_id → persons.id für 'Fahrzeug gehört zu Person', (2) appointments.vehicle_id → vehicles.id für 'Werkstatttermin bezieht sich auf Fahrzeug'. Kardinalitäten und Fremdschlüssel-Constraints sind konsistent mit dem ERModell.",
+          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) Fahrzeug N:1 Person via person_id in vehicles-Tabelle, (2) Werkstatttermin N:1 Fahrzeug via vehicle_id in appointments-Tabelle. Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Alle Attribute sind atomar, Primärschlüssel sind eindeutig, und Fremdschlüssel-Beziehungen sind korrekt strukturiert.",
+          "beschreibung": "Das Schema ist in 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, Abhängigkeiten sind funktional und nicht transitiv.",
           "korrekturanweisung": ""
         }
       ],
@@ -492,7 +490,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    year_of_manufacture INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    description TEXT NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    costs DECIMAL(18,2),\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n",
+    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    brand VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    year_of_manufacture INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id),\n    CONSTRAINT fk_vehicles_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    description TEXT NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    costs DECIMAL(18,2),\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -517,25 +515,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Person, Fahrzeug, Werkstatttermin) sind im LogicalSchema als Tabellen (persons, vehicles, appointments) vorhanden.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext (Person, Fahrzeug, Werkstatttermin) sind als Tabellen implementiert. Keine Entitäten fehlen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport und ERModell sind vorhanden: persons (firstname, lastname, phone, email), vehicles (license_plate, brand, model, year_of_manufacture, person_id), appointments (vehicle_id, appointment_date, description, is_completed, costs). Datentypen und Nullable-Definitionen entsprechen dem ERModell.",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden: persons (firstname, lastname, phone, email), vehicles (license_plate, brand, model, year_of_manufacture, person_id), appointments (appointment_date, description, is_completed, costs). Die Namenskonventionen sind korrekt (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide N:1-Beziehungen sind korrekt implementiert: (1) vehicles.person_id → persons.id für 'Fahrzeug gehört zu Person', (2) appointments.vehicle_id → vehicles.id für 'Werkstatttermin bezieht sich auf Fahrzeug'. Kardinalitäten und Fremdschlüssel-Constraints sind konsistent mit dem ERModell.",
+          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) Fahrzeug N:1 Person via person_id in vehicles-Tabelle, (2) Werkstatttermin N:1 Fahrzeug via vehicle_id in appointments-Tabelle. Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Alle Attribute sind atomar, Primärschlüssel sind eindeutig, und Fremdschlüssel-Beziehungen sind korrekt strukturiert.",
+          "beschreibung": "Das Schema ist in 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, Abhängigkeiten sind funktional und nicht transitiv.",
           "korrekturanweisung": ""
         }
       ],
@@ -546,33 +544,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12244,
-    "total_output_tokens": 3327,
-    "total_tokens": 15571,
+    "total_input_tokens": 12256,
+    "total_output_tokens": 3286,
+    "total_tokens": 15542,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1474,
-        "output_tokens": 858,
+        "output_tokens": 866,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2377,
-        "output_tokens": 859,
+        "input_tokens": 2381,
+        "output_tokens": 861,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3313,
+        "input_tokens": 3315,
         "output_tokens": 855,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5080,
-        "output_tokens": 755,
+        "input_tokens": 5086,
+        "output_tokens": 704,
         "cost_usd": 0.0
       }
     },
@@ -583,7 +581,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1474,
-        "output_tokens": 858,
+        "output_tokens": 866,
         "cost_usd": 0.0
       },
       {
@@ -591,8 +589,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2377,
-        "output_tokens": 859,
+        "input_tokens": 2381,
+        "output_tokens": 861,
         "cost_usd": 0.0
       },
       {
@@ -600,7 +598,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3313,
+        "input_tokens": 3315,
         "output_tokens": 855,
         "cost_usd": 0.0
       },
@@ -609,8 +607,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5080,
-        "output_tokens": 755,
+        "input_tokens": 5086,
+        "output_tokens": 704,
         "cost_usd": 0.0
       }
     ]

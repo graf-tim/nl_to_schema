@@ -2,8 +2,8 @@
   "testfall_id": "TC019",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.9529411764705882,
-  "score_gesamt": 0.9717647058823529,
+  "score_semantisch": 0.9764705882352942,
+  "score_gesamt": 0.9858823529411765,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 0
     },
     "attribut": {
-      "precision": 0.8823529411764706,
-      "recall": 0.8823529411764706,
-      "f1": 0.8823529411764706,
-      "matched": 15,
-      "nur_in_referenz": 2,
-      "nur_in_generiert": 2
+      "precision": 0.9411764705882353,
+      "recall": 0.9411764705882353,
+      "f1": 0.9411764705882353,
+      "matched": 16,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
     },
     "beziehung": {
       "recall": 1.0,
@@ -38,11 +38,6 @@
     }
   },
   "abweichungen": [
-    {
-      "element": "orders.orderdate",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
     {
       "element": "orders.is_collected",
       "typ": "attribut",
@@ -136,7 +131,7 @@
               "nullable": false
             },
             {
-              "name": "created_at",
+              "name": "order_date",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
@@ -179,7 +174,7 @@
             },
             {
               "name": "quantity",
-              "type": "DECIMAL",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             }
@@ -241,24 +236,24 @@
           "von": "Bestellung",
           "zu": "Kunde",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Bestellung gehört genau zu einem Kunden. Ein Kunde kann mehrere Bestellungen haben."
+          "beschreibung": "Eine Bestellung gehört genau zu einem Kunden. Ein Kunde kann mehrere Bestellungen aufgeben."
         },
         {
           "von": "BestellungProdukt",
           "zu": "Bestellung",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine BestellungProdukt-Zeile gehört zu genau einer Bestellung. Eine Bestellung kann mehrere Produkte enthalten."
+          "beschreibung": "Jeder Eintrag in BestellungProdukt gehört zu genau einer Bestellung. Eine Bestellung kann mehrere Produkte enthalten."
         },
         {
           "von": "BestellungProdukt",
           "zu": "Produkt",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine BestellungProdukt-Zeile bezieht sich auf genau ein Produkt. Ein Produkt kann in vielen verschiedenen Bestellungen enthalten sein."
+          "beschreibung": "Jeder Eintrag in BestellungProdukt verweist auf genau ein Produkt. Ein Produkt kann in vielen verschiedenen Bestellungen enthalten sein."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Das Attribut 'Abgeholt' ist als boolescher Wert interpretiert worden, aber es ist unklar, ob auch ein Abhol-Zeitpunkt oder weitere Details zum Abhol-Status gespeichert werden sollen.",
+          "beschreibung": "Das Attribut 'Abgeholt' ist als boolescher Wert interpretiert worden, aber es ist unklar, ob auch ein Abholdatum oder -uhrzeit gespeichert werden soll.",
           "betroffene_elemente": [
             "Bestellung"
           ]
@@ -270,15 +265,15 @@
           ]
         },
         {
-          "beschreibung": "Es ist unklar, ob Produkte eindeutig identifiziert werden (z.B. durch eine Produktnummer) oder nur durch ihren Namen.",
+          "beschreibung": "Es ist unklar, ob Produkte eindeutig identifiziert werden (z.B. durch eine Produktnummer) oder ob der Name als eindeutig angenommen wird.",
           "betroffene_elemente": [
             "Produkt"
           ]
         },
         {
-          "beschreibung": "Es ist nicht definiert, ob die Menge in der BestellungProdukt-Entität eine Ganzzahl oder auch Dezimalzahlen sein kann.",
+          "beschreibung": "Das Format des Aufnahmezeitpunkts (Datum, Uhrzeit oder beides) ist nicht spezifiziert.",
           "betroffene_elemente": [
-            "BestellungProdukt"
+            "Bestellung"
           ]
         }
       ]
@@ -289,7 +284,7 @@
           "name": "Kunde",
           "attribute": [
             {
-              "name": "kundenId",
+              "name": "KundenID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -324,7 +319,7 @@
           "name": "Produkt",
           "attribute": [
             {
-              "name": "produktId",
+              "name": "ProduktID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -353,13 +348,13 @@
           "name": "Bestellung",
           "attribute": [
             {
-              "name": "bestellungId",
+              "name": "BestellungID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kundenId",
+              "name": "KundenID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -382,26 +377,26 @@
           "name": "BestellungProdukt",
           "attribute": [
             {
-              "name": "bestellungProduktId",
+              "name": "BestellungProduktID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "bestellungId",
+              "name": "BestellungID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "produktId",
+              "name": "ProduktID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
               "name": "Menge",
-              "datentyp": "DECIMAL",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -453,25 +448,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: customers (Kunde), products (Produkt), orders (Bestellung), order_items (BestellungProdukt). Die Namenskonvention ist korrekt (Plural, snake_case, englisch).",
+          "beschreibung": "Alle vier Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, products, orders, order_items. Die Struktur entspricht den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: customers (firstname, lastname, phone, email), products (name, description, price), orders (customer_id, created_at, is_picked_up), order_items (order_id, product_id, quantity). Namenskonvention ist konsistent (snake_case, englisch). Datentypen entsprechen den Anforderungen (VARCHAR für Texte, DECIMAL für Preis/Menge, TIMESTAMP für Zeitstempel, BOOLEAN für Status).",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: customers (firstname, lastname, phone, email), products (name, description, price), orders (customer_id, order_date, is_picked_up), order_items (order_id, product_id, quantity). Datentypen und Nullable-Einstellungen entsprechen dem ER-Modell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: (1) orders.customer_id → customers.id (N:1, Bestellung-Kunde), (2) order_items.order_id → orders.id (N:1, BestellungProdukt-Bestellung), (3) order_items.product_id → products.id (N:1, BestellungProdukt-Produkt). Kardinalitäten und Fremdschlüssel-Constraints sind korrekt.",
+          "beschreibung": "Alle drei Beziehungen sind korrekt implementiert: (1) orders.customer_id → customers.id (N:1), (2) order_items.order_id → orders.id (N:1), (3) order_items.product_id → products.id (N:1). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Die Junction-Table order_items ist korrekt für die N:M-Beziehung zwischen orders und products implementiert. Alle Attribute sind atomar und funktional abhängig von ihren Primärschlüsseln.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Die Junction-Table order_items ist korrekt für die N:M-Beziehung zwischen orders und products implementiert. Alle Attribute sind atomar.",
           "korrekturanweisung": ""
         }
       ],
@@ -481,7 +476,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    is_picked_up BOOLEAN NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_products PRIMARY KEY (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    product_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_product_id FOREIGN KEY (product_id) REFERENCES products (id)\n);\n",
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    order_date TIMESTAMP NOT NULL,\n    is_picked_up BOOLEAN NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_products PRIMARY KEY (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    product_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_product_id FOREIGN KEY (product_id) REFERENCES products (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -506,25 +501,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: customers (Kunde), products (Produkt), orders (Bestellung), order_items (BestellungProdukt). Die Namenskonvention ist korrekt (Plural, snake_case, englisch).",
+          "beschreibung": "Alle vier Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, products, orders, order_items. Die Struktur entspricht den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: customers (firstname, lastname, phone, email), products (name, description, price), orders (customer_id, created_at, is_picked_up), order_items (order_id, product_id, quantity). Namenskonvention ist konsistent (snake_case, englisch). Datentypen entsprechen den Anforderungen (VARCHAR für Texte, DECIMAL für Preis/Menge, TIMESTAMP für Zeitstempel, BOOLEAN für Status).",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: customers (firstname, lastname, phone, email), products (name, description, price), orders (customer_id, order_date, is_picked_up), order_items (order_id, product_id, quantity). Datentypen und Nullable-Einstellungen entsprechen dem ER-Modell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: (1) orders.customer_id → customers.id (N:1, Bestellung-Kunde), (2) order_items.order_id → orders.id (N:1, BestellungProdukt-Bestellung), (3) order_items.product_id → products.id (N:1, BestellungProdukt-Produkt). Kardinalitäten und Fremdschlüssel-Constraints sind korrekt.",
+          "beschreibung": "Alle drei Beziehungen sind korrekt implementiert: (1) orders.customer_id → customers.id (N:1), (2) order_items.order_id → orders.id (N:1), (3) order_items.product_id → products.id (N:1). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Die Junction-Table order_items ist korrekt für die N:M-Beziehung zwischen orders und products implementiert. Alle Attribute sind atomar und funktional abhängig von ihren Primärschlüsseln.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Die Junction-Table order_items ist korrekt für die N:M-Beziehung zwischen orders und products implementiert. Alle Attribute sind atomar.",
           "korrekturanweisung": ""
         }
       ],
@@ -535,33 +530,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12627,
-    "total_output_tokens": 3775,
-    "total_tokens": 16402,
+    "total_input_tokens": 12626,
+    "total_output_tokens": 3553,
+    "total_tokens": 16179,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1473,
-        "output_tokens": 941,
+        "output_tokens": 936,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2449,
-        "output_tokens": 978,
+        "input_tokens": 2444,
+        "output_tokens": 950,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3397,
-        "output_tokens": 926,
+        "input_tokens": 3402,
+        "output_tokens": 925,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5308,
-        "output_tokens": 930,
+        "input_tokens": 5307,
+        "output_tokens": 742,
         "cost_usd": 0.0
       }
     },
@@ -572,7 +567,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1473,
-        "output_tokens": 941,
+        "output_tokens": 936,
         "cost_usd": 0.0
       },
       {
@@ -580,8 +575,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2449,
-        "output_tokens": 978,
+        "input_tokens": 2444,
+        "output_tokens": 950,
         "cost_usd": 0.0
       },
       {
@@ -589,8 +584,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3397,
-        "output_tokens": 926,
+        "input_tokens": 3402,
+        "output_tokens": 925,
         "cost_usd": 0.0
       },
       {
@@ -598,8 +593,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5308,
-        "output_tokens": 930,
+        "input_tokens": 5307,
+        "output_tokens": 742,
         "cost_usd": 0.0
       }
     ]

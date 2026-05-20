@@ -2,15 +2,15 @@
   "testfall_id": "TC065",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.5728205128205128,
-  "score_gesamt": 0.7436923076923077,
+  "score_semantisch": 0.5766623207301173,
+  "score_gesamt": 0.7459973924380703,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
     "pk_tabellen_gesamt": 7,
     "pk_tabellen_mit_pk": 7,
-    "fk_referenzen_gesamt": 8,
+    "fk_referenzen_gesamt": 7,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
@@ -23,12 +23,12 @@
       "nur_in_generiert": 3
     },
     "attribut": {
-      "precision": 0.53125,
+      "precision": 0.5483870967741935,
       "recall": 0.6071428571428571,
-      "f1": 0.5666666666666667,
+      "f1": 0.5762711864406779,
       "matched": 17,
       "nur_in_referenz": 11,
-      "nur_in_generiert": 15
+      "nur_in_generiert": 14
     },
     "beziehung": {
       "recall": 0.5,
@@ -377,27 +377,16 @@
               "nullable": false
             },
             {
-              "name": "warehouse_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "planned_receipt_date",
               "type": "DATE",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": [
             {
               "from_column": "order_id",
               "references_table": "orders",
-              "references_column": "id"
-            },
-            {
-              "from_column": "warehouse_id",
-              "references_table": "warehouses",
               "references_column": "id"
             }
           ]
@@ -423,7 +412,7 @@
             "Beschreibung",
             "Mengeneinheit"
           ],
-          "beschreibung": "Ein Artikel, den das Unternehmen bezieht. Kann von mehreren Lieferanten angeboten werden."
+          "beschreibung": "Ein Artikel, den das Unternehmen bezieht. Kann von mehreren Lieferanten bezogen werden."
         },
         {
           "name": "Lieferantengebot",
@@ -431,7 +420,7 @@
             "Preis",
             "Lieferzeit"
           ],
-          "beschreibung": "Die Beziehung zwischen Lieferant und Artikel mit Preis und Lieferzeit für einen bestimmten Artikel bei einem bestimmten Lieferanten."
+          "beschreibung": "Die Beziehung zwischen Lieferant und Artikel mit Preis und Lieferzeit für einen bestimmten Artikel bei einem bestimmten Lieferant."
         },
         {
           "name": "Bestellung",
@@ -460,8 +449,10 @@
         },
         {
           "name": "Wareneingang",
-          "attribute": [],
-          "beschreibung": "Ein geplanter Wareneingang für eine Bestellung in einem Lager. Pro Bestellung wird im ersten Ausbauschritt nur ein Wareneingang betrachtet."
+          "attribute": [
+            "Geplantes Eingangsdatum"
+          ],
+          "beschreibung": "Ein geplanter Wareneingang für eine Bestellung in ein bestimmtes Lager. Pro Bestellung wird im ersten Ausbauschritt nur ein Wareneingang betrachtet."
         }
       ],
       "beziehungen": [
@@ -472,18 +463,6 @@
           "beschreibung": "Ein Lieferant kann mehrere Artikel anbieten, und derselbe Artikel kann von verschiedenen Lieferanten kommen. Diese Beziehung wird durch die Entität Lieferantengebot realisiert."
         },
         {
-          "von": "Lieferantengebot",
-          "zu": "Lieferant",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Jedes Lieferantengebot gehört zu genau einem Lieferant."
-        },
-        {
-          "von": "Lieferantengebot",
-          "zu": "Artikel",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Jedes Lieferantengebot bezieht sich auf genau einen Artikel."
-        },
-        {
           "von": "Bestellung",
           "zu": "Lieferant",
           "kardinalitaet": "N:1",
@@ -491,15 +470,9 @@
         },
         {
           "von": "Bestellung",
-          "zu": "Lager",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Eine Bestellung wird in genau ein Lager erwartet."
-        },
-        {
-          "von": "Bestellposition",
-          "zu": "Bestellung",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Eine Bestellposition gehört zu genau einer Bestellung."
+          "zu": "Bestellposition",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Bestellung kann mehrere Bestellpositionen enthalten."
         },
         {
           "von": "Bestellposition",
@@ -508,52 +481,66 @@
           "beschreibung": "Eine Bestellposition bezieht sich auf genau einen Artikel."
         },
         {
-          "von": "Wareneingang",
-          "zu": "Bestellung",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Ein Wareneingang gehört zu genau einer Bestellung. Pro Bestellung wird im ersten Ausbauschritt nur ein Wareneingang betrachtet."
-        },
-        {
-          "von": "Wareneingang",
+          "von": "Bestellung",
           "zu": "Lager",
           "kardinalitaet": "N:1",
-          "beschreibung": "Ein Wareneingang erfolgt in genau ein Lager."
+          "beschreibung": "Eine Bestellung wird in genau ein Lager erwartet."
+        },
+        {
+          "von": "Bestellung",
+          "zu": "Wareneingang",
+          "kardinalitaet": "1:1",
+          "beschreibung": "Eine Bestellung hat im ersten Ausbauschritt genau einen geplanten Wareneingang."
+        },
+        {
+          "von": "Lieferantengebot",
+          "zu": "Lieferant",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Lieferantengebot bezieht sich auf genau einen Lieferant."
+        },
+        {
+          "von": "Lieferantengebot",
+          "zu": "Artikel",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Lieferantengebot bezieht sich auf genau einen Artikel."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Die Warengruppen im Lager sind nicht eindeutig definiert: Der Text sagt 'Ob diese Warengruppen fest vorgegeben sind oder frei beschrieben werden, bleibt dem System überlassen.' Es ist unklar, ob Warengruppen eine separate Entität sein sollen oder nur ein Attribut des Lagers.",
+          "beschreibung": "Die Warengruppen im Lager sind nicht eindeutig definiert: Es ist unklar, ob diese fest vorgegeben sind oder frei beschrieben werden können. Dies hat Auswirkungen auf die Datenmodellierung (z.B. separate Entität vs. Freitextfeld).",
           "betroffene_elemente": [
             "Lager",
             "Warengruppen"
           ]
         },
         {
-          "beschreibung": "Die Beziehung zwischen Bestellung und Lager ist impliziert ('in welchem Lager die Ware erwartet wird'), aber es ist unklar, ob eine Bestellung in mehrere Lager gehen kann oder nur in eines.",
+          "beschreibung": "Die Beziehung zwischen Wareneingang und Lager ist nicht explizit erwähnt. Es ist unklar, ob der Wareneingang sich auf ein spezifisches Lager bezieht oder ob dies implizit über die Bestellung definiert wird.",
           "betroffene_elemente": [
-            "Bestellung",
-            "Lager"
-          ]
-        },
-        {
-          "beschreibung": "Der Text erwähnt 'Nicht jede Bestellung wird vollständig auf einmal geliefert; für den ersten Ausbauschritt reicht es aber, wenn pro Bestellung nur ein geplanter Wareneingang betrachtet wird.' Dies deutet auf eine zukünftige Erweiterung hin, aber es ist unklar, wie Teillieferungen in der aktuellen Version modelliert werden sollen.",
-          "betroffene_elemente": [
-            "Bestellung",
-            "Wareneingang"
-          ]
-        },
-        {
-          "beschreibung": "Es ist unklar, ob die Entität 'Wareneingang' notwendig ist oder ob die Informationen (geplantes Lieferdatum, Lager) direkt in der Bestellung gespeichert werden können.",
-          "betroffene_elemente": [
-            "Bestellung",
             "Wareneingang",
             "Lager"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob der Preis und die Lieferzeit im Lieferantengebot zeitabhängig sind oder ob historische Versionen gespeichert werden sollen.",
+          "beschreibung": "Es ist nicht klar, ob die Lieferzeit im Lieferantengebot eine durchschnittliche/übliche Lieferzeit ist oder ob sie für jede Bestellung individuell variieren kann.",
           "betroffene_elemente": [
-            "Lieferantengebot"
+            "Lieferantengebot",
+            "Lieferzeit"
+          ]
+        },
+        {
+          "beschreibung": "Der Status einer Bestellung ist erwähnt, aber die möglichen Statuswerte sind nicht definiert (z.B. 'offen', 'versendet', 'geliefert', etc.).",
+          "betroffene_elemente": [
+            "Bestellung",
+            "Status"
+          ]
+        },
+        {
+          "beschreibung": "Es ist unklar, ob das geplante Eingangsdatum des Wareneingangs identisch mit dem voraussichtlichen Lieferdatum der Bestellung ist oder ob diese unterschiedlich sein können.",
+          "betroffene_elemente": [
+            "Bestellung",
+            "Wareneingang",
+            "Voraussichtliches Lieferdatum",
+            "Geplantes Eingangsdatum"
           ]
         }
       ]
@@ -582,7 +569,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "email_adresse",
+              "name": "email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -774,36 +761,39 @@
               "pflichtfeld": true
             },
             {
-              "name": "lager_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
               "name": "geplantes_eingangsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             }
           ]
         }
       ],
       "beziehungen": [
         {
-          "von": "Lieferantengebot",
-          "zu": "Lieferant",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": []
+          "von": "Lieferant",
+          "zu": "Artikel",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "preis",
+            "lieferzeit_tage"
+          ]
         },
         {
-          "von": "Lieferantengebot",
-          "zu": "Artikel",
+          "von": "Bestellung",
+          "zu": "Lieferant",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
           "von": "Bestellung",
-          "zu": "Lieferant",
+          "zu": "Bestellposition",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bestellposition",
+          "zu": "Artikel",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
@@ -814,26 +804,20 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Bestellposition",
-          "zu": "Bestellung",
+          "von": "Bestellung",
+          "zu": "Wareneingang",
+          "kardinalitaet": "1:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Lieferantengebot",
+          "zu": "Lieferant",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Bestellposition",
+          "von": "Lieferantengebot",
           "zu": "Artikel",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Wareneingang",
-          "zu": "Bestellung",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Wareneingang",
-          "zu": "Lager",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
         }
@@ -869,19 +853,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: suppliers (name, contact_person, email, country), articles (designation, description, unit_of_measure), supplier_offers (price, delivery_time_days), warehouses (name, location, product_categories), orders (order_date, status, expected_delivery_date), order_positions (quantity), goods_receipts (planned_receipt_date). Namenskonventionen sind konsistent (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt (z.B. contact_person, email, country, designation, description, unit_of_measure, price, delivery_time_days, order_date, status, expected_delivery_date, planned_receipt_date). Optionale Attribute (description, product_categories) sind korrekt als nullable definiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: supplier_offers (N:M zwischen suppliers und articles), orders (N:1 zu suppliers und warehouses), order_positions (N:1 zu orders und articles), goods_receipts (N:1 zu orders und warehouses). Kardinalitäten sind konsistent.",
+          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema implementiert: (1) M:N Lieferant-Artikel über supplier_offers mit Fremdschlüsseln; (2) N:1 Bestellung-Lieferant über supplier_id; (3) 1:N Bestellung-Bestellposition über order_id; (4) N:1 Bestellposition-Artikel über article_id; (5) N:1 Bestellung-Lager über warehouse_id; (6) 1:1 Bestellung-Wareneingang über order_id (mit Fremdschlüssel in goods_receipts); (7) N:1 Lieferantengebot-Lieferant und Lieferantengebot-Artikel über supplier_id und article_id.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine transitive Abhängigkeiten, keine Anomalien erkannt. supplier_offers hat einen künstlichen PK (id), was für eine Junction-Table ungewöhnlich ist, aber nicht normalisierungswidrig. Alle Attribute sind atomar, keine Redundanzen.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Wiederholungsgruppen); (2) Alle Attribute sind vollständig funktional abhängig vom Primärschlüssel; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Behandlung von product_categories als TEXT-Feld (statt separater Entität) ist eine bewusste Design-Entscheidung, die der Anforderung entspricht ('bleibt dem System überlassen').",
           "korrekturanweisung": ""
         }
       ],
@@ -891,7 +875,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    unit_of_measure VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE warehouses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    product_categories TEXT,\n    CONSTRAINT pk_warehouses PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    warehouse_id INTEGER NOT NULL,\n    order_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    expected_delivery_date DATE NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_orders_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)\n);\n\nCREATE TABLE goods_receipts (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    warehouse_id INTEGER NOT NULL,\n    planned_receipt_date DATE,\n    CONSTRAINT pk_goods_receipts PRIMARY KEY (id),\n    CONSTRAINT fk_goods_receipts_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_goods_receipts_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)\n);\n\nCREATE TABLE order_positions (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_positions PRIMARY KEY (id),\n    CONSTRAINT fk_order_positions_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_positions_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE supplier_offers (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    delivery_time_days INTEGER NOT NULL,\n    CONSTRAINT pk_supplier_offers PRIMARY KEY (id),\n    CONSTRAINT fk_supplier_offers_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_supplier_offers_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n",
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    unit_of_measure VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    country VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE warehouses (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    product_categories TEXT,\n    CONSTRAINT pk_warehouses PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    warehouse_id INTEGER NOT NULL,\n    order_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    expected_delivery_date DATE NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_orders_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses (id)\n);\n\nCREATE TABLE goods_receipts (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    planned_receipt_date DATE NOT NULL,\n    CONSTRAINT pk_goods_receipts PRIMARY KEY (id),\n    CONSTRAINT fk_goods_receipts_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n\nCREATE TABLE order_positions (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_positions PRIMARY KEY (id),\n    CONSTRAINT fk_order_positions_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_positions_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE supplier_offers (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    delivery_time_days INTEGER NOT NULL,\n    CONSTRAINT pk_supplier_offers PRIMARY KEY (id),\n    CONSTRAINT fk_supplier_offers_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id),\n    CONSTRAINT fk_supplier_offers_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -922,19 +906,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: suppliers (name, contact_person, email, country), articles (designation, description, unit_of_measure), supplier_offers (price, delivery_time_days), warehouses (name, location, product_categories), orders (order_date, status, expected_delivery_date), order_positions (quantity), goods_receipts (planned_receipt_date). Namenskonventionen sind konsistent (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt (z.B. contact_person, email, country, designation, description, unit_of_measure, price, delivery_time_days, order_date, status, expected_delivery_date, planned_receipt_date). Optionale Attribute (description, product_categories) sind korrekt als nullable definiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: supplier_offers (N:M zwischen suppliers und articles), orders (N:1 zu suppliers und warehouses), order_positions (N:1 zu orders und articles), goods_receipts (N:1 zu orders und warehouses). Kardinalitäten sind konsistent.",
+          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema implementiert: (1) M:N Lieferant-Artikel über supplier_offers mit Fremdschlüsseln; (2) N:1 Bestellung-Lieferant über supplier_id; (3) 1:N Bestellung-Bestellposition über order_id; (4) N:1 Bestellposition-Artikel über article_id; (5) N:1 Bestellung-Lager über warehouse_id; (6) 1:1 Bestellung-Wareneingang über order_id (mit Fremdschlüssel in goods_receipts); (7) N:1 Lieferantengebot-Lieferant und Lieferantengebot-Artikel über supplier_id und article_id.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine transitive Abhängigkeiten, keine Anomalien erkannt. supplier_offers hat einen künstlichen PK (id), was für eine Junction-Table ungewöhnlich ist, aber nicht normalisierungswidrig. Alle Attribute sind atomar, keine Redundanzen.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Wiederholungsgruppen); (2) Alle Attribute sind vollständig funktional abhängig vom Primärschlüssel; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Behandlung von product_categories als TEXT-Feld (statt separater Entität) ist eine bewusste Design-Entscheidung, die der Anforderung entspricht ('bleibt dem System überlassen').",
           "korrekturanweisung": ""
         }
       ],
@@ -945,33 +929,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 18281,
-    "total_output_tokens": 6575,
-    "total_tokens": 24856,
+    "total_input_tokens": 17927,
+    "total_output_tokens": 6245,
+    "total_tokens": 24172,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1672,
-        "output_tokens": 1829,
+        "output_tokens": 1715,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3572,
-        "output_tokens": 2113,
+        "input_tokens": 3468,
+        "output_tokens": 1794,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4663,
-        "output_tokens": 1802,
+        "input_tokens": 4629,
+        "output_tokens": 1724,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 8374,
-        "output_tokens": 831,
+        "input_tokens": 8158,
+        "output_tokens": 1012,
         "cost_usd": 0.0
       }
     },
@@ -982,7 +966,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1672,
-        "output_tokens": 1829,
+        "output_tokens": 1715,
         "cost_usd": 0.0
       },
       {
@@ -990,8 +974,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3572,
-        "output_tokens": 2113,
+        "input_tokens": 3468,
+        "output_tokens": 1794,
         "cost_usd": 0.0
       },
       {
@@ -999,8 +983,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4663,
-        "output_tokens": 1802,
+        "input_tokens": 4629,
+        "output_tokens": 1724,
         "cost_usd": 0.0
       },
       {
@@ -1008,8 +992,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8374,
-        "output_tokens": 831,
+        "input_tokens": 8158,
+        "output_tokens": 1012,
         "cost_usd": 0.0
       }
     ]

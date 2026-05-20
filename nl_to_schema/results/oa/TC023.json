@@ -144,6 +144,12 @@
               "nullable": false
             },
             {
+              "name": "manufacturer_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "designation",
               "type": "VARCHAR",
               "primary_key": false,
@@ -156,7 +162,7 @@
               "nullable": true
             },
             {
-              "name": "selling_price",
+              "name": "sales_price",
               "type": "DECIMAL",
               "primary_key": false,
               "nullable": false
@@ -170,12 +176,6 @@
             {
               "name": "is_active",
               "type": "BOOLEAN",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "manufacturer_id",
-              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             }
@@ -198,6 +198,12 @@
               "nullable": false
             },
             {
+              "name": "article_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "sale_date",
               "type": "DATE",
               "primary_key": false,
@@ -212,12 +218,6 @@
             {
               "name": "unit_price",
               "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "article_id",
-              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             }
@@ -286,24 +286,23 @@
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob der 'Verkaufspreis' eines Artikels zeitlich konstant ist oder sich ändern kann. Der 'Einzelpreis' bei einem Verkauf wird explizit als 'damals berechneter Preis' erwähnt, was auf historische Preisänderungen hindeutet.",
+          "beschreibung": "Unklar ist, ob der 'Verkaufspreis' des Artikels ein Standardpreis ist oder ob dieser sich im Laufe der Zeit ändern kann. Der 'Einzelpreis' beim Verkauf könnte vom aktuellen Verkaufspreis abweichen.",
           "betroffene_elemente": [
             "Artikel",
             "Verkauf"
           ]
         },
         {
-          "beschreibung": "Es ist nicht definiert, ob es eine eindeutige Kennung (ID) für Hersteller, Artikel und Verkaeufe geben soll.",
+          "beschreibung": "Es ist nicht spezifiziert, ob jeder Verkauf eine eindeutige Identifikation (z.B. Verkaufsnummer) benötigt oder wie mehrere Verkäufe desselben Artikels am selben Tag unterschieden werden.",
           "betroffene_elemente": [
-            "Hersteller",
-            "Artikel",
             "Verkauf"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob der Lagerbestand automatisch bei Verkaeufen aktualisiert wird oder manuell gepflegt wird.",
+          "beschreibung": "Unklar ist, ob der Lagerbestand automatisch bei Verkaeufen aktualisiert wird oder ob dies manuell erfolgt.",
           "betroffene_elemente": [
-            "Artikel"
+            "Artikel",
+            "Verkauf"
           ]
         }
       ]
@@ -396,6 +395,12 @@
               "pflichtfeld": true
             },
             {
+              "name": "ArtikelID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
               "name": "Verkaufsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
@@ -410,12 +415,6 @@
             {
               "name": "Einzelpreis",
               "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "ArtikelID",
-              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -461,25 +460,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Hersteller, Artikel, Verkauf) sind als Tabellen implementiert. Die Abbildung ist vollständig und korrekt.",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: manufacturers, articles, sales. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Hersteller (name, email, phone), Artikel (designation, description, selling_price, stock_quantity, is_active, manufacturer_id), Verkauf (sale_date, quantity_sold, unit_price, article_id). Die Attributnamen folgen den Konventionen (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: manufacturers (name, email, phone), articles (designation, description, sales_price, stock_quantity, is_active, manufacturer_id), sales (article_id, sale_date, quantity_sold, unit_price). Attributnamen folgen der Konvention (snake_case, englisch). Datentypen und Nullable-Eigenschaften entsprechen dem ERModell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: N:1 zwischen articles und manufacturers (manufacturer_id), N:1 zwischen sales und articles (article_id). Kardinalitäten und Referenzen stimmen überein.",
+          "beschreibung": "Beide N:1-Beziehungen sind korrekt implementiert: (1) articles.manufacturer_id → manufacturers.id für 'Artikel stammt von Hersteller', (2) sales.article_id → articles.id für 'Verkauf bezieht sich auf Artikel'. Kardinalitäten und Fremdschlüssel-Definitionen entsprechen dem ERModell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine partiellen Abhängigkeiten und keine transitiven Abhängigkeiten. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine unnötigen Denormalisierungen vorhanden.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Keine Wiederholungsgruppen oder mehrwertigen Abhängigkeiten, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist optimal für die gegebenen Anforderungen.",
           "korrekturanweisung": ""
         }
       ],
@@ -489,7 +488,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE articles (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    selling_price DECIMAL(18,2) NOT NULL,\n    stock_quantity INTEGER NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id),\n    CONSTRAINT fk_articles_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE sales (\n    id INTEGER NOT NULL,\n    sale_date DATE NOT NULL,\n    quantity_sold INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    article_id INTEGER NOT NULL,\n    CONSTRAINT pk_sales PRIMARY KEY (id),\n    CONSTRAINT fk_sales_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n",
+    "final_ddl": "CREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE articles (\n    id INTEGER NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    sales_price DECIMAL(18,2) NOT NULL,\n    stock_quantity INTEGER NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id),\n    CONSTRAINT fk_articles_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE sales (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    sale_date DATE NOT NULL,\n    quantity_sold INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_sales PRIMARY KEY (id),\n    CONSTRAINT fk_sales_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -514,25 +513,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Hersteller, Artikel, Verkauf) sind als Tabellen implementiert. Die Abbildung ist vollständig und korrekt.",
+          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: manufacturers, articles, sales. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Hersteller (name, email, phone), Artikel (designation, description, selling_price, stock_quantity, is_active, manufacturer_id), Verkauf (sale_date, quantity_sold, unit_price, article_id). Die Attributnamen folgen den Konventionen (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt übersetzt: manufacturers (name, email, phone), articles (designation, description, sales_price, stock_quantity, is_active, manufacturer_id), sales (article_id, sale_date, quantity_sold, unit_price). Attributnamen folgen der Konvention (snake_case, englisch). Datentypen und Nullable-Eigenschaften entsprechen dem ERModell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: N:1 zwischen articles und manufacturers (manufacturer_id), N:1 zwischen sales und articles (article_id). Kardinalitäten und Referenzen stimmen überein.",
+          "beschreibung": "Beide N:1-Beziehungen sind korrekt implementiert: (1) articles.manufacturer_id → manufacturers.id für 'Artikel stammt von Hersteller', (2) sales.article_id → articles.id für 'Verkauf bezieht sich auf Artikel'. Kardinalitäten und Fremdschlüssel-Definitionen entsprechen dem ERModell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine partiellen Abhängigkeiten und keine transitiven Abhängigkeiten. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine unnötigen Denormalisierungen vorhanden.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Keine Wiederholungsgruppen oder mehrwertigen Abhängigkeiten, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist optimal für die gegebenen Anforderungen.",
           "korrekturanweisung": ""
         }
       ],
@@ -543,20 +542,20 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12048,
-    "total_output_tokens": 3397,
-    "total_tokens": 15445,
+    "total_input_tokens": 12060,
+    "total_output_tokens": 3516,
+    "total_tokens": 15576,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1486,
-        "output_tokens": 800,
+        "output_tokens": 808,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2325,
+        "input_tokens": 2331,
         "output_tokens": 1008,
         "cost_usd": 0.0
       },
@@ -568,8 +567,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 4953,
-        "output_tokens": 768,
+        "input_tokens": 4959,
+        "output_tokens": 879,
         "cost_usd": 0.0
       }
     },
@@ -580,7 +579,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1486,
-        "output_tokens": 800,
+        "output_tokens": 808,
         "cost_usd": 0.0
       },
       {
@@ -588,7 +587,7 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2325,
+        "input_tokens": 2331,
         "output_tokens": 1008,
         "cost_usd": 0.0
       },
@@ -606,8 +605,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4953,
-        "output_tokens": 768,
+        "input_tokens": 4959,
+        "output_tokens": 879,
         "cost_usd": 0.0
       }
     ]

@@ -392,7 +392,7 @@
               "name": "paymentdate",
               "type": "DATE",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "status",
@@ -442,7 +442,7 @@
             "Bezeichnung",
             "Erklärung"
           ],
-          "beschreibung": "Kategorien oder Bereiche des Shops zur Strukturierung und Suche von Artikeln"
+          "beschreibung": "Kategorien oder Bereiche des Shops zur Klassifizierung von Artikeln"
         },
         {
           "name": "Einkauf",
@@ -497,7 +497,7 @@
           "von": "Artikel",
           "zu": "Bereich",
           "kardinalitaet": "M:N",
-          "beschreibung": "Artikel können mehreren Bereichen zugeordnet sein; Bereiche enthalten mehrere Artikel"
+          "beschreibung": "Ein Artikel kann mehreren Bereichen angehören; ein Bereich enthält mehrere Artikel"
         },
         {
           "von": "Einkauf",
@@ -508,30 +508,36 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Kardinalität der Zuordnung Artikel-Bereich: Unklar, ob ein Artikel immer genau einem Bereich zugeordnet ist (1:N) oder mehreren Bereichen gleichzeitig (M:N)",
+          "beschreibung": "Kardinalität der Beziehung zwischen Artikel und Bereich: Der Text besagt, dass Artikel 'gleichzeitig in mehrere Bereiche' gehören können, aber es ist unklar, ob ein Artikel auch immer mindestens einem Bereich zugeordnet sein muss oder ob es Artikel ohne Bereichszuordnung geben kann.",
           "betroffene_elemente": [
             "Artikel",
             "Bereich"
           ]
         },
         {
-          "beschreibung": "Kardinalität der Beziehung Einkauf-Zahlung: Offen, ob pro Einkauf genau eine Zahlung existiert (1:1) oder mehrere Zahlungsversuche relevant sein können (1:N)",
+          "beschreibung": "Kardinalität der Beziehung zwischen Einkauf und Zahlung: Der Text erwähnt, dass 'zu einem Einkauf eine Zahlung erfasst werden kann', aber auch dass 'Bestellungen offen oder vorgemerkt' sein können. Unklar ist, ob pro Einkauf maximal eine Zahlung existiert oder ob mehrere Zahlungsversuche relevant sind.",
           "betroffene_elemente": [
             "Einkauf",
             "Zahlung"
           ]
         },
         {
-          "beschreibung": "Zahlungsstatus: Der Text erwähnt, dass Bestellungen offen sein können oder vorgemerkt werden, aber es ist unklar, ob dies ein Attribut der Zahlung oder des Einkaufs ist",
-          "betroffene_elemente": [
-            "Einkauf",
-            "Zahlung"
-          ]
-        },
-        {
-          "beschreibung": "Kontaktdaten: Nicht spezifiziert, welche konkreten Kontaktdaten (Email, Telefon, Adresse, etc.) erfasst werden sollen",
+          "beschreibung": "Definition von 'Kontaktdaten': Der Text erwähnt 'übliche Kontaktdaten' ohne präzise Spezifikation. Unklar ist, welche konkreten Felder (z.B. Email, Telefon, Adresse) als separate Attribute modelliert werden sollen oder ob sie als zusammengefasstes Feld behandelt werden.",
           "betroffene_elemente": [
             "Person"
+          ]
+        },
+        {
+          "beschreibung": "Lieferanschrift vs. Kundenadresse: Unklar ist, ob die Lieferanschrift eines Einkaufs immer mit der Adresse der Person identisch ist oder ob sie abweichen kann (z.B. Lieferung an andere Adresse).",
+          "betroffene_elemente": [
+            "Person",
+            "Einkauf"
+          ]
+        },
+        {
+          "beschreibung": "Zahlungsstatus: Der Text erwähnt Zustände wie 'offen', 'vorgemerkt' und impliziert 'bezahlt', aber die genauen Zahlungsstatus-Werte sind nicht definiert.",
+          "betroffene_elemente": [
+            "Zahlung"
           ]
         }
       ]
@@ -720,11 +726,34 @@
               "name": "Datum",
               "datentyp": "DATE",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "Status",
               "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "ArtikelBereich",
+          "attribute": [
+            {
+              "name": "ArtikelBereichID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ArtikelID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BereichID",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -752,8 +781,14 @@
         },
         {
           "von": "Artikel",
-          "zu": "Bereich",
-          "kardinalitaet": "M:N",
+          "zu": "ArtikelBereich",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bereich",
+          "zu": "ArtikelBereich",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
@@ -788,25 +823,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: persons, articles, categories, orders, order_items, payments. Die Zuordnung ist korrekt (Person→persons, Artikel→articles, Bereich→categories, Einkauf→orders, Einkaufposition→order_items, Zahlung→payments).",
+          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: persons, articles, categories, orders, order_items, payments. Die Junction-Table article_categories ist korrekt hinzugefügt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: persons (id, name, email, phone, address), articles (id, name, description, price), categories (id, name, description), orders (id, person_id, orderdate, status, delivery_address), order_items (id, order_id, article_id, quantity, unit_price), payments (id, order_id, amount, paymentdate, status). Nullable-Markierungen entsprechen den Pflichtfeld-Definitionen des ER-Modells.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: Person→persons (id, name, email, phone, address), Artikel→articles (id, name, description, price), Bereich→categories (id, name, description), Einkauf→orders (id, person_id, orderdate, status, delivery_address), Einkaufposition→order_items (id, order_id, article_id, quantity, unit_price), Zahlung→payments (id, order_id, amount, paymentdate, status). Alle Pflichtfelder sind nullable=false, optionale Felder sind nullable=true.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Person→Einkauf (1:N via person_id in orders), (2) Einkauf→Einkaufposition (1:N via order_id in order_items), (3) Artikel→Einkaufposition (1:N via article_id in order_items), (4) Artikel↔Bereich (M:N via Junction-Table article_categories), (5) Einkauf→Zahlung (1:N via order_id in payments). Alle Fremdschlüssel sind NOT NULL, was die Kardinalitäten korrekt abbildet.",
+          "beschreibung": "Alle 6 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema implementiert: 1:N Person→orders (person_id FK), 1:N orders→order_items (order_id FK), 1:N articles→order_items (article_id FK), M:N articles↔categories via article_categories (Composite PK mit beiden FKs), 1:N orders→payments (order_id FK). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Wiederholungsgruppen (1NF erfüllt), (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln (2NF erfüllt), (3) Keine transitiven Abhängigkeiten (3NF erfüllt). Die Junction-Table article_categories ist korrekt für die M:N-Beziehung modelliert. order_items speichert unit_price historisch, was korrekt ist und keine Anomalie darstellt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine nicht-Schlüssel-Attribute sind von Teilen des Primärschlüssels abhängig. (2) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. (3) Die Junction-Table article_categories ist korrekt normalisiert mit Composite PK (article_id, category_id) und beiden als FK. Historische Preise werden in order_items korrekt gespeichert.",
           "korrekturanweisung": ""
         }
       ],
@@ -816,7 +851,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE article_categories (\n    article_id INTEGER NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_article_categories PRIMARY KEY (article_id, category_id),\n    CONSTRAINT fk_article_categories_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    delivery_address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    paymentdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE categories (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_categories PRIMARY KEY (id)\n);\n\nCREATE TABLE article_categories (\n    article_id INTEGER NOT NULL,\n    category_id INTEGER NOT NULL,\n    CONSTRAINT pk_article_categories PRIMARY KEY (article_id, category_id),\n    CONSTRAINT fk_article_categories_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_categories_category_id FOREIGN KEY (category_id) REFERENCES categories (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE orders (\n    id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    orderdate DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    delivery_address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_orders PRIMARY KEY (id),\n    CONSTRAINT fk_orders_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE order_items (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity INTEGER NOT NULL,\n    unit_price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_order_items PRIMARY KEY (id),\n    CONSTRAINT fk_order_items_order_id FOREIGN KEY (order_id) REFERENCES orders (id),\n    CONSTRAINT fk_order_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    order_id INTEGER NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    paymentdate DATE,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_order_id FOREIGN KEY (order_id) REFERENCES orders (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -841,25 +876,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: persons, articles, categories, orders, order_items, payments. Die Zuordnung ist korrekt (Person→persons, Artikel→articles, Bereich→categories, Einkauf→orders, Einkaufposition→order_items, Zahlung→payments).",
+          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: persons, articles, categories, orders, order_items, payments. Die Junction-Table article_categories ist korrekt hinzugefügt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: persons (id, name, email, phone, address), articles (id, name, description, price), categories (id, name, description), orders (id, person_id, orderdate, status, delivery_address), order_items (id, order_id, article_id, quantity, unit_price), payments (id, order_id, amount, paymentdate, status). Nullable-Markierungen entsprechen den Pflichtfeld-Definitionen des ER-Modells.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: Person→persons (id, name, email, phone, address), Artikel→articles (id, name, description, price), Bereich→categories (id, name, description), Einkauf→orders (id, person_id, orderdate, status, delivery_address), Einkaufposition→order_items (id, order_id, article_id, quantity, unit_price), Zahlung→payments (id, order_id, amount, paymentdate, status). Alle Pflichtfelder sind nullable=false, optionale Felder sind nullable=true.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Person→Einkauf (1:N via person_id in orders), (2) Einkauf→Einkaufposition (1:N via order_id in order_items), (3) Artikel→Einkaufposition (1:N via article_id in order_items), (4) Artikel↔Bereich (M:N via Junction-Table article_categories), (5) Einkauf→Zahlung (1:N via order_id in payments). Alle Fremdschlüssel sind NOT NULL, was die Kardinalitäten korrekt abbildet.",
+          "beschreibung": "Alle 6 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema implementiert: 1:N Person→orders (person_id FK), 1:N orders→order_items (order_id FK), 1:N articles→order_items (article_id FK), M:N articles↔categories via article_categories (Composite PK mit beiden FKs), 1:N orders→payments (order_id FK). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Wiederholungsgruppen (1NF erfüllt), (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln (2NF erfüllt), (3) Keine transitiven Abhängigkeiten (3NF erfüllt). Die Junction-Table article_categories ist korrekt für die M:N-Beziehung modelliert. order_items speichert unit_price historisch, was korrekt ist und keine Anomalie darstellt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine nicht-Schlüssel-Attribute sind von Teilen des Primärschlüssels abhängig. (2) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. (3) Die Junction-Table article_categories ist korrekt normalisiert mit Composite PK (article_id, category_id) und beiden als FK. Historische Preise werden in order_items korrekt gespeichert.",
           "korrekturanweisung": ""
         }
       ],
@@ -870,33 +905,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 16006,
-    "total_output_tokens": 5288,
-    "total_tokens": 21294,
+    "total_input_tokens": 16900,
+    "total_output_tokens": 5628,
+    "total_tokens": 22528,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1671,
-        "output_tokens": 1241,
+        "output_tokens": 1455,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2989,
-        "output_tokens": 1457,
+        "input_tokens": 3209,
+        "output_tokens": 1638,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4214,
+        "input_tokens": 4441,
         "output_tokens": 1591,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7132,
-        "output_tokens": 999,
+        "input_tokens": 7579,
+        "output_tokens": 944,
         "cost_usd": 0.0
       }
     },
@@ -907,7 +942,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1671,
-        "output_tokens": 1241,
+        "output_tokens": 1455,
         "cost_usd": 0.0
       },
       {
@@ -915,8 +950,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2989,
-        "output_tokens": 1457,
+        "input_tokens": 3209,
+        "output_tokens": 1638,
         "cost_usd": 0.0
       },
       {
@@ -924,7 +959,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4214,
+        "input_tokens": 4441,
         "output_tokens": 1591,
         "cost_usd": 0.0
       },
@@ -933,8 +968,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7132,
-        "output_tokens": 999,
+        "input_tokens": 7579,
+        "output_tokens": 944,
         "cost_usd": 0.0
       }
     ]

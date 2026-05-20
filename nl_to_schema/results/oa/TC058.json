@@ -295,6 +295,24 @@
           "foreign_keys": []
         },
         {
+          "name": "workshops",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
           "name": "vehicle_usages",
           "columns": [
             {
@@ -342,24 +360,6 @@
           ]
         },
         {
-          "name": "workshops",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
           "name": "maintenance_repairs",
           "columns": [
             {
@@ -393,7 +393,7 @@
               "nullable": false
             },
             {
-              "name": "cost",
+              "name": "costs",
               "type": "DECIMAL",
               "primary_key": false,
               "nullable": false
@@ -461,7 +461,7 @@
           "attribute": [
             "Name"
           ],
-          "beschreibung": "Werkstaetten, die Wartungen und Reparaturen an Fahrzeugen durchfuehren"
+          "beschreibung": "Werkstaetten, die Wartungen und Reparaturen durchfuehren"
         }
       ],
       "beziehungen": [
@@ -504,7 +504,7 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Verfuegbarkeitsstatus eines Fahrzeugs wird erwaehnt (Werkstatt, stillgelegt), aber es ist unklar, ob dies ein einfaches Attribut (z.B. Status-Feld) oder eine separate Entitaet mit Historie sein soll.",
+          "beschreibung": "Der Verfuegbarkeitsstatus eines Fahrzeugs wird erwaehnt (verfuegbar, in Werkstatt, stillgelegt), aber es ist unklar, ob dies ein einfaches Attribut oder eine separate Entitaet mit Historie sein soll.",
           "betroffene_elemente": [
             "Fahrzeug",
             "Verfuegbarkeitsstatus"
@@ -518,23 +518,23 @@
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob Werkstaetten weitere Attribute wie Adresse, Telefonnummer oder Kontaktperson haben sollen.",
+          "beschreibung": "Unklar ist, ob ein Fahrzeug mehrere Werkstaetten gleichzeitig betreuen oder ob es eine Zuordnung zu einer Hauptwerkstatt gibt.",
           "betroffene_elemente": [
+            "Fahrzeug",
             "Werkstatt"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob ein Mitarbeiter einer bestimmten Abteilung zugeordnet sein soll oder ob die Abteilung nur erwaehnt wird.",
+          "beschreibung": "Es ist nicht spezifiziert, ob das Enddatum in der Fahrzeugnutzung optional ist (fuer laufende Nutzungen) oder immer gesetzt sein muss.",
           "betroffene_elemente": [
-            "Mitarbeiter"
+            "Fahrzeugnutzung",
+            "Enddatum"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob der Kilometerstand bei jeder Fahrzeugnutzung erfasst werden soll oder nur als aktueller Wert im Fahrzeug-Datensatz.",
+          "beschreibung": "Unklar ist, welche Attribute die Werkstatt mindestens haben soll (z.B. Adresse, Kontaktdaten, Oeffnungszeiten).",
           "betroffene_elemente": [
-            "Fahrzeug",
-            "Fahrzeugnutzung",
-            "Kilometerstand"
+            "Werkstatt"
           ]
         }
       ]
@@ -774,25 +774,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: vehicles, employees, vehicle_usages, workshops, maintenance_repairs. Keine Entitäten fehlen.",
+          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: vehicles, employees, vehicle_usages, workshops, maintenance_repairs. Die Namenskonvention (Plural, snake_case, englisch) ist konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Fahrzeug (kennzeichen, hersteller, modell, baujahr, kilometerstand, fahrzeugart, verfuegbarkeitsstatus), Mitarbeiter (name, email, phone, is_active), Fahrzeugnutzung (startdatum, enddatum), Werkstatt (name), Wartung_Reparatur (datum, beschreibung, kosten). Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "beschreibung": "Alle im ERModell spezifizierten Attribute sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Datentypen und Nullable-Eigenschaften entsprechen dem ERModell. Beispiele: license_plate (Kennzeichen), year_of_manufacture (Baujahr), availability_status (Verfuegbarkeitsstatus), is_active (Aktivitaetsstatus).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: Fahrzeugnutzung (N:1 zu Mitarbeiter und Fahrzeug), Wartung_Reparatur (N:1 zu Fahrzeug und Werkstatt). Kardinalitäten sind korrekt abgebildet. Die M:N-Beziehung zwischen Mitarbeiter und Fahrzeug wird korrekt über die Junction-Table vehicle_usages realisiert.",
+          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: (1) vehicle_usages mit FK zu employees und vehicles (N:1 zu beiden), (2) maintenance_repairs mit FK zu vehicles und workshops (N:1 zu beiden). Die M:N-Beziehung zwischen Mitarbeiter und Fahrzeug ist korrekt über die Assoziationsentität vehicle_usages modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Fahrzeugart und Verfuegbarkeitsstatus sind als einfache VARCHAR-Attribute modelliert (pragmatische Lösung für die Unklarheiten im RequirementsReport). Keine funktionalen Abhängigkeiten außerhalb der Schlüssel. Keine Redundanzen.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Keine Redundanzen durch Denormalisierung erkennbar, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Fahrzeugart und Verfuegbarkeitsstatus sind als VARCHAR-Attribute modelliert (nicht als separate Referenztabellen), was den Unklarheiten im RequirementsReport entspricht und eine pragmatische Lösung darstellt.",
           "korrekturanweisung": ""
         }
       ],
@@ -802,7 +802,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    manufacturer VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    year_of_manufacture INTEGER NOT NULL,\n    mileage INTEGER NOT NULL,\n    vehicle_type VARCHAR(255) NOT NULL,\n    availability_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id)\n);\n\nCREATE TABLE workshops (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_workshops PRIMARY KEY (id)\n);\n\nCREATE TABLE maintenance_repairs (\n    id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    workshop_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    description TEXT NOT NULL,\n    cost DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_maintenance_repairs PRIMARY KEY (id),\n    CONSTRAINT fk_maintenance_repairs_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_maintenance_repairs_workshop_id FOREIGN KEY (workshop_id) REFERENCES workshops (id)\n);\n\nCREATE TABLE vehicle_usages (\n    id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_vehicle_usages PRIMARY KEY (id),\n    CONSTRAINT fk_vehicle_usages_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_vehicle_usages_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n",
+    "final_ddl": "CREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE vehicles (\n    id INTEGER NOT NULL,\n    license_plate VARCHAR(255) NOT NULL,\n    manufacturer VARCHAR(255) NOT NULL,\n    model VARCHAR(255) NOT NULL,\n    year_of_manufacture INTEGER NOT NULL,\n    mileage INTEGER NOT NULL,\n    vehicle_type VARCHAR(255) NOT NULL,\n    availability_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_vehicles PRIMARY KEY (id)\n);\n\nCREATE TABLE workshops (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_workshops PRIMARY KEY (id)\n);\n\nCREATE TABLE maintenance_repairs (\n    id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    workshop_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    description TEXT NOT NULL,\n    costs DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_maintenance_repairs PRIMARY KEY (id),\n    CONSTRAINT fk_maintenance_repairs_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),\n    CONSTRAINT fk_maintenance_repairs_workshop_id FOREIGN KEY (workshop_id) REFERENCES workshops (id)\n);\n\nCREATE TABLE vehicle_usages (\n    id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    vehicle_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_vehicle_usages PRIMARY KEY (id),\n    CONSTRAINT fk_vehicle_usages_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_vehicle_usages_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -827,25 +827,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: vehicles, employees, vehicle_usages, workshops, maintenance_repairs. Keine Entitäten fehlen.",
+          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: vehicles, employees, vehicle_usages, workshops, maintenance_repairs. Die Namenskonvention (Plural, snake_case, englisch) ist konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Fahrzeug (kennzeichen, hersteller, modell, baujahr, kilometerstand, fahrzeugart, verfuegbarkeitsstatus), Mitarbeiter (name, email, phone, is_active), Fahrzeugnutzung (startdatum, enddatum), Werkstatt (name), Wartung_Reparatur (datum, beschreibung, kosten). Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "beschreibung": "Alle im ERModell spezifizierten Attribute sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Datentypen und Nullable-Eigenschaften entsprechen dem ERModell. Beispiele: license_plate (Kennzeichen), year_of_manufacture (Baujahr), availability_status (Verfuegbarkeitsstatus), is_active (Aktivitaetsstatus).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: Fahrzeugnutzung (N:1 zu Mitarbeiter und Fahrzeug), Wartung_Reparatur (N:1 zu Fahrzeug und Werkstatt). Kardinalitäten sind korrekt abgebildet. Die M:N-Beziehung zwischen Mitarbeiter und Fahrzeug wird korrekt über die Junction-Table vehicle_usages realisiert.",
+          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: (1) vehicle_usages mit FK zu employees und vehicles (N:1 zu beiden), (2) maintenance_repairs mit FK zu vehicles und workshops (N:1 zu beiden). Die M:N-Beziehung zwischen Mitarbeiter und Fahrzeug ist korrekt über die Assoziationsentität vehicle_usages modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Fahrzeugart und Verfuegbarkeitsstatus sind als einfache VARCHAR-Attribute modelliert (pragmatische Lösung für die Unklarheiten im RequirementsReport). Keine funktionalen Abhängigkeiten außerhalb der Schlüssel. Keine Redundanzen.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Keine Redundanzen durch Denormalisierung erkennbar, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Fahrzeugart und Verfuegbarkeitsstatus sind als VARCHAR-Attribute modelliert (nicht als separate Referenztabellen), was den Unklarheiten im RequirementsReport entspricht und eine pragmatische Lösung darstellt.",
           "korrekturanweisung": ""
         }
       ],
@@ -856,21 +856,21 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 15766,
-    "total_output_tokens": 5193,
-    "total_tokens": 20959,
+    "total_input_tokens": 15758,
+    "total_output_tokens": 5264,
+    "total_tokens": 21022,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1649,
-        "output_tokens": 1378,
+        "output_tokens": 1374,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3094,
-        "output_tokens": 1630,
+        "input_tokens": 3090,
+        "output_tokens": 1674,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
@@ -881,8 +881,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 6910,
-        "output_tokens": 842,
+        "input_tokens": 6906,
+        "output_tokens": 873,
         "cost_usd": 0.0
       }
     },
@@ -893,7 +893,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1649,
-        "output_tokens": 1378,
+        "output_tokens": 1374,
         "cost_usd": 0.0
       },
       {
@@ -901,8 +901,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3094,
-        "output_tokens": 1630,
+        "input_tokens": 3090,
+        "output_tokens": 1674,
         "cost_usd": 0.0
       },
       {
@@ -919,8 +919,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 6910,
-        "output_tokens": 842,
+        "input_tokens": 6906,
+        "output_tokens": 873,
         "cost_usd": 0.0
       }
     ]

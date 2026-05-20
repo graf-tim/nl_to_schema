@@ -2,49 +2,54 @@
   "testfall_id": "TC042",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.8458874458874459,
-  "score_gesamt": 0.9075324675324675,
+  "score_semantisch": 0.7600000000000001,
+  "score_gesamt": 0.8560000000000001,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 8,
-    "pk_tabellen_mit_pk": 8,
-    "fk_referenzen_gesamt": 8,
+    "pk_tabellen_gesamt": 6,
+    "pk_tabellen_mit_pk": 6,
+    "fk_referenzen_gesamt": 5,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.75,
-      "recall": 1.0,
-      "f1": 0.8571428571428571,
-      "matched": 6,
-      "nur_in_referenz": 0,
-      "nur_in_generiert": 2
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
     },
     "attribut": {
-      "precision": 0.7142857142857143,
-      "recall": 0.8064516129032258,
-      "f1": 0.7575757575757576,
-      "matched": 25,
-      "nur_in_referenz": 6,
-      "nur_in_generiert": 10
+      "precision": 0.6896551724137931,
+      "recall": 0.6451612903225806,
+      "f1": 0.6666666666666667,
+      "matched": 20,
+      "nur_in_referenz": 11,
+      "nur_in_generiert": 9
     },
     "beziehung": {
-      "recall": 1.0,
-      "matched": 5,
-      "nur_in_referenz": 0,
+      "recall": 0.8,
+      "matched": 4,
+      "nur_in_referenz": 1,
       "nur_in_generiert": 0
     }
   },
   "abweichungen": [
     {
-      "element": "contacts.firstname",
+      "element": "locations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events.location_id",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
-      "element": "contacts.lastname",
+      "element": "events.event_timestamp",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -59,13 +64,43 @@
       "fehlerklasse": null
     },
     {
-      "element": "events.event_timestamp",
+      "element": "contacts.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "contacts.lastname",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
       "element": "events_service_providers.id",
       "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.name",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "locations.capacity",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "events → locations",
+      "typ": "beziehung",
       "fehlerklasse": null
     }
   ],
@@ -129,7 +164,7 @@
               "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "company_id",
@@ -147,7 +182,7 @@
           ]
         },
         {
-          "name": "locations",
+          "name": "venues",
           "columns": [
             {
               "name": "id",
@@ -177,7 +212,7 @@
           "foreign_keys": []
         },
         {
-          "name": "event_types",
+          "name": "service_providers",
           "columns": [
             {
               "name": "id",
@@ -192,10 +227,10 @@
               "nullable": false
             },
             {
-              "name": "description",
-              "type": "TEXT",
+              "name": "type",
+              "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": []
@@ -252,7 +287,7 @@
               "nullable": false
             },
             {
-              "name": "location_id",
+              "name": "venue_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -262,55 +297,20 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "event_type_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "location_id",
-              "references_table": "locations",
+              "from_column": "venue_id",
+              "references_table": "venues",
               "references_column": "id"
             },
             {
               "from_column": "contact_id",
               "references_table": "contacts",
               "references_column": "id"
-            },
-            {
-              "from_column": "event_type_id",
-              "references_table": "event_types",
-              "references_column": "id"
             }
           ]
-        },
-        {
-          "name": "service_providers",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
         },
         {
           "name": "event_service_providers",
@@ -346,35 +346,6 @@
               "references_column": "id"
             }
           ]
-        },
-        {
-          "name": "event_type_service_providers",
-          "columns": [
-            {
-              "name": "event_type_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "service_provider_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "event_type_id",
-              "references_table": "event_types",
-              "references_column": "id"
-            },
-            {
-              "from_column": "service_provider_id",
-              "references_table": "service_providers",
-              "references_column": "id"
-            }
-          ]
         }
       ]
     },
@@ -391,7 +362,7 @@
             "erwartete_Kosten",
             "Absagestatus"
           ],
-          "beschreibung": "Eine Veranstaltung, die von der Agentur für Firmenkunden organisiert wird. Sie findet an genau einem Ort statt und hat eine Ansprechperson auf Kundenseite."
+          "beschreibung": "Repräsentiert eine von der Agentur organisierte Veranstaltung für Firmenkunden mit allen relevanten Planungsinformationen."
         },
         {
           "name": "Ort",
@@ -400,7 +371,7 @@
             "Adresse",
             "maximale_Personenzahl"
           ],
-          "beschreibung": "Ein Veranstaltungsort, an dem Veranstaltungen stattfinden. Jede Veranstaltung findet an genau einem Ort statt."
+          "beschreibung": "Der Veranstaltungsort mit Kapazitätsinformation. Jede Veranstaltung findet an genau einem Ort statt."
         },
         {
           "name": "Dienstleister",
@@ -408,7 +379,7 @@
             "Name",
             "Typ"
           ],
-          "beschreibung": "Ein Dienstleister (z.B. Caterer, Technikfirma, Sicherheitsdienst), der bei Veranstaltungen eingesetzt wird. Ein Dienstleister kann bei mehreren Veranstaltungen tätig sein."
+          "beschreibung": "Externe Partner (z.B. Caterer, Technikfirmen, Sicherheitsdienste) die bei Veranstaltungen eingesetzt werden."
         },
         {
           "name": "Ansprechperson",
@@ -417,7 +388,7 @@
             "E-Mail",
             "Telefonnummer"
           ],
-          "beschreibung": "Eine Ansprechperson auf Kundenseite, die eine oder mehrere Veranstaltungen begleitet und zu genau einer Firma gehört."
+          "beschreibung": "Kontaktperson auf Kundenseite, die eine oder mehrere Veranstaltungen begleitet und zu genau einer Firma gehört."
         },
         {
           "name": "Firma",
@@ -426,7 +397,7 @@
             "Branche",
             "Rechnungsadresse"
           ],
-          "beschreibung": "Ein Firmenkunde, für den Veranstaltungen organisiert werden. Eine Firma hat eine oder mehrere Ansprechpersonen."
+          "beschreibung": "Firmenkunde, für den Veranstaltungen organisiert werden. Ansprechpersonen gehören zu einer Firma."
         }
       ],
       "beziehungen": [
@@ -440,54 +411,52 @@
           "von": "Veranstaltung",
           "zu": "Ansprechperson",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Veranstaltung hat eine Ansprechperson. Eine Ansprechperson kann mehrere Veranstaltungen begleiten."
+          "beschreibung": "Jede Veranstaltung hat eine Ansprechperson. Eine Ansprechperson kann mehrere Veranstaltungen begleiten."
         },
         {
           "von": "Ansprechperson",
           "zu": "Firma",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Ansprechperson gehört zu genau einer Firma. Eine Firma hat eine oder mehrere Ansprechpersonen."
+          "beschreibung": "Jede Ansprechperson gehört zu genau einer Firma. Eine Firma kann mehrere Ansprechpersonen haben."
         },
         {
           "von": "Veranstaltung",
           "zu": "Dienstleister",
           "kardinalitaet": "M:N",
-          "beschreibung": "Bei einer Veranstaltung können mehrere Dienstleister beteiligt sein, und ein Dienstleister kann bei mehreren Veranstaltungen eingesetzt werden. Die Beziehung speichert die Aufgabe des Dienstleisters bei der Veranstaltung."
+          "beschreibung": "Bei einer Veranstaltung können mehrere Dienstleister beteiligt sein, und ein Dienstleister kann bei mehreren Veranstaltungen eingesetzt werden. Die Beziehung enthält die Aufgabe des Dienstleisters."
         },
         {
           "von": "Dienstleister",
-          "zu": "Veranstaltungstyp",
+          "zu": "Veranstaltung",
           "kardinalitaet": "M:N",
-          "beschreibung": "Nicht jeder Dienstleister ist für jede Art von Veranstaltung geeignet. Diese Beziehung definiert, für welche Veranstaltungstypen ein Dienstleister qualifiziert ist."
+          "beschreibung": "Umkehrperspektive: Ein Dienstleister kann bei mehreren Veranstaltungen eingesetzt werden. Nicht jeder Dienstleister ist für jede Art von Veranstaltung geeignet."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Text erwähnt, dass 'nicht jeder Dienstleister für jede Art von Veranstaltung geeignet' ist, definiert aber nicht explizit, wie Veranstaltungstypen oder -kategorien modelliert werden sollen. Unklar ist, ob Veranstaltungstypen als separate Entität zu führen sind oder ob die Eignung anders abgebildet werden soll.",
-          "betroffene_elemente": [
-            "Dienstleister",
-            "Veranstaltung",
-            "Veranstaltungstyp"
-          ]
-        },
-        {
-          "beschreibung": "Der Absagestatus wird erwähnt ('Falls eine Veranstaltung abgesagt wird'), aber es ist unklar, ob dies nur ein boolesches Flag ist oder ob weitere Informationen wie Absagedatum oder Absagegrund gespeichert werden sollen.",
-          "betroffene_elemente": [
-            "Veranstaltung"
-          ]
-        },
-        {
-          "beschreibung": "Bei der M:N-Beziehung zwischen Veranstaltung und Dienstleister wird erwähnt, dass 'welche Aufgabe der jeweilige Dienstleister bei der Veranstaltung übernimmt' festgehalten werden soll. Unklar ist, ob dies ein einfaches Textfeld ist oder ob Aufgaben als separate Entität modelliert werden sollen.",
+          "beschreibung": "Die M:N-Beziehung zwischen Veranstaltung und Dienstleister benötigt eine Verbindungstabelle. Unklar ist, ob neben der 'Aufgabe' weitere Attribute in dieser Verbindungstabelle gespeichert werden sollen (z.B. Kosten pro Dienstleister, Zeitraum der Tätigkeit).",
           "betroffene_elemente": [
             "Veranstaltung",
             "Dienstleister"
           ]
         },
         {
-          "beschreibung": "Es ist nicht klar, ob die Beziehung zwischen Firma und Veranstaltung direkt modelliert werden soll oder ob sie implizit über die Ansprechperson hergestellt wird.",
+          "beschreibung": "Der Absagestatus wird erwähnt ('Falls eine Veranstaltung abgesagt wird'), aber es ist unklar, ob dies ein einfaches Boolean-Attribut ist oder ob weitere Informationen wie Absagedatum oder Absagegrund gespeichert werden sollen.",
+          "betroffene_elemente": [
+            "Veranstaltung"
+          ]
+        },
+        {
+          "beschreibung": "Die Aussage 'Nicht jeder Dienstleister ist für jede Art von Veranstaltung geeignet' deutet auf eine Einschränkung hin, aber es ist unklar, wie diese Eignung modelliert werden soll (z.B. durch ein Attribut 'geeignete_Veranstaltungstypen' oder eine separate Entität 'Veranstaltungstyp').",
+          "betroffene_elemente": [
+            "Dienstleister",
+            "Veranstaltung"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Firma (Kunde) selbst als Entität mit zusätzlichen Attributen modelliert werden soll oder ob nur die Ansprechperson als Kontakt zur Firma ausreicht.",
           "betroffene_elemente": [
             "Firma",
-            "Veranstaltung",
             "Ansprechperson"
           ]
         }
@@ -637,7 +606,7 @@
               "name": "telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             },
             {
               "name": "firma_id",
@@ -675,29 +644,6 @@
               "pflichtfeld": true
             }
           ]
-        },
-        {
-          "name": "Veranstaltungstyp",
-          "attribute": [
-            {
-              "name": "veranstaltungstyp_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "bezeichnung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
         }
       ],
       "beziehungen": [
@@ -726,12 +672,6 @@
           "beziehungsattribute": [
             "aufgabe"
           ]
-        },
-        {
-          "von": "Dienstleister",
-          "zu": "Veranstaltungstyp",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": []
         }
       ]
     },
@@ -759,25 +699,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: companies (Firma), contacts (Ansprechperson), locations (Ort), events (Veranstaltung), service_providers (Dienstleister), event_types (Veranstaltungstyp). Die Namenskonvention ist englisch und plural (korrekt).",
+          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: companies (Firma), contacts (Ansprechperson), venues (Ort), service_providers (Dienstleister), events (Veranstaltung), event_service_providers (M:N-Beziehung).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden: events hat title, description, date, time, planning_status, expected_costs, is_cancelled; locations hat name, address, max_capacity; service_providers hat name, type; contacts hat name, email, phone; companies hat name, industry, billing_address; event_types hat name, description. Attributnamen folgen der snake_case-Konvention und sind englisch.",
+          "beschreibung": "Alle im ERModell spezifizierten Attribute sind im LogicalSchema vorhanden und korrekt benannt (z.B. title→titel, description→beschreibung, date→datum, time→uhrzeit, planning_status→planungsstand, expected_costs→erwartete_kosten, is_cancelled→ist_abgesagt, max_capacity→maximale_personenzahl, phone→telefonnummer, billing_address→rechnungsadresse). Die Datentypen entsprechen den Konventionen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) events.location_id → locations (N:1), (2) events.contact_id → contacts (N:1), (3) contacts.company_id → companies (N:1), (4) event_service_providers als Junction-Table für events ↔ service_providers (M:N mit Attribut 'task'), (5) event_type_service_providers als Junction-Table für event_types ↔ service_providers (M:N). Alle Fremdschlüssel sind NOT NULL und korrekt benannt.",
+          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: (1) Veranstaltung→Ort (N:1 via venue_id), (2) Veranstaltung→Ansprechperson (N:1 via contact_id), (3) Ansprechperson→Firma (N:1 via company_id), (4) Veranstaltung↔Dienstleister (M:N via event_service_providers mit Beziehungsattribut 'task'). Kardinalitäten sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten erkannt. Junction-Tables sind korrekt für M:N-Beziehungen verwendet. Alle Attribute sind atomar. Keine Anomalien bei Insert, Update oder Delete erkannt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit), (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln, (3) Keine transitiven Abhängigkeiten. Die Junction-Table event_service_providers ist korrekt normalisiert mit Composite-PK und zusätzlichem Attribut 'task'.",
           "korrekturanweisung": ""
         }
       ],
@@ -785,9 +725,9 @@
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 2,
+    "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE companies (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255) NOT NULL,\n    billing_address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    company_id INTEGER NOT NULL,\n    CONSTRAINT pk_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_contacts_company_id FOREIGN KEY (company_id) REFERENCES companies (id)\n);\n\nCREATE TABLE locations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    max_capacity INTEGER NOT NULL,\n    CONSTRAINT pk_locations PRIMARY KEY (id)\n);\n\nCREATE TABLE event_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_event_types PRIMARY KEY (id)\n);\n\nCREATE TABLE events (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    date DATE NOT NULL,\n    time VARCHAR(255) NOT NULL,\n    planning_status VARCHAR(255) NOT NULL,\n    expected_costs DECIMAL(18,2),\n    is_cancelled BOOLEAN NOT NULL,\n    location_id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    event_type_id INTEGER NOT NULL,\n    CONSTRAINT pk_events PRIMARY KEY (id),\n    CONSTRAINT fk_events_location_id FOREIGN KEY (location_id) REFERENCES locations (id),\n    CONSTRAINT fk_events_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id),\n    CONSTRAINT fk_events_event_type_id FOREIGN KEY (event_type_id) REFERENCES event_types (id)\n);\n\nCREATE TABLE service_providers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_service_providers PRIMARY KEY (id)\n);\n\nCREATE TABLE event_service_providers (\n    event_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    task VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_event_service_providers PRIMARY KEY (event_id, service_provider_id),\n    CONSTRAINT fk_event_service_providers_event_id FOREIGN KEY (event_id) REFERENCES events (id),\n    CONSTRAINT fk_event_service_providers_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE event_type_service_providers (\n    event_type_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    CONSTRAINT pk_event_type_service_providers PRIMARY KEY (event_type_id, service_provider_id),\n    CONSTRAINT fk_event_type_service_providers_event_type_id FOREIGN KEY (event_type_id) REFERENCES event_types (id),\n    CONSTRAINT fk_event_type_service_providers_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n",
+    "final_ddl": "CREATE TABLE companies (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    industry VARCHAR(255) NOT NULL,\n    billing_address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_companies PRIMARY KEY (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    company_id INTEGER NOT NULL,\n    CONSTRAINT pk_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_contacts_company_id FOREIGN KEY (company_id) REFERENCES companies (id)\n);\n\nCREATE TABLE venues (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    max_capacity INTEGER NOT NULL,\n    CONSTRAINT pk_venues PRIMARY KEY (id)\n);\n\nCREATE TABLE events (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    date DATE NOT NULL,\n    time VARCHAR(255) NOT NULL,\n    planning_status VARCHAR(255) NOT NULL,\n    expected_costs DECIMAL(18,2),\n    is_cancelled BOOLEAN NOT NULL,\n    venue_id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    CONSTRAINT pk_events PRIMARY KEY (id),\n    CONSTRAINT fk_events_venue_id FOREIGN KEY (venue_id) REFERENCES venues (id),\n    CONSTRAINT fk_events_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id)\n);\n\nCREATE TABLE service_providers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_service_providers PRIMARY KEY (id)\n);\n\nCREATE TABLE event_service_providers (\n    event_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    task VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_event_service_providers PRIMARY KEY (event_id, service_provider_id),\n    CONSTRAINT fk_event_service_providers_event_id FOREIGN KEY (event_id) REFERENCES events (id),\n    CONSTRAINT fk_event_service_providers_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -812,25 +752,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: companies (Firma), contacts (Ansprechperson), locations (Ort), events (Veranstaltung), service_providers (Dienstleister), event_types (Veranstaltungstyp). Die Namenskonvention ist englisch und plural (korrekt).",
+          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: companies (Firma), contacts (Ansprechperson), venues (Ort), service_providers (Dienstleister), events (Veranstaltung), event_service_providers (M:N-Beziehung).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden: events hat title, description, date, time, planning_status, expected_costs, is_cancelled; locations hat name, address, max_capacity; service_providers hat name, type; contacts hat name, email, phone; companies hat name, industry, billing_address; event_types hat name, description. Attributnamen folgen der snake_case-Konvention und sind englisch.",
+          "beschreibung": "Alle im ERModell spezifizierten Attribute sind im LogicalSchema vorhanden und korrekt benannt (z.B. title→titel, description→beschreibung, date→datum, time→uhrzeit, planning_status→planungsstand, expected_costs→erwartete_kosten, is_cancelled→ist_abgesagt, max_capacity→maximale_personenzahl, phone→telefonnummer, billing_address→rechnungsadresse). Die Datentypen entsprechen den Konventionen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) events.location_id → locations (N:1), (2) events.contact_id → contacts (N:1), (3) contacts.company_id → companies (N:1), (4) event_service_providers als Junction-Table für events ↔ service_providers (M:N mit Attribut 'task'), (5) event_type_service_providers als Junction-Table für event_types ↔ service_providers (M:N). Alle Fremdschlüssel sind NOT NULL und korrekt benannt.",
+          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: (1) Veranstaltung→Ort (N:1 via venue_id), (2) Veranstaltung→Ansprechperson (N:1 via contact_id), (3) Ansprechperson→Firma (N:1 via company_id), (4) Veranstaltung↔Dienstleister (M:N via event_service_providers mit Beziehungsattribut 'task'). Kardinalitäten sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten erkannt. Junction-Tables sind korrekt für M:N-Beziehungen verwendet. Alle Attribute sind atomar. Keine Anomalien bei Insert, Update oder Delete erkannt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit), (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln, (3) Keine transitiven Abhängigkeiten. Die Junction-Table event_service_providers ist korrekt normalisiert mit Composite-PK und zusätzlichem Attribut 'task'.",
           "korrekturanweisung": ""
         }
       ],
@@ -840,34 +780,34 @@
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 7,
-    "total_input_tokens": 34005,
-    "total_output_tokens": 10658,
-    "total_tokens": 44663,
+    "total_calls": 4,
+    "total_input_tokens": 16240,
+    "total_output_tokens": 5330,
+    "total_tokens": 21570,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1685,
-        "output_tokens": 1545,
+        "output_tokens": 1476,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 2,
-        "input_tokens": 6590,
-        "output_tokens": 3138,
+        "calls": 1,
+        "input_tokens": 3222,
+        "output_tokens": 1370,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 2,
-        "input_tokens": 9923,
-        "output_tokens": 3841,
+        "calls": 1,
+        "input_tokens": 4130,
+        "output_tokens": 1527,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 2,
-        "input_tokens": 15807,
-        "output_tokens": 2134,
+        "calls": 1,
+        "input_tokens": 7203,
+        "output_tokens": 957,
         "cost_usd": 0.0
       }
     },
@@ -878,7 +818,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1685,
-        "output_tokens": 1545,
+        "output_tokens": 1476,
         "cost_usd": 0.0
       },
       {
@@ -886,8 +826,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3295,
-        "output_tokens": 1569,
+        "input_tokens": 3222,
+        "output_tokens": 1370,
         "cost_usd": 0.0
       },
       {
@@ -895,8 +835,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4364,
-        "output_tokens": 1881,
+        "input_tokens": 4130,
+        "output_tokens": 1527,
         "cost_usd": 0.0
       },
       {
@@ -904,35 +844,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7864,
-        "output_tokens": 1208,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 1,
-        "agent_name": "conceptual_model_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3295,
-        "output_tokens": 1569,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 1,
-        "agent_name": "logical_schema_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5559,
-        "output_tokens": 1960,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 1,
-        "agent_name": "oa_validator",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7943,
-        "output_tokens": 926,
+        "input_tokens": 7203,
+        "output_tokens": 957,
         "cost_usd": 0.0
       }
     ]

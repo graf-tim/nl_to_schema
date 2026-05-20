@@ -2,39 +2,39 @@
   "testfall_id": "TC071",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.4017316017316017,
-  "score_gesamt": 0.6410389610389611,
+  "score_semantisch": 0.411653691908469,
+  "score_gesamt": 0.6469922151450814,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 14,
-    "pk_tabellen_mit_pk": 14,
-    "fk_referenzen_gesamt": 17,
+    "pk_tabellen_gesamt": 13,
+    "pk_tabellen_mit_pk": 13,
+    "fk_referenzen_gesamt": 16,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.5,
+      "precision": 0.5384615384615384,
       "recall": 0.5,
-      "f1": 0.5,
+      "f1": 0.5185185185185186,
       "matched": 7,
       "nur_in_referenz": 7,
-      "nur_in_generiert": 7
+      "nur_in_generiert": 6
     },
     "attribut": {
-      "precision": 0.3611111111111111,
-      "recall": 0.3170731707317073,
-      "f1": 0.33766233766233766,
-      "matched": 26,
-      "nur_in_referenz": 56,
-      "nur_in_generiert": 46
+      "precision": 0.36,
+      "recall": 0.32926829268292684,
+      "f1": 0.3439490445859873,
+      "matched": 27,
+      "nur_in_referenz": 55,
+      "nur_in_generiert": 48
     },
     "beziehung": {
       "recall": 0.3333333333333333,
       "matched": 5,
       "nur_in_referenz": 10,
-      "nur_in_generiert": 0
+      "nur_in_generiert": 1
     }
   },
   "abweichungen": [
@@ -71,11 +71,6 @@
     {
       "element": "customer_loans",
       "typ": "tabelle",
-      "fehlerklasse": null
-    },
-    {
-      "element": "cards.card_number",
-      "typ": "attribut",
       "fehlerklasse": null
     },
     {
@@ -575,13 +570,13 @@
               "nullable": false
             },
             {
-              "name": "branch_code",
+              "name": "branch_name",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "branch_name",
+              "name": "branch_code",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -623,14 +618,14 @@
               "nullable": false
             },
             {
-              "name": "branch_id",
-              "type": "INTEGER",
+              "name": "opening_date",
+              "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "opening_date",
-              "type": "DATE",
+              "name": "branch_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             }
@@ -754,13 +749,19 @@
               "nullable": false
             },
             {
-              "name": "customer_id",
+              "name": "primary_customer_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
               "name": "card_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "card_number",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -776,6 +777,12 @@
               "type": "DATE",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "issue_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -785,7 +792,7 @@
               "references_column": "id"
             },
             {
-              "from_column": "customer_id",
+              "from_column": "primary_customer_id",
               "references_table": "customers",
               "references_column": "id"
             }
@@ -809,6 +816,12 @@
             {
               "name": "customer_id",
               "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "role",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             }
@@ -854,7 +867,7 @@
               "nullable": false
             },
             {
-              "name": "start_date",
+              "name": "term_start",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -862,6 +875,12 @@
             {
               "name": "maturity_date",
               "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
@@ -900,12 +919,6 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "role",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -940,18 +953,30 @@
               "name": "description",
               "type": "TEXT",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
+            },
+            {
+              "name": "value",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": []
         },
         {
-          "name": "collateral_providers",
+          "name": "credit_collateral_providers",
           "columns": [
             {
               "name": "id",
               "type": "INTEGER",
               "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "credit_contract_id",
+              "type": "INTEGER",
+              "primary_key": false,
               "nullable": false
             },
             {
@@ -971,41 +996,12 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "collateral_id",
-              "references_table": "collaterals",
-              "references_column": "id"
             },
             {
-              "from_column": "customer_id",
-              "references_table": "customers",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "credit_collaterals",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "credit_contract_id",
-              "type": "INTEGER",
+              "name": "provider_share",
+              "type": "DECIMAL",
               "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "collateral_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -1017,6 +1013,11 @@
             {
               "from_column": "collateral_id",
               "references_table": "collaterals",
+              "references_column": "id"
+            },
+            {
+              "from_column": "customer_id",
+              "references_table": "customers",
               "references_column": "id"
             }
           ]
@@ -1041,7 +1042,7 @@
             "Gültig ab",
             "Gültig bis"
           ],
-          "beschreibung": "Telefonnummern und E-Mail-Adressen eines Kunden, die sich ändern können und mehrfach pro Kunde vorkommen."
+          "beschreibung": "Telefonnummern und E-Mail-Adressen eines Kunden, die sich ändern können und mehrfach vorkommen."
         },
         {
           "name": "Adresse",
@@ -1054,7 +1055,7 @@
             "Gültig ab",
             "Gültig bis"
           ],
-          "beschreibung": "Adressen eines Kunden für verschiedene Zwecke. Mehrere Adressen pro Kunde möglich; unklar ob auch historische Adressen erfasst werden sollen."
+          "beschreibung": "Adressen eines Kunden für verschiedene Zwecke. Mehrere Adressen pro Kunde möglich, auch historische Anschriften."
         },
         {
           "name": "Konto",
@@ -1062,16 +1063,17 @@
             "IBAN",
             "Währung",
             "Status",
-            "Produkttyp (Girokonto/Tagesgeld/Fremdwährungskonto)"
+            "Produkttyp (Girokonto/Tagesgeld/Fremdwährungskonto)",
+            "Eröffnungsdatum"
           ],
-          "beschreibung": "Bankkonto mit eindeutiger IBAN, das zu einem Produkt gehört und über eine kontoführende Filiale läuft. Kann Gemeinschaftskonto sein."
+          "beschreibung": "Bankkonto mit eindeutiger IBAN, Währung und Produkttyp. Kann Gemeinschaftskonto sein und wird von einer Filiale geführt."
         },
         {
           "name": "Kontoinhaber",
           "attribute": [
             "Rolle (Inhaber/Bevollmächtigter)"
           ],
-          "beschreibung": "Beziehung zwischen Kunden und Konten. Unterscheidung zwischen Eigentümern und Bevollmächtigten, die verfügen dürfen aber nicht zwingend Inhaber sind."
+          "beschreibung": "Beziehung zwischen Kunden und Konten, die Eigentum und Zeichnungsberechtigung abbildet. Bevollmächtigte dürfen verfügen, sind aber nicht zwingend Inhaber."
         },
         {
           "name": "Buchung",
@@ -1082,7 +1084,7 @@
             "Gegenbuchungstext",
             "Verwendungszweck"
           ],
-          "beschreibung": "Einzelbewegung auf einem Konto. Unklar ob jede Buchung genau einem Konto zugeordnet wird oder auch Sammelbuchungen vorkommen."
+          "beschreibung": "Einzelbewegung auf einem Konto mit Datum, Betrag und Beschreibung."
         },
         {
           "name": "Kreditvertrag",
@@ -1091,48 +1093,45 @@
             "Nominalbetrag",
             "Zinssatz",
             "Laufzeitbeginn",
-            "Fälligkeit"
+            "Fälligkeit",
+            "Status"
           ],
-          "beschreibung": "Kreditvertrag mit mehreren möglichen Darlehensnehmern und Sicherheiten."
-        },
-        {
-          "name": "Kreditnehmer",
-          "attribute": [
-            "Rolle"
-          ],
-          "beschreibung": "Beziehung zwischen Kunden und Kreditverträgen. Ein Kredit kann mehrere Darlehensnehmer haben."
+          "beschreibung": "Kreditvertrag mit Bedingungen und Laufzeit. Kann mehrere Darlehensnehmer haben."
         },
         {
           "name": "Sicherheit",
           "attribute": [
             "Sicherheitstyp (Fahrzeug/Immobilie/sonstige)",
-            "Beschreibung"
+            "Beschreibung",
+            "Wert"
           ],
-          "beschreibung": "Sicherheiten wie Fahrzeuge oder Immobilien, die für Kredite hinterlegt werden. Eine Sicherheit kann mehreren Krediten dienen."
+          "beschreibung": "Sicherheiten wie Fahrzeuge oder Immobilien, die für einen oder mehrere Kredite hinterlegt werden."
         },
         {
           "name": "Sicherungsgeber",
           "attribute": [
             "Rolle"
           ],
-          "beschreibung": "Beziehung zwischen Kunden und Sicherheiten. Unklar ob ein Sicherungsgeber immer selbst Kreditnehmer sein muss."
+          "beschreibung": "Person oder Entität, die eine Sicherheit für einen Kredit bereitstellt. Nicht eindeutig, ob immer selbst Kreditnehmer."
         },
         {
           "name": "Karte",
           "attribute": [
             "Kartentyp (Debit/Kredit)",
+            "Kartennummer",
             "Sperrstatus",
-            "Ablaufdatum"
+            "Ablaufdatum",
+            "Ausstellungsdatum"
           ],
-          "beschreibung": "Debit- oder Kreditkarte, die zu einem Konto und für einen Kunden ausgegeben wird. Kann zu Gemeinschaftskonto mit mehreren berechtigten Personen gehören."
+          "beschreibung": "Debit- oder Kreditkarte, die zu einem Konto gehört und für einen Kunden ausgegeben wird."
         },
         {
           "name": "Filiale",
           "attribute": [
             "Filialname",
-            "Filialkennung"
+            "Filialcode"
           ],
-          "beschreibung": "Organisationseinheit der Bank. Führt Konten und betreut Kredite. Unklar ob Kontoführung und Kreditbetreuung immer durch dieselbe Filiale erfolgen."
+          "beschreibung": "Organisationseinheit der Bank, die Konten führt und Kredite betreut."
         }
       ],
       "beziehungen": [
@@ -1152,19 +1151,19 @@
           "von": "Kunde",
           "zu": "Konto",
           "kardinalitaet": "M:N",
-          "beschreibung": "Kunden können Kontoinhaber oder Bevollmächtigte sein. Ein Konto kann mehrere Inhaber haben (Gemeinschaftskonto). Die Beziehung wird durch die Entität Kontoinhaber mit Rollenunterscheidung modelliert."
+          "beschreibung": "Kunden und Konten haben eine M:N-Beziehung über die Entität Kontoinhaber (Gemeinschaftskonten, mehrere Inhaber pro Konto möglich)."
         },
         {
           "von": "Konto",
           "zu": "Buchung",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Konto hat mehrere Buchungen. Unklar ob auch Sammelbuchungen vorkommen."
+          "beschreibung": "Ein Konto hat mehrere Buchungen. Unklar, ob Sammelbuchungen vorkommen oder jede Buchung genau einem Konto zugeordnet wird."
         },
         {
           "von": "Konto",
           "zu": "Karte",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Konto hat mehrere Karten (Debit- und Kreditkarten)."
+          "beschreibung": "Ein Konto kann mehrere Karten haben (Debit- und Kreditkarten)."
         },
         {
           "von": "Konto",
@@ -1176,19 +1175,19 @@
           "von": "Kunde",
           "zu": "Kreditvertrag",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Kunde kann mehrere Kreditverträge haben und ein Kredit kann mehrere Darlehensnehmer haben. Die Beziehung wird durch die Entität Kreditnehmer modelliert."
+          "beschreibung": "Ein Kreditvertrag kann mehrere Darlehensnehmer haben; ein Kunde kann mehrere Kredite haben."
         },
         {
           "von": "Kreditvertrag",
           "zu": "Sicherheit",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Kreditvertrag kann mehrere Sicherheiten haben und eine Sicherheit kann mehreren Kreditverträgen dienen."
+          "beschreibung": "Ein Kredit kann mehrere Sicherheiten haben; eine Sicherheit kann mehreren Krediten dienen."
         },
         {
-          "von": "Kunde",
-          "zu": "Sicherheit",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Kunde kann Sicherungsgeber für mehrere Sicherheiten sein und eine Sicherheit kann mehrere Sicherungsgeber haben. Die Beziehung wird durch die Entität Sicherungsgeber modelliert."
+          "von": "Sicherheit",
+          "zu": "Sicherungsgeber",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Sicherheit wird von einem oder mehreren Sicherungsgebern bereitgestellt."
         },
         {
           "von": "Kreditvertrag",
@@ -1200,32 +1199,32 @@
           "von": "Karte",
           "zu": "Kunde",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Karte wird für einen Kunden ausgegeben."
+          "beschreibung": "Eine Karte wird für einen Kunden ausgegeben, kann aber zu einem Gemeinschaftskonto gehören."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar, ob Kunden nur aktuelle Adressen oder auch historische Adressen erfasst werden sollen. Der Text sagt 'zumindest die gegenwärtig genutzten sollen erfasst werden', lässt aber offen, ob auch frühere Anschriften nachvollziehbar sein sollen.",
+          "beschreibung": "Unklar, ob Kunden nur eine aktuelle Adresse haben oder auch frühere Anschriften nachvollziehbar sein sollen. Der Text sagt, dass zumindest die gegenwärtig genutzten erfasst werden sollen.",
           "betroffene_elemente": [
             "Adresse"
           ]
         },
         {
-          "beschreibung": "Unklar, ob jede Buchung genau einem Konto zugeordnet wird oder ob intern auch Sammelbuchungen vorkommen. Der Text sagt 'für die tägliche Sicht reichen die Einzelbewegungen auf dem Konto', was Sammelbuchungen nicht ausschließt.",
+          "beschreibung": "Unklar, ob jede Buchung genau einem Konto zugeordnet wird oder ob intern auch Sammelbuchungen vorkommen. Der Fachbereich formuliert dies unterschiedlich.",
           "betroffene_elemente": [
             "Buchung",
             "Konto"
           ]
         },
         {
-          "beschreibung": "Unklar, ob ein Sicherungsgeber immer selbst Kreditnehmer sein muss. Der Text sagt 'nicht überall ist eindeutig, ob ein Sicherungsgeber immer selbst Kreditnehmer sein muss'.",
+          "beschreibung": "Unklar, ob ein Sicherungsgeber immer selbst Kreditnehmer sein muss oder ob diese Rollen unabhängig sind.",
           "betroffene_elemente": [
             "Sicherungsgeber",
-            "Kreditnehmer"
+            "Kreditvertrag"
           ]
         },
         {
-          "beschreibung": "Unklar, ob die kontoführende Filiale und die Filiale, die einen Kredit betreut, immer dieselbe Filiale sind. Der Text sagt 'ob das immer dieselbe Filiale ist, ist offen'.",
+          "beschreibung": "Unklar, ob die kontoführende Filiale und die Filiale, die einen Kredit betreut, immer dieselbe sind oder unterschiedlich sein können.",
           "betroffene_elemente": [
             "Filiale",
             "Konto",
@@ -1233,17 +1232,18 @@
           ]
         },
         {
-          "beschreibung": "Unklar, ob die Unterscheidung zwischen Privatkunde und Firmenkunde in der Datenbank abgebildet werden soll oder ob eine einheitliche Sicht auf den Kundenstamm ausreicht. Der Text sagt 'für den ersten Schritt reicht aber eine einheitliche Sicht auf den Kundenstamm'.",
+          "beschreibung": "Unklar, ob die Beziehung zwischen Kunde und Konto (Kontoinhaber) auch Bevollmächtigte abdeckt oder ob diese separat modelliert werden sollen. Der Text unterscheidet zwischen Inhabern und Bevollmächtigten.",
           "betroffene_elemente": [
-            "Kunde"
+            "Kunde",
+            "Konto",
+            "Kontoinhaber"
           ]
         },
         {
-          "beschreibung": "Unklar, ob die Beziehung zwischen Kunde und Konto (Kontoinhaber vs. Bevollmächtigter) ausreichend durch eine einfache Rolle modelliert werden kann oder ob weitere Attribute wie Zeichnungsberechtigung erforderlich sind. Der Text sagt 'fachlich ist das aber nicht immer gleichbedeutend mit Eigentum oder Zeichnungsberechtigung'.",
+          "beschreibung": "Unklar, ob Karten immer zu genau einem Konto gehören oder ob eine Karte zu mehreren Konten gehören kann, insbesondere bei Gemeinschaftskonten.",
           "betroffene_elemente": [
-            "Kontoinhaber",
-            "Konto",
-            "Kunde"
+            "Karte",
+            "Konto"
           ]
         }
       ]
@@ -1254,37 +1254,37 @@
           "name": "Kunde",
           "attribute": [
             {
-              "name": "kundenId",
+              "name": "KundenID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kundentyp",
+              "name": "Kundentyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "vorname",
+              "name": "Vorname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "nachname",
+              "name": "Nachname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "geburtsdatum",
+              "name": "Geburtsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "registrierungsdatum",
+              "name": "Registrierungsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1295,37 +1295,37 @@
           "name": "Kontaktweg",
           "attribute": [
             {
-              "name": "kontaktwegId",
+              "name": "KontaktwegID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kundenId",
+              "name": "KundenID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kontakttyp",
+              "name": "Kontakttyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kontaktwert",
+              "name": "Kontaktwert",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "gueltigAb",
+              "name": "GueltigAb",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "gueltigBis",
+              "name": "GueltigBis",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1336,55 +1336,55 @@
           "name": "Adresse",
           "attribute": [
             {
-              "name": "adresseId",
+              "name": "AdresseID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kundenId",
+              "name": "KundenID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "adresstyp",
+              "name": "Adresstyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "strasse",
+              "name": "Strasse",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "hausnummer",
+              "name": "Hausnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "postleitzahl",
+              "name": "Postleitzahl",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "ort",
+              "name": "Ort",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "gueltigAb",
+              "name": "GueltigAb",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "gueltigBis",
+              "name": "GueltigBis",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1395,19 +1395,19 @@
           "name": "Filiale",
           "attribute": [
             {
-              "name": "filialeId",
+              "name": "FilialeID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "filialkennung",
+              "name": "Filialname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "filialname",
+              "name": "Filialcode",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1418,44 +1418,44 @@
           "name": "Konto",
           "attribute": [
             {
-              "name": "kontoId",
+              "name": "KontoID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "iban",
+              "name": "IBAN",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "waehrung",
+              "name": "Waehrung",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "status",
+              "name": "Status",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "produkttyp",
+              "name": "Produkttyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "filialeId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "eroeffnungsdatum",
+              "name": "Eroeffnungsdatum",
               "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "FilialeID",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1465,25 +1465,25 @@
           "name": "Kontoinhaber",
           "attribute": [
             {
-              "name": "kontoinhaberId",
+              "name": "KontoinhaberID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kontoId",
+              "name": "KontoID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kundenId",
+              "name": "KundenID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "rolle",
+              "name": "Rolle",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1494,43 +1494,43 @@
           "name": "Buchung",
           "attribute": [
             {
-              "name": "buchungId",
+              "name": "BuchungID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kontoId",
+              "name": "KontoID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "buchungstag",
+              "name": "Buchungstag",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "wertstellung",
+              "name": "Wertstellung",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "betrag",
+              "name": "Betrag",
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "gegenbuchungstext",
+              "name": "Gegenbuchungstext",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "verwendungszweck",
+              "name": "Verwendungszweck",
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1541,38 +1541,79 @@
           "name": "Karte",
           "attribute": [
             {
-              "name": "karteId",
+              "name": "KarteID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kontoId",
+              "name": "KontoID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kundenId",
+              "name": "PrimaryKundenID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kartentyp",
+              "name": "Kartentyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "sperrstatus",
+              "name": "Kartennummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "ablaufdatum",
+              "name": "Sperrstatus",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Ablaufdatum",
               "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Ausstellungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Karteninhaber",
+          "attribute": [
+            {
+              "name": "KarteninhaberID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KarteID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Rolle",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1582,43 +1623,49 @@
           "name": "Kreditvertrag",
           "attribute": [
             {
-              "name": "kreditvertragId",
+              "name": "KreditvertragID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kreditart",
+              "name": "Kreditart",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "nominalbetrag",
+              "name": "Nominalbetrag",
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "zinssatz",
+              "name": "Zinssatz",
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "laufzeitbeginn",
+              "name": "Laufzeitbeginn",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "faelligkeit",
+              "name": "Faelligkeit",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "filialeId",
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "FilialeID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1629,26 +1676,20 @@
           "name": "Kreditnehmer",
           "attribute": [
             {
-              "name": "kreditnehmerId",
+              "name": "KreditnehmerID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "kreditvertragId",
+              "name": "KreditvertragID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kundenId",
+              "name": "KundenID",
               "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "rolle",
-              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1658,20 +1699,49 @@
           "name": "Sicherheit",
           "attribute": [
             {
-              "name": "sicherheitId",
+              "name": "SicherheitID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "sicherheitstyp",
+              "name": "Sicherheitstyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "beschreibung",
+              "name": "Beschreibung",
               "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Wert",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "KreditSicherheit",
+          "attribute": [
+            {
+              "name": "KreditSicherheitID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "KreditvertragID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "SicherheitID",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1681,51 +1751,40 @@
           "name": "Sicherungsgeber",
           "attribute": [
             {
-              "name": "sicherungsgeberId",
+              "name": "SicherungsgeberID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "sicherheitId",
+              "name": "KreditvertragID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "kundenId",
+              "name": "SicherheitID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "rolle",
+              "name": "KundenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Rolle",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "KreditSicherheit",
-          "attribute": [
-            {
-              "name": "kreditsicherheitId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
             },
             {
-              "name": "kreditvertragId",
-              "datentyp": "INTEGER",
+              "name": "SicherungsgeberAnteil",
+              "datentyp": "DECIMAL",
               "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "sicherheitId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             }
           ]
         }
@@ -1744,13 +1803,19 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Kunde",
-          "zu": "Kontoinhaber",
+          "von": "Filiale",
+          "zu": "Konto",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Konto",
+          "zu": "Kontoinhaber",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kunde",
           "zu": "Kontoinhaber",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
@@ -1768,26 +1833,20 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Filiale",
-          "zu": "Konto",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
           "von": "Kunde",
           "zu": "Karte",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Kunde",
-          "zu": "Kreditnehmer",
+          "von": "Karte",
+          "zu": "Karteninhaber",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Kreditvertrag",
-          "zu": "Kreditnehmer",
+          "von": "Kunde",
+          "zu": "Karteninhaber",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
@@ -1798,14 +1857,14 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Sicherheit",
-          "zu": "Sicherungsgeber",
+          "von": "Kreditvertrag",
+          "zu": "Kreditnehmer",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Kunde",
-          "zu": "Sicherungsgeber",
+          "zu": "Kreditnehmer",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
@@ -1818,6 +1877,24 @@
         {
           "von": "Sicherheit",
           "zu": "KreditSicherheit",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kreditvertrag",
+          "zu": "Sicherungsgeber",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Sicherheit",
+          "zu": "Sicherungsgeber",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kunde",
+          "zu": "Sicherungsgeber",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         }
@@ -1843,15 +1920,39 @@
           "erfuellt": true,
           "beschreibung": "FK-Integritätsquote: 1.00",
           "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Entität fehlt: 'Sicherungsgeber' ist im LogicalSchema nicht als eigenständige Entität modelliert. Im ERModell existiert 'Sicherungsgeber' als separate Entität mit Attributen (Rolle, SicherungsgeberAnteil). Im LogicalSchema wurde diese Entität in die Junction-Table 'credit_collateral_providers' integriert, was die Semantik verändert. Die Anforderung unterscheidet zwischen 'Sicherheit' (Fahrzeug/Immobilie) und 'Sicherungsgeber' (Person/Entität, die die Sicherheit bereitstellt). Diese Unterscheidung ist im LogicalSchema nicht klar erkennbar.",
+          "korrekturanweisung": "Prüfen Sie, ob 'credit_collateral_providers' wirklich die Entität 'Sicherungsgeber' vollständig abbildet oder ob eine separate Tabelle 'collateral_providers' erforderlich ist. Falls 'credit_collateral_providers' als Junction-Table für M:N-Beziehung zwischen Krediten und Sicherheiten mit Sicherungsgebern gedacht ist, sollte dies dokumentiert werden. Alternativ: Separate Tabelle 'collateral_providers' mit Fremdschlüsseln zu 'collaterals' und 'customers'."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Attribute aus dem ERModell fehlen oder sind nicht korrekt übersetzt: (1) 'customers' fehlt das Attribut 'Stammdaten' (im Anforderungstext erwähnt, aber nicht konkretisiert). (2) 'cards' hat 'primary_customer_id', aber im ERModell ist dies 'PrimaryKundenID' – die Semantik ist unklar: Ist dies der Karteninhaber oder nur der Primärkunde? (3) 'credit_contracts' fehlt möglicherweise ein Attribut für den Status (vorhanden: 'status'), aber die Anforderung erwähnt 'Status' nicht explizit für Kreditverträge – dies ist jedoch im ERModell und LogicalSchema vorhanden und korrekt. (4) 'collaterals' hat kein Attribut für die Zuordnung zu Kreditverträgen direkt – dies wird über 'credit_collateral_providers' gelöst, was korrekt ist. Hauptproblem: 'cards' sollte möglicherweise ein Attribut 'is_primary' oder ähnliches haben, um zu unterscheiden, ob es sich um die Primärkarte handelt.",
+          "korrekturanweisung": "Klären Sie die Semantik von 'primary_customer_id' in der 'cards'-Tabelle. Falls dies der Karteninhaber ist, sollte die Spalte 'primary_customer_id' in 'cardholder_customer_id' umbenannt werden. Falls mehrere Karteninhaber möglich sind (wie im ERModell mit 'card_holders' angedeutet), sollte 'primary_customer_id' nur die Primärperson kennzeichnen. Erwägen Sie ein zusätzliches Attribut 'is_primary_cardholder' (BOOLEAN) in 'card_holders'."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Beziehungsprobleme identifiziert: (1) 'cards' hat sowohl 'account_id' als auch 'primary_customer_id' als Fremdschlüssel. Laut Anforderung kann eine Karte zu einem Gemeinschaftskonto gehören (1:N zu Konto) und wird für einen Kunden ausgegeben (N:1 zu Kunde). Die Modellierung ist mehrdeutig: Ist 'primary_customer_id' redundant, wenn 'card_holders' bereits die Beziehung abbildet? (2) 'credit_collateral_providers' modelliert die Beziehung zwischen Kredit, Sicherheit und Sicherungsgeber. Laut Anforderung kann eine Sicherheit mehreren Krediten dienen (M:N), und ein Sicherungsgeber kann mehrere Sicherheiten bereitstellen. Die aktuelle Struktur mit (credit_contract_id, collateral_id, customer_id) ist korrekt für M:N, aber es ist unklar, ob ein Sicherungsgeber (customer_id) immer selbst Kreditnehmer sein muss (Anforderung: 'Nicht eindeutig, ob ein Sicherungsgeber immer selbst Kreditnehmer sein muss'). Diese Ambiguität ist nicht gelöst. (3) Fehlende Beziehung: Im ERModell existiert eine M:N-Beziehung zwischen 'Kreditvertrag' und 'Sicherheit' über 'KreditSicherheit'. Im LogicalSchema wird dies durch 'credit_collateral_providers' ersetzt, die zusätzlich den Sicherungsgeber enthält. Dies ist eine Vermischung von zwei konzeptionellen Beziehungen.",
+          "korrekturanweisung": "Trennen Sie die Beziehungen: (1) Erstellen Sie eine separate Junction-Table 'credit_collaterals' für die M:N-Beziehung zwischen 'credit_contracts' und 'collaterals' (ohne Sicherungsgeber). (2) Behalten Sie 'credit_collateral_providers' für die Beziehung zwischen Sicherheit, Kredit und Sicherungsgeber. (3) Klären Sie, ob 'primary_customer_id' in 'cards' notwendig ist oder ob 'card_holders' ausreicht. Falls notwendig, dokumentieren Sie die Semantik (z.B. 'primary_customer_id' = Hauptkarteninhaber)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Normalisierungsprobleme identifiziert: (1) 'cards' hat redundante Fremdschlüssel: 'account_id' und 'primary_customer_id'. Wenn 'card_holders' bereits die Beziehung zwischen Karte und Kunden abbildet, ist 'primary_customer_id' redundant und verletzt die 3NF (Transitivität). (2) 'credit_collateral_providers' vermischt zwei konzeptionelle Beziehungen (Kredit-Sicherheit und Sicherungsgeber-Sicherheit) in einer Tabelle, was zu Anomalien führen kann. Beispiel: Wenn ein Sicherungsgeber mehrere Sicherheiten für denselben Kredit bereitstellt, entstehen redundante Zeilen. (3) 'addresses' und 'contact_methods' haben 'valid_from' und 'valid_until', was korrekt ist für Temporalität, aber es gibt keine Constraint, dass 'valid_until' >= 'valid_from'. Dies ist ein Datenqualitätsproblem, nicht direkt ein Normalisierungsproblem, aber relevant für Integrität.",
+          "korrekturanweisung": "Entfernen Sie 'primary_customer_id' aus 'cards' oder dokumentieren Sie explizit, dass dies ein Denormalisierungsmuster ist (für Performance). Falls entfernt, müssen Abfragen über 'card_holders' gehen. Trennen Sie 'credit_collateral_providers' in zwei Tabellen: 'credit_collaterals' (credit_contract_id, collateral_id) und 'collateral_providers' (collateral_id, customer_id, role, provider_share). Erwägen Sie CHECK-Constraints für Datumslogik (valid_until >= valid_from)."
         }
       ],
-      "origin_step": "lsd"
+      "origin_step": "cmd"
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
     "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE branches (\n    id INTEGER NOT NULL,\n    branch_code VARCHAR(255) NOT NULL,\n    branch_name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_branches PRIMARY KEY (id)\n);\n\nCREATE TABLE accounts (\n    id INTEGER NOT NULL,\n    iban VARCHAR(255) NOT NULL,\n    currency VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    product_type VARCHAR(255) NOT NULL,\n    branch_id INTEGER NOT NULL,\n    opening_date DATE NOT NULL,\n    CONSTRAINT pk_accounts PRIMARY KEY (id),\n    CONSTRAINT fk_accounts_branch_id FOREIGN KEY (branch_id) REFERENCES branches (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    customer_type VARCHAR(255) NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE account_holders (\n    id INTEGER NOT NULL,\n    account_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_account_holders PRIMARY KEY (id),\n    CONSTRAINT fk_account_holders_account_id FOREIGN KEY (account_id) REFERENCES accounts (id),\n    CONSTRAINT fk_account_holders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE addresses (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    address_type VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    house_number VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_addresses PRIMARY KEY (id),\n    CONSTRAINT fk_addresses_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE cards (\n    id INTEGER NOT NULL,\n    account_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    card_type VARCHAR(255) NOT NULL,\n    block_status VARCHAR(255) NOT NULL,\n    expiry_date DATE NOT NULL,\n    CONSTRAINT pk_cards PRIMARY KEY (id),\n    CONSTRAINT fk_cards_account_id FOREIGN KEY (account_id) REFERENCES accounts (id),\n    CONSTRAINT fk_cards_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE card_holders (\n    id INTEGER NOT NULL,\n    card_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    CONSTRAINT pk_card_holders PRIMARY KEY (id),\n    CONSTRAINT fk_card_holders_card_id FOREIGN KEY (card_id) REFERENCES cards (id),\n    CONSTRAINT fk_card_holders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE collaterals (\n    id INTEGER NOT NULL,\n    collateral_type VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    CONSTRAINT pk_collaterals PRIMARY KEY (id)\n);\n\nCREATE TABLE collateral_providers (\n    id INTEGER NOT NULL,\n    collateral_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_collateral_providers PRIMARY KEY (id),\n    CONSTRAINT fk_collateral_providers_collateral_id FOREIGN KEY (collateral_id) REFERENCES collaterals (id),\n    CONSTRAINT fk_collateral_providers_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE contact_methods (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    contact_type VARCHAR(255) NOT NULL,\n    contact_value VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_contact_methods PRIMARY KEY (id),\n    CONSTRAINT fk_contact_methods_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE credit_contracts (\n    id INTEGER NOT NULL,\n    credit_type VARCHAR(255) NOT NULL,\n    nominal_amount DECIMAL(18,2) NOT NULL,\n    interest_rate DECIMAL(18,2) NOT NULL,\n    start_date DATE NOT NULL,\n    maturity_date DATE NOT NULL,\n    branch_id INTEGER NOT NULL,\n    CONSTRAINT pk_credit_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_credit_contracts_branch_id FOREIGN KEY (branch_id) REFERENCES branches (id)\n);\n\nCREATE TABLE credit_borrowers (\n    id INTEGER NOT NULL,\n    credit_contract_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_credit_borrowers PRIMARY KEY (id),\n    CONSTRAINT fk_credit_borrowers_credit_contract_id FOREIGN KEY (credit_contract_id) REFERENCES credit_contracts (id),\n    CONSTRAINT fk_credit_borrowers_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE credit_collaterals (\n    id INTEGER NOT NULL,\n    credit_contract_id INTEGER NOT NULL,\n    collateral_id INTEGER NOT NULL,\n    CONSTRAINT pk_credit_collaterals PRIMARY KEY (id),\n    CONSTRAINT fk_credit_collaterals_credit_contract_id FOREIGN KEY (credit_contract_id) REFERENCES credit_contracts (id),\n    CONSTRAINT fk_credit_collaterals_collateral_id FOREIGN KEY (collateral_id) REFERENCES collaterals (id)\n);\n\nCREATE TABLE transactions (\n    id INTEGER NOT NULL,\n    account_id INTEGER NOT NULL,\n    transaction_date DATE NOT NULL,\n    value_date DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    counterparty_text VARCHAR(255),\n    purpose TEXT,\n    CONSTRAINT pk_transactions PRIMARY KEY (id),\n    CONSTRAINT fk_transactions_account_id FOREIGN KEY (account_id) REFERENCES accounts (id)\n);\n",
+    "final_ddl": "CREATE TABLE branches (\n    id INTEGER NOT NULL,\n    branch_name VARCHAR(255) NOT NULL,\n    branch_code VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_branches PRIMARY KEY (id)\n);\n\nCREATE TABLE accounts (\n    id INTEGER NOT NULL,\n    iban VARCHAR(255) NOT NULL,\n    currency VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    product_type VARCHAR(255) NOT NULL,\n    opening_date DATE NOT NULL,\n    branch_id INTEGER NOT NULL,\n    CONSTRAINT pk_accounts PRIMARY KEY (id),\n    CONSTRAINT fk_accounts_branch_id FOREIGN KEY (branch_id) REFERENCES branches (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    customer_type VARCHAR(255) NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE account_holders (\n    id INTEGER NOT NULL,\n    account_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_account_holders PRIMARY KEY (id),\n    CONSTRAINT fk_account_holders_account_id FOREIGN KEY (account_id) REFERENCES accounts (id),\n    CONSTRAINT fk_account_holders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE addresses (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    address_type VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    house_number VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_addresses PRIMARY KEY (id),\n    CONSTRAINT fk_addresses_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE cards (\n    id INTEGER NOT NULL,\n    account_id INTEGER NOT NULL,\n    primary_customer_id INTEGER NOT NULL,\n    card_type VARCHAR(255) NOT NULL,\n    card_number VARCHAR(255) NOT NULL,\n    block_status VARCHAR(255) NOT NULL,\n    expiry_date DATE NOT NULL,\n    issue_date DATE NOT NULL,\n    CONSTRAINT pk_cards PRIMARY KEY (id),\n    CONSTRAINT fk_cards_account_id FOREIGN KEY (account_id) REFERENCES accounts (id),\n    CONSTRAINT fk_cards_primary_customer_id FOREIGN KEY (primary_customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE card_holders (\n    id INTEGER NOT NULL,\n    card_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_card_holders PRIMARY KEY (id),\n    CONSTRAINT fk_card_holders_card_id FOREIGN KEY (card_id) REFERENCES cards (id),\n    CONSTRAINT fk_card_holders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE collaterals (\n    id INTEGER NOT NULL,\n    collateral_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    value DECIMAL(18,2),\n    CONSTRAINT pk_collaterals PRIMARY KEY (id)\n);\n\nCREATE TABLE contact_methods (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    contact_type VARCHAR(255) NOT NULL,\n    contact_value VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_contact_methods PRIMARY KEY (id),\n    CONSTRAINT fk_contact_methods_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE credit_contracts (\n    id INTEGER NOT NULL,\n    credit_type VARCHAR(255) NOT NULL,\n    nominal_amount DECIMAL(18,2) NOT NULL,\n    interest_rate DECIMAL(18,2) NOT NULL,\n    term_start DATE NOT NULL,\n    maturity_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    branch_id INTEGER NOT NULL,\n    CONSTRAINT pk_credit_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_credit_contracts_branch_id FOREIGN KEY (branch_id) REFERENCES branches (id)\n);\n\nCREATE TABLE credit_borrowers (\n    id INTEGER NOT NULL,\n    credit_contract_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    CONSTRAINT pk_credit_borrowers PRIMARY KEY (id),\n    CONSTRAINT fk_credit_borrowers_credit_contract_id FOREIGN KEY (credit_contract_id) REFERENCES credit_contracts (id),\n    CONSTRAINT fk_credit_borrowers_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE credit_collateral_providers (\n    id INTEGER NOT NULL,\n    credit_contract_id INTEGER NOT NULL,\n    collateral_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    provider_share DECIMAL(18,2),\n    CONSTRAINT pk_credit_collateral_providers PRIMARY KEY (id),\n    CONSTRAINT fk_credit_collateral_providers_credit_contract_id FOREIGN KEY (credit_contract_id) REFERENCES credit_contracts (id),\n    CONSTRAINT fk_credit_collateral_providers_collateral_id FOREIGN KEY (collateral_id) REFERENCES collaterals (id),\n    CONSTRAINT fk_credit_collateral_providers_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE transactions (\n    id INTEGER NOT NULL,\n    account_id INTEGER NOT NULL,\n    transaction_date DATE NOT NULL,\n    value_date DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    counterparty_text VARCHAR(255),\n    purpose TEXT,\n    CONSTRAINT pk_transactions PRIMARY KEY (id),\n    CONSTRAINT fk_transactions_account_id FOREIGN KEY (account_id) REFERENCES accounts (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -1872,42 +1973,66 @@
           "erfuellt": true,
           "beschreibung": "FK-Integritätsquote: 1.00",
           "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Kritische Entität fehlt: 'Sicherungsgeber' ist im LogicalSchema nicht als eigenständige Entität modelliert. Im ERModell existiert 'Sicherungsgeber' als separate Entität mit Attributen (Rolle, SicherungsgeberAnteil). Im LogicalSchema wurde diese Entität in die Junction-Table 'credit_collateral_providers' integriert, was die Semantik verändert. Die Anforderung unterscheidet zwischen 'Sicherheit' (Fahrzeug/Immobilie) und 'Sicherungsgeber' (Person/Entität, die die Sicherheit bereitstellt). Diese Unterscheidung ist im LogicalSchema nicht klar erkennbar.",
+          "korrekturanweisung": "Prüfen Sie, ob 'credit_collateral_providers' wirklich die Entität 'Sicherungsgeber' vollständig abbildet oder ob eine separate Tabelle 'collateral_providers' erforderlich ist. Falls 'credit_collateral_providers' als Junction-Table für M:N-Beziehung zwischen Krediten und Sicherheiten mit Sicherungsgebern gedacht ist, sollte dies dokumentiert werden. Alternativ: Separate Tabelle 'collateral_providers' mit Fremdschlüsseln zu 'collaterals' und 'customers'."
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Attribute aus dem ERModell fehlen oder sind nicht korrekt übersetzt: (1) 'customers' fehlt das Attribut 'Stammdaten' (im Anforderungstext erwähnt, aber nicht konkretisiert). (2) 'cards' hat 'primary_customer_id', aber im ERModell ist dies 'PrimaryKundenID' – die Semantik ist unklar: Ist dies der Karteninhaber oder nur der Primärkunde? (3) 'credit_contracts' fehlt möglicherweise ein Attribut für den Status (vorhanden: 'status'), aber die Anforderung erwähnt 'Status' nicht explizit für Kreditverträge – dies ist jedoch im ERModell und LogicalSchema vorhanden und korrekt. (4) 'collaterals' hat kein Attribut für die Zuordnung zu Kreditverträgen direkt – dies wird über 'credit_collateral_providers' gelöst, was korrekt ist. Hauptproblem: 'cards' sollte möglicherweise ein Attribut 'is_primary' oder ähnliches haben, um zu unterscheiden, ob es sich um die Primärkarte handelt.",
+          "korrekturanweisung": "Klären Sie die Semantik von 'primary_customer_id' in der 'cards'-Tabelle. Falls dies der Karteninhaber ist, sollte die Spalte 'primary_customer_id' in 'cardholder_customer_id' umbenannt werden. Falls mehrere Karteninhaber möglich sind (wie im ERModell mit 'card_holders' angedeutet), sollte 'primary_customer_id' nur die Primärperson kennzeichnen. Erwägen Sie ein zusätzliches Attribut 'is_primary_cardholder' (BOOLEAN) in 'card_holders'."
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": false,
+          "beschreibung": "Mehrere Beziehungsprobleme identifiziert: (1) 'cards' hat sowohl 'account_id' als auch 'primary_customer_id' als Fremdschlüssel. Laut Anforderung kann eine Karte zu einem Gemeinschaftskonto gehören (1:N zu Konto) und wird für einen Kunden ausgegeben (N:1 zu Kunde). Die Modellierung ist mehrdeutig: Ist 'primary_customer_id' redundant, wenn 'card_holders' bereits die Beziehung abbildet? (2) 'credit_collateral_providers' modelliert die Beziehung zwischen Kredit, Sicherheit und Sicherungsgeber. Laut Anforderung kann eine Sicherheit mehreren Krediten dienen (M:N), und ein Sicherungsgeber kann mehrere Sicherheiten bereitstellen. Die aktuelle Struktur mit (credit_contract_id, collateral_id, customer_id) ist korrekt für M:N, aber es ist unklar, ob ein Sicherungsgeber (customer_id) immer selbst Kreditnehmer sein muss (Anforderung: 'Nicht eindeutig, ob ein Sicherungsgeber immer selbst Kreditnehmer sein muss'). Diese Ambiguität ist nicht gelöst. (3) Fehlende Beziehung: Im ERModell existiert eine M:N-Beziehung zwischen 'Kreditvertrag' und 'Sicherheit' über 'KreditSicherheit'. Im LogicalSchema wird dies durch 'credit_collateral_providers' ersetzt, die zusätzlich den Sicherungsgeber enthält. Dies ist eine Vermischung von zwei konzeptionellen Beziehungen.",
+          "korrekturanweisung": "Trennen Sie die Beziehungen: (1) Erstellen Sie eine separate Junction-Table 'credit_collaterals' für die M:N-Beziehung zwischen 'credit_contracts' und 'collaterals' (ohne Sicherungsgeber). (2) Behalten Sie 'credit_collateral_providers' für die Beziehung zwischen Sicherheit, Kredit und Sicherungsgeber. (3) Klären Sie, ob 'primary_customer_id' in 'cards' notwendig ist oder ob 'card_holders' ausreicht. Falls notwendig, dokumentieren Sie die Semantik (z.B. 'primary_customer_id' = Hauptkarteninhaber)."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "Normalisierungsprobleme identifiziert: (1) 'cards' hat redundante Fremdschlüssel: 'account_id' und 'primary_customer_id'. Wenn 'card_holders' bereits die Beziehung zwischen Karte und Kunden abbildet, ist 'primary_customer_id' redundant und verletzt die 3NF (Transitivität). (2) 'credit_collateral_providers' vermischt zwei konzeptionelle Beziehungen (Kredit-Sicherheit und Sicherungsgeber-Sicherheit) in einer Tabelle, was zu Anomalien führen kann. Beispiel: Wenn ein Sicherungsgeber mehrere Sicherheiten für denselben Kredit bereitstellt, entstehen redundante Zeilen. (3) 'addresses' und 'contact_methods' haben 'valid_from' und 'valid_until', was korrekt ist für Temporalität, aber es gibt keine Constraint, dass 'valid_until' >= 'valid_from'. Dies ist ein Datenqualitätsproblem, nicht direkt ein Normalisierungsproblem, aber relevant für Integrität.",
+          "korrekturanweisung": "Entfernen Sie 'primary_customer_id' aus 'cards' oder dokumentieren Sie explizit, dass dies ein Denormalisierungsmuster ist (für Performance). Falls entfernt, müssen Abfragen über 'card_holders' gehen. Trennen Sie 'credit_collateral_providers' in zwei Tabellen: 'credit_collaterals' (credit_contract_id, collateral_id) und 'collateral_providers' (collateral_id, customer_id, role, provider_share). Erwägen Sie CHECK-Constraints für Datumslogik (valid_until >= valid_from)."
         }
       ],
-      "origin_step": "lsd"
+      "origin_step": "cmd"
     },
-    "error": "oa_validator_failed: 1 validation error for CriticReport\nfindings.2.criterion\n  Input should be 'syntaktische_korrektheit', 'pk_vollstaendigkeit', 'fk_integritaet', 'entitaets_vollstaendigkeit', 'attribut_vollstaendigkeit', 'beziehungs_korrektheit' or 'normalisierung' [type=literal_error, input_value='fk_vollstaendigkeit', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error",
+    "error": null,
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 9,
-    "total_input_tokens": 71218,
-    "total_output_tokens": 29283,
-    "total_tokens": 100501,
+    "total_calls": 10,
+    "total_input_tokens": 100479,
+    "total_output_tokens": 34361,
+    "total_tokens": 134840,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 2025,
-        "output_tokens": 2860,
+        "output_tokens": 2518,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 3,
-        "input_tokens": 15084,
-        "output_tokens": 11005,
+        "input_tokens": 26377,
+        "output_tokens": 12827,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 3,
-        "input_tokens": 25595,
-        "output_tokens": 11748,
+        "input_tokens": 28050,
+        "output_tokens": 12291,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 2,
-        "input_tokens": 28514,
-        "output_tokens": 3670,
+        "calls": 3,
+        "input_tokens": 44027,
+        "output_tokens": 6725,
         "cost_usd": 0.0
       }
     },
@@ -1918,7 +2043,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 2025,
-        "output_tokens": 2860,
+        "output_tokens": 2518,
         "cost_usd": 0.0
       },
       {
@@ -1926,8 +2051,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5028,
-        "output_tokens": 3682,
+        "input_tokens": 4693,
+        "output_tokens": 3804,
         "cost_usd": 0.0
       },
       {
@@ -1935,8 +2060,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7346,
-        "output_tokens": 3764,
+        "input_tokens": 7492,
+        "output_tokens": 3839,
         "cost_usd": 0.0
       },
       {
@@ -1944,8 +2069,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 14122,
-        "output_tokens": 1784,
+        "input_tokens": 14008,
+        "output_tokens": 2148,
         "cost_usd": 0.0
       },
       {
@@ -1953,8 +2078,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5028,
-        "output_tokens": 3682,
+        "input_tokens": 10592,
+        "output_tokens": 4629,
         "cost_usd": 0.0
       },
       {
@@ -1962,8 +2087,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 9091,
-        "output_tokens": 4034,
+        "input_tokens": 10369,
+        "output_tokens": 4459,
         "cost_usd": 0.0
       },
       {
@@ -1971,8 +2096,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 14392,
-        "output_tokens": 1886,
+        "input_tokens": 15372,
+        "output_tokens": 2247,
         "cost_usd": 0.0
       },
       {
@@ -1980,8 +2105,8 @@
         "iteration": 2,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5028,
-        "output_tokens": 3641,
+        "input_tokens": 11092,
+        "output_tokens": 4394,
         "cost_usd": 0.0
       },
       {
@@ -1989,8 +2114,17 @@
         "iteration": 2,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 9158,
-        "output_tokens": 3950,
+        "input_tokens": 10189,
+        "output_tokens": 3993,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 14647,
+        "output_tokens": 2330,
         "cost_usd": 0.0
       }
     ]

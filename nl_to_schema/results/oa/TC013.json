@@ -280,32 +280,31 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Die E-Mail-Adresse ist optional (auf Wunsch), aber es ist unklar, ob NULL-Werte erlaubt sind oder ob ein Standardwert verwendet werden soll",
+          "beschreibung": "Die E-Mail-Adresse ist optional ('auf Wunsch'), aber es ist unklar, ob NULL-Werte in der Datenbank erlaubt sein sollen oder wie mit fehlenden E-Mail-Adressen umzugehen ist",
           "betroffene_elemente": [
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Bei der Dauer ist unklar, ob dies ein numerischer Wert in Minuten ist oder ob auch andere Einheiten möglich sind",
+          "beschreibung": "Der Status eines Termins wird als 'kurzer Status' beschrieben mit Beispielen (geplant, erledigt, abgesagt), aber es ist unklar, ob dies eine feste Liste ist oder ob weitere Status-Werte möglich sind",
           "betroffene_elemente": [
             "Termin"
           ]
         },
         {
-          "beschreibung": "Der Status wird als Beispiel mit 'geplant', 'erledigt' oder 'abgesagt' genannt, aber es ist unklar, ob dies eine abgeschlossene Liste ist oder weitere Status möglich sind",
+          "beschreibung": "Es ist nicht spezifiziert, ob die Dauer eines Termins in Minuten als Ganzzahl oder mit Dezimalstellen gespeichert werden soll",
           "betroffene_elemente": [
             "Termin"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob eine Kundin/ein Kunde mehrere Termine gleichzeitig haben kann oder ob es Beschränkungen gibt",
+          "beschreibung": "Unklar ist, ob ein Kunde eindeutig identifiziert werden kann (z.B. durch eine Kundennummer) oder ob Vorname und Nachname als Primärschlüssel ausreichen",
           "betroffene_elemente": [
-            "Termin",
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob eine mitarbeitende Person mehrere Rollen haben kann oder ob die Rolle eindeutig ist",
+          "beschreibung": "Es ist nicht definiert, ob eine Mitarbeitende Person eindeutig durch eine Personalnummer oder ähnliches identifiziert wird",
           "betroffene_elemente": [
             "Mitarbeitende"
           ]
@@ -447,7 +446,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "dauerMinuten",
+              "name": "dauer",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -506,25 +505,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeitende), services (Leistung), appointments (Termin). Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeitende), services (Leistung) und appointments (Termin). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: customers (firstname, lastname, phone, email), employees (firstname, lastname, role, hire_date), services (name, price), appointments (customer_id, employee_id, service_id, appointment_date, appointment_time, duration_minutes, status). Attributnamen folgen der Konvention (snake_case, englisch). Optionale Felder (email) sind korrekt als nullable: true definiert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: customers hat firstname, lastname, phone, email; employees hat firstname, lastname, role, hire_date; services hat name, price; appointments hat appointment_date, appointment_time, duration_minutes, status sowie die erforderlichen Fremdschlüssel. Die Attributnamen folgen der Konvention (snake_case, englisch). Die Nullable-Definitionen sind korrekt: email ist optional (nullable: true), alle anderen Pflichtfelder sind NOT NULL.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle drei N:1-Beziehungen aus dem ERModell sind korrekt implementiert: Termin→Kunde (customer_id), Termin→Mitarbeitende (employee_id), Termin→Leistung (service_id). Fremdschlüssel sind als NOT NULL definiert, was die Kardinalität N:1 korrekt abbildet.",
+          "beschreibung": "Alle drei N:1-Beziehungen aus dem ERModell sind korrekt implementiert: Termin→Kunde (customer_id), Termin→Mitarbeitende (employee_id), Termin→Leistung (service_id). Die Kardinalitäten entsprechen den Anforderungen: jeder Termin gehört zu genau einer Kundin/einem Kunden, genau einer mitarbeitenden Person und genau einer Leistung.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Jede Tabelle hat einen eindeutigen Primärschlüssel. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine transitiven Abhängigkeiten vorhanden.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, und es gibt keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist optimal für die gegebenen Anforderungen.",
           "korrekturanweisung": ""
         }
       ],
@@ -559,25 +558,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeitende), services (Leistung), appointments (Termin). Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport und ERModell sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeitende), services (Leistung) und appointments (Termin). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: customers (firstname, lastname, phone, email), employees (firstname, lastname, role, hire_date), services (name, price), appointments (customer_id, employee_id, service_id, appointment_date, appointment_time, duration_minutes, status). Attributnamen folgen der Konvention (snake_case, englisch). Optionale Felder (email) sind korrekt als nullable: true definiert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: customers hat firstname, lastname, phone, email; employees hat firstname, lastname, role, hire_date; services hat name, price; appointments hat appointment_date, appointment_time, duration_minutes, status sowie die erforderlichen Fremdschlüssel. Die Attributnamen folgen der Konvention (snake_case, englisch). Die Nullable-Definitionen sind korrekt: email ist optional (nullable: true), alle anderen Pflichtfelder sind NOT NULL.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle drei N:1-Beziehungen aus dem ERModell sind korrekt implementiert: Termin→Kunde (customer_id), Termin→Mitarbeitende (employee_id), Termin→Leistung (service_id). Fremdschlüssel sind als NOT NULL definiert, was die Kardinalität N:1 korrekt abbildet.",
+          "beschreibung": "Alle drei N:1-Beziehungen aus dem ERModell sind korrekt implementiert: Termin→Kunde (customer_id), Termin→Mitarbeitende (employee_id), Termin→Leistung (service_id). Die Kardinalitäten entsprechen den Anforderungen: jeder Termin gehört zu genau einer Kundin/einem Kunden, genau einer mitarbeitenden Person und genau einer Leistung.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Jede Tabelle hat einen eindeutigen Primärschlüssel. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine transitiven Abhängigkeiten vorhanden.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Es gibt keine Redundanzen, keine transitiven Abhängigkeiten und keine Anomalien. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, und es gibt keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist optimal für die gegebenen Anforderungen.",
           "korrekturanweisung": ""
         }
       ],
@@ -588,33 +587,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 13371,
-    "total_output_tokens": 3996,
-    "total_tokens": 17367,
+    "total_input_tokens": 13453,
+    "total_output_tokens": 4336,
+    "total_tokens": 17789,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1515,
-        "output_tokens": 977,
+        "output_tokens": 1022,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2543,
-        "output_tokens": 1095,
+        "input_tokens": 2586,
+        "output_tokens": 1297,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3604,
+        "input_tokens": 3602,
         "output_tokens": 1068,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5709,
-        "output_tokens": 856,
+        "input_tokens": 5750,
+        "output_tokens": 949,
         "cost_usd": 0.0
       }
     },
@@ -625,7 +624,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1515,
-        "output_tokens": 977,
+        "output_tokens": 1022,
         "cost_usd": 0.0
       },
       {
@@ -633,8 +632,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2543,
-        "output_tokens": 1095,
+        "input_tokens": 2586,
+        "output_tokens": 1297,
         "cost_usd": 0.0
       },
       {
@@ -642,7 +641,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3604,
+        "input_tokens": 3602,
         "output_tokens": 1068,
         "cost_usd": 0.0
       },
@@ -651,8 +650,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5709,
-        "output_tokens": 856,
+        "input_tokens": 5750,
+        "output_tokens": 949,
         "cost_usd": 0.0
       }
     ]

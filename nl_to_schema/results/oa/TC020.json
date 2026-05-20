@@ -109,13 +109,13 @@
               "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             }
           ],
           "foreign_keys": []
@@ -222,7 +222,7 @@
             "Telefonnummer",
             "E-Mail-Adresse"
           ],
-          "beschreibung": "Repräsentiert einen Kunden des Fotoateliers mit seinen Kontaktdaten."
+          "beschreibung": "Repräsentiert einen Kunden des Fotoateliers mit persönlichen Kontaktdaten."
         },
         {
           "name": "Termin",
@@ -231,7 +231,7 @@
             "Uhrzeit",
             "Status"
           ],
-          "beschreibung": "Repräsentiert einen vereinbarten Termin mit Zeitangabe und Status (geplant, abgeschlossen, abgesagt)."
+          "beschreibung": "Repräsentiert einen vereinbarten Termin mit Zeitangabe und aktuellem Status (geplant, abgeschlossen, abgesagt)."
         },
         {
           "name": "Fotoauftrag",
@@ -274,15 +274,15 @@
           ]
         },
         {
-          "beschreibung": "Es ist nicht explizit angegeben, ob die Entität 'Kunde' eine eindeutige Identifikation (z.B. Kundennummer) benötigt oder ob Vorname und Nachname als Primärschlüssel ausreichen.",
+          "beschreibung": "Es ist nicht explizit angegeben, ob die Entität 'Kunde' eine eindeutige Identifikation (z.B. Kundennummer) benötigt oder ob diese implizit vorhanden sein soll.",
           "betroffene_elemente": [
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob ein Termin eine eindeutige Identifikation (z.B. Termin-ID) benötigt oder wie Duplikate vermieden werden.",
+          "beschreibung": "Unklar ist, ob ein Fotoauftrag auch ohne einen zugehörigen Termin existieren kann oder ob die Beziehung zu Termin obligatorisch ist.",
           "betroffene_elemente": [
-            "Termin"
+            "Fotoauftrag"
           ]
         }
       ]
@@ -314,13 +314,13 @@
               "name": "Telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "EMail",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             }
           ]
         },
@@ -440,25 +440,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Kunde, Termin, Fotoauftrag) sind im LogicalSchema als Tabellen (customers, appointments, photo_jobs) vorhanden und vollständig abgebildet.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind vorhanden: Kunde (customers), Termin (appointments), Fotoauftrag (photo_jobs). Keine Entität fehlt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext sind vorhanden: customers (firstname, lastname, phone, email), appointments (appointment_date, appointment_time, status), photo_jobs (shooting_type, description, agreed_price, completion_date). Optionale Attribute (description, completion_date) sind korrekt als nullable modelliert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: customers hat firstname, lastname, phone, email; appointments hat appointment_date, appointment_time, status; photo_jobs hat shooting_type, description, agreed_price, completion_date. Alle Pflichtfelder sind als nullable=false markiert, optionale Felder als nullable=true.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) Kunde-Termin (1:N): customer_id in appointments ist NOT NULL und referenziert customers.id. (2) Termin-Fotoauftrag (1:0..1): appointment_id in photo_jobs ist nullable und referenziert appointments.id, was die optionale Beziehung korrekt abbildet.",
+          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) Kunde:Termin = 1:N via customer_id (NOT NULL) in appointments; (2) Termin:Fotoauftrag = 1:0..1 via appointment_id (nullable=true) in photo_jobs. Die Kardinalitäten entsprechen dem ER-Modell und dem Anforderungstext.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln. Keine Transitivabhängigkeiten vorhanden.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Alle Attribute sind atomar, Fremdschlüssel sind korrekt platziert. Keine unnötigen Denormalisierungen vorhanden.",
           "korrekturanweisung": ""
         }
       ],
@@ -466,9 +466,9 @@
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 1,
+    "iteration": 2,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE photo_jobs (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER,\n    shooting_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    agreed_price DECIMAL(18,2) NOT NULL,\n    completion_date DATE,\n    CONSTRAINT pk_photo_jobs PRIMARY KEY (id),\n    CONSTRAINT fk_photo_jobs_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id)\n);\n",
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    appointment_time VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE photo_jobs (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER,\n    shooting_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    agreed_price DECIMAL(18,2) NOT NULL,\n    completion_date DATE,\n    CONSTRAINT pk_photo_jobs PRIMARY KEY (id),\n    CONSTRAINT fk_photo_jobs_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -493,25 +493,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Kunde, Termin, Fotoauftrag) sind im LogicalSchema als Tabellen (customers, appointments, photo_jobs) vorhanden und vollständig abgebildet.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind vorhanden: Kunde (customers), Termin (appointments), Fotoauftrag (photo_jobs). Keine Entität fehlt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext sind vorhanden: customers (firstname, lastname, phone, email), appointments (appointment_date, appointment_time, status), photo_jobs (shooting_type, description, agreed_price, completion_date). Optionale Attribute (description, completion_date) sind korrekt als nullable modelliert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: customers hat firstname, lastname, phone, email; appointments hat appointment_date, appointment_time, status; photo_jobs hat shooting_type, description, agreed_price, completion_date. Alle Pflichtfelder sind als nullable=false markiert, optionale Felder als nullable=true.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) Kunde-Termin (1:N): customer_id in appointments ist NOT NULL und referenziert customers.id. (2) Termin-Fotoauftrag (1:0..1): appointment_id in photo_jobs ist nullable und referenziert appointments.id, was die optionale Beziehung korrekt abbildet.",
+          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) Kunde:Termin = 1:N via customer_id (NOT NULL) in appointments; (2) Termin:Fotoauftrag = 1:0..1 via appointment_id (nullable=true) in photo_jobs. Die Kardinalitäten entsprechen dem ER-Modell und dem Anforderungstext.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln. Keine Transitivabhängigkeiten vorhanden.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Alle Attribute sind atomar, Fremdschlüssel sind korrekt platziert. Keine unnötigen Denormalisierungen vorhanden.",
           "korrekturanweisung": ""
         }
       ],
@@ -521,34 +521,34 @@
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 4,
-    "total_input_tokens": 12272,
-    "total_output_tokens": 3388,
-    "total_tokens": 15660,
+    "total_calls": 7,
+    "total_input_tokens": 25975,
+    "total_output_tokens": 6450,
+    "total_tokens": 32425,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1484,
-        "output_tokens": 912,
+        "output_tokens": 913,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 1,
-        "input_tokens": 2433,
-        "output_tokens": 859,
+        "calls": 2,
+        "input_tokens": 6567,
+        "output_tokens": 1874,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 1,
-        "input_tokens": 3289,
-        "output_tokens": 819,
+        "calls": 2,
+        "input_tokens": 7790,
+        "output_tokens": 1638,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 1,
-        "input_tokens": 5066,
-        "output_tokens": 798,
+        "calls": 2,
+        "input_tokens": 10134,
+        "output_tokens": 2025,
         "cost_usd": 0.0
       }
     },
@@ -559,7 +559,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1484,
-        "output_tokens": 912,
+        "output_tokens": 913,
         "cost_usd": 0.0
       },
       {
@@ -567,7 +567,7 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2433,
+        "input_tokens": 2434,
         "output_tokens": 859,
         "cost_usd": 0.0
       },
@@ -585,8 +585,35 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5066,
-        "output_tokens": 798,
+        "input_tokens": 5067,
+        "output_tokens": 1222,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4133,
+        "output_tokens": 1015,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 4501,
+        "output_tokens": 819,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 5067,
+        "output_tokens": 803,
         "cost_usd": 0.0
       }
     ]

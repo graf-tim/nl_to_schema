@@ -222,7 +222,7 @@
               "name": "description",
               "type": "TEXT",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "price",
@@ -339,7 +339,7 @@
           "von": "Behandlungsart",
           "zu": "Termin",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Behandlungsart kann mehrfach gebucht werden, jeder Termin hat genau eine Behandlungsart"
+          "beschreibung": "Eine Behandlungsart kann in mehreren Terminen gebucht werden, jeder Termin hat genau eine Behandlungsart"
         }
       ],
       "unklarheiten": [
@@ -363,9 +363,9 @@
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Uhrzeit des Termins gespeichert werden soll oder nur das Datum",
+          "beschreibung": "Unklar ist, ob das Attribut 'Pflegehinweise' bei jedem Hund erforderlich ist oder optional",
           "betroffene_elemente": [
-            "Termin"
+            "Hund"
           ]
         }
       ]
@@ -467,7 +467,7 @@
               "name": "Beschreibung",
               "datentyp": "TEXT",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             },
             {
               "name": "Preis",
@@ -558,13 +558,13 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem Anforderungstext und RequirementsReport sind im LogicalSchema vorhanden: persons, dogs, treatments, appointments. Keine Entität fehlt.",
+          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport (Person, Hund, Behandlungsart, Termin) sind als Tabellen implementiert. Keine Entitäten fehlen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt abgebildet: Person (firstname, lastname, phone, email), Hund (name, birthdate, breed, care_notes), Behandlungsart (name, description, price), Termin (appointment_date, is_completed, dog_id, treatment_id). Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext und ERModell sind vorhanden: persons (firstname, lastname, phone, email), dogs (name, birthdate, breed, care_notes), treatments (name, description, price), appointments (appointment_date, is_completed). Attributnamen folgen den Konventionen (snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
@@ -576,7 +576,7 @@
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, und es gibt keine transitiven Abhängigkeiten.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, und es gibt keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen.",
           "korrekturanweisung": ""
         }
       ],
@@ -586,7 +586,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE dogs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    breed VARCHAR(255) NOT NULL,\n    care_notes TEXT,\n    person_id INTEGER NOT NULL,\n    CONSTRAINT pk_dogs PRIMARY KEY (id),\n    CONSTRAINT fk_dogs_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE treatments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_treatments PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    dog_id INTEGER NOT NULL,\n    treatment_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_dog_id FOREIGN KEY (dog_id) REFERENCES dogs (id),\n    CONSTRAINT fk_appointments_treatment_id FOREIGN KEY (treatment_id) REFERENCES treatments (id)\n);\n",
+    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE dogs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    breed VARCHAR(255) NOT NULL,\n    care_notes TEXT,\n    person_id INTEGER NOT NULL,\n    CONSTRAINT pk_dogs PRIMARY KEY (id),\n    CONSTRAINT fk_dogs_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE treatments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_treatments PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    appointment_date DATE NOT NULL,\n    is_completed BOOLEAN NOT NULL,\n    dog_id INTEGER NOT NULL,\n    treatment_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_dog_id FOREIGN KEY (dog_id) REFERENCES dogs (id),\n    CONSTRAINT fk_appointments_treatment_id FOREIGN KEY (treatment_id) REFERENCES treatments (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -611,13 +611,13 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem Anforderungstext und RequirementsReport sind im LogicalSchema vorhanden: persons, dogs, treatments, appointments. Keine Entität fehlt.",
+          "beschreibung": "Alle vier Entitäten aus dem RequirementsReport (Person, Hund, Behandlungsart, Termin) sind als Tabellen implementiert. Keine Entitäten fehlen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt abgebildet: Person (firstname, lastname, phone, email), Hund (name, birthdate, breed, care_notes), Behandlungsart (name, description, price), Termin (appointment_date, is_completed, dog_id, treatment_id). Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext und ERModell sind vorhanden: persons (firstname, lastname, phone, email), dogs (name, birthdate, breed, care_notes), treatments (name, description, price), appointments (appointment_date, is_completed). Attributnamen folgen den Konventionen (snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
@@ -629,7 +629,7 @@
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, und es gibt keine transitiven Abhängigkeiten.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, und es gibt keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen.",
           "korrekturanweisung": ""
         }
       ],
@@ -640,21 +640,21 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12887,
-    "total_output_tokens": 3691,
-    "total_tokens": 16578,
+    "total_input_tokens": 12901,
+    "total_output_tokens": 3739,
+    "total_tokens": 16640,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1485,
-        "output_tokens": 855,
+        "output_tokens": 862,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2383,
-        "output_tokens": 1039,
+        "input_tokens": 2390,
+        "output_tokens": 1072,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
@@ -665,8 +665,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5480,
-        "output_tokens": 763,
+        "input_tokens": 5487,
+        "output_tokens": 771,
         "cost_usd": 0.0
       }
     },
@@ -677,7 +677,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1485,
-        "output_tokens": 855,
+        "output_tokens": 862,
         "cost_usd": 0.0
       },
       {
@@ -685,8 +685,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2383,
-        "output_tokens": 1039,
+        "input_tokens": 2390,
+        "output_tokens": 1072,
         "cost_usd": 0.0
       },
       {
@@ -703,8 +703,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5480,
-        "output_tokens": 763,
+        "input_tokens": 5487,
+        "output_tokens": 771,
         "cost_usd": 0.0
       }
     ]

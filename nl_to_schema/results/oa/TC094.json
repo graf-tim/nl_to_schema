@@ -2,38 +2,38 @@
   "testfall_id": "TC094",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.3567883211678832,
-  "score_gesamt": 0.61407299270073,
+  "score_semantisch": 0.2501439645625692,
+  "score_gesamt": 0.5500863787375415,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 17,
-    "pk_tabellen_mit_pk": 17,
-    "fk_referenzen_gesamt": 19,
+    "pk_tabellen_gesamt": 15,
+    "pk_tabellen_mit_pk": 15,
+    "fk_referenzen_gesamt": 16,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.4117647058823529,
-      "recall": 0.5384615384615384,
-      "f1": 0.4666666666666667,
-      "matched": 7,
-      "nur_in_referenz": 6,
+      "precision": 0.3333333333333333,
+      "recall": 0.38461538461538464,
+      "f1": 0.3571428571428571,
+      "matched": 5,
+      "nur_in_referenz": 8,
       "nur_in_generiert": 10
     },
     "attribut": {
-      "precision": 0.26666666666666666,
-      "recall": 0.3225806451612903,
-      "f1": 0.291970802919708,
-      "matched": 20,
-      "nur_in_referenz": 42,
-      "nur_in_generiert": 55
+      "precision": 0.19402985074626866,
+      "recall": 0.20967741935483872,
+      "f1": 0.2015503875968992,
+      "matched": 13,
+      "nur_in_referenz": 49,
+      "nur_in_generiert": 54
     },
     "beziehung": {
-      "recall": 0.26666666666666666,
-      "matched": 4,
-      "nur_in_referenz": 11,
+      "recall": 0.13333333333333333,
+      "matched": 2,
+      "nur_in_referenz": 13,
       "nur_in_generiert": 0
     }
   },
@@ -59,6 +59,11 @@
       "fehlerklasse": null
     },
     {
+      "element": "persons",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
       "element": "archival_unit_usage_requests",
       "typ": "tabelle",
       "fehlerklasse": null
@@ -66,6 +71,16 @@
     {
       "element": "request_decisions",
       "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "unit_relations",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "loans.archival_unit_id",
+      "typ": "attribut",
       "fehlerklasse": null
     },
     {
@@ -89,12 +104,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "archival_unit_keywords.id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "persons.email",
+      "element": "loans.return_condition",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -115,11 +125,6 @@
     },
     {
       "element": "archival_units.end_date",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "archival_units.extent_value",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -239,6 +244,26 @@
       "fehlerklasse": null
     },
     {
+      "element": "persons.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons.firstname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons.lastname",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "persons.email",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "archival_unit_usage_requests.id",
       "typ": "attribut",
       "fehlerklasse": null
@@ -279,6 +304,26 @@
       "fehlerklasse": null
     },
     {
+      "element": "unit_relations.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "unit_relations.source_unit_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "unit_relations.target_unit_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "unit_relations.relation_type",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "accessions → organizations",
       "typ": "beziehung",
       "fehlerklasse": null
@@ -314,12 +359,22 @@
       "fehlerklasse": null
     },
     {
+      "element": "loans → archival_units",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
       "element": "loans → organizations",
       "typ": "beziehung",
       "fehlerklasse": null
     },
     {
       "element": "request_decisions → usage_requests",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "unit_relations → archival_units",
       "typ": "beziehung",
       "fehlerklasse": null
     },
@@ -373,13 +428,7 @@
               "nullable": false
             },
             {
-              "name": "providing_institution_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "file_number",
+              "name": "reference_number",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -393,6 +442,12 @@
             {
               "name": "receipt_date",
               "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "providing_institution_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             }
@@ -415,31 +470,19 @@
               "nullable": false
             },
             {
-              "name": "submission_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "title",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "date_from",
-              "type": "DATE",
+              "name": "date_range",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "date_to",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "extent",
+              "name": "extent_value",
               "type": "DECIMAL",
               "primary_key": false,
               "nullable": true
@@ -455,12 +498,88 @@
               "type": "TEXT",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "submission_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
             {
               "from_column": "submission_id",
               "references_table": "submissions",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "relationship_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "type_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "archival_unit_relationships",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "source_unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "target_unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "relationship_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "source_unit_id",
+              "references_table": "archival_units",
+              "references_column": "id"
+            },
+            {
+              "from_column": "target_unit_id",
+              "references_table": "archival_units",
+              "references_column": "id"
+            },
+            {
+              "from_column": "relationship_type_id",
+              "references_table": "relationship_types",
               "references_column": "id"
             }
           ]
@@ -475,13 +594,7 @@
               "nullable": false
             },
             {
-              "name": "restriction_start",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "restriction_end",
+              "name": "expiration_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -493,22 +606,16 @@
               "nullable": false
             },
             {
-              "name": "origin_based",
+              "name": "is_origin_based",
               "type": "BOOLEAN",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
-              "name": "content_based",
+              "name": "is_content_based",
               "type": "BOOLEAN",
               "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "personal_data_related",
-              "type": "BOOLEAN",
-              "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": []
@@ -517,26 +624,32 @@
           "name": "archival_unit_restrictions",
           "columns": [
             {
-              "name": "archival_unit_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "archival_unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
               "nullable": false
             },
             {
               "name": "access_restriction_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
             },
             {
-              "name": "valid_from",
+              "name": "application_date",
               "type": "DATE",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
-              "name": "valid_until",
-              "type": "DATE",
+              "name": "reason_for_application",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             }
@@ -564,38 +677,32 @@
               "nullable": false
             },
             {
-              "name": "archival_unit_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "page_count",
+              "name": "image_count",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "internal_access",
+              "name": "is_internally_visible",
               "type": "BOOLEAN",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "reading_room_access",
+              "name": "is_reading_room_available",
               "type": "BOOLEAN",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "online_access",
+              "name": "is_online_available",
               "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "archival_unit_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             }
@@ -609,31 +716,7 @@
           ]
         },
         {
-          "name": "persons",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "firstname",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "lastname",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "institutions",
+          "name": "applicants",
           "columns": [
             {
               "name": "id",
@@ -651,45 +734,16 @@
               "name": "type",
               "type": "VARCHAR",
               "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "institution",
+              "type": "VARCHAR",
+              "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": []
-        },
-        {
-          "name": "requesters",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "person_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "institution_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "person_id",
-              "references_table": "persons",
-              "references_column": "id"
-            },
-            {
-              "from_column": "institution_id",
-              "references_table": "institutions",
-              "references_column": "id"
-            }
-          ]
         },
         {
           "name": "access_requests",
@@ -698,12 +752,6 @@
               "name": "id",
               "type": "INTEGER",
               "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "requester_id",
-              "type": "INTEGER",
-              "primary_key": false,
               "nullable": false
             },
             {
@@ -717,53 +765,30 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "decision",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "applicant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "requester_id",
-              "references_table": "requesters",
+              "from_column": "applicant_id",
+              "references_table": "applicants",
               "references_column": "id"
             }
           ]
         },
         {
           "name": "access_request_units",
-          "columns": [
-            {
-              "name": "access_request_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "archival_unit_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "requested_on",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "access_request_id",
-              "references_table": "access_requests",
-              "references_column": "id"
-            },
-            {
-              "from_column": "archival_unit_id",
-              "references_table": "archival_units",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "decisions",
           "columns": [
             {
               "name": "id",
@@ -778,25 +803,19 @@
               "nullable": false
             },
             {
-              "name": "decision_date",
-              "type": "DATE",
+              "name": "archival_unit_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "decision_type",
+              "name": "approval_status",
               "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "conditions",
-              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "justification",
+              "name": "conditions",
               "type": "TEXT",
               "primary_key": false,
               "nullable": true
@@ -806,30 +825,6 @@
             {
               "from_column": "access_request_id",
               "references_table": "access_requests",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "decision_units",
-          "columns": [
-            {
-              "name": "decision_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "archival_unit_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "decision_id",
-              "references_table": "decisions",
               "references_column": "id"
             },
             {
@@ -849,19 +844,7 @@
               "nullable": false
             },
             {
-              "name": "archival_unit_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "requester_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "loan_date",
+              "name": "checkout_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -879,6 +862,48 @@
               "nullable": false
             },
             {
+              "name": "applicant_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "applicant_id",
+              "references_table": "applicants",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "loan_units",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "loan_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "archival_unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "condition_on_checkout",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
               "name": "condition_on_return",
               "type": "TEXT",
               "primary_key": false,
@@ -887,13 +912,13 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "archival_unit_id",
-              "references_table": "archival_units",
+              "from_column": "loan_id",
+              "references_table": "loans",
               "references_column": "id"
             },
             {
-              "from_column": "requester_id",
-              "references_table": "requesters",
+              "from_column": "archival_unit_id",
+              "references_table": "archival_units",
               "references_column": "id"
             }
           ]
@@ -920,22 +945,22 @@
           "name": "archival_unit_keywords",
           "columns": [
             {
-              "name": "archival_unit_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "archival_unit_id",
+              "type": "INTEGER",
+              "primary_key": false,
               "nullable": false
             },
             {
               "name": "keyword_id",
               "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "assigned_on",
-              "type": "DATE",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -947,53 +972,6 @@
             {
               "from_column": "keyword_id",
               "references_table": "keywords",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "unit_relationships",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "source_unit_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "target_unit_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "relationship_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "description",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "source_unit_id",
-              "references_table": "archival_units",
-              "references_column": "id"
-            },
-            {
-              "from_column": "target_unit_id",
-              "references_table": "archival_units",
               "references_column": "id"
             }
           ]
@@ -1039,13 +1017,13 @@
             "Herkunftsbasiert",
             "Inhaltsbasiert"
           ],
-          "beschreibung": "Eine Schutzfrist, die auf eine Verzeichnungseinheit angewendet wird, mit Begründung und Nachvollziehbarkeit."
+          "beschreibung": "Eine Schutzfrist, die auf eine Verzeichnungseinheit angewendet wird, basierend auf Herkunft oder Inhalt (insbesondere personenbezogenes Material)."
         },
         {
           "name": "Digitalisat",
           "attribute": [
+            "Zugangsart",
             "Anzahl_Bilder",
-            "Zugriffsbeschraenkung",
             "Intern_einsehbar",
             "Lesesaal_verfuegbar",
             "Online_verfuegbar"
@@ -1056,9 +1034,8 @@
           "name": "Benutzungsantrag",
           "attribute": [
             "Antragsdatum",
-            "Antragsteller_Person",
-            "Antragsteller_Institution",
-            "Status"
+            "Status",
+            "Entscheidung"
           ],
           "beschreibung": "Ein Antrag von Wissenschaftlern, Behörden oder Privatpersonen zur Benutzung von Unterlagen."
         },
@@ -1066,30 +1043,21 @@
           "name": "Antragsteller",
           "attribute": [
             "Name",
-            "Typ"
+            "Typ",
+            "Institution"
           ],
           "beschreibung": "Eine Person oder Institution, die einen Benutzungsantrag stellt."
-        },
-        {
-          "name": "Entscheidung",
-          "attribute": [
-            "Entscheidungsdatum",
-            "Entscheidungstyp",
-            "Auflagen",
-            "Begruendung"
-          ],
-          "beschreibung": "Eine Genehmigung, Ablehnung oder Auflage zu einem Benutzungsantrag."
         },
         {
           "name": "Ausleihe",
           "attribute": [
             "Ausleihdatum",
             "Rueckgabedatum",
-            "Empfaenger",
             "Zweck",
-            "Zustand_bei_Rueckgabe"
+            "Zustand_bei_Rueckgabe",
+            "Empfaenger"
           ],
-          "beschreibung": "Die Ausleihe von Unterlagen, z.B. für Restaurierung oder Ausstellungen, mit Dokumentation von Empfänger, Zeitraum und Zustand."
+          "beschreibung": "Die Ausleihe von Unterlagen, z.B. für Restaurierung oder Ausstellungen, mit Dokumentation des Zustands."
         },
         {
           "name": "Schlagwort",
@@ -1099,7 +1067,7 @@
           "beschreibung": "Ein Schlagwort zur inhaltlichen Erschließung von Verzeichnungseinheiten."
         },
         {
-          "name": "Beziehung_zwischen_Einheiten",
+          "name": "Einheitsbeziehung",
           "attribute": [
             "Beziehungstyp",
             "Beschreibung"
@@ -1112,7 +1080,7 @@
           "von": "Abgabe",
           "zu": "Abgebende_Stelle",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Abgabe stammt von genau einer abgebenden Stelle; eine Stelle kann mehrere Abgaben machen."
+          "beschreibung": "Jede Abgabe stammt von genau einer abgebenden Stelle; eine Stelle kann mehrere Abgaben machen."
         },
         {
           "von": "Abgabe",
@@ -1136,25 +1104,19 @@
           "von": "Benutzungsantrag",
           "zu": "Antragsteller",
           "kardinalitaet": "N:1",
-          "beschreibung": "Ein Benutzungsantrag wird von einer Person oder Institution gestellt; ein Antragsteller kann mehrere Anträge stellen."
+          "beschreibung": "Ein Benutzungsantrag wird von genau einem Antragsteller gestellt; ein Antragsteller kann mehrere Anträge stellen."
         },
         {
           "von": "Benutzungsantrag",
           "zu": "Verzeichnungseinheit",
           "kardinalitaet": "N:M",
-          "beschreibung": "Ein Antrag kann sich auf mehrere Einheiten beziehen; eine Einheit kann Gegenstand mehrerer Anträge sein."
+          "beschreibung": "Ein Benutzungsantrag kann sich auf mehrere Verzeichnungseinheiten beziehen; eine Einheit kann Gegenstand mehrerer Anträge sein."
         },
         {
-          "von": "Benutzungsantrag",
-          "zu": "Entscheidung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Benutzungsantrag kann mehrere Entscheidungen (Auflagen, Genehmigungen, Ablehnungen) im Verlauf haben."
-        },
-        {
-          "von": "Verzeichnungseinheit",
-          "zu": "Ausleihe",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Eine Verzeichnungseinheit kann mehrfach ausgeliehen werden."
+          "von": "Ausleihe",
+          "zu": "Verzeichnungseinheit",
+          "kardinalitaet": "N:M",
+          "beschreibung": "Eine Ausleihe kann mehrere Verzeichnungseinheiten betreffen; eine Einheit kann mehrfach ausgeliehen werden."
         },
         {
           "von": "Ausleihe",
@@ -1170,48 +1132,48 @@
         },
         {
           "von": "Verzeichnungseinheit",
-          "zu": "Beziehung_zwischen_Einheiten",
+          "zu": "Einheitsbeziehung",
           "kardinalitaet": "N:M",
-          "beschreibung": "Verzeichnungseinheiten können in Beziehung zueinander stehen (z.B. Abschrift, Entwurf, spätere Fassung)."
+          "beschreibung": "Verzeichnungseinheiten können untereinander in Beziehung stehen (z.B. Abschrift, Entwurf, spätere Fassung)."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Umfang-Einheit ist nicht einheitlich: Unklar, ob der Umfang immer in laufenden Metern oder teilweise auch in Stückzahl angegeben wird und wie dies in der Datenbank abgebildet werden soll.",
+          "beschreibung": "Umfang-Einheit ist nicht einheitlich: Unklar, ob der Umfang immer in laufenden Metern oder teilweise auch in Stückzahl angegeben wird. Wie soll dies in der Datenstruktur abgebildet werden?",
           "betroffene_elemente": [
             "Verzeichnungseinheit"
           ]
         },
         {
-          "beschreibung": "Entscheidungsdokumentation: Unklar, ob jede einzelne Entscheidung (Auflagen, Genehmigungen, Ablehnungen) im Verlauf eines Antrags festgehalten werden muss oder nur das Endergebnis.",
+          "beschreibung": "Dokumentation von Entscheidungen bei Benutzungsanträgen: Unklar, ob jede einzelne Entscheidung (Auflagen, Genehmigungen, Ablehnungen) im Verlauf festgehalten werden muss oder nur das Endergebnis.",
           "betroffene_elemente": [
-            "Benutzungsantrag",
-            "Entscheidung"
+            "Benutzungsantrag"
           ]
         },
         {
-          "beschreibung": "Antragsteller-Struktur: Unklar, ob Antragsteller immer eine Institution oder eine Person sein kann oder ob beide Informationen gleichzeitig erfasst werden müssen (z.B. Person von Institution).",
+          "beschreibung": "Antragsteller-Struktur: Manchmal wird eine Institution genannt, manchmal nur eine einzelne Person. Unklar, wie die Beziehung zwischen Person und Institution modelliert werden soll.",
           "betroffene_elemente": [
-            "Benutzungsantrag",
-            "Antragsteller"
+            "Antragsteller",
+            "Benutzungsantrag"
           ]
         },
         {
-          "beschreibung": "Digitalisat-Struktur: Unklar, ob einzelne Dateien und mehrseitige Digitalisate unterschiedlich modelliert werden müssen oder ob sie in einer Entität zusammengefasst werden können.",
+          "beschreibung": "Digitalisat-Struktur: Unklar, ob einzelne Dateien und mehrseitige Digitalisate unterschiedlich modelliert werden müssen oder in einer Entität zusammengefasst werden können.",
           "betroffene_elemente": [
             "Digitalisat"
           ]
         },
         {
-          "beschreibung": "Schutzfrist-Grund: Unklar, wie die Begründung einer Schutzfrist strukturiert werden soll (herkunftsbasiert vs. inhaltsbasiert vs. personenbezogen) und ob dies in separaten Feldern oder als Freitext erfasst wird.",
+          "beschreibung": "Einheitsbeziehungen: Die Anforderung erwähnt Beziehungen wie 'Abschrift', 'Entwurf', 'spätere Fassung', aber es ist unklar, ob diese bidirektional oder unidirektional sind und wie sie genau zu modellieren sind.",
           "betroffene_elemente": [
-            "Schutzfrist"
+            "Einheitsbeziehung",
+            "Verzeichnungseinheit"
           ]
         },
         {
-          "beschreibung": "Beziehungen zwischen Einheiten: Unklar, wie die verschiedenen Beziehungstypen (Abschrift, Entwurf, spätere Fassung) strukturiert und unterschieden werden sollen.",
+          "beschreibung": "Schutzfrist-Grund: Unklar, wie die Gründe für Schutzfristen (Herkunft vs. Inhalt, insbesondere personenbezogenes Material) strukturiert und nachvollziehbar dokumentiert werden sollen.",
           "betroffene_elemente": [
-            "Beziehung_zwischen_Einheiten"
+            "Schutzfrist"
           ]
         }
       ]
@@ -1228,13 +1190,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "name",
+              "name": "Name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "typ",
+              "name": "Typ",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1251,19 +1213,19 @@
               "pflichtfeld": true
             },
             {
-              "name": "aktenzeichen",
+              "name": "Aktenzeichen",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "zugangstitel",
+              "name": "Zugangstitel",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "eingangsdatum",
+              "name": "Eingangsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1286,46 +1248,40 @@
               "pflichtfeld": true
             },
             {
-              "name": "abgabe_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "titel",
+              "name": "Titel",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "laufzeit_von",
-              "datentyp": "DATE",
+              "name": "Laufzeit",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "laufzeit_bis",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "umfang",
+              "name": "Umfang",
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "umfang_einheit",
+              "name": "Umfang_Einheit",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "enthaltungsvermerk",
+              "name": "Enthaltungsvermerk",
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "abgabe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -1339,34 +1295,28 @@
               "pflichtfeld": true
             },
             {
-              "name": "sperrfrist_bis",
+              "name": "Sperrfrist",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "grund",
+              "name": "Grund",
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "herkunftsbasiert",
+              "name": "Herkunftsbasiert",
               "datentyp": "BOOLEAN",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             },
             {
-              "name": "inhaltsbasiert",
+              "name": "Inhaltsbasiert",
               "datentyp": "BOOLEAN",
               "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "personenbezogen",
-              "datentyp": "BOOLEAN",
-              "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             }
           ]
         },
@@ -1380,32 +1330,32 @@
               "pflichtfeld": true
             },
             {
-              "name": "einheit_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "anzahl_bilder",
+              "name": "Anzahl_Bilder",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "intern_einsehbar",
+              "name": "Intern_einsehbar",
               "datentyp": "BOOLEAN",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "lesesaal_verfuegbar",
+              "name": "Lesesaal_verfuegbar",
               "datentyp": "BOOLEAN",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "online_verfuegbar",
+              "name": "Online_verfuegbar",
               "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "einheit_id",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -1421,16 +1371,22 @@
               "pflichtfeld": true
             },
             {
-              "name": "name",
+              "name": "Name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "typ",
+              "name": "Typ",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Institution",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1444,63 +1400,28 @@
               "pflichtfeld": true
             },
             {
-              "name": "antragsdatum",
+              "name": "Antragsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Entscheidung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             },
             {
               "name": "antragsteller_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "status",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Entscheidung",
-          "attribute": [
-            {
-              "name": "entscheidung_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "antrag_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "entscheidungsdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "entscheidungstyp",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "auflagen",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "begruendung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -1514,8 +1435,20 @@
               "pflichtfeld": true
             },
             {
-              "name": "einheit_id",
-              "datentyp": "INTEGER",
+              "name": "Ausleihdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Rueckgabedatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Zweck",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
@@ -1524,30 +1457,6 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "ausleihdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "rueckgabedatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "zweck",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "zustand_bei_rueckgabe",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -1561,33 +1470,10 @@
               "pflichtfeld": true
             },
             {
-              "name": "begriff",
+              "name": "Begriff",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Beziehung_zwischen_Einheiten",
-          "attribute": [
-            {
-              "name": "beziehung_id",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "beziehungstyp",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         }
@@ -1610,8 +1496,8 @@
           "zu": "Schutzfrist",
           "kardinalitaet": "N:M",
           "beziehungsattribute": [
-            "gueltig_ab",
-            "gueltig_bis"
+            "Anwendungsdatum",
+            "Grund_der_Anwendung"
           ]
         },
         {
@@ -1631,20 +1517,18 @@
           "zu": "Verzeichnungseinheit",
           "kardinalitaet": "N:M",
           "beziehungsattribute": [
-            "angefordert_am"
+            "Genehmigungsstatus",
+            "Auflagen"
           ]
         },
         {
-          "von": "Benutzungsantrag",
-          "zu": "Entscheidung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Verzeichnungseinheit",
-          "zu": "Ausleihe",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
+          "von": "Ausleihe",
+          "zu": "Verzeichnungseinheit",
+          "kardinalitaet": "N:M",
+          "beziehungsattribute": [
+            "Zustand_bei_Ausleihe",
+            "Zustand_bei_Rueckgabe"
+          ]
         },
         {
           "von": "Ausleihe",
@@ -1656,17 +1540,15 @@
           "von": "Verzeichnungseinheit",
           "zu": "Schlagwort",
           "kardinalitaet": "N:M",
-          "beziehungsattribute": [
-            "zugeordnet_am"
-          ]
+          "beziehungsattribute": []
         },
         {
           "von": "Verzeichnungseinheit",
-          "zu": "Beziehung_zwischen_Einheiten",
+          "zu": "Verzeichnungseinheit",
           "kardinalitaet": "N:M",
           "beziehungsattribute": [
-            "von_einheit_id",
-            "zu_einheit_id"
+            "Beziehungstyp",
+            "Beschreibung"
           ]
         }
       ]
@@ -1695,62 +1577,86 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Antragsteller' ist im LogicalSchema nicht korrekt modelliert. Im ER-Modell ist 'Antragsteller' eine eigenständige Entität mit Attributen 'name' und 'typ'. Im LogicalSchema wurde dies in zwei separate Tabellen aufgespalten: 'persons' (mit firstname, lastname) und 'institutions' (mit name, type), mit einer Junction-Table 'requesters' (mit person_id und institution_id). Dies ist eine Übermodellierung und widerspricht der ER-Modell-Struktur, die eine einheitliche 'Antragsteller'-Entität vorsieht. Die Anforderung ist mehrdeutig (RequirementsReport: 'manchmal nur die einzelne Person', 'oft eine Institution'), aber das ER-Modell hat sich für eine vereinheitlichte Lösung entschieden, die das LogicalSchema nicht konsistent umsetzt.",
-          "korrekturanweisung": "Entweder: (1) Im ER-Modell explizit eine Subtypisierung oder Spezialisierung von 'Antragsteller' in 'Person' und 'Institution' definieren und dann im LogicalSchema mit Subtyp-Tabellen umsetzen, ODER (2) Im LogicalSchema die 'requesters'-Tabelle als reine Junction-Table mit person_id und institution_id (beide nullable) beibehalten, aber die Semantik klarer dokumentieren, dass ein Antragsteller entweder eine Person ODER eine Institution ist (nicht beide gleichzeitig)."
+          "beschreibung": "KRITISCH: Die Entität 'Einheitsbeziehung' (archival_unit_relationships) ist im LogicalSchema vorhanden, aber im ERModell NICHT definiert. Das ERModell enthält nur eine selbstreferenzielle N:M-Beziehung zwischen Verzeichnungseinheiten, ohne diese als eigenständige Entität zu modellieren. Dies ist ein konzeptioneller Fehler: Die Anforderung verlangt explizit 'Beziehungen zwischen Einheiten sichtbar machen, etwa wenn etwas eine Abschrift, ein Entwurf oder eine spätere Fassung eines anderen Vorgangs ist.' Das LogicalSchema hat dies korrekt als separate Entität mit relationship_types umgesetzt, aber das ERModell hat diese Struktur nicht vollständig erfasst.",
+          "korrekturanweisung": "Das ERModell muss eine eigenständige Entität 'Einheitsbeziehung' (oder 'Relationship') mit Attributen wie 'Beziehungstyp' und 'Beschreibung' sowie Fremdschlüsseln zu zwei Verzeichnungseinheiten (source_unit_id, target_unit_id) enthalten. Dies ist bereits im LogicalSchema korrekt implementiert."
         },
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Beziehung_zwischen_Einheiten' ist im LogicalSchema unvollständig modelliert. Im ER-Modell hat diese Entität Beziehungsattribute 'von_einheit_id' und 'zu_einheit_id', die die Richtung der Beziehung zwischen zwei Verzeichnungseinheiten definieren. Im LogicalSchema ist die Tabelle 'unit_relationships' mit 'source_unit_id' und 'target_unit_id' definiert, was semantisch korrekt ist. ABER: Das ER-Modell dokumentiert diese Attribute nicht explizit in der Entität 'Beziehung_zwischen_Einheiten', sondern nur in den Beziehungsattributen der N:M-Beziehung. Dies ist ein konzeptionelles Modellierungsproblem: Die Beziehung zwischen Verzeichnungseinheiten ist selbst eine Entität mit eigenen Attributen (source_unit_id, target_unit_id, relationship_type, description), nicht nur eine reine N:M-Verknüpfung.",
-          "korrekturanweisung": "Im ER-Modell die Entität 'Beziehung_zwischen_Einheiten' explizit mit den Attributen 'von_einheit_id' und 'zu_einheit_id' definieren (nicht nur als Beziehungsattribute). Dies ist bereits im LogicalSchema korrekt umgesetzt, aber das ER-Modell ist inkonsistent."
+          "beschreibung": "KRITISCH: Die Entität 'Relationship_Types' (relationship_types) ist im LogicalSchema vorhanden, aber im ERModell NICHT definiert. Das ERModell enthält keine separate Entität für Beziehungstypen, obwohl das LogicalSchema diese mit einem Fremdschlüssel in archival_unit_relationships referenziert.",
+          "korrekturanweisung": "Das ERModell muss eine Entität 'Beziehungstyp' mit Attributen 'Beziehungstyp_ID' (PK) und 'Typname' enthalten."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'access_restrictions' im LogicalSchema hat Attribute 'restriction_start' und 'restriction_end', die im ER-Modell nicht vorhanden sind. Das ER-Modell definiert nur 'sperrfrist_bis' (Enddatum), nicht aber ein Startdatum. Der Anforderungstext erwähnt 'Sperrfrist' ohne explizites Startdatum, aber die Praxis erfordert oft ein Gültigkeitsfenster. Im LogicalSchema wurde dies durch 'restriction_start' und 'restriction_end' modelliert, was sinnvoll ist, aber nicht im ER-Modell dokumentiert wurde. Dies ist ein Fehler im ER-Modell, der sich auf die Konsistenz auswirkt.",
-          "korrekturanweisung": "Im ER-Modell die Entität 'Schutzfrist' um das Attribut 'sperrfrist_von' (Startdatum) ergänzen, um die Modellierung im LogicalSchema zu rechtfertigen."
+          "beschreibung": "KRITISCH: Im LogicalSchema fehlt das Attribut 'Zustand_bei_Ausleihe' in der Tabelle 'loans'. Laut ERModell und Anforderungstext soll dokumentiert werden 'in welchem Zustand sie [die Unterlagen] zurueckkamen', was impliziert, dass auch der Zustand bei Ausleihe erfasst werden sollte. Das LogicalSchema hat dies nur in der Junction-Table 'loan_units' als 'condition_on_checkout' und 'condition_on_return', aber nicht in der Haupttabelle 'loans'. Dies ist eine Inkonsistenz mit dem ERModell, das 'Zustand_bei_Ausleihe' und 'Zustand_bei_Rueckgabe' als Beziehungsattribute definiert.",
+          "korrekturanweisung": "Die Attribute 'condition_on_checkout' und 'condition_on_return' sind korrekt in 'loan_units' platziert (da sie pro Einheit unterschiedlich sein können). Dies ist tatsächlich eine bessere Normalisierung als im ERModell vorgesehen. Keine Korrektur erforderlich."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'digitals' im LogicalSchema hat das Attribut 'type' (VARCHAR), das im ER-Modell nicht vorhanden ist. Das ER-Modell definiert nur 'anzahl_bilder', 'intern_einsehbar', 'lesesaal_verfuegbar', 'online_verfuegbar'. Das Attribut 'type' könnte zur Unterscheidung zwischen 'einzelne Datei' und 'mehrseitiges Digitalisat' dienen (eine Unklarheit aus dem RequirementsReport), aber dies ist im ER-Modell nicht dokumentiert.",
-          "korrekturanweisung": "Im ER-Modell das Attribut 'type' zur Entität 'Digitalisat' hinzufügen, um die Unterscheidung zwischen verschiedenen Digitalisat-Typen zu ermöglichen."
+          "beschreibung": "KRITISCH: Das Attribut 'Zustand_bei_Ausleihe' fehlt in der Anforderung und im ERModell, wird aber im LogicalSchema als 'condition_on_checkout' in 'loan_units' erfasst. Dies ist eine Erweiterung über die Anforderung hinaus, die nicht problematisch ist, aber die Konsistenz mit dem ERModell beeinträchtigt.",
+          "korrekturanweisung": "Keine Korrektur erforderlich. Das LogicalSchema hat hier eine bessere Normalisierung vorgenommen."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'archival_unit_restrictions' im LogicalSchema hat Attribute 'valid_from' und 'valid_until', die im ER-Modell als Beziehungsattribute 'gueltig_ab' und 'gueltig_bis' definiert sind. Dies ist konsistent, aber die Semantik ist unklar: Sind dies die Gültigkeitsdaten der Zuordnung (wann die Schutzfrist auf die Einheit angewendet wurde) oder die Gültigkeitsdaten der Schutzfrist selbst? Das ER-Modell ist mehrdeutig.",
-          "korrekturanweisung": "Im ER-Modell klarer dokumentieren, ob 'gueltig_ab' und 'gueltig_bis' die Gültigkeitsdaten der Zuordnung oder der Schutzfrist selbst sind. Im LogicalSchema entsprechend umbenennen (z.B. 'assigned_from', 'assigned_until' vs. 'restriction_valid_from', 'restriction_valid_until')."
+          "beschreibung": "KRITISCH: Im LogicalSchema fehlt das Attribut 'Grund_der_Anwendung' (reason_for_application) in der Junction-Table 'archival_unit_restrictions'. Laut ERModell soll die N:M-Beziehung zwischen Verzeichnungseinheit und Schutzfrist die Beziehungsattribute 'Anwendungsdatum' und 'Grund_der_Anwendung' enthalten. Das LogicalSchema hat 'application_date' und 'reason_for_application', was korrekt ist. Allerdings ist die Struktur im LogicalSchema anders: Es gibt eine separate Tabelle 'access_restrictions' mit 'reason' und 'is_origin_based'/'is_content_based', und eine Junction-Table 'archival_unit_restrictions' mit 'reason_for_application'. Dies ist eine Redundanz und konzeptionelle Verwirrung.",
+          "korrekturanweisung": "Die Struktur sollte geklärt werden: Entweder ist 'reason' in 'access_restrictions' der allgemeine Grund (z.B. 'Personenbezogenes Material'), oder 'reason_for_application' in 'archival_unit_restrictions' ist der spezifische Grund für diese Einheit. Die aktuelle Struktur mit beiden ist redundant und unklar."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Die N:M-Beziehung zwischen 'Benutzungsantrag' und 'Verzeichnungseinheit' ist im LogicalSchema als 'access_request_units' modelliert mit dem Beziehungsattribut 'requested_on'. Im ER-Modell ist dieses Attribut als 'angefordert_am' definiert. Dies ist konsistent. ABER: Der Anforderungstext und das ER-Modell sind unklar, ob ein Antrag sich auf mehrere Einheiten beziehen kann oder ob jeder Antrag nur eine Einheit betrifft. Das ER-Modell definiert die Kardinalität als N:M, was bedeutet, dass ein Antrag mehrere Einheiten betreffen kann. Dies ist korrekt gemäß Anforderungstext ('Ein Antrag kann sich auf mehrere Einheiten beziehen'). ABER: Die Tabelle 'access_requests' hat kein Attribut, das die Einheiten direkt referenziert, sondern nur über die Junction-Table 'access_request_units'. Dies ist korrekt für N:M-Beziehungen. ABER: Es ist unklar, ob die 'status'-Spalte in 'access_requests' sich auf den gesamten Antrag oder auf einzelne Einheiten bezieht. Dies ist ein konzeptionelles Problem.",
-          "korrekturanweisung": "Im ER-Modell klarer dokumentieren, ob der 'status' eines Antrags sich auf den gesamten Antrag oder auf einzelne Einheiten bezieht. Falls auf einzelne Einheiten, sollte 'status' in die Junction-Table 'access_request_units' verschoben werden."
+          "beschreibung": "KRITISCH: Die N:M-Beziehung zwischen 'Verzeichnungseinheit' und 'Schutzfrist' ist im LogicalSchema nicht korrekt implementiert. Das ERModell definiert diese als N:M mit Beziehungsattributen 'Anwendungsdatum' und 'Grund_der_Anwendung'. Das LogicalSchema hat stattdessen zwei separate Tabellen: 'access_restrictions' (mit Grund, Herkunftsbasiert, Inhaltsbasiert) und 'archival_unit_restrictions' (Junction-Table mit Anwendungsdatum und Grund_der_Anwendung). Dies ist konzeptionell verwirrend: Ist 'access_restrictions' eine Entität oder nur eine Lookup-Tabelle? Die Struktur suggeriert, dass eine Schutzfrist (access_restriction) wiederverwendbar ist und auf mehrere Einheiten angewendet werden kann, aber die Attribute 'expiration_date' und 'reason' sind spezifisch für eine Anwendung, nicht für die Schutzfrist selbst.",
+          "korrekturanweisung": "Entweder: (A) 'access_restrictions' sollte nur Metadaten enthalten (z.B. Schutzfrist-Typ: 'Personenbezogenes Material', 'Herkunftsbasiert'), und 'archival_unit_restrictions' sollte die konkrete Anwendung mit Ablaufdatum und Grund enthalten. Oder: (B) 'access_restrictions' sollte die konkrete Schutzfrist sein (mit Ablaufdatum, Grund, Herkunftsbasiert, Inhaltsbasiert), und es sollte eine einfache Junction-Table 'archival_unit_access_restrictions' geben. Die aktuelle Struktur ist redundant und unklar."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen 'Entscheidung' und 'Verzeichnungseinheit' ist im LogicalSchema nicht explizit modelliert. Das ER-Modell definiert eine 1:N-Beziehung zwischen 'Benutzungsantrag' und 'Entscheidung', aber keine direkte Beziehung zwischen 'Entscheidung' und 'Verzeichnungseinheit'. Im LogicalSchema gibt es eine Junction-Table 'decision_units', die diese Beziehung modelliert. Dies ist eine Diskrepanz: Das ER-Modell dokumentiert diese Beziehung nicht, aber das LogicalSchema implementiert sie. Der Anforderungstext ist unklar, ob Entscheidungen sich auf einzelne Einheiten oder auf den gesamten Antrag beziehen ('im Verlauf können Auflagen, Genehmigungen oder Ablehnungen dokumentiert werden').",
-          "korrekturanweisung": "Im ER-Modell explizit eine N:M-Beziehung zwischen 'Entscheidung' und 'Verzeichnungseinheit' definieren, oder klarer dokumentieren, dass Entscheidungen sich auf den gesamten Antrag beziehen und nicht auf einzelne Einheiten."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen 'Ausleihe' und 'Verzeichnungseinheit' ist im LogicalSchema als 1:N definiert (eine Einheit kann mehrfach ausgeliehen werden). Dies ist korrekt. ABER: Das ER-Modell definiert die Beziehung zwischen 'Ausleihe' und 'Antragsteller' als N:1, was bedeutet, dass ein Antragsteller mehrere Ausleihungen haben kann. Dies ist korrekt. ABER: Es ist unklar, ob eine Ausleihe immer mit einem Benutzungsantrag verknüpft ist oder ob Ausleihungen unabhängig von Anträgen erfolgen können. Das ER-Modell und das LogicalSchema dokumentieren keine Beziehung zwischen 'Ausleihe' und 'Benutzungsantrag', was bedeutet, dass Ausleihungen unabhängig sind. Dies ist möglicherweise korrekt (der Anforderungstext erwähnt 'Restaurierung oder Ausstellungen' als Zwecke), aber es ist nicht explizit dokumentiert.",
-          "korrekturanweisung": "Im ER-Modell klarer dokumentieren, ob Ausleihungen mit Benutzungsanträgen verknüpft sind oder unabhängig erfolgen können. Falls unabhängig, sollte dies explizit festgehalten werden."
+          "beschreibung": "KRITISCH: Die N:M-Beziehung zwischen 'Benutzungsantrag' und 'Verzeichnungseinheit' ist im LogicalSchema als 'access_request_units' implementiert, enthält aber nur 'approval_status' und 'conditions' als Beziehungsattribute. Laut ERModell sollten die Beziehungsattribute 'Genehmigungsstatus' und 'Auflagen' sein. Das LogicalSchema hat dies korrekt, aber die Anforderung und das ERModell sind unklar, ob 'Entscheidung' (approval/denial/conditions) auf Antrag-Ebene oder auf Einheit-Ebene dokumentiert werden soll. Der Anforderungstext sagt: 'im Verlauf koennen Auflagen, Genehmigungen oder Ablehnungen dokumentiert werden' und 'Nicht immer ist klar, ob jede Entscheidung einzeln festgehalten werden muss oder nur das Endergebnis.' Das LogicalSchema hat 'status' und 'decision' in 'access_requests' (Antrag-Ebene) und 'approval_status' und 'conditions' in 'access_request_units' (Einheit-Ebene). Dies ist eine sinnvolle Auflösung der Ambiguität, aber es ist nicht explizit im ERModell dokumentiert.",
+          "korrekturanweisung": "Die Struktur ist konzeptionell sinnvoll (Entscheidung pro Einheit), aber das ERModell sollte dies explizit klären. Keine Korrektur des LogicalSchema erforderlich, aber das ERModell sollte präzisiert werden."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'access_restrictions' hat redundante Attribute: 'restriction_start' und 'restriction_end' definieren ein Zeitfenster, aber die Entität 'Schutzfrist' im ER-Modell hat nur 'sperrfrist_bis'. Dies führt zu einer Inkonsistenz. Zusätzlich sind die Attribute 'origin_based', 'content_based', 'personal_data_related' (alle BOOLEAN, nullable) redundant mit dem Attribut 'reason' (TEXT). Diese Attribute könnten aus dem 'reason'-Text extrahiert werden oder sollten in einer separaten Tabelle 'restriction_reasons' normalisiert werden. Die aktuelle Modellierung verstößt gegen die 3. Normalform, da die Attribute 'origin_based', 'content_based', 'personal_data_related' funktional abhängig vom 'reason' sind.",
-          "korrekturanweisung": "Entweder: (1) Die Attribute 'origin_based', 'content_based', 'personal_data_related' entfernen und nur 'reason' als Freitext beibehalten, ODER (2) Eine separate Tabelle 'restriction_reasons' mit den Kategorien erstellen und die 'access_restrictions'-Tabelle normalisieren."
+          "beschreibung": "KRITISCH: Die Tabelle 'access_restrictions' hat redundante Attribute 'is_origin_based' und 'is_content_based' (beide BOOLEAN). Dies ist eine schlechte Normalisierung: Statt zwei BOOLEAN-Spalten sollte es ein Attribut 'restriction_basis' (VARCHAR) mit Werten wie 'origin', 'content', 'both' geben. Alternativ könnte es eine separate Lookup-Tabelle 'restriction_bases' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Ersetze 'is_origin_based' und 'is_content_based' durch ein einzelnes Attribut 'restriction_basis' (VARCHAR) mit Werten 'origin', 'content', 'both', oder erstelle eine Lookup-Tabelle 'restriction_bases' mit einem Fremdschlüssel."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'requesters' ist eine Subtyp-Tabelle, die eine Person oder eine Institution referenziert (person_id und institution_id sind beide nullable). Dies ist eine Verletzung der Normalisierung: Ein Antragsteller sollte entweder eine Person ODER eine Institution sein, nicht beide gleichzeitig. Die aktuelle Modellierung erlaubt Anomalien (z.B. ein Antragsteller mit sowohl person_id als auch institution_id). Dies sollte durch eine Constraint (CHECK person_id IS NOT NULL XOR institution_id IS NOT NULL) oder durch eine Subtyp-Spezialisierung (separate Tabellen 'person_requesters' und 'institution_requesters') gelöst werden.",
-          "korrekturanweisung": "Entweder: (1) Eine CHECK-Constraint hinzufügen, um sicherzustellen, dass genau eines der Attribute (person_id oder institution_id) NOT NULL ist, ODER (2) Separate Subtyp-Tabellen 'person_requesters' und 'institution_requesters' erstellen, die jeweils auf 'persons' bzw. 'institutions' referenzieren."
+          "beschreibung": "KRITISCH: Die Tabelle 'digitals' hat redundante BOOLEAN-Attribute 'is_internally_visible', 'is_reading_room_available', 'is_online_available'. Dies ist eine schlechte Normalisierung: Statt drei BOOLEAN-Spalten sollte es ein Attribut 'access_level' (VARCHAR) mit Werten wie 'internal', 'reading_room', 'online' geben, oder eine separate Lookup-Tabelle 'access_levels'. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Ersetze die drei BOOLEAN-Spalten durch ein einzelnes Attribut 'access_level' (VARCHAR) mit Werten 'internal', 'reading_room', 'online', oder erstelle eine Lookup-Tabelle 'access_levels' mit einem Fremdschlüssel."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'applicants' hat ein Attribut 'type' (VARCHAR), das Werte wie 'person', 'institution' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'applicant_types' geben, oder das Schema sollte zwei separate Tabellen 'persons' und 'institutions' haben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'applicant_types' mit Werten 'person', 'institution' und ersetze das Attribut 'type' durch einen Fremdschlüssel 'applicant_type_id'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'providing_institutions' hat ein Attribut 'type' (VARCHAR), das Werte wie 'ministry', 'court', 'estate' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'institution_types' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'institution_types' mit Werten wie 'ministry', 'court', 'estate' und ersetze das Attribut 'type' durch einen Fremdschlüssel 'institution_type_id'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'access_requests' hat ein Attribut 'status' (VARCHAR), das Werte wie 'pending', 'approved', 'denied' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'request_statuses' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'request_statuses' mit Werten wie 'pending', 'approved', 'denied' und ersetze das Attribut 'status' durch einen Fremdschlüssel 'status_id'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'access_request_units' hat ein Attribut 'approval_status' (VARCHAR), das Werte wie 'approved', 'denied', 'conditional' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'approval_statuses' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'approval_statuses' mit Werten wie 'approved', 'denied', 'conditional' und ersetze das Attribut 'approval_status' durch einen Fremdschlüssel 'approval_status_id'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'loans' hat ein Attribut 'purpose' (VARCHAR), das Werte wie 'restoration', 'exhibition', 'research' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'loan_purposes' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'loan_purposes' mit Werten wie 'restoration', 'exhibition', 'research' und ersetze das Attribut 'purpose' durch einen Fremdschlüssel 'purpose_id'."
         }
       ],
       "origin_step": "cmd"
@@ -1759,7 +1665,7 @@
     "critic_report_c2": null,
     "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE institutions (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255),\n    CONSTRAINT pk_institutions PRIMARY KEY (id)\n);\n\nCREATE TABLE requesters (\n    id INTEGER NOT NULL,\n    person_id INTEGER,\n    institution_id INTEGER,\n    CONSTRAINT pk_requesters PRIMARY KEY (id),\n    CONSTRAINT fk_requesters_person_id FOREIGN KEY (person_id) REFERENCES persons (id),\n    CONSTRAINT fk_requesters_institution_id FOREIGN KEY (institution_id) REFERENCES institutions (id)\n);\n\nCREATE TABLE access_requests (\n    id INTEGER NOT NULL,\n    requester_id INTEGER NOT NULL,\n    request_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_access_requests PRIMARY KEY (id),\n    CONSTRAINT fk_access_requests_requester_id FOREIGN KEY (requester_id) REFERENCES requesters (id)\n);\n\nCREATE TABLE providing_institutions (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_providing_institutions PRIMARY KEY (id)\n);\n\nCREATE TABLE submissions (\n    id INTEGER NOT NULL,\n    providing_institution_id INTEGER NOT NULL,\n    file_number VARCHAR(255) NOT NULL,\n    access_title VARCHAR(255) NOT NULL,\n    receipt_date DATE NOT NULL,\n    CONSTRAINT pk_submissions PRIMARY KEY (id),\n    CONSTRAINT fk_submissions_providing_institution_id FOREIGN KEY (providing_institution_id) REFERENCES providing_institutions (id)\n);\n\nCREATE TABLE archival_units (\n    id INTEGER NOT NULL,\n    submission_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    date_from DATE,\n    date_to DATE,\n    extent DECIMAL(18,2),\n    extent_unit VARCHAR(255),\n    retention_note TEXT,\n    CONSTRAINT pk_archival_units PRIMARY KEY (id),\n    CONSTRAINT fk_archival_units_submission_id FOREIGN KEY (submission_id) REFERENCES submissions (id)\n);\n\nCREATE TABLE access_request_units (\n    access_request_id INTEGER NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    requested_on DATE,\n    CONSTRAINT pk_access_request_units PRIMARY KEY (access_request_id, archival_unit_id),\n    CONSTRAINT fk_access_request_units_access_request_id FOREIGN KEY (access_request_id) REFERENCES access_requests (id),\n    CONSTRAINT fk_access_request_units_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id)\n);\n\nCREATE TABLE access_restrictions (\n    id INTEGER NOT NULL,\n    restriction_start DATE NOT NULL,\n    restriction_end DATE NOT NULL,\n    reason TEXT NOT NULL,\n    origin_based BOOLEAN,\n    content_based BOOLEAN,\n    personal_data_related BOOLEAN,\n    CONSTRAINT pk_access_restrictions PRIMARY KEY (id)\n);\n\nCREATE TABLE keywords (\n    id INTEGER NOT NULL,\n    term VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_keywords PRIMARY KEY (id)\n);\n\nCREATE TABLE archival_unit_keywords (\n    archival_unit_id INTEGER NOT NULL,\n    keyword_id INTEGER NOT NULL,\n    assigned_on DATE,\n    CONSTRAINT pk_archival_unit_keywords PRIMARY KEY (archival_unit_id, keyword_id),\n    CONSTRAINT fk_archival_unit_keywords_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id),\n    CONSTRAINT fk_archival_unit_keywords_keyword_id FOREIGN KEY (keyword_id) REFERENCES keywords (id)\n);\n\nCREATE TABLE archival_unit_restrictions (\n    archival_unit_id INTEGER NOT NULL,\n    access_restriction_id INTEGER NOT NULL,\n    valid_from DATE,\n    valid_until DATE,\n    CONSTRAINT pk_archival_unit_restrictions PRIMARY KEY (archival_unit_id, access_restriction_id),\n    CONSTRAINT fk_archival_unit_restrictions_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id),\n    CONSTRAINT fk_archival_unit_restrictions_access_restriction_id FOREIGN KEY (access_restriction_id) REFERENCES access_restrictions (id)\n);\n\nCREATE TABLE decisions (\n    id INTEGER NOT NULL,\n    access_request_id INTEGER NOT NULL,\n    decision_date DATE NOT NULL,\n    decision_type VARCHAR(255) NOT NULL,\n    conditions TEXT,\n    justification TEXT,\n    CONSTRAINT pk_decisions PRIMARY KEY (id),\n    CONSTRAINT fk_decisions_access_request_id FOREIGN KEY (access_request_id) REFERENCES access_requests (id)\n);\n\nCREATE TABLE decision_units (\n    decision_id INTEGER NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    CONSTRAINT pk_decision_units PRIMARY KEY (decision_id, archival_unit_id),\n    CONSTRAINT fk_decision_units_decision_id FOREIGN KEY (decision_id) REFERENCES decisions (id),\n    CONSTRAINT fk_decision_units_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id)\n);\n\nCREATE TABLE digitals (\n    id INTEGER NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    page_count INTEGER,\n    internal_access BOOLEAN NOT NULL,\n    reading_room_access BOOLEAN NOT NULL,\n    online_access BOOLEAN NOT NULL,\n    CONSTRAINT pk_digitals PRIMARY KEY (id),\n    CONSTRAINT fk_digitals_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id)\n);\n\nCREATE TABLE loans (\n    id INTEGER NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    requester_id INTEGER NOT NULL,\n    loan_date DATE NOT NULL,\n    return_date DATE,\n    purpose VARCHAR(255) NOT NULL,\n    condition_on_return TEXT,\n    CONSTRAINT pk_loans PRIMARY KEY (id),\n    CONSTRAINT fk_loans_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id),\n    CONSTRAINT fk_loans_requester_id FOREIGN KEY (requester_id) REFERENCES requesters (id)\n);\n\nCREATE TABLE unit_relationships (\n    id INTEGER NOT NULL,\n    source_unit_id INTEGER NOT NULL,\n    target_unit_id INTEGER NOT NULL,\n    relationship_type VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_unit_relationships PRIMARY KEY (id),\n    CONSTRAINT fk_unit_relationships_source_unit_id FOREIGN KEY (source_unit_id) REFERENCES archival_units (id),\n    CONSTRAINT fk_unit_relationships_target_unit_id FOREIGN KEY (target_unit_id) REFERENCES archival_units (id)\n);\n",
+    "final_ddl": "CREATE TABLE applicants (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    institution VARCHAR(255),\n    CONSTRAINT pk_applicants PRIMARY KEY (id)\n);\n\nCREATE TABLE access_requests (\n    id INTEGER NOT NULL,\n    request_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    decision VARCHAR(255),\n    applicant_id INTEGER NOT NULL,\n    CONSTRAINT pk_access_requests PRIMARY KEY (id),\n    CONSTRAINT fk_access_requests_applicant_id FOREIGN KEY (applicant_id) REFERENCES applicants (id)\n);\n\nCREATE TABLE providing_institutions (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_providing_institutions PRIMARY KEY (id)\n);\n\nCREATE TABLE submissions (\n    id INTEGER NOT NULL,\n    reference_number VARCHAR(255) NOT NULL,\n    access_title VARCHAR(255) NOT NULL,\n    receipt_date DATE NOT NULL,\n    providing_institution_id INTEGER NOT NULL,\n    CONSTRAINT pk_submissions PRIMARY KEY (id),\n    CONSTRAINT fk_submissions_providing_institution_id FOREIGN KEY (providing_institution_id) REFERENCES providing_institutions (id)\n);\n\nCREATE TABLE archival_units (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    date_range VARCHAR(255),\n    extent_value DECIMAL(18,2),\n    extent_unit VARCHAR(255),\n    retention_note TEXT,\n    submission_id INTEGER NOT NULL,\n    CONSTRAINT pk_archival_units PRIMARY KEY (id),\n    CONSTRAINT fk_archival_units_submission_id FOREIGN KEY (submission_id) REFERENCES submissions (id)\n);\n\nCREATE TABLE access_request_units (\n    id INTEGER NOT NULL,\n    access_request_id INTEGER NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    approval_status VARCHAR(255),\n    conditions TEXT,\n    CONSTRAINT pk_access_request_units PRIMARY KEY (id),\n    CONSTRAINT fk_access_request_units_access_request_id FOREIGN KEY (access_request_id) REFERENCES access_requests (id),\n    CONSTRAINT fk_access_request_units_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id)\n);\n\nCREATE TABLE access_restrictions (\n    id INTEGER NOT NULL,\n    expiration_date DATE NOT NULL,\n    reason TEXT NOT NULL,\n    is_origin_based BOOLEAN NOT NULL,\n    is_content_based BOOLEAN NOT NULL,\n    CONSTRAINT pk_access_restrictions PRIMARY KEY (id)\n);\n\nCREATE TABLE keywords (\n    id INTEGER NOT NULL,\n    term VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_keywords PRIMARY KEY (id)\n);\n\nCREATE TABLE archival_unit_keywords (\n    id INTEGER NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    keyword_id INTEGER NOT NULL,\n    CONSTRAINT pk_archival_unit_keywords PRIMARY KEY (id),\n    CONSTRAINT fk_archival_unit_keywords_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id),\n    CONSTRAINT fk_archival_unit_keywords_keyword_id FOREIGN KEY (keyword_id) REFERENCES keywords (id)\n);\n\nCREATE TABLE relationship_types (\n    id INTEGER NOT NULL,\n    type_name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_relationship_types PRIMARY KEY (id)\n);\n\nCREATE TABLE archival_unit_relationships (\n    id INTEGER NOT NULL,\n    source_unit_id INTEGER NOT NULL,\n    target_unit_id INTEGER NOT NULL,\n    relationship_type_id INTEGER NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_archival_unit_relationships PRIMARY KEY (id),\n    CONSTRAINT fk_archival_unit_relationships_source_unit_id FOREIGN KEY (source_unit_id) REFERENCES archival_units (id),\n    CONSTRAINT fk_archival_unit_relationships_target_unit_id FOREIGN KEY (target_unit_id) REFERENCES archival_units (id),\n    CONSTRAINT fk_archival_unit_relationships_relationship_type_id FOREIGN KEY (relationship_type_id) REFERENCES relationship_types (id)\n);\n\nCREATE TABLE archival_unit_restrictions (\n    id INTEGER NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    access_restriction_id INTEGER NOT NULL,\n    application_date DATE NOT NULL,\n    reason_for_application TEXT,\n    CONSTRAINT pk_archival_unit_restrictions PRIMARY KEY (id),\n    CONSTRAINT fk_archival_unit_restrictions_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id),\n    CONSTRAINT fk_archival_unit_restrictions_access_restriction_id FOREIGN KEY (access_restriction_id) REFERENCES access_restrictions (id)\n);\n\nCREATE TABLE digitals (\n    id INTEGER NOT NULL,\n    image_count INTEGER,\n    is_internally_visible BOOLEAN NOT NULL,\n    is_reading_room_available BOOLEAN NOT NULL,\n    is_online_available BOOLEAN NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    CONSTRAINT pk_digitals PRIMARY KEY (id),\n    CONSTRAINT fk_digitals_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id)\n);\n\nCREATE TABLE loans (\n    id INTEGER NOT NULL,\n    checkout_date DATE NOT NULL,\n    return_date DATE,\n    purpose VARCHAR(255) NOT NULL,\n    applicant_id INTEGER NOT NULL,\n    CONSTRAINT pk_loans PRIMARY KEY (id),\n    CONSTRAINT fk_loans_applicant_id FOREIGN KEY (applicant_id) REFERENCES applicants (id)\n);\n\nCREATE TABLE loan_units (\n    id INTEGER NOT NULL,\n    loan_id INTEGER NOT NULL,\n    archival_unit_id INTEGER NOT NULL,\n    condition_on_checkout TEXT,\n    condition_on_return TEXT,\n    CONSTRAINT pk_loan_units PRIMARY KEY (id),\n    CONSTRAINT fk_loan_units_loan_id FOREIGN KEY (loan_id) REFERENCES loans (id),\n    CONSTRAINT fk_loan_units_archival_unit_id FOREIGN KEY (archival_unit_id) REFERENCES archival_units (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -1784,62 +1690,86 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Antragsteller' ist im LogicalSchema nicht korrekt modelliert. Im ER-Modell ist 'Antragsteller' eine eigenständige Entität mit Attributen 'name' und 'typ'. Im LogicalSchema wurde dies in zwei separate Tabellen aufgespalten: 'persons' (mit firstname, lastname) und 'institutions' (mit name, type), mit einer Junction-Table 'requesters' (mit person_id und institution_id). Dies ist eine Übermodellierung und widerspricht der ER-Modell-Struktur, die eine einheitliche 'Antragsteller'-Entität vorsieht. Die Anforderung ist mehrdeutig (RequirementsReport: 'manchmal nur die einzelne Person', 'oft eine Institution'), aber das ER-Modell hat sich für eine vereinheitlichte Lösung entschieden, die das LogicalSchema nicht konsistent umsetzt.",
-          "korrekturanweisung": "Entweder: (1) Im ER-Modell explizit eine Subtypisierung oder Spezialisierung von 'Antragsteller' in 'Person' und 'Institution' definieren und dann im LogicalSchema mit Subtyp-Tabellen umsetzen, ODER (2) Im LogicalSchema die 'requesters'-Tabelle als reine Junction-Table mit person_id und institution_id (beide nullable) beibehalten, aber die Semantik klarer dokumentieren, dass ein Antragsteller entweder eine Person ODER eine Institution ist (nicht beide gleichzeitig)."
+          "beschreibung": "KRITISCH: Die Entität 'Einheitsbeziehung' (archival_unit_relationships) ist im LogicalSchema vorhanden, aber im ERModell NICHT definiert. Das ERModell enthält nur eine selbstreferenzielle N:M-Beziehung zwischen Verzeichnungseinheiten, ohne diese als eigenständige Entität zu modellieren. Dies ist ein konzeptioneller Fehler: Die Anforderung verlangt explizit 'Beziehungen zwischen Einheiten sichtbar machen, etwa wenn etwas eine Abschrift, ein Entwurf oder eine spätere Fassung eines anderen Vorgangs ist.' Das LogicalSchema hat dies korrekt als separate Entität mit relationship_types umgesetzt, aber das ERModell hat diese Struktur nicht vollständig erfasst.",
+          "korrekturanweisung": "Das ERModell muss eine eigenständige Entität 'Einheitsbeziehung' (oder 'Relationship') mit Attributen wie 'Beziehungstyp' und 'Beschreibung' sowie Fremdschlüsseln zu zwei Verzeichnungseinheiten (source_unit_id, target_unit_id) enthalten. Dies ist bereits im LogicalSchema korrekt implementiert."
         },
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Entität 'Beziehung_zwischen_Einheiten' ist im LogicalSchema unvollständig modelliert. Im ER-Modell hat diese Entität Beziehungsattribute 'von_einheit_id' und 'zu_einheit_id', die die Richtung der Beziehung zwischen zwei Verzeichnungseinheiten definieren. Im LogicalSchema ist die Tabelle 'unit_relationships' mit 'source_unit_id' und 'target_unit_id' definiert, was semantisch korrekt ist. ABER: Das ER-Modell dokumentiert diese Attribute nicht explizit in der Entität 'Beziehung_zwischen_Einheiten', sondern nur in den Beziehungsattributen der N:M-Beziehung. Dies ist ein konzeptionelles Modellierungsproblem: Die Beziehung zwischen Verzeichnungseinheiten ist selbst eine Entität mit eigenen Attributen (source_unit_id, target_unit_id, relationship_type, description), nicht nur eine reine N:M-Verknüpfung.",
-          "korrekturanweisung": "Im ER-Modell die Entität 'Beziehung_zwischen_Einheiten' explizit mit den Attributen 'von_einheit_id' und 'zu_einheit_id' definieren (nicht nur als Beziehungsattribute). Dies ist bereits im LogicalSchema korrekt umgesetzt, aber das ER-Modell ist inkonsistent."
+          "beschreibung": "KRITISCH: Die Entität 'Relationship_Types' (relationship_types) ist im LogicalSchema vorhanden, aber im ERModell NICHT definiert. Das ERModell enthält keine separate Entität für Beziehungstypen, obwohl das LogicalSchema diese mit einem Fremdschlüssel in archival_unit_relationships referenziert.",
+          "korrekturanweisung": "Das ERModell muss eine Entität 'Beziehungstyp' mit Attributen 'Beziehungstyp_ID' (PK) und 'Typname' enthalten."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'access_restrictions' im LogicalSchema hat Attribute 'restriction_start' und 'restriction_end', die im ER-Modell nicht vorhanden sind. Das ER-Modell definiert nur 'sperrfrist_bis' (Enddatum), nicht aber ein Startdatum. Der Anforderungstext erwähnt 'Sperrfrist' ohne explizites Startdatum, aber die Praxis erfordert oft ein Gültigkeitsfenster. Im LogicalSchema wurde dies durch 'restriction_start' und 'restriction_end' modelliert, was sinnvoll ist, aber nicht im ER-Modell dokumentiert wurde. Dies ist ein Fehler im ER-Modell, der sich auf die Konsistenz auswirkt.",
-          "korrekturanweisung": "Im ER-Modell die Entität 'Schutzfrist' um das Attribut 'sperrfrist_von' (Startdatum) ergänzen, um die Modellierung im LogicalSchema zu rechtfertigen."
+          "beschreibung": "KRITISCH: Im LogicalSchema fehlt das Attribut 'Zustand_bei_Ausleihe' in der Tabelle 'loans'. Laut ERModell und Anforderungstext soll dokumentiert werden 'in welchem Zustand sie [die Unterlagen] zurueckkamen', was impliziert, dass auch der Zustand bei Ausleihe erfasst werden sollte. Das LogicalSchema hat dies nur in der Junction-Table 'loan_units' als 'condition_on_checkout' und 'condition_on_return', aber nicht in der Haupttabelle 'loans'. Dies ist eine Inkonsistenz mit dem ERModell, das 'Zustand_bei_Ausleihe' und 'Zustand_bei_Rueckgabe' als Beziehungsattribute definiert.",
+          "korrekturanweisung": "Die Attribute 'condition_on_checkout' und 'condition_on_return' sind korrekt in 'loan_units' platziert (da sie pro Einheit unterschiedlich sein können). Dies ist tatsächlich eine bessere Normalisierung als im ERModell vorgesehen. Keine Korrektur erforderlich."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'digitals' im LogicalSchema hat das Attribut 'type' (VARCHAR), das im ER-Modell nicht vorhanden ist. Das ER-Modell definiert nur 'anzahl_bilder', 'intern_einsehbar', 'lesesaal_verfuegbar', 'online_verfuegbar'. Das Attribut 'type' könnte zur Unterscheidung zwischen 'einzelne Datei' und 'mehrseitiges Digitalisat' dienen (eine Unklarheit aus dem RequirementsReport), aber dies ist im ER-Modell nicht dokumentiert.",
-          "korrekturanweisung": "Im ER-Modell das Attribut 'type' zur Entität 'Digitalisat' hinzufügen, um die Unterscheidung zwischen verschiedenen Digitalisat-Typen zu ermöglichen."
+          "beschreibung": "KRITISCH: Das Attribut 'Zustand_bei_Ausleihe' fehlt in der Anforderung und im ERModell, wird aber im LogicalSchema als 'condition_on_checkout' in 'loan_units' erfasst. Dies ist eine Erweiterung über die Anforderung hinaus, die nicht problematisch ist, aber die Konsistenz mit dem ERModell beeinträchtigt.",
+          "korrekturanweisung": "Keine Korrektur erforderlich. Das LogicalSchema hat hier eine bessere Normalisierung vorgenommen."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'archival_unit_restrictions' im LogicalSchema hat Attribute 'valid_from' und 'valid_until', die im ER-Modell als Beziehungsattribute 'gueltig_ab' und 'gueltig_bis' definiert sind. Dies ist konsistent, aber die Semantik ist unklar: Sind dies die Gültigkeitsdaten der Zuordnung (wann die Schutzfrist auf die Einheit angewendet wurde) oder die Gültigkeitsdaten der Schutzfrist selbst? Das ER-Modell ist mehrdeutig.",
-          "korrekturanweisung": "Im ER-Modell klarer dokumentieren, ob 'gueltig_ab' und 'gueltig_bis' die Gültigkeitsdaten der Zuordnung oder der Schutzfrist selbst sind. Im LogicalSchema entsprechend umbenennen (z.B. 'assigned_from', 'assigned_until' vs. 'restriction_valid_from', 'restriction_valid_until')."
+          "beschreibung": "KRITISCH: Im LogicalSchema fehlt das Attribut 'Grund_der_Anwendung' (reason_for_application) in der Junction-Table 'archival_unit_restrictions'. Laut ERModell soll die N:M-Beziehung zwischen Verzeichnungseinheit und Schutzfrist die Beziehungsattribute 'Anwendungsdatum' und 'Grund_der_Anwendung' enthalten. Das LogicalSchema hat 'application_date' und 'reason_for_application', was korrekt ist. Allerdings ist die Struktur im LogicalSchema anders: Es gibt eine separate Tabelle 'access_restrictions' mit 'reason' und 'is_origin_based'/'is_content_based', und eine Junction-Table 'archival_unit_restrictions' mit 'reason_for_application'. Dies ist eine Redundanz und konzeptionelle Verwirrung.",
+          "korrekturanweisung": "Die Struktur sollte geklärt werden: Entweder ist 'reason' in 'access_restrictions' der allgemeine Grund (z.B. 'Personenbezogenes Material'), oder 'reason_for_application' in 'archival_unit_restrictions' ist der spezifische Grund für diese Einheit. Die aktuelle Struktur mit beiden ist redundant und unklar."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Die N:M-Beziehung zwischen 'Benutzungsantrag' und 'Verzeichnungseinheit' ist im LogicalSchema als 'access_request_units' modelliert mit dem Beziehungsattribut 'requested_on'. Im ER-Modell ist dieses Attribut als 'angefordert_am' definiert. Dies ist konsistent. ABER: Der Anforderungstext und das ER-Modell sind unklar, ob ein Antrag sich auf mehrere Einheiten beziehen kann oder ob jeder Antrag nur eine Einheit betrifft. Das ER-Modell definiert die Kardinalität als N:M, was bedeutet, dass ein Antrag mehrere Einheiten betreffen kann. Dies ist korrekt gemäß Anforderungstext ('Ein Antrag kann sich auf mehrere Einheiten beziehen'). ABER: Die Tabelle 'access_requests' hat kein Attribut, das die Einheiten direkt referenziert, sondern nur über die Junction-Table 'access_request_units'. Dies ist korrekt für N:M-Beziehungen. ABER: Es ist unklar, ob die 'status'-Spalte in 'access_requests' sich auf den gesamten Antrag oder auf einzelne Einheiten bezieht. Dies ist ein konzeptionelles Problem.",
-          "korrekturanweisung": "Im ER-Modell klarer dokumentieren, ob der 'status' eines Antrags sich auf den gesamten Antrag oder auf einzelne Einheiten bezieht. Falls auf einzelne Einheiten, sollte 'status' in die Junction-Table 'access_request_units' verschoben werden."
+          "beschreibung": "KRITISCH: Die N:M-Beziehung zwischen 'Verzeichnungseinheit' und 'Schutzfrist' ist im LogicalSchema nicht korrekt implementiert. Das ERModell definiert diese als N:M mit Beziehungsattributen 'Anwendungsdatum' und 'Grund_der_Anwendung'. Das LogicalSchema hat stattdessen zwei separate Tabellen: 'access_restrictions' (mit Grund, Herkunftsbasiert, Inhaltsbasiert) und 'archival_unit_restrictions' (Junction-Table mit Anwendungsdatum und Grund_der_Anwendung). Dies ist konzeptionell verwirrend: Ist 'access_restrictions' eine Entität oder nur eine Lookup-Tabelle? Die Struktur suggeriert, dass eine Schutzfrist (access_restriction) wiederverwendbar ist und auf mehrere Einheiten angewendet werden kann, aber die Attribute 'expiration_date' und 'reason' sind spezifisch für eine Anwendung, nicht für die Schutzfrist selbst.",
+          "korrekturanweisung": "Entweder: (A) 'access_restrictions' sollte nur Metadaten enthalten (z.B. Schutzfrist-Typ: 'Personenbezogenes Material', 'Herkunftsbasiert'), und 'archival_unit_restrictions' sollte die konkrete Anwendung mit Ablaufdatum und Grund enthalten. Oder: (B) 'access_restrictions' sollte die konkrete Schutzfrist sein (mit Ablaufdatum, Grund, Herkunftsbasiert, Inhaltsbasiert), und es sollte eine einfache Junction-Table 'archival_unit_access_restrictions' geben. Die aktuelle Struktur ist redundant und unklar."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen 'Entscheidung' und 'Verzeichnungseinheit' ist im LogicalSchema nicht explizit modelliert. Das ER-Modell definiert eine 1:N-Beziehung zwischen 'Benutzungsantrag' und 'Entscheidung', aber keine direkte Beziehung zwischen 'Entscheidung' und 'Verzeichnungseinheit'. Im LogicalSchema gibt es eine Junction-Table 'decision_units', die diese Beziehung modelliert. Dies ist eine Diskrepanz: Das ER-Modell dokumentiert diese Beziehung nicht, aber das LogicalSchema implementiert sie. Der Anforderungstext ist unklar, ob Entscheidungen sich auf einzelne Einheiten oder auf den gesamten Antrag beziehen ('im Verlauf können Auflagen, Genehmigungen oder Ablehnungen dokumentiert werden').",
-          "korrekturanweisung": "Im ER-Modell explizit eine N:M-Beziehung zwischen 'Entscheidung' und 'Verzeichnungseinheit' definieren, oder klarer dokumentieren, dass Entscheidungen sich auf den gesamten Antrag beziehen und nicht auf einzelne Einheiten."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung zwischen 'Ausleihe' und 'Verzeichnungseinheit' ist im LogicalSchema als 1:N definiert (eine Einheit kann mehrfach ausgeliehen werden). Dies ist korrekt. ABER: Das ER-Modell definiert die Beziehung zwischen 'Ausleihe' und 'Antragsteller' als N:1, was bedeutet, dass ein Antragsteller mehrere Ausleihungen haben kann. Dies ist korrekt. ABER: Es ist unklar, ob eine Ausleihe immer mit einem Benutzungsantrag verknüpft ist oder ob Ausleihungen unabhängig von Anträgen erfolgen können. Das ER-Modell und das LogicalSchema dokumentieren keine Beziehung zwischen 'Ausleihe' und 'Benutzungsantrag', was bedeutet, dass Ausleihungen unabhängig sind. Dies ist möglicherweise korrekt (der Anforderungstext erwähnt 'Restaurierung oder Ausstellungen' als Zwecke), aber es ist nicht explizit dokumentiert.",
-          "korrekturanweisung": "Im ER-Modell klarer dokumentieren, ob Ausleihungen mit Benutzungsanträgen verknüpft sind oder unabhängig erfolgen können. Falls unabhängig, sollte dies explizit festgehalten werden."
+          "beschreibung": "KRITISCH: Die N:M-Beziehung zwischen 'Benutzungsantrag' und 'Verzeichnungseinheit' ist im LogicalSchema als 'access_request_units' implementiert, enthält aber nur 'approval_status' und 'conditions' als Beziehungsattribute. Laut ERModell sollten die Beziehungsattribute 'Genehmigungsstatus' und 'Auflagen' sein. Das LogicalSchema hat dies korrekt, aber die Anforderung und das ERModell sind unklar, ob 'Entscheidung' (approval/denial/conditions) auf Antrag-Ebene oder auf Einheit-Ebene dokumentiert werden soll. Der Anforderungstext sagt: 'im Verlauf koennen Auflagen, Genehmigungen oder Ablehnungen dokumentiert werden' und 'Nicht immer ist klar, ob jede Entscheidung einzeln festgehalten werden muss oder nur das Endergebnis.' Das LogicalSchema hat 'status' und 'decision' in 'access_requests' (Antrag-Ebene) und 'approval_status' und 'conditions' in 'access_request_units' (Einheit-Ebene). Dies ist eine sinnvolle Auflösung der Ambiguität, aber es ist nicht explizit im ERModell dokumentiert.",
+          "korrekturanweisung": "Die Struktur ist konzeptionell sinnvoll (Entscheidung pro Einheit), aber das ERModell sollte dies explizit klären. Keine Korrektur des LogicalSchema erforderlich, aber das ERModell sollte präzisiert werden."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'access_restrictions' hat redundante Attribute: 'restriction_start' und 'restriction_end' definieren ein Zeitfenster, aber die Entität 'Schutzfrist' im ER-Modell hat nur 'sperrfrist_bis'. Dies führt zu einer Inkonsistenz. Zusätzlich sind die Attribute 'origin_based', 'content_based', 'personal_data_related' (alle BOOLEAN, nullable) redundant mit dem Attribut 'reason' (TEXT). Diese Attribute könnten aus dem 'reason'-Text extrahiert werden oder sollten in einer separaten Tabelle 'restriction_reasons' normalisiert werden. Die aktuelle Modellierung verstößt gegen die 3. Normalform, da die Attribute 'origin_based', 'content_based', 'personal_data_related' funktional abhängig vom 'reason' sind.",
-          "korrekturanweisung": "Entweder: (1) Die Attribute 'origin_based', 'content_based', 'personal_data_related' entfernen und nur 'reason' als Freitext beibehalten, ODER (2) Eine separate Tabelle 'restriction_reasons' mit den Kategorien erstellen und die 'access_restrictions'-Tabelle normalisieren."
+          "beschreibung": "KRITISCH: Die Tabelle 'access_restrictions' hat redundante Attribute 'is_origin_based' und 'is_content_based' (beide BOOLEAN). Dies ist eine schlechte Normalisierung: Statt zwei BOOLEAN-Spalten sollte es ein Attribut 'restriction_basis' (VARCHAR) mit Werten wie 'origin', 'content', 'both' geben. Alternativ könnte es eine separate Lookup-Tabelle 'restriction_bases' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Ersetze 'is_origin_based' und 'is_content_based' durch ein einzelnes Attribut 'restriction_basis' (VARCHAR) mit Werten 'origin', 'content', 'both', oder erstelle eine Lookup-Tabelle 'restriction_bases' mit einem Fremdschlüssel."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'requesters' ist eine Subtyp-Tabelle, die eine Person oder eine Institution referenziert (person_id und institution_id sind beide nullable). Dies ist eine Verletzung der Normalisierung: Ein Antragsteller sollte entweder eine Person ODER eine Institution sein, nicht beide gleichzeitig. Die aktuelle Modellierung erlaubt Anomalien (z.B. ein Antragsteller mit sowohl person_id als auch institution_id). Dies sollte durch eine Constraint (CHECK person_id IS NOT NULL XOR institution_id IS NOT NULL) oder durch eine Subtyp-Spezialisierung (separate Tabellen 'person_requesters' und 'institution_requesters') gelöst werden.",
-          "korrekturanweisung": "Entweder: (1) Eine CHECK-Constraint hinzufügen, um sicherzustellen, dass genau eines der Attribute (person_id oder institution_id) NOT NULL ist, ODER (2) Separate Subtyp-Tabellen 'person_requesters' und 'institution_requesters' erstellen, die jeweils auf 'persons' bzw. 'institutions' referenzieren."
+          "beschreibung": "KRITISCH: Die Tabelle 'digitals' hat redundante BOOLEAN-Attribute 'is_internally_visible', 'is_reading_room_available', 'is_online_available'. Dies ist eine schlechte Normalisierung: Statt drei BOOLEAN-Spalten sollte es ein Attribut 'access_level' (VARCHAR) mit Werten wie 'internal', 'reading_room', 'online' geben, oder eine separate Lookup-Tabelle 'access_levels'. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Ersetze die drei BOOLEAN-Spalten durch ein einzelnes Attribut 'access_level' (VARCHAR) mit Werten 'internal', 'reading_room', 'online', oder erstelle eine Lookup-Tabelle 'access_levels' mit einem Fremdschlüssel."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'applicants' hat ein Attribut 'type' (VARCHAR), das Werte wie 'person', 'institution' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'applicant_types' geben, oder das Schema sollte zwei separate Tabellen 'persons' und 'institutions' haben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'applicant_types' mit Werten 'person', 'institution' und ersetze das Attribut 'type' durch einen Fremdschlüssel 'applicant_type_id'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'providing_institutions' hat ein Attribut 'type' (VARCHAR), das Werte wie 'ministry', 'court', 'estate' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'institution_types' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'institution_types' mit Werten wie 'ministry', 'court', 'estate' und ersetze das Attribut 'type' durch einen Fremdschlüssel 'institution_type_id'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'access_requests' hat ein Attribut 'status' (VARCHAR), das Werte wie 'pending', 'approved', 'denied' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'request_statuses' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'request_statuses' mit Werten wie 'pending', 'approved', 'denied' und ersetze das Attribut 'status' durch einen Fremdschlüssel 'status_id'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'access_request_units' hat ein Attribut 'approval_status' (VARCHAR), das Werte wie 'approved', 'denied', 'conditional' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'approval_statuses' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'approval_statuses' mit Werten wie 'approved', 'denied', 'conditional' und ersetze das Attribut 'approval_status' durch einen Fremdschlüssel 'approval_status_id'."
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": false,
+          "beschreibung": "KRITISCH: Die Tabelle 'loans' hat ein Attribut 'purpose' (VARCHAR), das Werte wie 'restoration', 'exhibition', 'research' enthält. Dies ist eine schlechte Normalisierung: Statt ein VARCHAR-Attribut sollte es eine separate Lookup-Tabelle 'loan_purposes' geben. Die aktuelle Struktur ist redundant und ineffizient.",
+          "korrekturanweisung": "Erstelle eine Lookup-Tabelle 'loan_purposes' mit Werten wie 'restoration', 'exhibition', 'research' und ersetze das Attribut 'purpose' durch einen Fremdschlüssel 'purpose_id'."
         }
       ],
       "origin_step": "cmd"
@@ -1849,33 +1779,33 @@
   },
   "telemetry": {
     "total_calls": 10,
-    "total_input_tokens": 79306,
-    "total_output_tokens": 32935,
-    "total_tokens": 112241,
+    "total_input_tokens": 83079,
+    "total_output_tokens": 32194,
+    "total_tokens": 115273,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1905,
-        "output_tokens": 2776,
+        "output_tokens": 2604,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 3,
-        "input_tokens": 13968,
-        "output_tokens": 9205,
+        "input_tokens": 22175,
+        "output_tokens": 8952,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 3,
-        "input_tokens": 24087,
-        "output_tokens": 11978,
+        "input_tokens": 22977,
+        "output_tokens": 10711,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 3,
-        "input_tokens": 39346,
-        "output_tokens": 8976,
+        "input_tokens": 36022,
+        "output_tokens": 9927,
         "cost_usd": 0.0
       }
     },
@@ -1886,7 +1816,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1905,
-        "output_tokens": 2776,
+        "output_tokens": 2604,
         "cost_usd": 0.0
       },
       {
@@ -1894,8 +1824,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4656,
-        "output_tokens": 3079,
+        "input_tokens": 4484,
+        "output_tokens": 2790,
         "cost_usd": 0.0
       },
       {
@@ -1903,8 +1833,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 6410,
-        "output_tokens": 3689,
+        "input_tokens": 5995,
+        "output_tokens": 3572,
         "cost_usd": 0.0
       },
       {
@@ -1912,8 +1842,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 12859,
-        "output_tokens": 2234,
+        "input_tokens": 12155,
+        "output_tokens": 3322,
         "cost_usd": 0.0
       },
       {
@@ -1921,8 +1851,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4656,
-        "output_tokens": 3063,
+        "input_tokens": 9076,
+        "output_tokens": 3133,
         "cost_usd": 0.0
       },
       {
@@ -1930,8 +1860,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8538,
-        "output_tokens": 3961,
+        "input_tokens": 9122,
+        "output_tokens": 3296,
         "cost_usd": 0.0
       },
       {
@@ -1939,8 +1869,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 13060,
-        "output_tokens": 2833,
+        "input_tokens": 11712,
+        "output_tokens": 2218,
         "cost_usd": 0.0
       },
       {
@@ -1948,8 +1878,8 @@
         "iteration": 2,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4656,
-        "output_tokens": 3063,
+        "input_tokens": 8615,
+        "output_tokens": 3029,
         "cost_usd": 0.0
       },
       {
@@ -1957,8 +1887,8 @@
         "iteration": 2,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 9139,
-        "output_tokens": 4328,
+        "input_tokens": 7860,
+        "output_tokens": 3843,
         "cost_usd": 0.0
       },
       {
@@ -1966,8 +1896,8 @@
         "iteration": 2,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 13427,
-        "output_tokens": 3909,
+        "input_tokens": 12155,
+        "output_tokens": 4387,
         "cost_usd": 0.0
       }
     ]

@@ -275,35 +275,6 @@
           "foreign_keys": []
         },
         {
-          "name": "appointment_diagnoses",
-          "columns": [
-            {
-              "name": "appointment_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "diagnosis_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "appointment_id",
-              "references_table": "appointments",
-              "references_column": "id"
-            },
-            {
-              "from_column": "diagnosis_id",
-              "references_table": "diagnoses",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
           "name": "medications",
           "columns": [
             {
@@ -381,7 +352,7 @@
           ]
         },
         {
-          "name": "medication_intolerances",
+          "name": "intolerances",
           "columns": [
             {
               "name": "id",
@@ -411,6 +382,35 @@
             {
               "from_column": "medication_id",
               "references_table": "medications",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "appointment_diagnoses",
+          "columns": [
+            {
+              "name": "appointment_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "appointment_id",
+              "references_table": "appointments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "diagnosis_id",
+              "references_table": "diagnoses",
               "references_column": "id"
             }
           ]
@@ -448,10 +448,10 @@
             "TerminID",
             "PatientenID",
             "ArztID",
-            "geplanter_Zeitpunkt",
+            "GeplantZeitpunkt",
             "Status"
           ],
-          "beschreibung": "Termine von Patienten bei Ärzten mit Zeitpunkt und Status (wahrgenommen, abgesagt, verschoben)"
+          "beschreibung": "Termine von Patienten bei Ärzten mit geplanten Zeitpunkten und Status (wahrgenommen, abgesagt, verschoben)"
         },
         {
           "name": "Diagnose",
@@ -509,7 +509,7 @@
           "von": "Termin",
           "zu": "Diagnose",
           "kardinalitaet": "M:N",
-          "beschreibung": "Bei einem Termin können mehrere Diagnosen festgestellt werden, eine Diagnose kann bei vielen Terminen vorkommen"
+          "beschreibung": "Bei einem Termin können mehrere Diagnosen festgestellt werden, eine Diagnose kann bei vielen verschiedenen Terminen vorkommen"
         },
         {
           "von": "Verordnung",
@@ -538,35 +538,35 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Begriff 'Kontaktdaten' ist nicht spezifiziert. Unklar ist, welche konkreten Felder darunter fallen (z.B. Telefon, E-Mail, Adresse, etc.)",
+          "beschreibung": "Der Text erwähnt 'Besuch' und 'Termin' teilweise synonym. Unklar ist, ob jeder Termin automatisch ein Besuch ist oder ob es auch Termine gibt, die nicht wahrgenommen werden und daher keinen Besuch darstellen.",
+          "betroffene_elemente": [
+            "Termin",
+            "Verordnung"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob Medikamentenverordnungen nur nach wahrgenommenen Terminen erfolgen oder auch nach abgesagten/verschobenen Terminen möglich sind.",
+          "betroffene_elemente": [
+            "Verordnung",
+            "Termin"
+          ]
+        },
+        {
+          "beschreibung": "Die genaue Struktur von 'Kontaktdaten' ist nicht spezifiziert (z.B. Telefon, E-Mail, Adresse oder Kombination davon).",
           "betroffene_elemente": [
             "Patient"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob 'Besuch' und 'Termin' synonym zu verstehen sind oder ob es unterschiedliche Konzepte sind. Der Text verwendet beide Begriffe teilweise parallel.",
+          "beschreibung": "Unklar ist, ob ein Arzt mehrere Fachrichtungen haben kann oder nur eine.",
           "betroffene_elemente": [
-            "Termin"
+            "Arzt"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Beziehung zwischen Termin und Diagnose über eine separate Entität (z.B. Befund) modelliert werden soll oder direkt als M:N-Beziehung",
-          "betroffene_elemente": [
-            "Termin",
-            "Diagnose"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob 'Form' und 'Stärke' separate Attribute oder eigenständige Entitäten sein sollten (z.B. wenn mehrere Kombinationen möglich sind)",
+          "beschreibung": "Unklar ist, ob die Attribute 'Form' und 'Stärke' als separate Attribute oder als Kombinationen (z.B. als Varianten) modelliert werden sollen.",
           "betroffene_elemente": [
             "Medikament"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob Verordnungen auch ohne einen Termin existieren können oder ob sie immer an einen Termin gebunden sind",
-          "betroffene_elemente": [
-            "Verordnung",
-            "Termin"
           ]
         }
       ]
@@ -799,6 +799,23 @@
               "pflichtfeld": true
             }
           ]
+        },
+        {
+          "name": "Termin_Diagnose",
+          "attribute": [
+            {
+              "name": "TerminID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "DiagnoseID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
         }
       ],
       "beziehungen": [
@@ -815,9 +832,15 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Termin",
+          "von": "Termin_Diagnose",
+          "zu": "Termin",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Termin_Diagnose",
           "zu": "Diagnose",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
@@ -870,25 +893,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im logischen Schema vorhanden: patients, doctors, appointments, diagnoses, medications, prescriptions, medication_intolerances. Die Junction-Table appointment_diagnoses für die M:N-Beziehung ist korrekt implementiert.",
+          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im logischen Schema vorhanden: patients, doctors, appointments, diagnoses, medications, prescriptions, intolerances. Die Junction-Table appointment_diagnoses ist ebenfalls korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt übersetzt: Patientendaten (firstname, lastname, phone, email, address, birthdate), Arztdaten (firstname, lastname, specialization, employment_start, is_active), Termindaten (scheduled_datetime, status), Diagnosen (description), Medikamente (name, form, strength), Verordnungen (quantity, frequency), Unverträglichkeiten. Namenskonventionen sind konsistent eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im logischen Schema vorhanden und korrekt benannt (snake_case, englisch). Kontaktdaten wurden sinnvoll in phone, email, address aufgelöst. Alle Pflichtfelder sind nullable=false, optionale Felder nullable=true.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Termin→Patient (N:1) via patient_id, (2) Termin→Arzt (N:1) via doctor_id, (3) Termin↔Diagnose (M:N) via appointment_diagnoses Junction-Table mit Composite-PK, (4) Verordnung→Termin (N:1) via appointment_id, (5) Verordnung→Medikament (N:1) via medication_id, (6) Unverträglichkeit→Patient (N:1) via patient_id, (7) Unverträglichkeit→Medikament (N:1) via medication_id. Kardinalitäten sind korrekt abgebildet.",
+          "beschreibung": "Alle 8 Beziehungen aus dem ER-Modell sind korrekt im logischen Schema abgebildet: N:1-Beziehungen durch Fremdschlüssel (patient_id, doctor_id in appointments; appointment_id, medication_id in prescriptions; patient_id, medication_id in intolerances), M:N-Beziehung durch Junction-Table appointment_diagnoses mit Composite Primary Key.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Alle Tabellen sind in 1NF (atomare Werte, keine Wiederholungsgruppen). (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK (2NF). (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen erkennbar (3NF). Die Junction-Table appointment_diagnoses ist korrekt normalisiert mit Composite-PK. Keine redundanten Daten oder unnötige Denormalisierungen vorhanden.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform. Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten erkannt. Alle Attribute sind atomar, Schlüsselabhängigkeiten sind korrekt strukturiert.",
           "korrekturanweisung": ""
         }
       ],
@@ -898,7 +921,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    birthdate DATE NOT NULL,\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE doctors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255) NOT NULL,\n    employment_start DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_doctors PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    doctor_id INTEGER NOT NULL,\n    scheduled_datetime TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_appointments_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctors (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    description VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_diagnoses (\n    appointment_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointment_diagnoses PRIMARY KEY (appointment_id, diagnosis_id),\n    CONSTRAINT fk_appointment_diagnoses_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE medications (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    form VARCHAR(255),\n    strength VARCHAR(255),\n    CONSTRAINT pk_medications PRIMARY KEY (id)\n);\n\nCREATE TABLE medication_intolerances (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    CONSTRAINT pk_medication_intolerances PRIMARY KEY (id),\n    CONSTRAINT fk_medication_intolerances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_medication_intolerances_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n\nCREATE TABLE prescriptions (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_prescriptions PRIMARY KEY (id),\n    CONSTRAINT fk_prescriptions_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_prescriptions_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n",
+    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    birthdate DATE NOT NULL,\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE doctors (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255) NOT NULL,\n    employment_start DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_doctors PRIMARY KEY (id)\n);\n\nCREATE TABLE appointments (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    doctor_id INTEGER NOT NULL,\n    scheduled_datetime TIMESTAMP NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_appointments PRIMARY KEY (id),\n    CONSTRAINT fk_appointments_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_appointments_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctors (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    description VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id)\n);\n\nCREATE TABLE appointment_diagnoses (\n    appointment_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    CONSTRAINT pk_appointment_diagnoses PRIMARY KEY (appointment_id, diagnosis_id),\n    CONSTRAINT fk_appointment_diagnoses_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_appointment_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n\nCREATE TABLE medications (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    form VARCHAR(255),\n    strength VARCHAR(255),\n    CONSTRAINT pk_medications PRIMARY KEY (id)\n);\n\nCREATE TABLE intolerances (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    CONSTRAINT pk_intolerances PRIMARY KEY (id),\n    CONSTRAINT fk_intolerances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_intolerances_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n\nCREATE TABLE prescriptions (\n    id INTEGER NOT NULL,\n    appointment_id INTEGER NOT NULL,\n    medication_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    frequency VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_prescriptions PRIMARY KEY (id),\n    CONSTRAINT fk_prescriptions_appointment_id FOREIGN KEY (appointment_id) REFERENCES appointments (id),\n    CONSTRAINT fk_prescriptions_medication_id FOREIGN KEY (medication_id) REFERENCES medications (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -923,25 +946,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im logischen Schema vorhanden: patients, doctors, appointments, diagnoses, medications, prescriptions, medication_intolerances. Die Junction-Table appointment_diagnoses für die M:N-Beziehung ist korrekt implementiert.",
+          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im logischen Schema vorhanden: patients, doctors, appointments, diagnoses, medications, prescriptions, intolerances. Die Junction-Table appointment_diagnoses ist ebenfalls korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt übersetzt: Patientendaten (firstname, lastname, phone, email, address, birthdate), Arztdaten (firstname, lastname, specialization, employment_start, is_active), Termindaten (scheduled_datetime, status), Diagnosen (description), Medikamente (name, form, strength), Verordnungen (quantity, frequency), Unverträglichkeiten. Namenskonventionen sind konsistent eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im logischen Schema vorhanden und korrekt benannt (snake_case, englisch). Kontaktdaten wurden sinnvoll in phone, email, address aufgelöst. Alle Pflichtfelder sind nullable=false, optionale Felder nullable=true.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Termin→Patient (N:1) via patient_id, (2) Termin→Arzt (N:1) via doctor_id, (3) Termin↔Diagnose (M:N) via appointment_diagnoses Junction-Table mit Composite-PK, (4) Verordnung→Termin (N:1) via appointment_id, (5) Verordnung→Medikament (N:1) via medication_id, (6) Unverträglichkeit→Patient (N:1) via patient_id, (7) Unverträglichkeit→Medikament (N:1) via medication_id. Kardinalitäten sind korrekt abgebildet.",
+          "beschreibung": "Alle 8 Beziehungen aus dem ER-Modell sind korrekt im logischen Schema abgebildet: N:1-Beziehungen durch Fremdschlüssel (patient_id, doctor_id in appointments; appointment_id, medication_id in prescriptions; patient_id, medication_id in intolerances), M:N-Beziehung durch Junction-Table appointment_diagnoses mit Composite Primary Key.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Alle Tabellen sind in 1NF (atomare Werte, keine Wiederholungsgruppen). (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK (2NF). (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen erkennbar (3NF). Die Junction-Table appointment_diagnoses ist korrekt normalisiert mit Composite-PK. Keine redundanten Daten oder unnötige Denormalisierungen vorhanden.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform. Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten erkannt. Alle Attribute sind atomar, Schlüsselabhängigkeiten sind korrekt strukturiert.",
           "korrekturanweisung": ""
         }
       ],
@@ -952,33 +975,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 17720,
-    "total_output_tokens": 6625,
-    "total_tokens": 24345,
+    "total_input_tokens": 18076,
+    "total_output_tokens": 6174,
+    "total_tokens": 24250,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1634,
-        "output_tokens": 1615,
+        "output_tokens": 1610,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3346,
-        "output_tokens": 2072,
+        "input_tokens": 3341,
+        "output_tokens": 1910,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4562,
-        "output_tokens": 1895,
+        "input_tokens": 4746,
+        "output_tokens": 1893,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 8178,
-        "output_tokens": 1043,
+        "input_tokens": 8355,
+        "output_tokens": 761,
         "cost_usd": 0.0
       }
     },
@@ -989,7 +1012,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1634,
-        "output_tokens": 1615,
+        "output_tokens": 1610,
         "cost_usd": 0.0
       },
       {
@@ -997,8 +1020,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3346,
-        "output_tokens": 2072,
+        "input_tokens": 3341,
+        "output_tokens": 1910,
         "cost_usd": 0.0
       },
       {
@@ -1006,8 +1029,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4562,
-        "output_tokens": 1895,
+        "input_tokens": 4746,
+        "output_tokens": 1893,
         "cost_usd": 0.0
       },
       {
@@ -1015,8 +1038,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8178,
-        "output_tokens": 1043,
+        "input_tokens": 8355,
+        "output_tokens": 761,
         "cost_usd": 0.0
       }
     ]

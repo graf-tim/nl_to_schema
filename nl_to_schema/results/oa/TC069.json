@@ -2,15 +2,15 @@
   "testfall_id": "TC069",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.36403389830508476,
-  "score_gesamt": 0.6184203389830509,
+  "score_semantisch": 0.3610082644628099,
+  "score_gesamt": 0.6166049586776859,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
     "pk_tabellen_gesamt": 12,
     "pk_tabellen_mit_pk": 12,
-    "fk_referenzen_gesamt": 14,
+    "fk_referenzen_gesamt": 15,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
@@ -23,12 +23,12 @@
       "nur_in_generiert": 6
     },
     "attribut": {
-      "precision": 0.35294117647058826,
+      "precision": 0.3333333333333333,
       "recall": 0.26865671641791045,
-      "f1": 0.3050847457627119,
+      "f1": 0.29752066115702475,
       "matched": 18,
       "nur_in_referenz": 49,
-      "nur_in_generiert": 33
+      "nur_in_generiert": 36
     },
     "beziehung": {
       "recall": 0.25,
@@ -71,6 +71,26 @@
     {
       "element": "storage_locations",
       "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "production_order_operations.work_center_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "production_order_operations.planned_start_timestamp",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "production_order_operations.planned_end_timestamp",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "production_order_operations.status",
+      "typ": "attribut",
       "fehlerklasse": null
     },
     {
@@ -129,37 +149,17 @@
       "fehlerklasse": null
     },
     {
+      "element": "material_reservations.storage_location_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "material_reservations.reserved_quantity",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
       "element": "material_reservations.reservation_date",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "product_families.description",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "production_order_operations.work_center_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "production_order_operations.planned_start_timestamp",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "production_order_operations.planned_end_timestamp",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "production_order_operations.status",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -398,6 +398,12 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": []
@@ -454,10 +460,10 @@
               "nullable": false
             },
             {
-              "name": "unit",
+              "name": "type",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": []
@@ -493,7 +499,7 @@
               "name": "unit",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -531,10 +537,16 @@
               "nullable": false
             },
             {
-              "name": "release_status",
+              "name": "status",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "is_released",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -561,12 +573,6 @@
               "nullable": false
             },
             {
-              "name": "operation_number",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "operation_type",
               "type": "VARCHAR",
               "primary_key": false,
@@ -577,6 +583,12 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "estimated_duration_hours",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -603,7 +615,7 @@
               "nullable": false
             },
             {
-              "name": "workstation_designation",
+              "name": "workplace",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -612,7 +624,7 @@
           "foreign_keys": []
         },
         {
-          "name": "operation_machine_alternatives",
+          "name": "operation_machines",
           "columns": [
             {
               "name": "id",
@@ -710,6 +722,12 @@
               "nullable": false
             },
             {
+              "name": "work_plan_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
               "name": "quantity",
               "type": "DECIMAL",
               "primary_key": false,
@@ -739,11 +757,16 @@
               "from_column": "article_id",
               "references_table": "articles",
               "references_column": "id"
+            },
+            {
+              "from_column": "work_plan_id",
+              "references_table": "work_plans",
+              "references_column": "id"
             }
           ]
         },
         {
-          "name": "order_operations",
+          "name": "production_order_operations",
           "columns": [
             {
               "name": "id",
@@ -764,13 +787,13 @@
               "nullable": false
             },
             {
-              "name": "machine_id",
+              "name": "sequence",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "sequence",
+              "name": "machine_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -822,7 +845,7 @@
               "nullable": false
             },
             {
-              "name": "storage_location",
+              "name": "warehouse_location",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -852,15 +875,15 @@
             "Produktfamilie",
             "Planungsstatus"
           ],
-          "beschreibung": "Fertigungsprodukte, die hergestellt werden. Jeder Artikel hat eine eindeutige Materialnummer, gehört zu einer Produktfamilie und hat einen Planungsstatus."
+          "beschreibung": "Hergestellte Produkte, identifiziert durch Materialnummern, zugeordnet zu Produktfamilien und mit Planungsstatus"
         },
         {
           "name": "Komponente",
           "attribute": [
             "Komponentennummer",
-            "Einheit"
+            "Typ"
           ],
-          "beschreibung": "Teile oder Rohstoffe, die in Artikeln verbaut werden. Eine Komponente kann in mehreren Artikeln verwendet werden."
+          "beschreibung": "Teile oder Rohstoffe, die in Artikeln verbaut werden; können in mehreren Artikeln vorkommen"
         },
         {
           "name": "Stückliste",
@@ -868,40 +891,39 @@
             "Menge",
             "Einheit"
           ],
-          "beschreibung": "Abbildung der Zusammensetzung eines Artikels aus Komponenten mit Mengenangaben."
+          "beschreibung": "Zuordnung von Komponenten zu Artikeln mit Mengenangaben und Einheiten"
         },
         {
           "name": "Arbeitsplan",
           "attribute": [
             "Stand",
-            "Freigabestatus"
+            "Status"
           ],
-          "beschreibung": "Beschreibung der Herstellungsschritte für einen Artikel. Ein Artikel kann mehrere Arbeitspläne in verschiedenen Ständen haben."
+          "beschreibung": "Plan mit Vorgängen für die Herstellung eines Artikels; mehrere Stände möglich, meist ein freigegebener Stand aktiv"
         },
         {
           "name": "Vorgang",
           "attribute": [
             "Vorgangstyp",
-            "Reihenfolge",
-            "Vorgangsnummer"
+            "Reihenfolge"
           ],
-          "beschreibung": "Einzelne Herstellungsschritte wie Rüsten, Fräsen, Lackieren oder Endprüfung. Vorgänge haben eine definierte Reihenfolge innerhalb eines Arbeitsplans."
+          "beschreibung": "Einzelne Schritte im Arbeitsplan wie Rüsten, Fräsen, Lackieren, Endprüfung mit definierten Reihenfolgen"
         },
         {
           "name": "Maschine",
           "attribute": [
             "Maschinenname",
-            "Arbeitsplatzbezeichnung"
+            "Arbeitsplatz"
           ],
-          "beschreibung": "Anlagen oder Arbeitsplätze, auf denen Vorgänge durchgeführt werden."
+          "beschreibung": "Anlagen oder Arbeitsplätze, auf denen Vorgänge durchgeführt werden"
         },
         {
-          "name": "Maschinenverfügbarkeit",
+          "name": "Verfügbarkeit",
           "attribute": [
             "Zeitraum",
             "VerfügbareStunden"
           ],
-          "beschreibung": "Zeiträume mit verfügbaren Stunden für eine Maschine, berücksichtigt Wartung und Schichtbetrieb."
+          "beschreibung": "Zeiträume mit verfügbaren Stunden für Maschinen, berücksichtigt Wartung und Schichtbetrieb"
         },
         {
           "name": "Fertigungsauftrag",
@@ -912,15 +934,7 @@
             "Endtermin",
             "Status"
           ],
-          "beschreibung": "Produktionsauftrag für einen Artikel mit geplanter Menge, Terminen und Status."
-        },
-        {
-          "name": "Auftragsvorgang",
-          "attribute": [
-            "Vorgangsnummer",
-            "Reihenfolge"
-          ],
-          "beschreibung": "Konkrete Planung eines Vorgangs für einen Fertigungsauftrag."
+          "beschreibung": "Auftrag zur Herstellung eines Artikels mit geplanter Menge, Terminen und Durchlaufstatus"
         },
         {
           "name": "Materialreservierung",
@@ -928,14 +942,7 @@
             "Menge",
             "Lagerort"
           ],
-          "beschreibung": "Reservierung von Materialien (Komponenten) für einen Fertigungsauftrag, optional mit Lagerort."
-        },
-        {
-          "name": "Produktfamilie",
-          "attribute": [
-            "Familienname"
-          ],
-          "beschreibung": "Kategorisierung von Artikeln in Produktfamilien."
+          "beschreibung": "Reservierung von Materialien für einen Fertigungsauftrag, optional mit spezifischem Lagerort"
         }
       ],
       "beziehungen": [
@@ -943,108 +950,106 @@
           "von": "Artikel",
           "zu": "Produktfamilie",
           "kardinalitaet": "N:1",
-          "beschreibung": "Ein Artikel gehört zu genau einer Produktfamilie."
+          "beschreibung": "Ein Artikel gehört zu genau einer Produktfamilie"
         },
         {
           "von": "Artikel",
           "zu": "Stückliste",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Artikel hat eine oder mehrere Stücklisten-Einträge (Komponenten mit Mengen)."
+          "beschreibung": "Ein Artikel hat eine oder mehrere Stücklisten-Einträge"
         },
         {
-          "von": "Stückliste",
-          "zu": "Komponente",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Ein Stücklisten-Eintrag bezieht sich auf genau eine Komponente."
+          "von": "Komponente",
+          "zu": "Stückliste",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Komponente kann in mehreren Stücklisten vorkommen"
         },
         {
           "von": "Artikel",
           "zu": "Arbeitsplan",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Artikel kann mehrere Arbeitspläne in verschiedenen Ständen haben."
+          "beschreibung": "Ein Artikel kann mehrere Arbeitspläne haben (verschiedene Stände)"
         },
         {
           "von": "Arbeitsplan",
           "zu": "Vorgang",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Arbeitsplan besteht aus mehreren Vorgängen in definierter Reihenfolge."
+          "beschreibung": "Ein Arbeitsplan besteht aus mehreren Vorgängen in definierter Reihenfolge"
         },
         {
           "von": "Vorgang",
           "zu": "Maschine",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Vorgang kann auf mehreren alternativen Maschinen durchgeführt werden; eine Maschine kann mehrere Vorgänge ausführen."
+          "beschreibung": "Ein Vorgang kann auf mehreren alternativen Maschinen durchgeführt werden; eine Maschine kann mehrere Vorgänge ausführen"
         },
         {
           "von": "Maschine",
-          "zu": "Maschinenverfügbarkeit",
+          "zu": "Verfügbarkeit",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Maschine hat mehrere Verfügbarkeitszeiträume."
+          "beschreibung": "Eine Maschine hat mehrere Verfügbarkeitszeiträume"
         },
         {
           "von": "Fertigungsauftrag",
           "zu": "Artikel",
           "kardinalitaet": "N:1",
-          "beschreibung": "Ein Fertigungsauftrag bezieht sich auf genau einen Artikel."
+          "beschreibung": "Ein Fertigungsauftrag bezieht sich auf genau einen Artikel"
         },
         {
           "von": "Fertigungsauftrag",
-          "zu": "Auftragsvorgang",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Fertigungsauftrag hat mehrere eingeplante Vorgänge."
-        },
-        {
-          "von": "Auftragsvorgang",
           "zu": "Vorgang",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Ein Auftragsvorgang basiert auf einem Vorgang aus dem Arbeitsplan."
-        },
-        {
-          "von": "Auftragsvorgang",
-          "zu": "Maschine",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Ein Auftragsvorgang wird einer bestimmten Maschine zugeordnet."
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Fertigungsauftrag hat eingeplante Vorgänge (meist aus dem Arbeitsplan, möglicherweise mit Ausnahmen)"
         },
         {
           "von": "Fertigungsauftrag",
           "zu": "Materialreservierung",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Fertigungsauftrag hat mehrere Materialreservierungen."
+          "beschreibung": "Ein Fertigungsauftrag hat eine oder mehrere Materialreservierungen"
         },
         {
-          "von": "Materialreservierung",
-          "zu": "Komponente",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Eine Materialreservierung bezieht sich auf genau eine Komponente."
+          "von": "Komponente",
+          "zu": "Materialreservierung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Komponente kann in mehreren Materialreservierungen reserviert sein"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Einheit der Komponente: Unklar, ob die Einheit (Stück, Kilogramm) als Attribut der Komponente selbst gilt oder je nach Verwendung in der Stückliste unterschiedlich sein kann.",
+          "beschreibung": "Ob die Einheit (Stück, Kilogramm) als Attribut der Komponente oder als Attribut der Stückliste-Zuordnung modelliert werden soll, ist fachlich nicht geklärt.",
           "betroffene_elemente": [
             "Komponente",
-            "Stückliste"
+            "Stückliste",
+            "Einheit"
           ]
         },
         {
-          "beschreibung": "Arbeitsplan-Auswahl: Unklar, ob bei Fertigungsaufträgen immer alle Vorgänge aus dem freigegebenen Arbeitsplan übernommen werden oder ob in Ausnahmefällen zusätzliche Vorgänge hinzugefügt werden können.",
+          "beschreibung": "Unklar, ob bei der Einplanung von Vorgängen zu einem Fertigungsauftrag immer alle Vorgänge aus dem freigegebenen Arbeitsplan übernommen werden oder ob in Ausnahmefällen zusätzliche Vorgänge hinzukommen können.",
           "betroffene_elemente": [
+            "Fertigungsauftrag",
             "Arbeitsplan",
-            "Auftragsvorgang",
-            "Fertigungsauftrag"
+            "Vorgang"
           ]
         },
         {
-          "beschreibung": "Materialreservierung Lagerort: Unklar, ob der Lagerort immer angegeben wird oder ob eine Reservierung auch ohne spezifischen Lagerort erfolgen kann.",
+          "beschreibung": "Unklar, wie mehrere Arbeitspläne für einen Artikel verwaltet werden und nach welchen Kriterien der 'freigegebene Stand' ausgewählt wird.",
           "betroffene_elemente": [
-            "Materialreservierung"
-          ]
-        },
-        {
-          "beschreibung": "Arbeitsplan-Gültigkeit: Unklar, wie mehrere Arbeitspläne für einen Artikel verwaltet werden und welche Kriterien bestimmen, welcher Stand als 'freigegebener Stand' gilt.",
-          "betroffene_elemente": [
+            "Artikel",
             "Arbeitsplan",
-            "Artikel"
+            "Stand"
+          ]
+        },
+        {
+          "beschreibung": "Materialreservierungen können entweder aus einem spezifischen Lagerort oder allgemein für den Auftrag erfolgen. Die Modellierung dieser optionalen Zuordnung zum Lagerort ist unklar.",
+          "betroffene_elemente": [
+            "Materialreservierung",
+            "Lagerort"
+          ]
+        },
+        {
+          "beschreibung": "Unklar, ob Produktfamilie als separate Entität oder nur als Attribut des Artikels modelliert werden soll.",
+          "betroffene_elemente": [
+            "Artikel",
+            "Produktfamilie"
           ]
         }
       ]
@@ -1055,7 +1060,7 @@
           "name": "Produktfamilie",
           "attribute": [
             {
-              "name": "FamilienID",
+              "name": "ProduktfamilieID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -1065,6 +1070,12 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Beschreibung",
+              "datentyp": "TEXT",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1084,7 +1095,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "FamilienID",
+              "name": "ProduktfamilieID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1101,7 +1112,7 @@
           "name": "Komponente",
           "attribute": [
             {
-              "name": "KomponentenID",
+              "name": "KomponenteID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -1113,10 +1124,10 @@
               "pflichtfeld": true
             },
             {
-              "name": "Einheit",
+              "name": "Typ",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             }
           ]
         },
@@ -1136,7 +1147,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "KomponentenID",
+              "name": "KomponenteID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1151,7 +1162,7 @@
               "name": "Einheit",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             }
           ]
         },
@@ -1177,10 +1188,16 @@
               "pflichtfeld": true
             },
             {
-              "name": "Freigabestatus",
+              "name": "Status",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "IstFreigegeben",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1200,12 +1217,6 @@
               "pflichtfeld": true
             },
             {
-              "name": "Vorgangsnummer",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
               "name": "Vorgangstyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
@@ -1216,6 +1227,12 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "GeschätzteAusfuehrungsdauerStunden",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1235,7 +1252,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Arbeitsplatzbezeichnung",
+              "name": "Arbeitsplatz",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1243,30 +1260,7 @@
           ]
         },
         {
-          "name": "VorgangMaschineAlternative",
-          "attribute": [
-            {
-              "name": "VorgangMaschinenID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "VorgangID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "MaschinenID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Maschinenverfügbarkeit",
+          "name": "Verfügbarkeit",
           "attribute": [
             {
               "name": "VerfügbarkeitID",
@@ -1281,13 +1275,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "Startdatum",
+              "name": "StartDatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Enddatum",
+              "name": "EndDatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1304,7 +1298,7 @@
           "name": "Fertigungsauftrag",
           "attribute": [
             {
-              "name": "AuftragID",
+              "name": "FertigungsauftragID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -1317,6 +1311,12 @@
             },
             {
               "name": "ArtikelID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ArbeitsplanID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1348,16 +1348,16 @@
           ]
         },
         {
-          "name": "Auftragsvorgang",
+          "name": "FertigungsauftragVorgang",
           "attribute": [
             {
-              "name": "AuftragsVorgangID",
+              "name": "FertigungsauftragVorgangID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "AuftragID",
+              "name": "FertigungsauftragID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1369,13 +1369,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "MaschinenID",
+              "name": "Reihenfolge",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Reihenfolge",
+              "name": "EingeplanteMaschinenID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1386,19 +1386,19 @@
           "name": "Materialreservierung",
           "attribute": [
             {
-              "name": "ReservierungID",
+              "name": "MaterialreservierungID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "AuftragID",
+              "name": "FertigungsauftragID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "KomponentenID",
+              "name": "KomponenteID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1432,9 +1432,9 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Stückliste",
-          "zu": "Komponente",
-          "kardinalitaet": "N:1",
+          "von": "Komponente",
+          "zu": "Stückliste",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
@@ -1451,19 +1451,13 @@
         },
         {
           "von": "Vorgang",
-          "zu": "VorgangMaschineAlternative",
-          "kardinalitaet": "1:N",
+          "zu": "Maschine",
+          "kardinalitaet": "M:N",
           "beziehungsattribute": []
         },
         {
           "von": "Maschine",
-          "zu": "VorgangMaschineAlternative",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Maschine",
-          "zu": "Maschinenverfügbarkeit",
+          "zu": "Verfügbarkeit",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
@@ -1475,20 +1469,26 @@
         },
         {
           "von": "Fertigungsauftrag",
-          "zu": "Auftragsvorgang",
+          "zu": "Arbeitsplan",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Fertigungsauftrag",
+          "zu": "FertigungsauftragVorgang",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Auftragsvorgang",
-          "zu": "Vorgang",
-          "kardinalitaet": "N:1",
+          "von": "Vorgang",
+          "zu": "FertigungsauftragVorgang",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Auftragsvorgang",
-          "zu": "Maschine",
-          "kardinalitaet": "N:1",
+          "von": "Maschine",
+          "zu": "FertigungsauftragVorgang",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
@@ -1498,9 +1498,9 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Materialreservierung",
-          "zu": "Komponente",
-          "kardinalitaet": "N:1",
+          "von": "Komponente",
+          "zu": "Materialreservierung",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         }
       ]
@@ -1531,9 +1531,9 @@
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 1,
+    "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE product_families (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_product_families PRIMARY KEY (id)\n);\n\nCREATE TABLE articles (\n    id INTEGER NOT NULL,\n    material_number VARCHAR(255) NOT NULL,\n    product_family_id INTEGER NOT NULL,\n    planning_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id),\n    CONSTRAINT fk_articles_product_family_id FOREIGN KEY (product_family_id) REFERENCES product_families (id)\n);\n\nCREATE TABLE components (\n    id INTEGER NOT NULL,\n    component_number VARCHAR(255) NOT NULL,\n    unit VARCHAR(255),\n    CONSTRAINT pk_components PRIMARY KEY (id)\n);\n\nCREATE TABLE bill_of_materials (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    component_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    unit VARCHAR(255),\n    CONSTRAINT pk_bill_of_materials PRIMARY KEY (id),\n    CONSTRAINT fk_bill_of_materials_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_bill_of_materials_component_id FOREIGN KEY (component_id) REFERENCES components (id)\n);\n\nCREATE TABLE machines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    workstation_designation VARCHAR(255),\n    CONSTRAINT pk_machines PRIMARY KEY (id)\n);\n\nCREATE TABLE machine_availabilities (\n    id INTEGER NOT NULL,\n    machine_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    available_hours DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_machine_availabilities PRIMARY KEY (id),\n    CONSTRAINT fk_machine_availabilities_machine_id FOREIGN KEY (machine_id) REFERENCES machines (id)\n);\n\nCREATE TABLE production_orders (\n    id INTEGER NOT NULL,\n    order_number VARCHAR(255) NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_production_orders PRIMARY KEY (id),\n    CONSTRAINT fk_production_orders_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE material_reservations (\n    id INTEGER NOT NULL,\n    production_order_id INTEGER NOT NULL,\n    component_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    storage_location VARCHAR(255),\n    CONSTRAINT pk_material_reservations PRIMARY KEY (id),\n    CONSTRAINT fk_material_reservations_production_order_id FOREIGN KEY (production_order_id) REFERENCES production_orders (id),\n    CONSTRAINT fk_material_reservations_component_id FOREIGN KEY (component_id) REFERENCES components (id)\n);\n\nCREATE TABLE work_plans (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    version VARCHAR(255) NOT NULL,\n    release_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_work_plans PRIMARY KEY (id),\n    CONSTRAINT fk_work_plans_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE operations (\n    id INTEGER NOT NULL,\n    work_plan_id INTEGER NOT NULL,\n    operation_number VARCHAR(255) NOT NULL,\n    operation_type VARCHAR(255) NOT NULL,\n    sequence INTEGER NOT NULL,\n    CONSTRAINT pk_operations PRIMARY KEY (id),\n    CONSTRAINT fk_operations_work_plan_id FOREIGN KEY (work_plan_id) REFERENCES work_plans (id)\n);\n\nCREATE TABLE operation_machine_alternatives (\n    id INTEGER NOT NULL,\n    operation_id INTEGER NOT NULL,\n    machine_id INTEGER NOT NULL,\n    CONSTRAINT pk_operation_machine_alternatives PRIMARY KEY (id),\n    CONSTRAINT fk_operation_machine_alternatives_operation_id FOREIGN KEY (operation_id) REFERENCES operations (id),\n    CONSTRAINT fk_operation_machine_alternatives_machine_id FOREIGN KEY (machine_id) REFERENCES machines (id)\n);\n\nCREATE TABLE order_operations (\n    id INTEGER NOT NULL,\n    production_order_id INTEGER NOT NULL,\n    operation_id INTEGER NOT NULL,\n    machine_id INTEGER NOT NULL,\n    sequence INTEGER NOT NULL,\n    CONSTRAINT pk_order_operations PRIMARY KEY (id),\n    CONSTRAINT fk_order_operations_production_order_id FOREIGN KEY (production_order_id) REFERENCES production_orders (id),\n    CONSTRAINT fk_order_operations_operation_id FOREIGN KEY (operation_id) REFERENCES operations (id),\n    CONSTRAINT fk_order_operations_machine_id FOREIGN KEY (machine_id) REFERENCES machines (id)\n);\n",
+    "final_ddl": "CREATE TABLE product_families (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_product_families PRIMARY KEY (id)\n);\n\nCREATE TABLE articles (\n    id INTEGER NOT NULL,\n    material_number VARCHAR(255) NOT NULL,\n    product_family_id INTEGER NOT NULL,\n    planning_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id),\n    CONSTRAINT fk_articles_product_family_id FOREIGN KEY (product_family_id) REFERENCES product_families (id)\n);\n\nCREATE TABLE components (\n    id INTEGER NOT NULL,\n    component_number VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_components PRIMARY KEY (id)\n);\n\nCREATE TABLE bill_of_materials (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    component_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    unit VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_bill_of_materials PRIMARY KEY (id),\n    CONSTRAINT fk_bill_of_materials_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_bill_of_materials_component_id FOREIGN KEY (component_id) REFERENCES components (id)\n);\n\nCREATE TABLE machines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    workplace VARCHAR(255),\n    CONSTRAINT pk_machines PRIMARY KEY (id)\n);\n\nCREATE TABLE machine_availabilities (\n    id INTEGER NOT NULL,\n    machine_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    available_hours DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_machine_availabilities PRIMARY KEY (id),\n    CONSTRAINT fk_machine_availabilities_machine_id FOREIGN KEY (machine_id) REFERENCES machines (id)\n);\n\nCREATE TABLE work_plans (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    version VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    is_released BOOLEAN,\n    CONSTRAINT pk_work_plans PRIMARY KEY (id),\n    CONSTRAINT fk_work_plans_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE production_orders (\n    id INTEGER NOT NULL,\n    order_number VARCHAR(255) NOT NULL,\n    article_id INTEGER NOT NULL,\n    work_plan_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_production_orders PRIMARY KEY (id),\n    CONSTRAINT fk_production_orders_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_production_orders_work_plan_id FOREIGN KEY (work_plan_id) REFERENCES work_plans (id)\n);\n\nCREATE TABLE material_reservations (\n    id INTEGER NOT NULL,\n    production_order_id INTEGER NOT NULL,\n    component_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    warehouse_location VARCHAR(255),\n    CONSTRAINT pk_material_reservations PRIMARY KEY (id),\n    CONSTRAINT fk_material_reservations_production_order_id FOREIGN KEY (production_order_id) REFERENCES production_orders (id),\n    CONSTRAINT fk_material_reservations_component_id FOREIGN KEY (component_id) REFERENCES components (id)\n);\n\nCREATE TABLE operations (\n    id INTEGER NOT NULL,\n    work_plan_id INTEGER NOT NULL,\n    operation_type VARCHAR(255) NOT NULL,\n    sequence INTEGER NOT NULL,\n    estimated_duration_hours DECIMAL(18,2),\n    CONSTRAINT pk_operations PRIMARY KEY (id),\n    CONSTRAINT fk_operations_work_plan_id FOREIGN KEY (work_plan_id) REFERENCES work_plans (id)\n);\n\nCREATE TABLE operation_machines (\n    id INTEGER NOT NULL,\n    operation_id INTEGER NOT NULL,\n    machine_id INTEGER NOT NULL,\n    CONSTRAINT pk_operation_machines PRIMARY KEY (id),\n    CONSTRAINT fk_operation_machines_operation_id FOREIGN KEY (operation_id) REFERENCES operations (id),\n    CONSTRAINT fk_operation_machines_machine_id FOREIGN KEY (machine_id) REFERENCES machines (id)\n);\n\nCREATE TABLE production_order_operations (\n    id INTEGER NOT NULL,\n    production_order_id INTEGER NOT NULL,\n    operation_id INTEGER NOT NULL,\n    sequence INTEGER NOT NULL,\n    machine_id INTEGER NOT NULL,\n    CONSTRAINT pk_production_order_operations PRIMARY KEY (id),\n    CONSTRAINT fk_production_order_operations_production_order_id FOREIGN KEY (production_order_id) REFERENCES production_orders (id),\n    CONSTRAINT fk_production_order_operations_operation_id FOREIGN KEY (operation_id) REFERENCES operations (id),\n    CONSTRAINT fk_production_order_operations_machine_id FOREIGN KEY (machine_id) REFERENCES machines (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -1562,28 +1562,34 @@
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 3,
-    "total_input_tokens": 12624,
-    "total_output_tokens": 8877,
-    "total_tokens": 21501,
+    "total_calls": 9,
+    "total_input_tokens": 68714,
+    "total_output_tokens": 26160,
+    "total_tokens": 94874,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1938,
-        "output_tokens": 2278,
+        "output_tokens": 2042,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 1,
-        "input_tokens": 4319,
-        "output_tokens": 3639,
+        "calls": 3,
+        "input_tokens": 20960,
+        "output_tokens": 10535,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 1,
-        "input_tokens": 6367,
-        "output_tokens": 2960,
+        "calls": 3,
+        "input_tokens": 23217,
+        "output_tokens": 9044,
+        "cost_usd": 0.0
+      },
+      "oa_validator": {
+        "calls": 2,
+        "input_tokens": 22599,
+        "output_tokens": 4539,
         "cost_usd": 0.0
       }
     },
@@ -1594,7 +1600,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1938,
-        "output_tokens": 2278,
+        "output_tokens": 2042,
         "cost_usd": 0.0
       },
       {
@@ -1602,8 +1608,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4319,
-        "output_tokens": 3639,
+        "input_tokens": 4081,
+        "output_tokens": 3369,
         "cost_usd": 0.0
       },
       {
@@ -1611,8 +1617,62 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 6367,
-        "output_tokens": 2960,
+        "input_tokens": 6097,
+        "output_tokens": 2806,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 0,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 11055,
+        "output_tokens": 2703,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8558,
+        "output_tokens": 3536,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8957,
+        "output_tokens": 3120,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 11544,
+        "output_tokens": 1836,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8321,
+        "output_tokens": 3630,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8163,
+        "output_tokens": 3118,
         "cost_usd": 0.0
       }
     ]

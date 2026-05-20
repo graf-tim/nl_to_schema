@@ -2,38 +2,38 @@
   "testfall_id": "TC073",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.43166144200626966,
-  "score_gesamt": 0.6589968652037619,
+  "score_semantisch": 0.4902920608802962,
+  "score_gesamt": 0.6941752365281777,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 14,
-    "pk_tabellen_mit_pk": 14,
-    "fk_referenzen_gesamt": 22,
+    "pk_tabellen_gesamt": 11,
+    "pk_tabellen_mit_pk": 11,
+    "fk_referenzen_gesamt": 20,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.6428571428571429,
+      "precision": 0.8181818181818182,
       "recall": 0.6,
-      "f1": 0.6206896551724138,
+      "f1": 0.6923076923076923,
       "matched": 9,
       "nur_in_referenz": 6,
-      "nur_in_generiert": 5
+      "nur_in_generiert": 2
     },
     "attribut": {
-      "precision": 0.32051282051282054,
-      "recall": 0.373134328358209,
-      "f1": 0.3448275862068966,
-      "matched": 25,
-      "nur_in_referenz": 42,
-      "nur_in_generiert": 53
+      "precision": 0.391304347826087,
+      "recall": 0.40298507462686567,
+      "f1": 0.3970588235294118,
+      "matched": 27,
+      "nur_in_referenz": 40,
+      "nur_in_generiert": 42
     },
     "beziehung": {
-      "recall": 0.22727272727272727,
-      "matched": 5,
-      "nur_in_referenz": 17,
+      "recall": 0.2727272727272727,
+      "matched": 6,
+      "nur_in_referenz": 16,
       "nur_in_generiert": 5
     }
   },
@@ -74,11 +74,6 @@
       "fehlerklasse": null
     },
     {
-      "element": "diagnoses.professional_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "diagnoses.code",
       "typ": "attribut",
       "fehlerklasse": null
@@ -90,11 +85,6 @@
     },
     {
       "element": "diagnoses.diagnosis_date",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "service_catalogs.facility_id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -357,11 +347,6 @@
       "element": "referrals → professionals",
       "typ": "beziehung",
       "fehlerklasse": null
-    },
-    {
-      "element": "service_catalogs → facilities",
-      "typ": "beziehung",
-      "fehlerklasse": null
     }
   ],
   "state": {
@@ -369,54 +354,6 @@
     "workflow_name": "oa",
     "logical_schema": {
       "tables": [
-        {
-          "name": "patients",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "firstname",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "lastname",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "birthdate",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "gender",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "address",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "contact_info",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": []
-        },
         {
           "name": "facilities",
           "columns": [
@@ -469,19 +406,453 @@
               "nullable": false
             },
             {
-              "name": "qualification",
+              "name": "specialty",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "specialty",
+              "name": "qualification",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             }
           ],
           "foreign_keys": []
+        },
+        {
+          "name": "patients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "birthdate",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "address",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "contact_info",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "contacts",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "facility_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "practitioner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "contact_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_inpatient",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "admission_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "discharge_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "facility_id",
+              "references_table": "facilities",
+              "references_column": "id"
+            },
+            {
+              "from_column": "practitioner_id",
+              "references_table": "practitioners",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "diagnoses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "contact_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "practitioner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "facility_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "diagnosis_text",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "documentation_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_permanent",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "contact_id",
+              "references_table": "contacts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "practitioner_id",
+              "references_table": "practitioners",
+              "references_column": "id"
+            },
+            {
+              "from_column": "facility_id",
+              "references_table": "facilities",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "referrals",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "from_facility_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "to_facility_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "from_practitioner_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "referral_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "clinical_question",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_formal",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            },
+            {
+              "from_column": "from_facility_id",
+              "references_table": "facilities",
+              "references_column": "id"
+            },
+            {
+              "from_column": "to_facility_id",
+              "references_table": "facilities",
+              "references_column": "id"
+            },
+            {
+              "from_column": "from_practitioner_id",
+              "references_table": "practitioners",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "service_catalogs",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "facility_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "catalog_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "amount",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "facility_id",
+              "references_table": "facilities",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "services",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "contact_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "facility_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "service_catalog_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "service_type",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "service_datetime",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "contact_id",
+              "references_table": "contacts",
+              "references_column": "id"
+            },
+            {
+              "from_column": "facility_id",
+              "references_table": "facilities",
+              "references_column": "id"
+            },
+            {
+              "from_column": "service_catalog_id",
+              "references_table": "service_catalogs",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "insurances",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "patient_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "insurance_name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "cost_bearer",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_from",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "valid_until",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "patient_id",
+              "references_table": "patients",
+              "references_column": "id"
+            }
+          ]
         },
         {
           "name": "practitioner_facilities",
@@ -508,13 +879,13 @@
               "name": "assignment_type",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "valid_from",
               "type": "DATE",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "valid_until",
@@ -532,428 +903,6 @@
             {
               "from_column": "facility_id",
               "references_table": "facilities",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "contacts",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "patient_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "facility_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "contact_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "contact_datetime",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "admission_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "discharge_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "appointment_datetime",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "patient_id",
-              "references_table": "patients",
-              "references_column": "id"
-            },
-            {
-              "from_column": "facility_id",
-              "references_table": "facilities",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "contact_practitioners",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "contact_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "practitioner_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "role",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "contact_id",
-              "references_table": "contacts",
-              "references_column": "id"
-            },
-            {
-              "from_column": "practitioner_id",
-              "references_table": "practitioners",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "diagnoses",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "patient_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "diagnosis_text",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "icd10_code",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "documentation_datetime",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "valid_from",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "valid_until",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "patient_id",
-              "references_table": "patients",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "diagnosis_contacts",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "diagnosis_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "contact_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "relevance_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "diagnosis_id",
-              "references_table": "diagnoses",
-              "references_column": "id"
-            },
-            {
-              "from_column": "contact_id",
-              "references_table": "contacts",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "diagnosis_practitioners",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "diagnosis_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "practitioner_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "documentation_datetime",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "diagnosis_id",
-              "references_table": "diagnoses",
-              "references_column": "id"
-            },
-            {
-              "from_column": "practitioner_id",
-              "references_table": "practitioners",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "referrals",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "patient_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "sending_facility_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "receiving_facility_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "issuing_practitioner_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "referral_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "clinical_question",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "status",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "patient_id",
-              "references_table": "patients",
-              "references_column": "id"
-            },
-            {
-              "from_column": "sending_facility_id",
-              "references_table": "facilities",
-              "references_column": "id"
-            },
-            {
-              "from_column": "receiving_facility_id",
-              "references_table": "facilities",
-              "references_column": "id"
-            },
-            {
-              "from_column": "issuing_practitioner_id",
-              "references_table": "practitioners",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "service_catalogs",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "catalog_code",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "description",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "amount",
-              "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "validity_scope",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "services",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "patient_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "facility_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "contact_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "service_catalog_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "service_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "provision_datetime",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "patient_id",
-              "references_table": "patients",
-              "references_column": "id"
-            },
-            {
-              "from_column": "facility_id",
-              "references_table": "facilities",
-              "references_column": "id"
-            },
-            {
-              "from_column": "contact_id",
-              "references_table": "contacts",
-              "references_column": "id"
-            },
-            {
-              "from_column": "service_catalog_id",
-              "references_table": "service_catalogs",
               "references_column": "id"
             }
           ]
@@ -978,12 +927,6 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "assignment_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -995,48 +938,6 @@
             {
               "from_column": "diagnosis_id",
               "references_table": "diagnoses",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "insurances",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "patient_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "payer",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "valid_from",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "valid_until",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "patient_id",
-              "references_table": "patients",
               "references_column": "id"
             }
           ]
@@ -1069,7 +970,7 @@
             "Name",
             "Grundlegende Angaben"
           ],
-          "beschreibung": "Patientinnen und Patienten mit ihren grundlegenden Daten"
+          "beschreibung": "Patientinnen und Patienten mit ihren grundlegenden Angaben"
         },
         {
           "name": "Diagnose",
@@ -1083,10 +984,10 @@
         {
           "name": "Kontakt",
           "attribute": [
-            "Kontakttyp (ambulant/stationär)",
+            "Kontakttyp",
+            "Datum",
             "Aufnahmedatum",
-            "Termin",
-            "Datum"
+            "Termin"
           ],
           "beschreibung": "Behandlungsfälle bzw. Kontakte zwischen Patient und Einrichtung, teils ambulant, teils stationär"
         },
@@ -1095,9 +996,11 @@
           "attribute": [
             "Überweisungsdatum",
             "Fragestellung",
-            "Status (erledigt/abgelehnt/offen)"
+            "Status",
+            "Überweisende Einrichtung",
+            "Zieleinrichtung"
           ],
-          "beschreibung": "Überweisungen zwischen Einrichtungen mit Information zu Absender, Empfänger, Fragestellung und Status"
+          "beschreibung": "Überweisungen zwischen Einrichtungen mit Angabe von Fragestellung und Status (erledigt, abgelehnt, offen)"
         },
         {
           "name": "Leistung",
@@ -1105,18 +1008,19 @@
             "Katalogziffer",
             "Bezeichnung",
             "Betrag",
-            "Leistungstyp (Laboruntersuchung/Bildgebung/Sprechstunde)"
+            "Leistungstyp"
           ],
-          "beschreibung": "Erbrachte Leistungen wie Laboruntersuchungen, Bildgebung oder Sprechstunden mit Abrechnungsinformationen"
+          "beschreibung": "Erbrachte Leistungen wie Laboruntersuchungen, Bildgebung oder Sprechstunden"
         },
         {
           "name": "Versicherung",
           "attribute": [
+            "Versicherungsname",
             "Kostenträger",
             "Gültig ab",
             "Gültig bis"
           ],
-          "beschreibung": "Versicherungsinformationen von Patientinnen und Patienten, da sich Kostenträger im Zeitverlauf ändern können"
+          "beschreibung": "Versicherungsdaten von Patientinnen und Patienten, da sich Kostenträger im Zeitverlauf ändern können"
         },
         {
           "name": "Leistungskatalog",
@@ -1124,9 +1028,9 @@
             "Katalogziffer",
             "Bezeichnung",
             "Betrag",
-            "Gültigkeitsbereich"
+            "Gültig ab"
           ],
-          "beschreibung": "Katalog von Leistungen mit Ziffern, Bezeichnungen und Beträgen für die Abrechnung"
+          "beschreibung": "Katalog von Leistungen mit Ziffern, Bezeichnungen und Beträgen"
         }
       ],
       "beziehungen": [
@@ -1138,63 +1042,51 @@
         },
         {
           "von": "Patient",
+          "zu": "Diagnose",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Patient kann mehrere Diagnosen haben"
+        },
+        {
+          "von": "Diagnose",
+          "zu": "Fachkraft",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Diagnose wird von einer Fachkraft dokumentiert"
+        },
+        {
+          "von": "Patient",
           "zu": "Kontakt",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Patient hat mehrere Kontakte (Behandlungsfälle) mit Einrichtungen"
+          "beschreibung": "Ein Patient hat mehrere Kontakte (Behandlungsfälle)"
         },
         {
           "von": "Kontakt",
           "zu": "Einrichtung",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Kontakt findet in einer Einrichtung statt; eine Einrichtung hat mehrere Kontakte"
-        },
-        {
-          "von": "Kontakt",
-          "zu": "Fachkraft",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Kontakt kann mehrere Fachkräfte betreffen; eine Fachkraft hat mehrere Kontakte"
-        },
-        {
-          "von": "Patient",
-          "zu": "Diagnose",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Patient hat mehrere Diagnosen in seiner Krankengeschichte"
-        },
-        {
-          "von": "Diagnose",
-          "zu": "Kontakt",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Diagnose kann bei mehreren Kontakten relevant sein; ein Kontakt kann mehrere Diagnosen betreffen"
-        },
-        {
-          "von": "Diagnose",
-          "zu": "Fachkraft",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Diagnose wird von einer oder mehreren Fachkräften dokumentiert"
+          "kardinalitaet": "N:1",
+          "beschreibung": "Ein Kontakt findet in einer Einrichtung statt"
         },
         {
           "von": "Überweisung",
           "zu": "Patient",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Eine Überweisung betrifft einen Patienten; ein Patient kann mehrere Überweisungen erhalten"
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Überweisung bezieht sich auf einen Patienten"
         },
         {
           "von": "Überweisung",
           "zu": "Einrichtung",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Überweisung geht von einer Einrichtung (Absender) zu einer anderen Einrichtung (Empfänger)"
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Überweisung wird von einer Einrichtung ausgestellt (überweisende Einrichtung)"
         },
         {
           "von": "Überweisung",
-          "zu": "Fachkraft",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Eine Überweisung wird von einer Fachkraft ausgestellt"
+          "zu": "Einrichtung",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Überweisung wird an eine Einrichtung gerichtet (Zieleinrichtung)"
         },
         {
           "von": "Leistung",
-          "zu": "Einrichtung",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Leistung kann in verschiedenen Einrichtungen erbracht werden"
+          "zu": "Kontakt",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Leistung wird im Rahmen eines Kontakts erbracht"
         },
         {
           "von": "Leistung",
@@ -1204,56 +1096,49 @@
         },
         {
           "von": "Leistung",
-          "zu": "Kontakt",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Leistung wird im Rahmen eines oder mehrerer Kontakte erbracht"
-        },
-        {
-          "von": "Leistung",
-          "zu": "Leistungskatalog",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Eine Leistung wird über einen Leistungskatalog abgerechnet"
+          "zu": "Einrichtung",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Leistung wird in einer Einrichtung erbracht"
         },
         {
           "von": "Patient",
           "zu": "Versicherung",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Patient hat mehrere Versicherungen im Zeitverlauf (Kostenträger können sich ändern)"
+          "beschreibung": "Ein Patient kann mehrere Versicherungen haben, die sich im Zeitverlauf ändern"
+        },
+        {
+          "von": "Leistung",
+          "zu": "Leistungskatalog",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Leistung wird über einen Leistungskatalog abgerechnet"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Gültigkeitsdauer von Diagnosen: Unklar, ob eine Diagnose nur bei einem Kontakt gilt oder dauerhaft in der Krankengeschichte sichtbar bleiben soll",
+          "beschreibung": "Unklar ist, ob eine Diagnose nur bei einem Kontakt gilt oder dauerhaft in der Krankengeschichte sichtbar bleiben soll. Dies beeinflusst die Modellierung der Beziehung zwischen Diagnose und Kontakt.",
           "betroffene_elemente": [
             "Diagnose",
             "Kontakt"
           ]
         },
         {
-          "beschreibung": "Unterscheidung ambulant/stationär: Im Alltag wird oft nicht sauber zwischen ambulanten Terminen und stationären Aufnahmedaten getrennt",
+          "beschreibung": "Bei Behandlungsfällen wird nicht sauber zwischen stationären Aufenthalten (mit Aufnahmedatum) und ambulanten Terminen unterschieden. Unklar ist, wie diese Unterscheidung im Datenmodell abgebildet werden soll.",
           "betroffene_elemente": [
             "Kontakt"
           ]
         },
         {
-          "beschreibung": "Formale Überweisungen: Nicht jede Weiterleitung läuft formal als Überweisung ab; unklar, wie informelle Weiterleitungen dokumentiert werden sollen",
+          "beschreibung": "Nicht jede Weiterleitung läuft formal als Überweisung ab. Unklar ist, wie informelle Weiterleitungen erfasst werden sollen und wie sie sich von formalen Überweisungen unterscheiden.",
           "betroffene_elemente": [
             "Überweisung"
           ]
         },
         {
-          "beschreibung": "Leistungskatalog-Gültigkeitsbereich: Unklar, ob derselbe Leistungskatalog netzwerkweit gilt oder einzelne Häuser eigene Varianten haben",
+          "beschreibung": "Unklar ist, ob derselbe Leistungskatalog netzwerkweit gilt oder einzelne Häuser eigene Varianten haben. Dies beeinflusst die Struktur des Leistungskatalogs und dessen Zuordnung zu Einrichtungen.",
           "betroffene_elemente": [
             "Leistungskatalog",
-            "Leistung",
-            "Einrichtung"
-          ]
-        },
-        {
-          "beschreibung": "Zeitliche Gültigkeit von Versicherungen: Unklar, wie Übergänge zwischen verschiedenen Kostenträgern zeitlich dokumentiert werden sollen",
-          "betroffene_elemente": [
-            "Versicherung",
-            "Patient"
+            "Einrichtung",
+            "Leistung"
           ]
         }
       ]
@@ -1261,75 +1146,28 @@
     "er_modell": {
       "entitaeten": [
         {
-          "name": "Patient",
-          "attribute": [
-            {
-              "name": "PatientenID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Vorname",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Nachname",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Geburtsdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Geschlecht",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Adresse",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Kontaktdaten",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
           "name": "Einrichtung",
           "attribute": [
             {
-              "name": "EinrichtungsID",
+              "name": "einrichtung_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Name",
+              "name": "name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Standort",
+              "name": "standort",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Art",
+              "name": "art_der_einrichtung",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1340,34 +1178,63 @@
           "name": "Fachkraft",
           "attribute": [
             {
-              "name": "FachkraftID",
+              "name": "fachkraft_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "Vorname",
+              "name": "name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Nachname",
+              "name": "fachrichtung",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Qualifikation",
+              "name": "qualifikation",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Patient",
+          "attribute": [
+            {
+              "name": "patient_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Fachrichtung",
+              "name": "geburtsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "adresse",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
+            },
+            {
+              "name": "kontaktdaten",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1375,43 +1242,61 @@
           "name": "Kontakt",
           "attribute": [
             {
-              "name": "KontaktID",
+              "name": "kontakt_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "PatientenID",
+              "name": "patient_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Kontakttyp",
+              "name": "einrichtung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fachkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "kontakttyp",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Datum",
+              "name": "is_inpatient",
+              "datentyp": "BOOLEAN",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "datum",
               "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Aufnahmedatum",
+              "name": "aufnahmedatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "Entlassungsdatum",
+              "name": "entlassungsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "Termin",
+              "name": "termin",
               "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1422,44 +1307,50 @@
           "name": "Diagnose",
           "attribute": [
             {
-              "name": "DiagnoseID",
+              "name": "diagnose_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "PatientenID",
+              "name": "patient_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Diagnosetext",
+              "name": "kontakt_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "fachkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "einrichtung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "diagnosetext",
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "ICD10Code",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Dokumentationsdatum",
-              "datentyp": "TIMESTAMP",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Gültig_ab",
+              "name": "dokumentationsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Gültig_bis",
-              "datentyp": "DATE",
+              "name": "ist_dauerhaft",
+              "datentyp": "BOOLEAN",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
@@ -1469,85 +1360,56 @@
           "name": "Überweisung",
           "attribute": [
             {
-              "name": "ÜberweisungsID",
+              "name": "ueberweisung_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "PatientenID",
+              "name": "patient_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "AbsenderEinrichtungsID",
+              "name": "einrichtung_von_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "EmpfängerEinrichtungsID",
+              "name": "einrichtung_zu_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "AusstellendeFachkraftID",
+              "name": "fachkraft_von_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
-              "name": "Überweisungsdatum",
+              "name": "ueberweisungsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Fragestellung",
+              "name": "fragestellung",
               "datentyp": "TEXT",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
-              "name": "Status",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Leistungskatalog",
-          "attribute": [
-            {
-              "name": "KatalogID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Katalogziffer",
+              "name": "status",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Bezeichnung",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Betrag",
-              "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Gültigkeitsbereich",
-              "datentyp": "VARCHAR",
+              "name": "ist_formal",
+              "datentyp": "BOOLEAN",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
@@ -1557,28 +1419,58 @@
           "name": "Leistung",
           "attribute": [
             {
-              "name": "LeistungsID",
+              "name": "leistung_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "KatalogID",
+              "name": "kontakt_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Leistungstyp",
+              "name": "einrichtung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leistungskatalog_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "katalogziffer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Erbringungsdatum",
-              "datentyp": "TIMESTAMP",
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "betrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leistungstyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leistungsdatum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -1586,34 +1478,151 @@
           "name": "Versicherung",
           "attribute": [
             {
-              "name": "VersicherungsID",
+              "name": "versicherung_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "PatientenID",
+              "name": "patient_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Kostenträger",
+              "name": "versicherungsname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Gültig_ab",
+              "name": "kostentraeger",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gueltig_ab",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Gültig_bis",
+              "name": "gueltig_bis",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Leistungskatalog",
+          "attribute": [
+            {
+              "name": "leistungskatalog_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "einrichtung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "katalogziffer",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "bezeichnung",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "betrag",
+              "datentyp": "DECIMAL",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gueltig_ab",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "gueltig_bis",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Fachkraft_Einrichtung",
+          "attribute": [
+            {
+              "name": "fachkraft_einrichtung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "fachkraft_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "einrichtung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "zuordnungstyp",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "gueltig_ab",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "gueltig_bis",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Leistung_Diagnose",
+          "attribute": [
+            {
+              "name": "leistung_diagnose_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "leistung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "diagnose_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         }
@@ -1624,29 +1633,9 @@
           "zu": "Einrichtung",
           "kardinalitaet": "M:N",
           "beziehungsattribute": [
-            "Zuordnungstyp (fest/zeitweise/mehrere Standorte)",
-            "Gültig_ab",
-            "Gültig_bis"
-          ]
-        },
-        {
-          "von": "Patient",
-          "zu": "Kontakt",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Kontakt",
-          "zu": "Einrichtung",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Kontakt",
-          "zu": "Fachkraft",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": [
-            "Rolle (behandelnde Fachkraft/konsultiert/vertreter)"
+            "zuordnungstyp",
+            "gueltig_ab",
+            "gueltig_bis"
           ]
         },
         {
@@ -1657,56 +1646,86 @@
         },
         {
           "von": "Diagnose",
-          "zu": "Kontakt",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": [
-            "Relevanztyp (primär/sekundär/relevant)"
-          ]
+          "zu": "Fachkraft",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
         },
         {
           "von": "Diagnose",
+          "zu": "Einrichtung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Diagnose",
+          "zu": "Kontakt",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Patient",
+          "zu": "Kontakt",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kontakt",
+          "zu": "Einrichtung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Kontakt",
           "zu": "Fachkraft",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": [
-            "Dokumentierendes_Datum"
-          ]
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
         },
         {
           "von": "Überweisung",
           "zu": "Patient",
-          "kardinalitaet": "M:1",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Überweisung",
+          "zu": "Einrichtung",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Überweisung",
+          "zu": "Fachkraft",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
           "von": "Leistung",
-          "zu": "Einrichtung",
-          "kardinalitaet": "M:N",
+          "zu": "Kontakt",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
           "von": "Leistung",
           "zu": "Diagnose",
           "kardinalitaet": "M:N",
-          "beziehungsattribute": [
-            "Zuordnungstyp (primär/sekundär)"
-          ]
-        },
-        {
-          "von": "Leistung",
-          "zu": "Kontakt",
-          "kardinalitaet": "M:N",
           "beziehungsattribute": []
         },
         {
           "von": "Leistung",
-          "zu": "Leistungskatalog",
-          "kardinalitaet": "M:1",
+          "zu": "Einrichtung",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
           "von": "Patient",
           "zu": "Versicherung",
           "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Leistung",
+          "zu": "Leistungskatalog",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         }
       ]
@@ -1735,62 +1754,26 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'contacts' ist unvollständig. Laut ER-Modell und Anforderungstext muss ein Kontakt in einer Einrichtung stattfinden (1:N oder M:N Beziehung). Das Schema hat 'facility_id' in 'contacts', was korrekt ist. JEDOCH: Das ER-Modell definiert die Beziehung 'Kontakt zu Einrichtung' als M:N mit Beziehungsattributen, aber im LogicalSchema ist diese als 1:N implementiert (facility_id direkt in contacts). Dies ist eine konzeptionelle Inkonsistenz. Zusätzlich fehlt in der 'contacts'-Tabelle die Zuordnung zu Fachkräften direkt – diese wird über 'contact_practitioners' gelöst, was korrekt ist. ABER: Die Anforderung 'Kontakt zu Einrichtung' sollte M:N sein (ein Kontakt kann mehrere Einrichtungen betreffen, z.B. bei Überweisungen oder Konsultationen), ist aber als 1:N implementiert.",
-          "korrekturanweisung": "Überprüfen Sie die Kardinalität der Beziehung 'Kontakt-Einrichtung'. Wenn ein Kontakt tatsächlich nur in einer Einrichtung stattfinden kann, ist die 1:N-Implementierung korrekt und das ER-Modell muss korrigiert werden. Wenn ein Kontakt mehrere Einrichtungen betreffen kann, muss eine Junction-Table 'contact_facilities' erstellt werden."
+          "beschreibung": "Die Tabelle 'practitioners' fehlt eine kritische Beziehung zur Tabelle 'facilities'. Im Anforderungstext und ERModell ist explizit dokumentiert, dass Fachkräfte an einer oder mehreren Einrichtungen arbeiten (M:N-Beziehung). Das LogicalSchema hat zwar die Junction-Table 'practitioner_facilities', aber die Tabelle 'practitioners' selbst ist unvollständig, da sie keine Möglichkeit bietet, die Zuordnung zu Einrichtungen direkt zu modellieren. Kritischer: Die Anforderung 'Manche Fachkräfte sind fest einer Einrichtung zugeordnet, andere behandeln an mehreren Standorten oder vertreten zeitweise' wird durch die fehlende Zeitlichkeit (valid_from, valid_until) in der Beziehung nicht vollständig abgebildet. Die Junction-Table 'practitioner_facilities' existiert zwar, aber die Entität 'practitioners' selbst ist nicht vollständig dokumentiert als Kern-Entität mit allen notwendigen Attributen.",
+          "korrekturanweisung": "Überprüfen Sie, ob die Tabelle 'practitioners' alle erforderlichen Attribute enthält. Gemäß ERModell sollte 'practitioners' die Attribute 'firstname', 'lastname', 'specialty' und 'qualification' haben. Im LogicalSchema sind 'firstname' und 'lastname' vorhanden, aber 'specialty' ist als 'specialty' (nicht 'fachrichtung') benannt. Dies ist eine Namenskonvention-Abweichung, aber inhaltlich korrekt. Die Junction-Table 'practitioner_facilities' ist vorhanden und korrekt modelliert."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'services' fehlt die direkte Zuordnung zu Fachkräften. Laut Anforderungstext sollen Leistungen dokumentiert werden, aber es ist unklar, welche Fachkraft die Leistung erbracht hat. Das ER-Modell erwähnt keine explizite M:N-Beziehung zwischen Leistung und Fachkraft, aber die Anforderung 'Leistungen sollen dokumentiert werden' impliziert, dass die erbringende Fachkraft relevant ist. Im LogicalSchema gibt es keine 'service_practitioners'-Tabelle.",
-          "korrekturanweisung": "Fügen Sie eine Junction-Table 'service_practitioners' hinzu, um die M:N-Beziehung zwischen 'services' und 'practitioners' abzubilden, falls Leistungen von mehreren Fachkräften erbracht werden können oder die erbringende Fachkraft dokumentiert werden soll."
-        },
-        {
-          "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Die Tabelle 'contacts' hat sowohl 'contact_datetime' als auch 'appointment_datetime' und optional 'admission_date'/'discharge_date'. Dies ist redundant und unklar. Laut ER-Modell gibt es 'Datum', 'Aufnahmedatum', 'Entlassungsdatum' und 'Termin'. Die Semantik ist verwirrend: Ist 'contact_datetime' das allgemeine Kontaktdatum oder der Termin? Sollte es für ambulante Kontakte 'appointment_datetime' und für stationäre 'admission_date' sein? Die Anforderung erwähnt: 'Im Alltag wird oft nicht sauber zwischen ambulanten Terminen und stationären Aufnahmedaten getrennt.' Das Schema löst dies nicht durch klare Constraints.",
-          "korrekturanweisung": "Definieren Sie klare Regeln: Für ambulante Kontakte (contact_type='ambulant') sollte 'appointment_datetime' gesetzt sein und 'admission_date'/'discharge_date' NULL. Für stationäre Kontakte (contact_type='stationär') sollten 'admission_date' und optional 'discharge_date' gesetzt sein. Entfernen Sie 'contact_datetime' oder definieren Sie es als Dokumentationszeitpunkt, nicht als Kontaktzeitpunkt. Implementieren Sie CHECK-Constraints zur Erzwingung dieser Regeln."
-        },
-        {
-          "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Die Tabelle 'diagnoses' hat 'valid_from' und 'valid_until', was die Anforderung 'Gültigkeitsdauer von Diagnosen' adressiert. JEDOCH: Das ER-Modell definiert 'Gültig_ab' und 'Gültig_bis' als Attribute der Diagnose-Entität, nicht als Beziehungsattribute zu Kontakten. Die Anforderung ist unklar: 'Nicht immer ist eindeutig, ob eine Diagnose nur bei einem Kontakt gilt oder dauerhaft in der Krankengeschichte sichtbar bleiben soll.' Das Schema löst dies durch die M:N-Beziehung 'diagnosis_contacts' mit 'relevance_type', was gut ist. ABER: Es fehlt eine Möglichkeit, die Gültigkeit einer Diagnose für einen spezifischen Kontakt zu begrenzen (z.B. 'diese Diagnose gilt nur für diesen Kontakt'). Die 'valid_from'/'valid_until' in 'diagnoses' sind global für den Patienten, nicht kontaktspezifisch.",
-          "korrekturanweisung": "Erweitern Sie die 'diagnosis_contacts'-Tabelle um optionale Felder 'valid_from' und 'valid_until', um kontaktspezifische Gültigkeitszeiträume zu ermöglichen. Dies ermöglicht die Unterscheidung zwischen dauerhaften Diagnosen (global gültig) und kontaktspezifischen Diagnosen (nur für einen Kontakt relevant)."
-        },
-        {
-          "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Die Tabelle 'practitioners' hat 'qualification' und 'specialty' als separate Pflichtfelder. Laut ER-Modell sind dies 'Qualifikation' und 'Fachrichtung'. Die Anforderung erwähnt: 'medizinische Fachkräfte mit unterschiedlichen Qualifikationen, zum Beispiel Allgemeinmedizin, Kardiologie oder Radiologie.' Diese Beispiele sind Fachrichtungen, nicht Qualifikationen. Es ist unklar, was der Unterschied zwischen 'qualification' und 'specialty' sein soll. Sind beide Pflichtfelder notwendig? Können sie unterschiedliche Werte haben?",
-          "korrekturanweisung": "Klären Sie die Semantik: Ist 'qualification' ein formaler Abschluss (z.B. 'Arzt', 'Krankenpfleger') und 'specialty' die Fachrichtung (z.B. 'Kardiologie')? Oder sind sie redundant? Falls redundant, entfernen Sie eines. Falls unterschiedlich, dokumentieren Sie die Unterscheidung und erwägen Sie, ein Lookup-Table für standardisierte Werte zu erstellen."
+          "beschreibung": "Mehrere kritische Attribute fehlen oder sind inkonsistent benannt:\n1. In der Tabelle 'patients': Das Attribut 'contact_info' ist zu vage. Der Anforderungstext spricht von 'grundlegenden Angaben', das ERModell nennt 'kontaktdaten'. Das ist akzeptabel, aber nicht präzise genug für eine Produktionsumgebung.\n2. In der Tabelle 'contacts': Das Attribut 'contact_datetime' ist redundant mit 'admission_date' und 'discharge_date' für stationäre Fälle. Der Anforderungstext erwähnt 'Termin' für ambulante Fälle, aber im LogicalSchema gibt es kein separates 'appointment_date'-Attribut. Das ERModell hat 'termin' als separates Attribut, das LogicalSchema nicht.\n3. In der Tabelle 'services': Das Attribut 'service_datetime' ist optional (nullable: true), aber für die Abrechnung und Nachverfolgung sollte dies ein Pflichtfeld sein.\n4. In der Tabelle 'diagnoses': Das Attribut 'is_permanent' ist optional, aber die Anforderung 'ob eine Diagnose nur bei einem Kontakt gilt oder dauerhaft in der Krankengeschichte sichtbar bleiben soll' deutet darauf hin, dass dies ein kritisches Attribut ist, das immer gesetzt sein sollte.",
+          "korrekturanweisung": "1. Ersetzen Sie 'contact_info' durch präzisere Attribute wie 'phone' und 'email'.\n2. Fügen Sie in 'contacts' ein separates Attribut 'appointment_date' (TIMESTAMP, nullable: true) für ambulante Termine hinzu und dokumentieren Sie die Semantik klar.\n3. Machen Sie 'service_datetime' zu einem Pflichtfeld (nullable: false) oder dokumentieren Sie explizit, wann es NULL sein darf.\n4. Machen Sie 'is_permanent' in 'diagnoses' zu einem Pflichtfeld (nullable: false) mit einem sinnvollen Default-Wert (z.B. false)."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Die Beziehung 'Kontakt zu Einrichtung' ist im LogicalSchema als 1:N implementiert (facility_id in contacts), aber im ER-Modell als M:N definiert. Dies ist eine harte Inkonsistenz zwischen konzeptionellem und logischem Modell.",
-          "korrekturanweisung": "Entscheiden Sie: Kann ein Kontakt mehrere Einrichtungen betreffen? Falls ja, erstellen Sie eine Junction-Table 'contact_facilities'. Falls nein, korrigieren Sie das ER-Modell auf 1:N."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung 'Leistung zu Einrichtung' ist im ER-Modell als M:N definiert, aber im LogicalSchema ist 'facility_id' direkt in der 'services'-Tabelle enthalten (1:N). Dies ist eine Inkonsistenz. Laut Anforderung: 'Solche Leistungen können in verschiedenen Einrichtungen erbracht werden.' Dies impliziert M:N, aber das Schema implementiert 1:N.",
-          "korrekturanweisung": "Erstellen Sie eine Junction-Table 'service_facilities', um die M:N-Beziehung zwischen 'services' und 'facilities' abzubilden, falls eine Leistung tatsächlich in mehreren Einrichtungen erbracht werden kann."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung 'Leistung zu Kontakt' ist im ER-Modell als M:N definiert, aber im LogicalSchema ist 'contact_id' direkt in der 'services'-Tabelle enthalten (M:1). Dies ist eine Inkonsistenz. Laut Anforderung: 'Eine Leistung wird im Rahmen eines oder mehrerer Kontakte erbracht.' Dies impliziert M:N, aber das Schema implementiert M:1.",
-          "korrekturanweisung": "Erstellen Sie eine Junction-Table 'service_contacts', um die M:N-Beziehung zwischen 'services' und 'contacts' abzubilden."
+          "beschreibung": "Mehrere Beziehungsprobleme sind identifiziert:\n1. Die Beziehung zwischen 'diagnoses' und 'contacts' ist optional (contact_id nullable: true), was korrekt ist für die Anforderung 'Diagnose kann dauerhaft sein'. Jedoch fehlt eine Constraint, die sicherstellt, dass entweder contact_id ODER is_permanent=true gesetzt ist. Dies ist ein logisches Integritätsproblem, das auf Datenbankebene nicht erzwungen werden kann.\n2. Die Beziehung 'Leistung zu Diagnose' (M:N) ist korrekt als Junction-Table 'service_diagnoses' modelliert. Jedoch fehlt eine Validierung, dass eine Leistung nur Diagnosen zugeordnet werden kann, die zum gleichen Patienten gehören (transitiv über 'contacts' und 'diagnoses').\n3. Die Beziehung 'Überweisung zu Einrichtung' hat zwei separate Fremdschlüssel (from_facility_id, to_facility_id), was korrekt ist. Jedoch fehlt eine Constraint, die sicherstellt, dass from_facility_id ≠ to_facility_id.\n4. Die Beziehung 'Kontakt zu Fachkraft' ist optional (practitioner_id nullable: true), was akzeptabel ist, aber die Anforderung 'wer sie dokumentiert hat' für Diagnosen erfordert, dass practitioner_id in 'diagnoses' immer gesetzt ist (was der Fall ist). Dies ist konsistent.",
+          "korrekturanweisung": "1. Dokumentieren Sie explizit die Geschäftsregel: 'Eine Diagnose ist entweder an einen Kontakt gebunden (contact_id NOT NULL) oder dauerhaft (is_permanent = true), aber nicht beides gleichzeitig.' Dies sollte durch einen CHECK-Constraint oder eine Applikationslogik erzwungen werden.\n2. Dokumentieren Sie, dass bei der Zuordnung von Diagnosen zu Leistungen (service_diagnoses) sichergestellt werden muss, dass alle Diagnosen zum gleichen Patienten gehören wie die Leistung (über den Kontakt).\n3. Fügen Sie einen CHECK-Constraint hinzu: 'from_facility_id <> to_facility_id' in der Tabelle 'referrals'.\n4. Überprüfen Sie, ob die Beziehung 'Kontakt zu Fachkraft' optional sein sollte. Wenn jeder Kontakt einen behandelnden Arzt haben sollte, machen Sie practitioner_id zu einem Pflichtfeld."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'contacts' hat redundante Zeitstempel-Attribute: 'contact_datetime', 'appointment_datetime', 'admission_date', 'discharge_date'. Je nach Kontakttyp werden unterschiedliche Felder verwendet, was zu Anomalien führt. Dies verstößt gegen die Normalisierung (3NF), da die Attribute nicht atomar und unabhängig sind. Zusätzlich ist unklar, welches Feld das 'Datum' aus dem ER-Modell darstellt.",
-          "korrekturanweisung": "Normalisieren Sie die 'contacts'-Tabelle: Entfernen Sie redundante Felder oder erstellen Sie separate Tabellen für ambulante und stationäre Kontakte (Subtypen), oder verwenden Sie CHECK-Constraints, um sicherzustellen, dass nur relevante Felder für jeden Kontakttyp gesetzt sind."
-        },
-        {
-          "criterion": "normalisierung",
-          "erfuellt": false,
-          "beschreibung": "Die Tabelle 'practitioners' hat 'qualification' und 'specialty' als VARCHAR-Felder ohne Normalisierung. Falls diese Werte standardisiert sind (z.B. aus einem Katalog), sollten sie in separaten Lookup-Tabellen gespeichert werden, um Redundanz und Inkonsistenzen zu vermeiden.",
-          "korrekturanweisung": "Erstellen Sie Lookup-Tabellen 'qualifications' und 'specialties' mit standardisierten Werten, und referenzieren Sie diese in der 'practitioners'-Tabelle durch Fremdschlüssel."
+          "beschreibung": "Mehrere Normalisierungsprobleme sind identifiziert:\n1. In der Tabelle 'services': Die Attribute 'service_catalog_id', 'catalog_code', 'description' und 'amount' sind redundant. Die Attribute 'catalog_code', 'description' und 'amount' sollten aus der Tabelle 'service_catalogs' abgerufen werden, nicht in 'services' dupliziert werden. Dies verstößt gegen die 3. Normalform (3NF).\n2. In der Tabelle 'diagnoses': Das Attribut 'facility_id' ist redundant, da die Einrichtung bereits über 'contact_id' (und dann über 'contacts.facility_id') bestimmt werden kann. Dies ist eine transitive Abhängigkeit und verstößt gegen 3NF.\n3. In der Tabelle 'contacts': Das Attribut 'contact_type' ist redundant mit 'is_inpatient'. Wenn 'is_inpatient' true ist, ist der Kontakttyp 'stationär', sonst 'ambulant'. Dies ist eine funktionale Abhängigkeit und verstößt gegen 3NF.\n4. In der Tabelle 'services': Das Attribut 'facility_id' ist redundant, da die Einrichtung bereits über 'contact_id' (und dann über 'contacts.facility_id') bestimmt werden kann. Dies ist eine transitive Abhängigkeit und verstößt gegen 3NF.",
+          "korrekturanweisung": "1. Entfernen Sie 'catalog_code', 'description' und 'amount' aus der Tabelle 'services'. Diese Attribute sollten nur in 'service_catalogs' existieren und über 'service_catalog_id' abgerufen werden.\n2. Entfernen Sie 'facility_id' aus der Tabelle 'diagnoses'. Die Einrichtung kann über 'contact_id' → 'contacts.facility_id' bestimmt werden. Falls eine Diagnose nicht an einen Kontakt gebunden ist (is_permanent=true), kann die Einrichtung aus dem Kontext der dokumentierenden Fachkraft bestimmt werden (über 'practitioner_facilities').\n3. Entfernen Sie 'contact_type' aus der Tabelle 'contacts' oder machen Sie es zu einem berechneten Feld. Alternativ: Behalten Sie 'contact_type' als Enumerationsfeld und entfernen Sie 'is_inpatient', da es redundant ist.\n4. Entfernen Sie 'facility_id' aus der Tabelle 'services'. Die Einrichtung kann über 'contact_id' → 'contacts.facility_id' bestimmt werden."
         }
       ],
       "origin_step": "cmd"
@@ -1799,7 +1782,7 @@
     "critic_report_c2": null,
     "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    gender VARCHAR(255),\n    address VARCHAR(255),\n    contact_info VARCHAR(255),\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE facilities (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    facility_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_facilities PRIMARY KEY (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    facility_id INTEGER NOT NULL,\n    contact_type VARCHAR(255) NOT NULL,\n    contact_datetime TIMESTAMP NOT NULL,\n    admission_date DATE,\n    discharge_date DATE,\n    appointment_datetime TIMESTAMP,\n    CONSTRAINT pk_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_contacts_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_contacts_facility_id FOREIGN KEY (facility_id) REFERENCES facilities (id)\n);\n\nCREATE TABLE practitioners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    qualification VARCHAR(255) NOT NULL,\n    specialty VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_practitioners PRIMARY KEY (id)\n);\n\nCREATE TABLE contact_practitioners (\n    id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    practitioner_id INTEGER NOT NULL,\n    role VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_contact_practitioners PRIMARY KEY (id),\n    CONSTRAINT fk_contact_practitioners_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id),\n    CONSTRAINT fk_contact_practitioners_practitioner_id FOREIGN KEY (practitioner_id) REFERENCES practitioners (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    diagnosis_text TEXT NOT NULL,\n    icd10_code VARCHAR(255),\n    documentation_datetime TIMESTAMP NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id),\n    CONSTRAINT fk_diagnoses_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE diagnosis_contacts (\n    id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    relevance_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_diagnosis_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_diagnosis_contacts_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id),\n    CONSTRAINT fk_diagnosis_contacts_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id)\n);\n\nCREATE TABLE diagnosis_practitioners (\n    id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    practitioner_id INTEGER NOT NULL,\n    documentation_datetime TIMESTAMP NOT NULL,\n    CONSTRAINT pk_diagnosis_practitioners PRIMARY KEY (id),\n    CONSTRAINT fk_diagnosis_practitioners_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id),\n    CONSTRAINT fk_diagnosis_practitioners_practitioner_id FOREIGN KEY (practitioner_id) REFERENCES practitioners (id)\n);\n\nCREATE TABLE insurances (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    payer VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_insurances PRIMARY KEY (id),\n    CONSTRAINT fk_insurances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE practitioner_facilities (\n    id INTEGER NOT NULL,\n    practitioner_id INTEGER NOT NULL,\n    facility_id INTEGER NOT NULL,\n    assignment_type VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_practitioner_facilities PRIMARY KEY (id),\n    CONSTRAINT fk_practitioner_facilities_practitioner_id FOREIGN KEY (practitioner_id) REFERENCES practitioners (id),\n    CONSTRAINT fk_practitioner_facilities_facility_id FOREIGN KEY (facility_id) REFERENCES facilities (id)\n);\n\nCREATE TABLE referrals (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    sending_facility_id INTEGER NOT NULL,\n    receiving_facility_id INTEGER NOT NULL,\n    issuing_practitioner_id INTEGER NOT NULL,\n    referral_date DATE NOT NULL,\n    clinical_question TEXT NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_referrals PRIMARY KEY (id),\n    CONSTRAINT fk_referrals_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_referrals_sending_facility_id FOREIGN KEY (sending_facility_id) REFERENCES facilities (id),\n    CONSTRAINT fk_referrals_receiving_facility_id FOREIGN KEY (receiving_facility_id) REFERENCES facilities (id),\n    CONSTRAINT fk_referrals_issuing_practitioner_id FOREIGN KEY (issuing_practitioner_id) REFERENCES practitioners (id)\n);\n\nCREATE TABLE service_catalogs (\n    id INTEGER NOT NULL,\n    catalog_code VARCHAR(255) NOT NULL,\n    description VARCHAR(255) NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    validity_scope VARCHAR(255),\n    CONSTRAINT pk_service_catalogs PRIMARY KEY (id)\n);\n\nCREATE TABLE services (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    facility_id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    service_catalog_id INTEGER NOT NULL,\n    service_type VARCHAR(255) NOT NULL,\n    provision_datetime TIMESTAMP NOT NULL,\n    CONSTRAINT pk_services PRIMARY KEY (id),\n    CONSTRAINT fk_services_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_services_facility_id FOREIGN KEY (facility_id) REFERENCES facilities (id),\n    CONSTRAINT fk_services_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id),\n    CONSTRAINT fk_services_service_catalog_id FOREIGN KEY (service_catalog_id) REFERENCES service_catalogs (id)\n);\n\nCREATE TABLE service_diagnoses (\n    id INTEGER NOT NULL,\n    service_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    assignment_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_service_diagnoses PRIMARY KEY (id),\n    CONSTRAINT fk_service_diagnoses_service_id FOREIGN KEY (service_id) REFERENCES services (id),\n    CONSTRAINT fk_service_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n",
+    "final_ddl": "CREATE TABLE patients (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    address VARCHAR(255),\n    contact_info VARCHAR(255),\n    CONSTRAINT pk_patients PRIMARY KEY (id)\n);\n\nCREATE TABLE facilities (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    facility_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_facilities PRIMARY KEY (id)\n);\n\nCREATE TABLE practitioners (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    specialty VARCHAR(255) NOT NULL,\n    qualification VARCHAR(255),\n    CONSTRAINT pk_practitioners PRIMARY KEY (id)\n);\n\nCREATE TABLE contacts (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    facility_id INTEGER NOT NULL,\n    practitioner_id INTEGER,\n    contact_type VARCHAR(255) NOT NULL,\n    is_inpatient BOOLEAN NOT NULL,\n    contact_datetime TIMESTAMP NOT NULL,\n    admission_date DATE,\n    discharge_date DATE,\n    CONSTRAINT pk_contacts PRIMARY KEY (id),\n    CONSTRAINT fk_contacts_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_contacts_facility_id FOREIGN KEY (facility_id) REFERENCES facilities (id),\n    CONSTRAINT fk_contacts_practitioner_id FOREIGN KEY (practitioner_id) REFERENCES practitioners (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    contact_id INTEGER,\n    practitioner_id INTEGER NOT NULL,\n    facility_id INTEGER NOT NULL,\n    diagnosis_text TEXT NOT NULL,\n    documentation_date DATE NOT NULL,\n    is_permanent BOOLEAN,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id),\n    CONSTRAINT fk_diagnoses_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_diagnoses_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id),\n    CONSTRAINT fk_diagnoses_practitioner_id FOREIGN KEY (practitioner_id) REFERENCES practitioners (id),\n    CONSTRAINT fk_diagnoses_facility_id FOREIGN KEY (facility_id) REFERENCES facilities (id)\n);\n\nCREATE TABLE insurances (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    insurance_name VARCHAR(255) NOT NULL,\n    cost_bearer VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_insurances PRIMARY KEY (id),\n    CONSTRAINT fk_insurances_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id)\n);\n\nCREATE TABLE practitioner_facilities (\n    id INTEGER NOT NULL,\n    practitioner_id INTEGER NOT NULL,\n    facility_id INTEGER NOT NULL,\n    assignment_type VARCHAR(255),\n    valid_from DATE,\n    valid_until DATE,\n    CONSTRAINT pk_practitioner_facilities PRIMARY KEY (id),\n    CONSTRAINT fk_practitioner_facilities_practitioner_id FOREIGN KEY (practitioner_id) REFERENCES practitioners (id),\n    CONSTRAINT fk_practitioner_facilities_facility_id FOREIGN KEY (facility_id) REFERENCES facilities (id)\n);\n\nCREATE TABLE referrals (\n    id INTEGER NOT NULL,\n    patient_id INTEGER NOT NULL,\n    from_facility_id INTEGER NOT NULL,\n    to_facility_id INTEGER NOT NULL,\n    from_practitioner_id INTEGER,\n    referral_date DATE NOT NULL,\n    clinical_question TEXT,\n    status VARCHAR(255) NOT NULL,\n    is_formal BOOLEAN,\n    CONSTRAINT pk_referrals PRIMARY KEY (id),\n    CONSTRAINT fk_referrals_patient_id FOREIGN KEY (patient_id) REFERENCES patients (id),\n    CONSTRAINT fk_referrals_from_facility_id FOREIGN KEY (from_facility_id) REFERENCES facilities (id),\n    CONSTRAINT fk_referrals_to_facility_id FOREIGN KEY (to_facility_id) REFERENCES facilities (id),\n    CONSTRAINT fk_referrals_from_practitioner_id FOREIGN KEY (from_practitioner_id) REFERENCES practitioners (id)\n);\n\nCREATE TABLE service_catalogs (\n    id INTEGER NOT NULL,\n    facility_id INTEGER,\n    catalog_code VARCHAR(255) NOT NULL,\n    description VARCHAR(255) NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_service_catalogs PRIMARY KEY (id),\n    CONSTRAINT fk_service_catalogs_facility_id FOREIGN KEY (facility_id) REFERENCES facilities (id)\n);\n\nCREATE TABLE services (\n    id INTEGER NOT NULL,\n    contact_id INTEGER NOT NULL,\n    facility_id INTEGER NOT NULL,\n    service_catalog_id INTEGER NOT NULL,\n    service_type VARCHAR(255) NOT NULL,\n    service_datetime TIMESTAMP,\n    CONSTRAINT pk_services PRIMARY KEY (id),\n    CONSTRAINT fk_services_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (id),\n    CONSTRAINT fk_services_facility_id FOREIGN KEY (facility_id) REFERENCES facilities (id),\n    CONSTRAINT fk_services_service_catalog_id FOREIGN KEY (service_catalog_id) REFERENCES service_catalogs (id)\n);\n\nCREATE TABLE service_diagnoses (\n    id INTEGER NOT NULL,\n    service_id INTEGER NOT NULL,\n    diagnosis_id INTEGER NOT NULL,\n    CONSTRAINT pk_service_diagnoses PRIMARY KEY (id),\n    CONSTRAINT fk_service_diagnoses_service_id FOREIGN KEY (service_id) REFERENCES services (id),\n    CONSTRAINT fk_service_diagnoses_diagnosis_id FOREIGN KEY (diagnosis_id) REFERENCES diagnoses (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -1824,62 +1807,26 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'contacts' ist unvollständig. Laut ER-Modell und Anforderungstext muss ein Kontakt in einer Einrichtung stattfinden (1:N oder M:N Beziehung). Das Schema hat 'facility_id' in 'contacts', was korrekt ist. JEDOCH: Das ER-Modell definiert die Beziehung 'Kontakt zu Einrichtung' als M:N mit Beziehungsattributen, aber im LogicalSchema ist diese als 1:N implementiert (facility_id direkt in contacts). Dies ist eine konzeptionelle Inkonsistenz. Zusätzlich fehlt in der 'contacts'-Tabelle die Zuordnung zu Fachkräften direkt – diese wird über 'contact_practitioners' gelöst, was korrekt ist. ABER: Die Anforderung 'Kontakt zu Einrichtung' sollte M:N sein (ein Kontakt kann mehrere Einrichtungen betreffen, z.B. bei Überweisungen oder Konsultationen), ist aber als 1:N implementiert.",
-          "korrekturanweisung": "Überprüfen Sie die Kardinalität der Beziehung 'Kontakt-Einrichtung'. Wenn ein Kontakt tatsächlich nur in einer Einrichtung stattfinden kann, ist die 1:N-Implementierung korrekt und das ER-Modell muss korrigiert werden. Wenn ein Kontakt mehrere Einrichtungen betreffen kann, muss eine Junction-Table 'contact_facilities' erstellt werden."
+          "beschreibung": "Die Tabelle 'practitioners' fehlt eine kritische Beziehung zur Tabelle 'facilities'. Im Anforderungstext und ERModell ist explizit dokumentiert, dass Fachkräfte an einer oder mehreren Einrichtungen arbeiten (M:N-Beziehung). Das LogicalSchema hat zwar die Junction-Table 'practitioner_facilities', aber die Tabelle 'practitioners' selbst ist unvollständig, da sie keine Möglichkeit bietet, die Zuordnung zu Einrichtungen direkt zu modellieren. Kritischer: Die Anforderung 'Manche Fachkräfte sind fest einer Einrichtung zugeordnet, andere behandeln an mehreren Standorten oder vertreten zeitweise' wird durch die fehlende Zeitlichkeit (valid_from, valid_until) in der Beziehung nicht vollständig abgebildet. Die Junction-Table 'practitioner_facilities' existiert zwar, aber die Entität 'practitioners' selbst ist nicht vollständig dokumentiert als Kern-Entität mit allen notwendigen Attributen.",
+          "korrekturanweisung": "Überprüfen Sie, ob die Tabelle 'practitioners' alle erforderlichen Attribute enthält. Gemäß ERModell sollte 'practitioners' die Attribute 'firstname', 'lastname', 'specialty' und 'qualification' haben. Im LogicalSchema sind 'firstname' und 'lastname' vorhanden, aber 'specialty' ist als 'specialty' (nicht 'fachrichtung') benannt. Dies ist eine Namenskonvention-Abweichung, aber inhaltlich korrekt. Die Junction-Table 'practitioner_facilities' ist vorhanden und korrekt modelliert."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'services' fehlt die direkte Zuordnung zu Fachkräften. Laut Anforderungstext sollen Leistungen dokumentiert werden, aber es ist unklar, welche Fachkraft die Leistung erbracht hat. Das ER-Modell erwähnt keine explizite M:N-Beziehung zwischen Leistung und Fachkraft, aber die Anforderung 'Leistungen sollen dokumentiert werden' impliziert, dass die erbringende Fachkraft relevant ist. Im LogicalSchema gibt es keine 'service_practitioners'-Tabelle.",
-          "korrekturanweisung": "Fügen Sie eine Junction-Table 'service_practitioners' hinzu, um die M:N-Beziehung zwischen 'services' und 'practitioners' abzubilden, falls Leistungen von mehreren Fachkräften erbracht werden können oder die erbringende Fachkraft dokumentiert werden soll."
-        },
-        {
-          "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Die Tabelle 'contacts' hat sowohl 'contact_datetime' als auch 'appointment_datetime' und optional 'admission_date'/'discharge_date'. Dies ist redundant und unklar. Laut ER-Modell gibt es 'Datum', 'Aufnahmedatum', 'Entlassungsdatum' und 'Termin'. Die Semantik ist verwirrend: Ist 'contact_datetime' das allgemeine Kontaktdatum oder der Termin? Sollte es für ambulante Kontakte 'appointment_datetime' und für stationäre 'admission_date' sein? Die Anforderung erwähnt: 'Im Alltag wird oft nicht sauber zwischen ambulanten Terminen und stationären Aufnahmedaten getrennt.' Das Schema löst dies nicht durch klare Constraints.",
-          "korrekturanweisung": "Definieren Sie klare Regeln: Für ambulante Kontakte (contact_type='ambulant') sollte 'appointment_datetime' gesetzt sein und 'admission_date'/'discharge_date' NULL. Für stationäre Kontakte (contact_type='stationär') sollten 'admission_date' und optional 'discharge_date' gesetzt sein. Entfernen Sie 'contact_datetime' oder definieren Sie es als Dokumentationszeitpunkt, nicht als Kontaktzeitpunkt. Implementieren Sie CHECK-Constraints zur Erzwingung dieser Regeln."
-        },
-        {
-          "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Die Tabelle 'diagnoses' hat 'valid_from' und 'valid_until', was die Anforderung 'Gültigkeitsdauer von Diagnosen' adressiert. JEDOCH: Das ER-Modell definiert 'Gültig_ab' und 'Gültig_bis' als Attribute der Diagnose-Entität, nicht als Beziehungsattribute zu Kontakten. Die Anforderung ist unklar: 'Nicht immer ist eindeutig, ob eine Diagnose nur bei einem Kontakt gilt oder dauerhaft in der Krankengeschichte sichtbar bleiben soll.' Das Schema löst dies durch die M:N-Beziehung 'diagnosis_contacts' mit 'relevance_type', was gut ist. ABER: Es fehlt eine Möglichkeit, die Gültigkeit einer Diagnose für einen spezifischen Kontakt zu begrenzen (z.B. 'diese Diagnose gilt nur für diesen Kontakt'). Die 'valid_from'/'valid_until' in 'diagnoses' sind global für den Patienten, nicht kontaktspezifisch.",
-          "korrekturanweisung": "Erweitern Sie die 'diagnosis_contacts'-Tabelle um optionale Felder 'valid_from' und 'valid_until', um kontaktspezifische Gültigkeitszeiträume zu ermöglichen. Dies ermöglicht die Unterscheidung zwischen dauerhaften Diagnosen (global gültig) und kontaktspezifischen Diagnosen (nur für einen Kontakt relevant)."
-        },
-        {
-          "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": false,
-          "beschreibung": "Die Tabelle 'practitioners' hat 'qualification' und 'specialty' als separate Pflichtfelder. Laut ER-Modell sind dies 'Qualifikation' und 'Fachrichtung'. Die Anforderung erwähnt: 'medizinische Fachkräfte mit unterschiedlichen Qualifikationen, zum Beispiel Allgemeinmedizin, Kardiologie oder Radiologie.' Diese Beispiele sind Fachrichtungen, nicht Qualifikationen. Es ist unklar, was der Unterschied zwischen 'qualification' und 'specialty' sein soll. Sind beide Pflichtfelder notwendig? Können sie unterschiedliche Werte haben?",
-          "korrekturanweisung": "Klären Sie die Semantik: Ist 'qualification' ein formaler Abschluss (z.B. 'Arzt', 'Krankenpfleger') und 'specialty' die Fachrichtung (z.B. 'Kardiologie')? Oder sind sie redundant? Falls redundant, entfernen Sie eines. Falls unterschiedlich, dokumentieren Sie die Unterscheidung und erwägen Sie, ein Lookup-Table für standardisierte Werte zu erstellen."
+          "beschreibung": "Mehrere kritische Attribute fehlen oder sind inkonsistent benannt:\n1. In der Tabelle 'patients': Das Attribut 'contact_info' ist zu vage. Der Anforderungstext spricht von 'grundlegenden Angaben', das ERModell nennt 'kontaktdaten'. Das ist akzeptabel, aber nicht präzise genug für eine Produktionsumgebung.\n2. In der Tabelle 'contacts': Das Attribut 'contact_datetime' ist redundant mit 'admission_date' und 'discharge_date' für stationäre Fälle. Der Anforderungstext erwähnt 'Termin' für ambulante Fälle, aber im LogicalSchema gibt es kein separates 'appointment_date'-Attribut. Das ERModell hat 'termin' als separates Attribut, das LogicalSchema nicht.\n3. In der Tabelle 'services': Das Attribut 'service_datetime' ist optional (nullable: true), aber für die Abrechnung und Nachverfolgung sollte dies ein Pflichtfeld sein.\n4. In der Tabelle 'diagnoses': Das Attribut 'is_permanent' ist optional, aber die Anforderung 'ob eine Diagnose nur bei einem Kontakt gilt oder dauerhaft in der Krankengeschichte sichtbar bleiben soll' deutet darauf hin, dass dies ein kritisches Attribut ist, das immer gesetzt sein sollte.",
+          "korrekturanweisung": "1. Ersetzen Sie 'contact_info' durch präzisere Attribute wie 'phone' und 'email'.\n2. Fügen Sie in 'contacts' ein separates Attribut 'appointment_date' (TIMESTAMP, nullable: true) für ambulante Termine hinzu und dokumentieren Sie die Semantik klar.\n3. Machen Sie 'service_datetime' zu einem Pflichtfeld (nullable: false) oder dokumentieren Sie explizit, wann es NULL sein darf.\n4. Machen Sie 'is_permanent' in 'diagnoses' zu einem Pflichtfeld (nullable: false) mit einem sinnvollen Default-Wert (z.B. false)."
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Die Beziehung 'Kontakt zu Einrichtung' ist im LogicalSchema als 1:N implementiert (facility_id in contacts), aber im ER-Modell als M:N definiert. Dies ist eine harte Inkonsistenz zwischen konzeptionellem und logischem Modell.",
-          "korrekturanweisung": "Entscheiden Sie: Kann ein Kontakt mehrere Einrichtungen betreffen? Falls ja, erstellen Sie eine Junction-Table 'contact_facilities'. Falls nein, korrigieren Sie das ER-Modell auf 1:N."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung 'Leistung zu Einrichtung' ist im ER-Modell als M:N definiert, aber im LogicalSchema ist 'facility_id' direkt in der 'services'-Tabelle enthalten (1:N). Dies ist eine Inkonsistenz. Laut Anforderung: 'Solche Leistungen können in verschiedenen Einrichtungen erbracht werden.' Dies impliziert M:N, aber das Schema implementiert 1:N.",
-          "korrekturanweisung": "Erstellen Sie eine Junction-Table 'service_facilities', um die M:N-Beziehung zwischen 'services' und 'facilities' abzubilden, falls eine Leistung tatsächlich in mehreren Einrichtungen erbracht werden kann."
-        },
-        {
-          "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Beziehung 'Leistung zu Kontakt' ist im ER-Modell als M:N definiert, aber im LogicalSchema ist 'contact_id' direkt in der 'services'-Tabelle enthalten (M:1). Dies ist eine Inkonsistenz. Laut Anforderung: 'Eine Leistung wird im Rahmen eines oder mehrerer Kontakte erbracht.' Dies impliziert M:N, aber das Schema implementiert M:1.",
-          "korrekturanweisung": "Erstellen Sie eine Junction-Table 'service_contacts', um die M:N-Beziehung zwischen 'services' und 'contacts' abzubilden."
+          "beschreibung": "Mehrere Beziehungsprobleme sind identifiziert:\n1. Die Beziehung zwischen 'diagnoses' und 'contacts' ist optional (contact_id nullable: true), was korrekt ist für die Anforderung 'Diagnose kann dauerhaft sein'. Jedoch fehlt eine Constraint, die sicherstellt, dass entweder contact_id ODER is_permanent=true gesetzt ist. Dies ist ein logisches Integritätsproblem, das auf Datenbankebene nicht erzwungen werden kann.\n2. Die Beziehung 'Leistung zu Diagnose' (M:N) ist korrekt als Junction-Table 'service_diagnoses' modelliert. Jedoch fehlt eine Validierung, dass eine Leistung nur Diagnosen zugeordnet werden kann, die zum gleichen Patienten gehören (transitiv über 'contacts' und 'diagnoses').\n3. Die Beziehung 'Überweisung zu Einrichtung' hat zwei separate Fremdschlüssel (from_facility_id, to_facility_id), was korrekt ist. Jedoch fehlt eine Constraint, die sicherstellt, dass from_facility_id ≠ to_facility_id.\n4. Die Beziehung 'Kontakt zu Fachkraft' ist optional (practitioner_id nullable: true), was akzeptabel ist, aber die Anforderung 'wer sie dokumentiert hat' für Diagnosen erfordert, dass practitioner_id in 'diagnoses' immer gesetzt ist (was der Fall ist). Dies ist konsistent.",
+          "korrekturanweisung": "1. Dokumentieren Sie explizit die Geschäftsregel: 'Eine Diagnose ist entweder an einen Kontakt gebunden (contact_id NOT NULL) oder dauerhaft (is_permanent = true), aber nicht beides gleichzeitig.' Dies sollte durch einen CHECK-Constraint oder eine Applikationslogik erzwungen werden.\n2. Dokumentieren Sie, dass bei der Zuordnung von Diagnosen zu Leistungen (service_diagnoses) sichergestellt werden muss, dass alle Diagnosen zum gleichen Patienten gehören wie die Leistung (über den Kontakt).\n3. Fügen Sie einen CHECK-Constraint hinzu: 'from_facility_id <> to_facility_id' in der Tabelle 'referrals'.\n4. Überprüfen Sie, ob die Beziehung 'Kontakt zu Fachkraft' optional sein sollte. Wenn jeder Kontakt einen behandelnden Arzt haben sollte, machen Sie practitioner_id zu einem Pflichtfeld."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": false,
-          "beschreibung": "Die Tabelle 'contacts' hat redundante Zeitstempel-Attribute: 'contact_datetime', 'appointment_datetime', 'admission_date', 'discharge_date'. Je nach Kontakttyp werden unterschiedliche Felder verwendet, was zu Anomalien führt. Dies verstößt gegen die Normalisierung (3NF), da die Attribute nicht atomar und unabhängig sind. Zusätzlich ist unklar, welches Feld das 'Datum' aus dem ER-Modell darstellt.",
-          "korrekturanweisung": "Normalisieren Sie die 'contacts'-Tabelle: Entfernen Sie redundante Felder oder erstellen Sie separate Tabellen für ambulante und stationäre Kontakte (Subtypen), oder verwenden Sie CHECK-Constraints, um sicherzustellen, dass nur relevante Felder für jeden Kontakttyp gesetzt sind."
-        },
-        {
-          "criterion": "normalisierung",
-          "erfuellt": false,
-          "beschreibung": "Die Tabelle 'practitioners' hat 'qualification' und 'specialty' als VARCHAR-Felder ohne Normalisierung. Falls diese Werte standardisiert sind (z.B. aus einem Katalog), sollten sie in separaten Lookup-Tabellen gespeichert werden, um Redundanz und Inkonsistenzen zu vermeiden.",
-          "korrekturanweisung": "Erstellen Sie Lookup-Tabellen 'qualifications' und 'specialties' mit standardisierten Werten, und referenzieren Sie diese in der 'practitioners'-Tabelle durch Fremdschlüssel."
+          "beschreibung": "Mehrere Normalisierungsprobleme sind identifiziert:\n1. In der Tabelle 'services': Die Attribute 'service_catalog_id', 'catalog_code', 'description' und 'amount' sind redundant. Die Attribute 'catalog_code', 'description' und 'amount' sollten aus der Tabelle 'service_catalogs' abgerufen werden, nicht in 'services' dupliziert werden. Dies verstößt gegen die 3. Normalform (3NF).\n2. In der Tabelle 'diagnoses': Das Attribut 'facility_id' ist redundant, da die Einrichtung bereits über 'contact_id' (und dann über 'contacts.facility_id') bestimmt werden kann. Dies ist eine transitive Abhängigkeit und verstößt gegen 3NF.\n3. In der Tabelle 'contacts': Das Attribut 'contact_type' ist redundant mit 'is_inpatient'. Wenn 'is_inpatient' true ist, ist der Kontakttyp 'stationär', sonst 'ambulant'. Dies ist eine funktionale Abhängigkeit und verstößt gegen 3NF.\n4. In der Tabelle 'services': Das Attribut 'facility_id' ist redundant, da die Einrichtung bereits über 'contact_id' (und dann über 'contacts.facility_id') bestimmt werden kann. Dies ist eine transitive Abhängigkeit und verstößt gegen 3NF.",
+          "korrekturanweisung": "1. Entfernen Sie 'catalog_code', 'description' und 'amount' aus der Tabelle 'services'. Diese Attribute sollten nur in 'service_catalogs' existieren und über 'service_catalog_id' abgerufen werden.\n2. Entfernen Sie 'facility_id' aus der Tabelle 'diagnoses'. Die Einrichtung kann über 'contact_id' → 'contacts.facility_id' bestimmt werden. Falls eine Diagnose nicht an einen Kontakt gebunden ist (is_permanent=true), kann die Einrichtung aus dem Kontext der dokumentierenden Fachkraft bestimmt werden (über 'practitioner_facilities').\n3. Entfernen Sie 'contact_type' aus der Tabelle 'contacts' oder machen Sie es zu einem berechneten Feld. Alternativ: Behalten Sie 'contact_type' als Enumerationsfeld und entfernen Sie 'is_inpatient', da es redundant ist.\n4. Entfernen Sie 'facility_id' aus der Tabelle 'services'. Die Einrichtung kann über 'contact_id' → 'contacts.facility_id' bestimmt werden."
         }
       ],
       "origin_step": "cmd"
@@ -1889,33 +1836,33 @@
   },
   "telemetry": {
     "total_calls": 10,
-    "total_input_tokens": 81095,
-    "total_output_tokens": 33502,
-    "total_tokens": 114597,
+    "total_input_tokens": 89504,
+    "total_output_tokens": 32345,
+    "total_tokens": 121849,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1971,
-        "output_tokens": 2392,
+        "output_tokens": 2142,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 3,
-        "input_tokens": 13404,
-        "output_tokens": 9394,
+        "input_tokens": 22867,
+        "output_tokens": 12366,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 3,
-        "input_tokens": 24379,
-        "output_tokens": 13656,
+        "input_tokens": 25505,
+        "output_tokens": 10965,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 3,
-        "input_tokens": 41341,
-        "output_tokens": 8060,
+        "input_tokens": 39161,
+        "output_tokens": 6872,
         "cost_usd": 0.0
       }
     },
@@ -1926,7 +1873,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1971,
-        "output_tokens": 2392,
+        "output_tokens": 2142,
         "cost_usd": 0.0
       },
       {
@@ -1934,8 +1881,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4468,
-        "output_tokens": 3176,
+        "input_tokens": 4218,
+        "output_tokens": 3381,
         "cost_usd": 0.0
       },
       {
@@ -1943,8 +1890,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 6602,
-        "output_tokens": 4155,
+        "input_tokens": 6921,
+        "output_tokens": 3536,
         "cost_usd": 0.0
       },
       {
@@ -1952,8 +1899,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 13799,
-        "output_tokens": 2507,
+        "input_tokens": 12713,
+        "output_tokens": 1500,
         "cost_usd": 0.0
       },
       {
@@ -1961,8 +1908,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4468,
-        "output_tokens": 3190,
+        "input_tokens": 9014,
+        "output_tokens": 4315,
         "cost_usd": 0.0
       },
       {
@@ -1970,8 +1917,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 9119,
-        "output_tokens": 5121,
+        "input_tokens": 8567,
+        "output_tokens": 3575,
         "cost_usd": 0.0
       },
       {
@@ -1979,8 +1926,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 14263,
-        "output_tokens": 2297,
+        "input_tokens": 12907,
+        "output_tokens": 2621,
         "cost_usd": 0.0
       },
       {
@@ -1988,8 +1935,8 @@
         "iteration": 2,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4468,
-        "output_tokens": 3028,
+        "input_tokens": 9635,
+        "output_tokens": 4670,
         "cost_usd": 0.0
       },
       {
@@ -1997,8 +1944,8 @@
         "iteration": 2,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8658,
-        "output_tokens": 4380,
+        "input_tokens": 10017,
+        "output_tokens": 3854,
         "cost_usd": 0.0
       },
       {
@@ -2006,8 +1953,8 @@
         "iteration": 2,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 13279,
-        "output_tokens": 3256,
+        "input_tokens": 13541,
+        "output_tokens": 2751,
         "cost_usd": 0.0
       }
     ]

@@ -2,8 +2,8 @@
   "testfall_id": "TC055",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.3547619047619048,
-  "score_gesamt": 0.6128571428571429,
+  "score_semantisch": 0.3570217917675545,
+  "score_gesamt": 0.6142130750605327,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 4
     },
     "attribut": {
-      "precision": 0.35714285714285715,
+      "precision": 0.37037037037037035,
       "recall": 0.3125,
-      "f1": 0.3333333333333333,
+      "f1": 0.3389830508474576,
       "matched": 10,
       "nur_in_referenz": 22,
-      "nur_in_generiert": 18
+      "nur_in_generiert": 17
     },
     "beziehung": {
       "recall": 0.25,
@@ -380,12 +380,6 @@
               "type": "DATE",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "registration_status",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -402,16 +396,16 @@
           ]
         },
         {
-          "name": "booth_exhibitors",
+          "name": "exhibitor_booths",
           "columns": [
             {
-              "name": "booth_id",
+              "name": "exhibitor_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "exhibitor_id",
+              "name": "booth_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
@@ -419,13 +413,13 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "booth_id",
-              "references_table": "booths",
+              "from_column": "exhibitor_id",
+              "references_table": "exhibitors",
               "references_column": "id"
             },
             {
-              "from_column": "exhibitor_id",
-              "references_table": "exhibitors",
+              "from_column": "booth_id",
+              "references_table": "booths",
               "references_column": "id"
             }
           ]
@@ -512,19 +506,19 @@
           "von": "Aussteller",
           "zu": "Stand",
           "kardinalitaet": "M:N",
-          "beschreibung": "Aussteller präsentieren sich auf Ständen. Ein Aussteller kann mehrere Stände auf verschiedenen Messen haben, und mehrere Aussteller können sich gemeinsam auf einem Stand präsentieren."
+          "beschreibung": "Aussteller präsentieren sich auf Ständen. Ein Aussteller kann mehrere Stände bekommen (auch auf verschiedenen Messen), und mehrere Aussteller können sich gemeinsam auf einer Fläche (Stand) präsentieren."
         },
         {
-          "von": "Stand",
-          "zu": "Messe",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Ein Stand gehört zu einer bestimmten Messe. Eine Messe hat mehrere Stände."
+          "von": "Messe",
+          "zu": "Stand",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Eine Messe hat mehrere Stände. Ein Stand gehört immer zu einer bestimmten Messe."
         },
         {
-          "von": "Programmpunkt",
-          "zu": "Messe",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Programmpunkte werden zu einer Messe geplant. Eine Messe hat mehrere Programmpunkte."
+          "von": "Messe",
+          "zu": "Programmpunkt",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Zu jeder Messe werden mehrere Programmpunkte geplant. Ein Programmpunkt gehört zu einer bestimmten Messe."
         },
         {
           "von": "Aussteller",
@@ -535,31 +529,39 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Der Bereich eines Standes (z.B. Technik, Lebensmittel, Handwerk) ist als Attribut des Standes modelliert. Unklar ist, ob Bereiche als separate Entität mit Kategorisierung oder als einfache Textattribute zu behandeln sind.",
+          "beschreibung": "Der Bereich eines Standes (z.B. Technik, Lebensmittel, Handwerk) ist als Attribut des Standes modelliert. Unklar ist, ob Bereiche als separate Entität mit eigenen Eigenschaften zu modellieren sind oder ob es sich um einfache Kategoriewerte handelt.",
           "betroffene_elemente": [
             "Stand",
             "Bereich"
           ]
         },
         {
-          "beschreibung": "Der 'Tag' eines Programmpunktes ist als Attribut erfasst, aber unklar ist, ob dieser als Datum oder als Referenz zu einem Messetag zu modellieren ist und ob ein Programmpunkt über mehrere Tage laufen kann.",
-          "betroffene_elemente": [
-            "Programmpunkt",
-            "Messe"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob die M:N-Beziehung zwischen Aussteller und Stand zusätzliche Attribute benötigt (z.B. Standnummer, Größe, Mietkosten), die spezifisch für die Zuordnung eines Aussstellers zu einem Stand relevant sind.",
+          "beschreibung": "Bei der M:N-Beziehung zwischen Aussteller und Stand ist unklar, ob zusätzliche Attribute wie Standnummer, Größe oder Mietgebühren erfasst werden sollen, die spezifisch für die Kombination von Aussteller und Stand relevant sind.",
           "betroffene_elemente": [
             "Aussteller",
             "Stand"
           ]
         },
         {
-          "beschreibung": "Die Anmeldung eines Aussstellers zu einer Messe ist erwähnt, aber unklar ist, ob diese Anmeldung als separate Entität oder als Attribut der M:N-Beziehung zu modellieren ist und welche Informationen sie enthalten soll.",
+          "beschreibung": "Unklar ist, ob ein Programmpunkt an einem bestimmten Ort (z.B. auf einem Stand oder in einer Halle) stattfindet oder ob nur der Tag relevant ist.",
+          "betroffene_elemente": [
+            "Programmpunkt",
+            "Stand",
+            "Halle"
+          ]
+        },
+        {
+          "beschreibung": "Die Anmeldung eines Aussstellers zu einer Messe wird erwähnt, aber es ist unklar, ob zusätzliche Attribute wie Anmeldedatum, Anmeldestatus oder Gebühren erfasst werden sollen.",
           "betroffene_elemente": [
             "Aussteller",
             "Messe"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob die Halle ein eigenständiges Attribut des Standes ist oder ob Hallen als separate Entität mit eigenen Eigenschaften modelliert werden sollten.",
+          "betroffene_elemente": [
+            "Stand",
+            "Halle"
           ]
         }
       ]
@@ -713,8 +715,7 @@
           "zu": "Messe",
           "kardinalitaet": "M:N",
           "beziehungsattribute": [
-            "Anmeldedatum",
-            "Anmeldestatus"
+            "Anmeldedatum"
           ]
         },
         {
@@ -724,15 +725,15 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Stand",
-          "zu": "Messe",
-          "kardinalitaet": "N:1",
+          "von": "Messe",
+          "zu": "Stand",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Programmpunkt",
-          "zu": "Messe",
-          "kardinalitaet": "N:1",
+          "von": "Messe",
+          "zu": "Programmpunkt",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
@@ -767,25 +768,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem ER-Modell (Aussteller, Messe, Stand, Programmpunkt) sind als Tabellen implementiert. Keine Entitäten fehlen.",
+          "beschreibung": "Alle vier Entitäten aus dem ER-Modell (Aussteller, Messe, Stand, Programmpunkt) sind im LogicalSchema vorhanden und korrekt benannt (englisch, Plural, snake_case).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: exhibitors (company_name, contact_person, contact_data), fairs (name, startdate, enddate, venue), booths (fair_id, hall, area), program_items (fair_id, title, description, event_date, start_time, end_time). Die Attribute 'event_date' und 'start_time'/'end_time' entsprechen den ER-Attributen 'Tag', 'Beginn', 'Ende'.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden: Aussteller (company_name, contact_person, contact_data), Messe (name, startdate, enddate, venue), Stand (hall, area, fair_id), Programmpunkt (title, description, event_date, start_time, end_time, fair_id). Das Attribut 'registration_date' in exhibitor_fairs entspricht dem Beziehungsattribut 'Anmeldedatum' aus dem ER-Modell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle fünf Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) exhibitor_fairs für M:N Aussteller-Messe mit Beziehungsattributen (registration_date, registration_status), (2) booth_exhibitors für M:N Aussteller-Stand, (3) booths.fair_id für N:1 Stand-Messe, (4) program_items.fair_id für N:1 Programmpunkt-Messe, (5) exhibitor_program_items für M:N Aussteller-Programmpunkt. Kardinalitäten sind korrekt.",
+          "beschreibung": "Alle fünf Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Aussteller-Messe (M:N via exhibitor_fairs mit Beziehungsattribut registration_date), (2) Aussteller-Stand (M:N via exhibitor_booths), (3) Messe-Stand (1:N via fair_id in booths), (4) Messe-Programmpunkt (1:N via fair_id in program_items), (5) Aussteller-Programmpunkt (M:N via exhibitor_program_items). Kardinalitäten und Fremdschlüssel sind korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen in Attributen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Junction Tables sind korrekt normalisiert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Alle Attribute sind atomar, es gibt keine partiellen oder transitiven Abhängigkeiten. Junction Tables sind korrekt benannt (alphabetisch sortiert: author_books-Konvention beachtet). Keine redundanten Daten.",
           "korrekturanweisung": ""
         }
       ],
@@ -795,7 +796,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE fairs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE NOT NULL,\n    venue VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_fairs PRIMARY KEY (id)\n);\n\nCREATE TABLE booths (\n    id INTEGER NOT NULL,\n    fair_id INTEGER NOT NULL,\n    hall VARCHAR(255) NOT NULL,\n    area VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_booths PRIMARY KEY (id),\n    CONSTRAINT fk_booths_fair_id FOREIGN KEY (fair_id) REFERENCES fairs (id)\n);\n\nCREATE TABLE exhibitors (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    contact_data VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_exhibitors PRIMARY KEY (id)\n);\n\nCREATE TABLE booth_exhibitors (\n    booth_id INTEGER NOT NULL,\n    exhibitor_id INTEGER NOT NULL,\n    CONSTRAINT pk_booth_exhibitors PRIMARY KEY (booth_id, exhibitor_id),\n    CONSTRAINT fk_booth_exhibitors_booth_id FOREIGN KEY (booth_id) REFERENCES booths (id),\n    CONSTRAINT fk_booth_exhibitors_exhibitor_id FOREIGN KEY (exhibitor_id) REFERENCES exhibitors (id)\n);\n\nCREATE TABLE exhibitor_fairs (\n    exhibitor_id INTEGER NOT NULL,\n    fair_id INTEGER NOT NULL,\n    registration_date DATE,\n    registration_status VARCHAR(255),\n    CONSTRAINT pk_exhibitor_fairs PRIMARY KEY (exhibitor_id, fair_id),\n    CONSTRAINT fk_exhibitor_fairs_exhibitor_id FOREIGN KEY (exhibitor_id) REFERENCES exhibitors (id),\n    CONSTRAINT fk_exhibitor_fairs_fair_id FOREIGN KEY (fair_id) REFERENCES fairs (id)\n);\n\nCREATE TABLE program_items (\n    id INTEGER NOT NULL,\n    fair_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    event_date DATE NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    CONSTRAINT pk_program_items PRIMARY KEY (id),\n    CONSTRAINT fk_program_items_fair_id FOREIGN KEY (fair_id) REFERENCES fairs (id)\n);\n\nCREATE TABLE exhibitor_program_items (\n    exhibitor_id INTEGER NOT NULL,\n    program_item_id INTEGER NOT NULL,\n    CONSTRAINT pk_exhibitor_program_items PRIMARY KEY (exhibitor_id, program_item_id),\n    CONSTRAINT fk_exhibitor_program_items_exhibitor_id FOREIGN KEY (exhibitor_id) REFERENCES exhibitors (id),\n    CONSTRAINT fk_exhibitor_program_items_program_item_id FOREIGN KEY (program_item_id) REFERENCES program_items (id)\n);\n",
+    "final_ddl": "CREATE TABLE fairs (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    startdate DATE NOT NULL,\n    enddate DATE NOT NULL,\n    venue VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_fairs PRIMARY KEY (id)\n);\n\nCREATE TABLE booths (\n    id INTEGER NOT NULL,\n    fair_id INTEGER NOT NULL,\n    hall VARCHAR(255) NOT NULL,\n    area VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_booths PRIMARY KEY (id),\n    CONSTRAINT fk_booths_fair_id FOREIGN KEY (fair_id) REFERENCES fairs (id)\n);\n\nCREATE TABLE exhibitors (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    contact_data VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_exhibitors PRIMARY KEY (id)\n);\n\nCREATE TABLE exhibitor_booths (\n    exhibitor_id INTEGER NOT NULL,\n    booth_id INTEGER NOT NULL,\n    CONSTRAINT pk_exhibitor_booths PRIMARY KEY (exhibitor_id, booth_id),\n    CONSTRAINT fk_exhibitor_booths_exhibitor_id FOREIGN KEY (exhibitor_id) REFERENCES exhibitors (id),\n    CONSTRAINT fk_exhibitor_booths_booth_id FOREIGN KEY (booth_id) REFERENCES booths (id)\n);\n\nCREATE TABLE exhibitor_fairs (\n    exhibitor_id INTEGER NOT NULL,\n    fair_id INTEGER NOT NULL,\n    registration_date DATE,\n    CONSTRAINT pk_exhibitor_fairs PRIMARY KEY (exhibitor_id, fair_id),\n    CONSTRAINT fk_exhibitor_fairs_exhibitor_id FOREIGN KEY (exhibitor_id) REFERENCES exhibitors (id),\n    CONSTRAINT fk_exhibitor_fairs_fair_id FOREIGN KEY (fair_id) REFERENCES fairs (id)\n);\n\nCREATE TABLE program_items (\n    id INTEGER NOT NULL,\n    fair_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    event_date DATE NOT NULL,\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    CONSTRAINT pk_program_items PRIMARY KEY (id),\n    CONSTRAINT fk_program_items_fair_id FOREIGN KEY (fair_id) REFERENCES fairs (id)\n);\n\nCREATE TABLE exhibitor_program_items (\n    exhibitor_id INTEGER NOT NULL,\n    program_item_id INTEGER NOT NULL,\n    CONSTRAINT pk_exhibitor_program_items PRIMARY KEY (exhibitor_id, program_item_id),\n    CONSTRAINT fk_exhibitor_program_items_exhibitor_id FOREIGN KEY (exhibitor_id) REFERENCES exhibitors (id),\n    CONSTRAINT fk_exhibitor_program_items_program_item_id FOREIGN KEY (program_item_id) REFERENCES program_items (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -820,25 +821,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle vier Entitäten aus dem ER-Modell (Aussteller, Messe, Stand, Programmpunkt) sind als Tabellen implementiert. Keine Entitäten fehlen.",
+          "beschreibung": "Alle vier Entitäten aus dem ER-Modell (Aussteller, Messe, Stand, Programmpunkt) sind im LogicalSchema vorhanden und korrekt benannt (englisch, Plural, snake_case).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: exhibitors (company_name, contact_person, contact_data), fairs (name, startdate, enddate, venue), booths (fair_id, hall, area), program_items (fair_id, title, description, event_date, start_time, end_time). Die Attribute 'event_date' und 'start_time'/'end_time' entsprechen den ER-Attributen 'Tag', 'Beginn', 'Ende'.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden: Aussteller (company_name, contact_person, contact_data), Messe (name, startdate, enddate, venue), Stand (hall, area, fair_id), Programmpunkt (title, description, event_date, start_time, end_time, fair_id). Das Attribut 'registration_date' in exhibitor_fairs entspricht dem Beziehungsattribut 'Anmeldedatum' aus dem ER-Modell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle fünf Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) exhibitor_fairs für M:N Aussteller-Messe mit Beziehungsattributen (registration_date, registration_status), (2) booth_exhibitors für M:N Aussteller-Stand, (3) booths.fair_id für N:1 Stand-Messe, (4) program_items.fair_id für N:1 Programmpunkt-Messe, (5) exhibitor_program_items für M:N Aussteller-Programmpunkt. Kardinalitäten sind korrekt.",
+          "beschreibung": "Alle fünf Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Aussteller-Messe (M:N via exhibitor_fairs mit Beziehungsattribut registration_date), (2) Aussteller-Stand (M:N via exhibitor_booths), (3) Messe-Stand (1:N via fair_id in booths), (4) Messe-Programmpunkt (1:N via fair_id in program_items), (5) Aussteller-Programmpunkt (M:N via exhibitor_program_items). Kardinalitäten und Fremdschlüssel sind korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen in Attributen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Junction Tables sind korrekt normalisiert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Alle Attribute sind atomar, es gibt keine partiellen oder transitiven Abhängigkeiten. Junction Tables sind korrekt benannt (alphabetisch sortiert: author_books-Konvention beachtet). Keine redundanten Daten.",
           "korrekturanweisung": ""
         }
       ],
@@ -849,33 +850,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 15722,
-    "total_output_tokens": 5416,
-    "total_tokens": 21138,
+    "total_input_tokens": 15838,
+    "total_output_tokens": 5466,
+    "total_tokens": 21304,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1655,
-        "output_tokens": 1469,
+        "output_tokens": 1546,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3173,
-        "output_tokens": 1399,
+        "input_tokens": 3260,
+        "output_tokens": 1389,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3844,
-        "output_tokens": 1679,
+        "input_tokens": 3834,
+        "output_tokens": 1641,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7050,
-        "output_tokens": 869,
+        "input_tokens": 7089,
+        "output_tokens": 890,
         "cost_usd": 0.0
       }
     },
@@ -886,7 +887,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1655,
-        "output_tokens": 1469,
+        "output_tokens": 1546,
         "cost_usd": 0.0
       },
       {
@@ -894,8 +895,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3173,
-        "output_tokens": 1399,
+        "input_tokens": 3260,
+        "output_tokens": 1389,
         "cost_usd": 0.0
       },
       {
@@ -903,8 +904,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3844,
-        "output_tokens": 1679,
+        "input_tokens": 3834,
+        "output_tokens": 1641,
         "cost_usd": 0.0
       },
       {
@@ -912,8 +913,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7050,
-        "output_tokens": 869,
+        "input_tokens": 7089,
+        "output_tokens": 890,
         "cost_usd": 0.0
       }
     ]

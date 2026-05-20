@@ -2,15 +2,15 @@
   "testfall_id": "TC062",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.8247619047619048,
-  "score_gesamt": 0.8948571428571429,
+  "score_semantisch": 0.8199134199134199,
+  "score_gesamt": 0.8919480519480519,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
     "pk_tabellen_gesamt": 6,
     "pk_tabellen_mit_pk": 6,
-    "fk_referenzen_gesamt": 7,
+    "fk_referenzen_gesamt": 8,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
@@ -23,18 +23,18 @@
       "nur_in_generiert": 1
     },
     "attribut": {
-      "precision": 0.8125,
+      "precision": 0.7878787878787878,
       "recall": 0.7878787878787878,
-      "f1": 0.8,
+      "f1": 0.7878787878787878,
       "matched": 26,
       "nur_in_referenz": 7,
-      "nur_in_generiert": 6
+      "nur_in_generiert": 7
     },
     "beziehung": {
       "recall": 0.8571428571428571,
       "matched": 6,
       "nur_in_referenz": 1,
-      "nur_in_generiert": 0
+      "nur_in_generiert": 1
     }
   },
   "abweichungen": [
@@ -44,17 +44,17 @@
       "fehlerklasse": null
     },
     {
-      "element": "time_entries.entry_date",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "projects.client_id",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
       "element": "employees_projects.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "employees_projects.role",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -120,6 +120,42 @@
           "foreign_keys": []
         },
         {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
           "name": "projects",
           "columns": [
             {
@@ -174,40 +210,39 @@
           ]
         },
         {
-          "name": "employees",
+          "name": "employee_projects",
           "columns": [
             {
-              "name": "id",
+              "name": "employee_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "firstname",
-              "type": "VARCHAR",
-              "primary_key": false,
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": true,
               "nullable": false
             },
             {
-              "name": "lastname",
+              "name": "function",
               "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "email",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "hire_date",
-              "type": "DATE",
               "primary_key": false,
               "nullable": false
             }
           ],
-          "foreign_keys": []
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "project_id",
+              "references_table": "projects",
+              "references_column": "id"
+            }
+          ]
         },
         {
           "name": "tasks",
@@ -278,7 +313,7 @@
               "nullable": false
             },
             {
-              "name": "date",
+              "name": "entry_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -306,6 +341,12 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "project_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
             }
           ],
           "foreign_keys": [
@@ -314,36 +355,6 @@
               "references_table": "tasks",
               "references_column": "id"
             },
-            {
-              "from_column": "employee_id",
-              "references_table": "employees",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "employee_projects",
-          "columns": [
-            {
-              "name": "employee_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "project_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "role",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
             {
               "from_column": "employee_id",
               "references_table": "employees",
@@ -415,13 +426,13 @@
           "von": "Vorhaben",
           "zu": "Kunde",
           "kardinalitaet": "N:1",
-          "beschreibung": "Ein Vorhaben gehört immer zu genau einem Kunden. Ein Kunde kann mehrere Vorhaben haben."
+          "beschreibung": "Ein Vorhaben gehört zu genau einem Kunden. Ein Kunde kann mehrere Vorhaben haben."
         },
         {
           "von": "Mitarbeitende",
           "zu": "Vorhaben",
           "kardinalitaet": "M:N",
-          "beschreibung": "Mehrere Mitarbeitende arbeiten an einem Vorhaben mit. Eine Person kann an mehreren Vorhaben beteiligt sein. Die Beziehung wird durch die Aufgabenzuordnung und Zeiteintrag dokumentiert."
+          "beschreibung": "Mehrere Mitarbeitende arbeiten an einem Vorhaben mit. Ein Mitarbeitender kann an mehreren Vorhaben beteiligt sein. Die Beziehung hat ein Attribut 'Aufgabe/Funktion'."
         },
         {
           "von": "Aufgabe",
@@ -439,7 +450,7 @@
           "von": "Zeiteintrag",
           "zu": "Aufgabe",
           "kardinalitaet": "N:1",
-          "beschreibung": "Ein Zeiteintrag dokumentiert die Zeit auf einer Aufgabe. Eine Aufgabe kann mehrere Zeiteinträge haben."
+          "beschreibung": "Ein Zeiteintrag dokumentiert die Zeit für eine Aufgabe. Eine Aufgabe kann mehrere Zeiteinträge haben."
         },
         {
           "von": "Zeiteintrag",
@@ -450,32 +461,30 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Die Beziehung zwischen Mitarbeitenden und Vorhaben wird implizit über Aufgaben und Zeiteinträge hergestellt. Es ist unklar, ob es eine explizite Zuordnung mit einer Funktion/Rolle geben soll, wie im Text erwähnt ('welche Aufgabe oder Funktion die Person dort übernimmt').",
+          "beschreibung": "Bei der M:N-Beziehung zwischen Mitarbeitenden und Vorhaben wird erwähnt, dass 'welche Aufgabe oder Funktion die Person dort übernimmt' erkennbar sein soll. Unklar ist, ob dies ein einfaches Textfeld (Funktion/Rolle) oder eine Referenz zu einer separaten Entität 'Funktion/Rolle' sein soll.",
           "betroffene_elemente": [
             "Mitarbeitende",
             "Vorhaben"
           ]
         },
         {
-          "beschreibung": "Der Text erwähnt, dass bei jedem Einsatz erkennbar sein soll, welche Aufgabe oder Funktion die Person übernimmt. Es ist unklar, ob dies eine separate Entität oder ein Attribut einer Beziehungstabelle sein soll.",
-          "betroffene_elemente": [
-            "Mitarbeitende",
-            "Vorhaben"
-          ]
-        },
-        {
-          "beschreibung": "Es ist nicht klar, ob die Aufgabenzuordnung zu einem Mitarbeitenden (verantwortliche Person) verpflichtend ist oder optional ('in der Regel').",
+          "beschreibung": "Es ist unklar, ob die Zuordnung einer Aufgabe zu einer verantwortlichen Person (N:1-Beziehung) optional oder obligatorisch ist. Der Text sagt 'in der Regel', was auf Optionalität hindeutet, aber nicht eindeutig ist.",
           "betroffene_elemente": [
             "Aufgabe",
             "Mitarbeitende"
           ]
         },
         {
-          "beschreibung": "Der Text erwähnt, dass Mitarbeitende Zeiten auf Aufgaben buchen können, um später den Aufwand je Vorhaben auszuwerten. Es ist unklar, ob Zeiteinträge auch direkt auf Vorhaben (ohne Aufgabe) gebucht werden können.",
+          "beschreibung": "Der Text erwähnt, dass man 'den Aufwand je Vorhaben auswerten' kann. Unklar ist, ob dies eine spezifische Anforderung an Aggregationen/Reports ist oder nur eine Folgerung aus der Möglichkeit, Zeiten zu buchen.",
           "betroffene_elemente": [
             "Zeiteintrag",
-            "Aufgabe",
             "Vorhaben"
+          ]
+        },
+        {
+          "beschreibung": "Für die Entität 'Kunde' ist unklar, ob 'Ansprechperson' ein einfaches Textfeld oder eine Referenz zu einer separaten Entität 'Person/Kontakt' sein soll.",
+          "betroffene_elemente": [
+            "Kunde"
           ]
         }
       ]
@@ -594,6 +603,35 @@
           ]
         },
         {
+          "name": "MitarbeiterVorhabenZuordnung",
+          "attribute": [
+            {
+              "name": "MitarbeiterVorhabenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "VorhabenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Funktion",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
           "name": "Aufgabe",
           "attribute": [
             {
@@ -678,35 +716,12 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "MitarbeiterVorhaben",
-          "attribute": [
-            {
-              "name": "MitarbeiterVorhabenID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "MitarbeiterID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
             },
             {
               "name": "VorhabenID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "Funktion",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         }
@@ -715,6 +730,18 @@
         {
           "von": "Vorhaben",
           "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "MitarbeiterVorhabenZuordnung",
+          "zu": "Mitarbeitende",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "MitarbeiterVorhabenZuordnung",
+          "zu": "Vorhaben",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
@@ -743,13 +770,7 @@
           "beziehungsattribute": []
         },
         {
-          "von": "MitarbeiterVorhaben",
-          "zu": "Mitarbeitende",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "MitarbeiterVorhaben",
+          "von": "Zeiteintrag",
           "zu": "Vorhaben",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
@@ -780,25 +801,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: customers, projects, employees, tasks, time_entries, employee_projects. Die Abbildung ist vollständig.",
+          "beschreibung": "Alle fünf Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeitende), projects (Vorhaben), tasks (Aufgabe), time_entries (Zeiteintrag). Die Junction-Table employee_projects ist korrekt als separate Entität für die M:N-Beziehung modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext und ERModell sind vorhanden: Kunden (company_name, contact_person, email), Projekte (name, description, planned_start_date, planned_end_date, is_active), Mitarbeitende (firstname, lastname, email, hire_date), Aufgaben (title, description, due_date, status), Zeiteinträge (date, duration, comment), Mitarbeiter-Vorhaben-Beziehung (role). Alle Attribute sind korrekt benannt und typisiert.",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt benannt: customers (company_name, contact_person, email), employees (firstname, lastname, email, hire_date), projects (name, description, planned_start_date, planned_end_date, is_active, customer_id), tasks (title, description, due_date, status, project_id, responsible_employee_id), time_entries (entry_date, duration, comment, task_id, employee_id, project_id). Die Namenskonventionen folgen den Vorgaben (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: Vorhaben→Kunde (N:1 via customer_id), Aufgabe→Vorhaben (N:1 via project_id), Aufgabe→Mitarbeitende (N:1 via responsible_employee_id, optional), Zeiteintrag→Aufgabe (N:1 via task_id), Zeiteintrag→Mitarbeitende (N:1 via employee_id), Mitarbeitende↔Vorhaben (M:N via employee_projects mit role-Attribut). Kardinalitäten und Optionalität sind korrekt abgebildet.",
+          "beschreibung": "Alle Beziehungen aus dem RequirementsReport sind korrekt implementiert: (1) Vorhaben→Kunde (N:1) via customer_id, (2) Mitarbeitende↔Vorhaben (M:N) via employee_projects mit Attribut 'function', (3) Aufgabe→Vorhaben (N:1) via project_id, (4) Aufgabe→Mitarbeitende (N:1) via responsible_employee_id (optional, nullable=true), (5) Zeiteintrag→Aufgabe (N:1) via task_id, (6) Zeiteintrag→Mitarbeitende (N:1) via employee_id, (7) Zeiteintrag→Vorhaben (N:1) via project_id. Die Kardinalitäten sind korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen in Attributen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Die Junction-Table employee_projects ist korrekt normalisiert. Alle Fremdschlüssel sind auf Primärschlüssel referenziert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar, (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Die Junction-Table employee_projects ist korrekt normalisiert und enthält nur die Fremdschlüssel und das Beziehungsattribut 'function'.",
           "korrekturanweisung": ""
         }
       ],
@@ -806,9 +827,9 @@
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 1,
+    "iteration": 2,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE projects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    planned_start_date DATE NOT NULL,\n    planned_end_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    customer_id INTEGER NOT NULL,\n    CONSTRAINT pk_projects PRIMARY KEY (id),\n    CONSTRAINT fk_projects_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE employee_projects (\n    employee_id INTEGER NOT NULL,\n    project_id INTEGER NOT NULL,\n    role VARCHAR(255),\n    CONSTRAINT pk_employee_projects PRIMARY KEY (employee_id, project_id),\n    CONSTRAINT fk_employee_projects_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_projects_project_id FOREIGN KEY (project_id) REFERENCES projects (id)\n);\n\nCREATE TABLE tasks (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    due_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    project_id INTEGER NOT NULL,\n    responsible_employee_id INTEGER,\n    CONSTRAINT pk_tasks PRIMARY KEY (id),\n    CONSTRAINT fk_tasks_project_id FOREIGN KEY (project_id) REFERENCES projects (id),\n    CONSTRAINT fk_tasks_responsible_employee_id FOREIGN KEY (responsible_employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE time_entries (\n    id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    duration DECIMAL(18,2) NOT NULL,\n    comment TEXT,\n    task_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    CONSTRAINT pk_time_entries PRIMARY KEY (id),\n    CONSTRAINT fk_time_entries_task_id FOREIGN KEY (task_id) REFERENCES tasks (id),\n    CONSTRAINT fk_time_entries_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n",
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    company_name VARCHAR(255) NOT NULL,\n    contact_person VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE projects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    planned_start_date DATE NOT NULL,\n    planned_end_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    customer_id INTEGER NOT NULL,\n    CONSTRAINT pk_projects PRIMARY KEY (id),\n    CONSTRAINT fk_projects_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id)\n);\n\nCREATE TABLE employee_projects (\n    employee_id INTEGER NOT NULL,\n    project_id INTEGER NOT NULL,\n    function VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_employee_projects PRIMARY KEY (employee_id, project_id),\n    CONSTRAINT fk_employee_projects_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_projects_project_id FOREIGN KEY (project_id) REFERENCES projects (id)\n);\n\nCREATE TABLE tasks (\n    id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    due_date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    project_id INTEGER NOT NULL,\n    responsible_employee_id INTEGER,\n    CONSTRAINT pk_tasks PRIMARY KEY (id),\n    CONSTRAINT fk_tasks_project_id FOREIGN KEY (project_id) REFERENCES projects (id),\n    CONSTRAINT fk_tasks_responsible_employee_id FOREIGN KEY (responsible_employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE time_entries (\n    id INTEGER NOT NULL,\n    entry_date DATE NOT NULL,\n    duration DECIMAL(18,2) NOT NULL,\n    comment TEXT,\n    task_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    project_id INTEGER NOT NULL,\n    CONSTRAINT pk_time_entries PRIMARY KEY (id),\n    CONSTRAINT fk_time_entries_task_id FOREIGN KEY (task_id) REFERENCES tasks (id),\n    CONSTRAINT fk_time_entries_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_time_entries_project_id FOREIGN KEY (project_id) REFERENCES projects (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -833,25 +854,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: customers, projects, employees, tasks, time_entries, employee_projects. Die Abbildung ist vollständig.",
+          "beschreibung": "Alle fünf Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: customers (Kunde), employees (Mitarbeitende), projects (Vorhaben), tasks (Aufgabe), time_entries (Zeiteintrag). Die Junction-Table employee_projects ist korrekt als separate Entität für die M:N-Beziehung modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem Anforderungstext und ERModell sind vorhanden: Kunden (company_name, contact_person, email), Projekte (name, description, planned_start_date, planned_end_date, is_active), Mitarbeitende (firstname, lastname, email, hire_date), Aufgaben (title, description, due_date, status), Zeiteinträge (date, duration, comment), Mitarbeiter-Vorhaben-Beziehung (role). Alle Attribute sind korrekt benannt und typisiert.",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt benannt: customers (company_name, contact_person, email), employees (firstname, lastname, email, hire_date), projects (name, description, planned_start_date, planned_end_date, is_active, customer_id), tasks (title, description, due_date, status, project_id, responsible_employee_id), time_entries (entry_date, duration, comment, task_id, employee_id, project_id). Die Namenskonventionen folgen den Vorgaben (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: Vorhaben→Kunde (N:1 via customer_id), Aufgabe→Vorhaben (N:1 via project_id), Aufgabe→Mitarbeitende (N:1 via responsible_employee_id, optional), Zeiteintrag→Aufgabe (N:1 via task_id), Zeiteintrag→Mitarbeitende (N:1 via employee_id), Mitarbeitende↔Vorhaben (M:N via employee_projects mit role-Attribut). Kardinalitäten und Optionalität sind korrekt abgebildet.",
+          "beschreibung": "Alle Beziehungen aus dem RequirementsReport sind korrekt implementiert: (1) Vorhaben→Kunde (N:1) via customer_id, (2) Mitarbeitende↔Vorhaben (M:N) via employee_projects mit Attribut 'function', (3) Aufgabe→Vorhaben (N:1) via project_id, (4) Aufgabe→Mitarbeitende (N:1) via responsible_employee_id (optional, nullable=true), (5) Zeiteintrag→Aufgabe (N:1) via task_id, (6) Zeiteintrag→Mitarbeitende (N:1) via employee_id, (7) Zeiteintrag→Vorhaben (N:1) via project_id. Die Kardinalitäten sind korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen in Attributen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Die Junction-Table employee_projects ist korrekt normalisiert. Alle Fremdschlüssel sind auf Primärschlüssel referenziert.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar, (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Die Junction-Table employee_projects ist korrekt normalisiert und enthält nur die Fremdschlüssel und das Beziehungsattribut 'function'.",
           "korrekturanweisung": ""
         }
       ],
@@ -861,34 +882,34 @@
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 4,
-    "total_input_tokens": 17636,
-    "total_output_tokens": 6019,
-    "total_tokens": 23655,
+    "total_calls": 7,
+    "total_input_tokens": 37731,
+    "total_output_tokens": 11780,
+    "total_tokens": 49511,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1669,
-        "output_tokens": 1549,
+        "output_tokens": 1556,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 1,
-        "input_tokens": 3285,
-        "output_tokens": 1806,
+        "calls": 2,
+        "input_tokens": 9342,
+        "output_tokens": 3912,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 1,
-        "input_tokens": 4666,
-        "output_tokens": 1725,
+        "calls": 2,
+        "input_tokens": 10762,
+        "output_tokens": 3529,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 1,
-        "input_tokens": 8016,
-        "output_tokens": 939,
+        "calls": 2,
+        "input_tokens": 15958,
+        "output_tokens": 2783,
         "cost_usd": 0.0
       }
     },
@@ -899,7 +920,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1669,
-        "output_tokens": 1549,
+        "output_tokens": 1556,
         "cost_usd": 0.0
       },
       {
@@ -907,8 +928,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3285,
-        "output_tokens": 1806,
+        "input_tokens": 3288,
+        "output_tokens": 1590,
         "cost_usd": 0.0
       },
       {
@@ -916,7 +937,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4666,
+        "input_tokens": 4392,
         "output_tokens": 1725,
         "cost_usd": 0.0
       },
@@ -925,8 +946,35 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8016,
-        "output_tokens": 939,
+        "input_tokens": 7745,
+        "output_tokens": 1674,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6054,
+        "output_tokens": 2322,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6370,
+        "output_tokens": 1804,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8213,
+        "output_tokens": 1109,
         "cost_usd": 0.0
       }
     ]

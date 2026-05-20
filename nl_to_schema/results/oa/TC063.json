@@ -396,7 +396,7 @@
               "nullable": false
             },
             {
-              "name": "upload_time",
+              "name": "upload_timestamp",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
@@ -459,7 +459,7 @@
           ]
         },
         {
-          "name": "assignments",
+          "name": "concern_assignments",
           "columns": [
             {
               "name": "id",
@@ -598,7 +598,7 @@
           "von": "Anliegen",
           "zu": "Unterlage",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Anliegen kann mehrere Unterlagen haben"
+          "beschreibung": "Zu einem Anliegen können mehrere Unterlagen hochgeladen werden"
         },
         {
           "von": "Beschäftigter",
@@ -610,7 +610,7 @@
           "von": "Anliegen",
           "zu": "Bearbeitung",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Anliegen kann mehrere Bearbeitungsvorgänge haben"
+          "beschreibung": "Ein Anliegen kann von mehreren Beschäftigten über die Zeit betreut werden"
         },
         {
           "von": "Beschäftigter",
@@ -621,42 +621,34 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar ist, ob 'Konto' eine separate Entität sein soll oder nur als Attributmenge des Einwohners modelliert werden sollte. Der Text spricht von 'persönlichem Konto', könnte aber auch nur die Kontoerstellung als Prozess meinen.",
+          "beschreibung": "Ist 'Konto' eine separate Entität oder nur eine Aggregation von Attributen des Einwohners? Der Text sagt 'legt ein persönliches Konto an', was auf eine separate Entität hindeutet, aber es könnte auch nur die Registrierung eines Einwohners sein.",
           "betroffene_elemente": [
             "Einwohner",
             "Konto"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Bearbeitung durch einen Beschäftigten mit Zeitstempel (wann beteiligt) als separate Entität oder als Attribut des Anliegen-Beschäftigter-Verhältnisses modelliert werden sollte.",
+          "beschreibung": "Welche Attribute hat die Entität 'Bearbeitung' genau? Der Text erwähnt 'wer wann beteiligt war', aber es ist unklar, ob nur Start- und Enddatum oder weitere Informationen gespeichert werden sollen.",
           "betroffene_elemente": [
-            "Anliegen",
-            "Beschäftigter",
             "Bearbeitung"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob 'Dringlichkeit' ein einfaches Attribut (z.B. Text oder Zahlenwert) oder eine separate Entität mit vordefinierten Werten sein sollte.",
-          "betroffene_elemente": [
-            "Anliegen"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob 'Bearbeitungsstand' ein einfaches Attribut (z.B. Text oder Enum) oder eine separate Entität mit vordefinierten Zuständen sein sollte.",
-          "betroffene_elemente": [
-            "Anliegen"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob Unterlagen auch Metadaten wie Dateityp, Dateigröße oder Uploader enthalten sollen.",
+          "beschreibung": "Sollen Unterlagen auch einen Dateiinhalt oder nur Metadaten (Bezeichnung, Eingangszeit) speichern? Der Text sagt 'hochladen', aber nicht, wie die Speicherung erfolgt.",
           "betroffene_elemente": [
             "Unterlage"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Stelle weitere Attribute wie Abteilungsleiter oder Kontaktdaten haben sollte.",
+          "beschreibung": "Hat die Entität 'Stelle' weitere Attribute wie Abteilungsleiter, Kontaktdaten oder Beschreibung? Der Text erwähnt nur 'organisatorisch zu einer Stelle'.",
           "betroffene_elemente": [
             "Stelle"
+          ]
+        },
+        {
+          "beschreibung": "Sind die Werte für 'Dringlichkeit' und 'Bearbeitungsstand' vordefinierte Kategorien oder freie Texte? Der Text gibt keine Beispiele.",
+          "betroffene_elemente": [
+            "Anliegen"
           ]
         }
       ]
@@ -797,7 +789,7 @@
           ]
         },
         {
-          "name": "Beschäftigter",
+          "name": "Beschaeftigter",
           "attribute": [
             {
               "name": "beschaeftigter_id",
@@ -853,6 +845,23 @@
               "pflichtfeld": false
             }
           ]
+        },
+        {
+          "name": "AnliegenThema",
+          "attribute": [
+            {
+              "name": "anliegen_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "thema_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
         }
       ],
       "beziehungen": [
@@ -864,19 +873,25 @@
         },
         {
           "von": "Anliegen",
-          "zu": "Thema",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Anliegen",
           "zu": "Unterlage",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
+          "von": "Anliegen",
+          "zu": "AnliegenThema",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Thema",
+          "zu": "AnliegenThema",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
           "von": "Stelle",
-          "zu": "Beschäftigter",
+          "zu": "Beschaeftigter",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
@@ -887,7 +902,7 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Beschäftigter",
+          "von": "Beschaeftigter",
           "zu": "Bearbeitung",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
@@ -918,25 +933,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: residents (Einwohner), concerns (Anliegen), topics (Thema), documents (Unterlage), departments (Stelle), employees (Beschäftigter), assignments (Bearbeitung), concern_topics (M:N-Beziehung). Die Entität 'Konto' wurde korrekt mit 'Einwohner' zusammengefasst (1:1-Beziehung aufgelöst).",
+          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema abgebildet: residents (Einwohner), concerns (Anliegen), topics (Thema), documents (Unterlage), departments (Stelle), employees (Beschäftigter), concern_assignments (Bearbeitung), concern_topics (AnliegenThema). Keine Entität fehlt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt benannt (snake_case, englisch). Beispiele: residents.email, concerns.submission_date, documents.upload_time, assignments.start_date/end_date. Optionale Felder (end_date) sind korrekt als nullable markiert.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Beispiele: name, email, address (residents); description, submission_date, urgency, status (concerns); upload_timestamp (documents). Keine Attribute fehlen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N (residents→concerns, concerns→documents, departments→employees, concerns→assignments, employees→assignments), M:N (concerns↔topics via concern_topics). Kardinalitäten und Fremdschlüssel stimmen überein.",
+          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N (residents→concerns, concerns→documents, concerns→concern_assignments, departments→employees), M:N (concerns↔topics via concern_topics), 1:N (employees→concern_assignments). Kardinalitäten und Fremdschlüssel sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten. Junction-Table concern_topics ist korrekt für M:N-Beziehung. Alle Attribute sind atomar.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen; (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Junction-Table concern_topics ist korrekt für M:N-Beziehung. Concern_assignments ist korrekt normalisiert als Assoziationstabelle mit Zeitattributen.",
           "korrekturanweisung": ""
         }
       ],
@@ -946,7 +961,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE residents (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_residents PRIMARY KEY (id)\n);\n\nCREATE TABLE concerns (\n    id INTEGER NOT NULL,\n    resident_id INTEGER NOT NULL,\n    description TEXT NOT NULL,\n    submission_date DATE NOT NULL,\n    urgency VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_concerns PRIMARY KEY (id),\n    CONSTRAINT fk_concerns_resident_id FOREIGN KEY (resident_id) REFERENCES residents (id)\n);\n\nCREATE TABLE departments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_departments PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    department_id INTEGER NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id),\n    CONSTRAINT fk_employees_department_id FOREIGN KEY (department_id) REFERENCES departments (id)\n);\n\nCREATE TABLE assignments (\n    id INTEGER NOT NULL,\n    concern_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_assignments_concern_id FOREIGN KEY (concern_id) REFERENCES concerns (id),\n    CONSTRAINT fk_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE topics (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_topics PRIMARY KEY (id)\n);\n\nCREATE TABLE concern_topics (\n    concern_id INTEGER NOT NULL,\n    topic_id INTEGER NOT NULL,\n    CONSTRAINT pk_concern_topics PRIMARY KEY (concern_id, topic_id),\n    CONSTRAINT fk_concern_topics_concern_id FOREIGN KEY (concern_id) REFERENCES concerns (id),\n    CONSTRAINT fk_concern_topics_topic_id FOREIGN KEY (topic_id) REFERENCES topics (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    concern_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    upload_time TIMESTAMP NOT NULL,\n    CONSTRAINT pk_documents PRIMARY KEY (id),\n    CONSTRAINT fk_documents_concern_id FOREIGN KEY (concern_id) REFERENCES concerns (id)\n);\n",
+    "final_ddl": "CREATE TABLE residents (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_residents PRIMARY KEY (id)\n);\n\nCREATE TABLE concerns (\n    id INTEGER NOT NULL,\n    resident_id INTEGER NOT NULL,\n    description TEXT NOT NULL,\n    submission_date DATE NOT NULL,\n    urgency VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_concerns PRIMARY KEY (id),\n    CONSTRAINT fk_concerns_resident_id FOREIGN KEY (resident_id) REFERENCES residents (id)\n);\n\nCREATE TABLE departments (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_departments PRIMARY KEY (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    department_id INTEGER NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id),\n    CONSTRAINT fk_employees_department_id FOREIGN KEY (department_id) REFERENCES departments (id)\n);\n\nCREATE TABLE concern_assignments (\n    id INTEGER NOT NULL,\n    concern_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    CONSTRAINT pk_concern_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_concern_assignments_concern_id FOREIGN KEY (concern_id) REFERENCES concerns (id),\n    CONSTRAINT fk_concern_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n\nCREATE TABLE topics (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_topics PRIMARY KEY (id)\n);\n\nCREATE TABLE concern_topics (\n    concern_id INTEGER NOT NULL,\n    topic_id INTEGER NOT NULL,\n    CONSTRAINT pk_concern_topics PRIMARY KEY (concern_id, topic_id),\n    CONSTRAINT fk_concern_topics_concern_id FOREIGN KEY (concern_id) REFERENCES concerns (id),\n    CONSTRAINT fk_concern_topics_topic_id FOREIGN KEY (topic_id) REFERENCES topics (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    concern_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    upload_timestamp TIMESTAMP NOT NULL,\n    CONSTRAINT pk_documents PRIMARY KEY (id),\n    CONSTRAINT fk_documents_concern_id FOREIGN KEY (concern_id) REFERENCES concerns (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -971,25 +986,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: residents (Einwohner), concerns (Anliegen), topics (Thema), documents (Unterlage), departments (Stelle), employees (Beschäftigter), assignments (Bearbeitung), concern_topics (M:N-Beziehung). Die Entität 'Konto' wurde korrekt mit 'Einwohner' zusammengefasst (1:1-Beziehung aufgelöst).",
+          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema abgebildet: residents (Einwohner), concerns (Anliegen), topics (Thema), documents (Unterlage), departments (Stelle), employees (Beschäftigter), concern_assignments (Bearbeitung), concern_topics (AnliegenThema). Keine Entität fehlt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt benannt (snake_case, englisch). Beispiele: residents.email, concerns.submission_date, documents.upload_time, assignments.start_date/end_date. Optionale Felder (end_date) sind korrekt als nullable markiert.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Beispiele: name, email, address (residents); description, submission_date, urgency, status (concerns); upload_timestamp (documents). Keine Attribute fehlen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N (residents→concerns, concerns→documents, departments→employees, concerns→assignments, employees→assignments), M:N (concerns↔topics via concern_topics). Kardinalitäten und Fremdschlüssel stimmen überein.",
+          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N (residents→concerns, concerns→documents, concerns→concern_assignments, departments→employees), M:N (concerns↔topics via concern_topics), 1:N (employees→concern_assignments). Kardinalitäten und Fremdschlüssel sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen, (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten. Junction-Table concern_topics ist korrekt für M:N-Beziehung. Alle Attribute sind atomar.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen; (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Junction-Table concern_topics ist korrekt für M:N-Beziehung. Concern_assignments ist korrekt normalisiert als Assoziationstabelle mit Zeitattributen.",
           "korrekturanweisung": ""
         }
       ],
@@ -1000,33 +1015,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 16867,
-    "total_output_tokens": 5677,
-    "total_tokens": 22544,
+    "total_input_tokens": 17107,
+    "total_output_tokens": 5838,
+    "total_tokens": 22945,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1657,
-        "output_tokens": 1621,
+        "output_tokens": 1568,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3361,
-        "output_tokens": 1525,
+        "input_tokens": 3298,
+        "output_tokens": 1738,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4255,
-        "output_tokens": 1626,
+        "input_tokens": 4437,
+        "output_tokens": 1628,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7594,
-        "output_tokens": 905,
+        "input_tokens": 7715,
+        "output_tokens": 904,
         "cost_usd": 0.0
       }
     },
@@ -1037,7 +1052,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1657,
-        "output_tokens": 1621,
+        "output_tokens": 1568,
         "cost_usd": 0.0
       },
       {
@@ -1045,8 +1060,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3361,
-        "output_tokens": 1525,
+        "input_tokens": 3298,
+        "output_tokens": 1738,
         "cost_usd": 0.0
       },
       {
@@ -1054,8 +1069,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4255,
-        "output_tokens": 1626,
+        "input_tokens": 4437,
+        "output_tokens": 1628,
         "cost_usd": 0.0
       },
       {
@@ -1063,8 +1078,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7594,
-        "output_tokens": 905,
+        "input_tokens": 7715,
+        "output_tokens": 904,
         "cost_usd": 0.0
       }
     ]

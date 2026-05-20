@@ -2,33 +2,33 @@
   "testfall_id": "TC080",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.3431399046104929,
-  "score_gesamt": 0.6058839427662958,
+  "score_semantisch": 0.2904081058260625,
+  "score_gesamt": 0.5742448634956375,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 20,
-    "pk_tabellen_mit_pk": 20,
-    "fk_referenzen_gesamt": 23,
+    "pk_tabellen_gesamt": 28,
+    "pk_tabellen_mit_pk": 28,
+    "fk_referenzen_gesamt": 33,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.35,
+      "precision": 0.25,
       "recall": 0.5833333333333334,
-      "f1": 0.4375,
+      "f1": 0.35000000000000003,
       "matched": 7,
       "nur_in_referenz": 5,
-      "nur_in_generiert": 13
+      "nur_in_generiert": 21
     },
     "attribut": {
-      "precision": 0.27184466019417475,
-      "recall": 0.34146341463414637,
-      "f1": 0.3027027027027028,
-      "matched": 28,
-      "nur_in_referenz": 54,
-      "nur_in_generiert": 75
+      "precision": 0.2125984251968504,
+      "recall": 0.32926829268292684,
+      "f1": 0.2583732057416268,
+      "matched": 27,
+      "nur_in_referenz": 55,
+      "nur_in_generiert": 100
     },
     "beziehung": {
       "recall": 0.23529411764705882,
@@ -69,7 +69,17 @@
       "fehlerklasse": null
     },
     {
+      "element": "assessments.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "addresses.country",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "tax_types.name",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -99,7 +109,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "documents.created_at",
+      "element": "payments.payment_type",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -110,6 +120,16 @@
     },
     {
       "element": "payments.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "representatives.contact_phone",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "representatives.is_active",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -129,27 +149,12 @@
       "fehlerklasse": null
     },
     {
-      "element": "tax_cases.assessment_year",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "tax_cases.case_reference",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
       "element": "tax_cases.status",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "representatives.contact_email",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "representatives.is_active",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -420,26 +425,8 @@
               "nullable": false
             },
             {
-              "name": "created_at",
-              "type": "TIMESTAMP",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "natural_persons",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "party_id",
-              "type": "INTEGER",
+              "name": "lastname",
+              "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
@@ -450,28 +437,28 @@
               "nullable": true
             },
             {
-              "name": "lastname",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "birthdate",
               "type": "DATE",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "activity_form_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "party_id",
-              "references_table": "parties",
+              "from_column": "activity_form_id",
+              "references_table": "activity_forms",
               "references_column": "id"
             }
           ]
         },
         {
-          "name": "companies",
+          "name": "activity_forms",
           "columns": [
             {
               "name": "id",
@@ -480,82 +467,22 @@
               "nullable": false
             },
             {
-              "name": "party_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "name",
+              "name": "designation",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "legal_form",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "founding_date",
-              "type": "DATE",
+              "name": "description",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             }
           ],
-          "foreign_keys": [
-            {
-              "from_column": "party_id",
-              "references_table": "parties",
-              "references_column": "id"
-            }
-          ]
+          "foreign_keys": []
         },
         {
-          "name": "party_activity_types",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "party_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "activity_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "valid_from",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "valid_until",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "party_id",
-              "references_table": "parties",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "tax_identification_numbers",
+          "name": "tax_identifications",
           "columns": [
             {
               "name": "id",
@@ -585,7 +512,7 @@
               "name": "valid_from",
               "type": "DATE",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "valid_until",
@@ -672,34 +599,51 @@
               "nullable": false
             },
             {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "address_purpose_assignments",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
               "name": "address_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "purpose",
-              "type": "VARCHAR",
+              "name": "address_purpose_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "valid_from",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "valid_until",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": [
             {
               "from_column": "address_id",
               "references_table": "addresses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "address_purpose_id",
+              "references_table": "address_purposes",
               "references_column": "id"
             }
           ]
@@ -714,7 +658,31 @@
               "nullable": false
             },
             {
-              "name": "name",
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "tax_case_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -760,6 +728,18 @@
               "type": "DATE",
               "primary_key": false,
               "nullable": false
+            },
+            {
+              "name": "assessment_year",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "status_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -772,8 +752,61 @@
               "from_column": "tax_type_id",
               "references_table": "tax_types",
               "references_column": "id"
+            },
+            {
+              "from_column": "status_id",
+              "references_table": "tax_case_statuses",
+              "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "assessment_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "assessment_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "assessments",
@@ -797,8 +830,8 @@
               "nullable": false
             },
             {
-              "name": "status",
-              "type": "VARCHAR",
+              "name": "status_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
@@ -809,8 +842,8 @@
               "nullable": false
             },
             {
-              "name": "assessment_type",
-              "type": "VARCHAR",
+              "name": "assessment_type_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
@@ -826,11 +859,45 @@
               "from_column": "tax_case_id",
               "references_table": "tax_cases",
               "references_column": "id"
+            },
+            {
+              "from_column": "status_id",
+              "references_table": "assessment_statuses",
+              "references_column": "id"
+            },
+            {
+              "from_column": "assessment_type_id",
+              "references_table": "assessment_types",
+              "references_column": "id"
             }
           ]
         },
         {
-          "name": "party_representatives",
+          "name": "representative_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "representatives",
           "columns": [
             {
               "name": "id",
@@ -845,14 +912,50 @@
               "nullable": false
             },
             {
-              "name": "representative_type",
+              "name": "representative_type_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "email",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "representative_type_id",
+              "references_table": "representative_types",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "power_of_attorney_scopes",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "contact_info",
-              "type": "VARCHAR",
+              "name": "description",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             }
@@ -893,8 +996,8 @@
               "nullable": true
             },
             {
-              "name": "scope",
-              "type": "VARCHAR",
+              "name": "scope_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
@@ -907,7 +1010,12 @@
             },
             {
               "from_column": "representative_id",
-              "references_table": "party_representatives",
+              "references_table": "representatives",
+              "references_column": "id"
+            },
+            {
+              "from_column": "scope_id",
+              "references_table": "power_of_attorney_scopes",
               "references_column": "id"
             }
           ]
@@ -916,21 +1024,15 @@
           "name": "power_of_attorney_tax_types",
           "columns": [
             {
-              "name": "id",
+              "name": "power_of_attorney_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
             {
-              "name": "power_of_attorney_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "tax_type_id",
               "type": "INTEGER",
-              "primary_key": false,
+              "primary_key": true,
               "nullable": false
             }
           ],
@@ -948,7 +1050,7 @@
           ]
         },
         {
-          "name": "tax_declarations",
+          "name": "payment_methods",
           "columns": [
             {
               "name": "id",
@@ -957,42 +1059,19 @@
               "nullable": false
             },
             {
-              "name": "tax_case_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "submitted_by",
+              "name": "designation",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "submitted_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "representative_id",
-              "type": "INTEGER",
+              "name": "description",
+              "type": "TEXT",
               "primary_key": false,
               "nullable": true
             }
           ],
-          "foreign_keys": [
-            {
-              "from_column": "tax_case_id",
-              "references_table": "tax_cases",
-              "references_column": "id"
-            },
-            {
-              "from_column": "representative_id",
-              "references_table": "party_representatives",
-              "references_column": "id"
-            }
-          ]
+          "foreign_keys": []
         },
         {
           "name": "payments",
@@ -1028,8 +1107,8 @@
               "nullable": false
             },
             {
-              "name": "payment_method",
-              "type": "VARCHAR",
+              "name": "payment_method_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
@@ -1044,8 +1123,37 @@
               "from_column": "assessment_id",
               "references_table": "assessments",
               "references_column": "id"
+            },
+            {
+              "from_column": "payment_method_id",
+              "references_table": "payment_methods",
+              "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "refund_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "refunds",
@@ -1081,8 +1189,8 @@
               "nullable": false
             },
             {
-              "name": "status",
-              "type": "VARCHAR",
+              "name": "status_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
@@ -1096,6 +1204,11 @@
             {
               "from_column": "assessment_id",
               "references_table": "assessments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "status_id",
+              "references_table": "refund_statuses",
               "references_column": "id"
             }
           ]
@@ -1114,12 +1227,6 @@
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "assessment_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
             },
             {
               "name": "amount",
@@ -1145,13 +1252,56 @@
               "from_column": "tax_case_id",
               "references_table": "tax_cases",
               "references_column": "id"
-            },
-            {
-              "from_column": "assessment_id",
-              "references_table": "assessments",
-              "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "objection_statuses",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "objection_decisions",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "objections",
@@ -1169,7 +1319,7 @@
               "nullable": false
             },
             {
-              "name": "received_date",
+              "name": "receipt_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -1187,8 +1337,14 @@
               "nullable": true
             },
             {
-              "name": "decision",
-              "type": "VARCHAR",
+              "name": "decision_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "status_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
@@ -1198,8 +1354,42 @@
               "from_column": "assessment_id",
               "references_table": "assessments",
               "references_column": "id"
+            },
+            {
+              "from_column": "decision_id",
+              "references_table": "objection_decisions",
+              "references_column": "id"
+            },
+            {
+              "from_column": "status_id",
+              "references_table": "objection_statuses",
+              "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "document_types",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "designation",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "description",
+              "type": "TEXT",
+              "primary_key": false,
+              "nullable": true
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "documents",
@@ -1211,20 +1401,14 @@
               "nullable": false
             },
             {
-              "name": "document_type",
-              "type": "VARCHAR",
+              "name": "document_type_id",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "filename",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "upload_date",
-              "type": "TIMESTAMP",
+              "name": "date",
+              "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
@@ -1233,9 +1417,33 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
+            },
+            {
+              "name": "content_reference",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "filename",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "created_at",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
             }
           ],
-          "foreign_keys": []
+          "foreign_keys": [
+            {
+              "from_column": "document_type_id",
+              "references_table": "document_types",
+              "references_column": "id"
+            }
+          ]
         },
         {
           "name": "document_assignments",
@@ -1253,22 +1461,60 @@
               "nullable": false
             },
             {
-              "name": "reference_type",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "reference_id",
+              "name": "tax_case_id",
               "type": "INTEGER",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
+            },
+            {
+              "name": "assessment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "objection_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "power_of_attorney_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "assignment_date",
+              "type": "TIMESTAMP",
+              "primary_key": false,
+              "nullable": true
             }
           ],
           "foreign_keys": [
             {
               "from_column": "document_id",
               "references_table": "documents",
+              "references_column": "id"
+            },
+            {
+              "from_column": "tax_case_id",
+              "references_table": "tax_cases",
+              "references_column": "id"
+            },
+            {
+              "from_column": "assessment_id",
+              "references_table": "assessments",
+              "references_column": "id"
+            },
+            {
+              "from_column": "objection_id",
+              "references_table": "objections",
+              "references_column": "id"
+            },
+            {
+              "from_column": "power_of_attorney_id",
+              "references_table": "powers_of_attorney",
               "references_column": "id"
             }
           ]
@@ -1307,27 +1553,25 @@
             "PLZ",
             "Ort",
             "Gültig_Von",
-            "Gültig_Bis"
+            "Gültig_Bis",
+            "Adresstyp"
           ],
-          "beschreibung": "Adressen von Parteien mit Gültigkeitszeitraum zur Nachverfolgung von Änderungen."
+          "beschreibung": "Adressen von Parteien mit Gültigkeitszeitraum und Zweck (Veranlagung, Zustellung, Betriebsstätte). Eine Adresse kann mehrere Zwecke haben."
         },
         {
           "name": "Adresszweck",
           "attribute": [
             "Adresszweck_ID",
             "Adresse_ID",
-            "Zweck",
-            "Gültig_Von",
-            "Gültig_Bis"
+            "Zweck"
           ],
-          "beschreibung": "Zuordnung von Zwecken (Veranlagung, Zustellung, Betriebsstätte) zu Adressen mit Gültigkeitszeitraum."
+          "beschreibung": "Zuordnung von Zwecken (Veranlagung, Zustellung, Betriebsstätte) zu Adressen."
         },
         {
           "name": "Steuerart",
           "attribute": [
             "Steuerart_ID",
-            "Name",
-            "Beschreibung"
+            "Bezeichnung"
           ],
           "beschreibung": "Verschiedene Steuerarten wie Einkommensteuer, Körperschaftsteuer, Umsatzsteuer, Gewerbesteuer."
         },
@@ -1339,9 +1583,9 @@
             "Steuerart_ID",
             "Zeitraum_Von",
             "Zeitraum_Bis",
-            "Kalenderjahr"
+            "Veranlagungsjahr"
           ],
-          "beschreibung": "Bezieht sich auf eine steuerpflichtige Partei und eine Steuerart für einen Zeitraum (meist Kalenderjahr)."
+          "beschreibung": "Bezieht sich auf eine steuerpflichtige Partei und eine Steuerart für einen Zeitraum (in der Regel Kalenderjahr)."
         },
         {
           "name": "Bescheid",
@@ -1353,7 +1597,7 @@
             "Festgesetzter_Betrag",
             "Bescheid_Typ"
           ],
-          "beschreibung": "Bescheide zu einem Steuerfall mit Datum, Status und festgesetzten Beträgen. Kann Erstveranlagung, Änderung oder unter Vorbehalt der Nachprüfung sein."
+          "beschreibung": "Bescheide zu einem Steuerfall mit Datum, Status und festgesetzten Beträgen. Kann mehrere Bescheide pro Zeitraum geben (Erstveranlagung, Änderung, unter Vorbehalt)."
         },
         {
           "name": "Vertretung",
@@ -1363,7 +1607,7 @@
             "Typ",
             "Kontaktdaten"
           ],
-          "beschreibung": "Steuerberater, Kanzleien oder interne Ansprechpartner, die Steuererklärungen einreichen."
+          "beschreibung": "Steuerberater, Kanzleien oder interne Ansprechpartner, die Steuererklärungen einreichen können."
         },
         {
           "name": "Vollmacht",
@@ -1375,18 +1619,7 @@
             "Gültig_Bis",
             "Umfang"
           ],
-          "beschreibung": "Bevollmächtigung einer Vertretung für eine Partei, optional beschränkt auf bestimmte Steuerarten."
-        },
-        {
-          "name": "Steuererklärung",
-          "attribute": [
-            "Steuererklärung_ID",
-            "Steuerfall_ID",
-            "Eingereicht_Von",
-            "Eingereicht_Am",
-            "Eingereicht_Durch"
-          ],
-          "beschreibung": "Steuererklärung eingereicht von der Partei selbst oder durch eine bevollmächtigte Vertretung."
+          "beschreibung": "Bevollmächtigung einer Vertretung für eine Partei. Kann allgemein oder auf bestimmte Steuerarten beschränkt sein."
         },
         {
           "name": "Zahlung",
@@ -1405,8 +1638,7 @@
             "Erstattung_ID",
             "Steuerfall_ID",
             "Betrag",
-            "Datum",
-            "Status"
+            "Datum"
           ],
           "beschreibung": "Erstattungen im Zusammenhang mit einem Steuerfall."
         },
@@ -1419,7 +1651,7 @@
             "Datum",
             "Grund"
           ],
-          "beschreibung": "Säumniszuschläge im Zusammenhang mit einem Steuerfall."
+          "beschreibung": "Säumniszuschläge für verspätete Zahlungen."
         },
         {
           "name": "Einspruch",
@@ -1438,21 +1670,23 @@
           "attribute": [
             "Dokument_ID",
             "Dokumenttyp",
-            "Dateiname",
-            "Uploaddatum",
-            "Aktenzeichen"
+            "Datum",
+            "Aktenzeichen",
+            "Inhalt_Referenz"
           ],
-          "beschreibung": "Dokumente wie Erklärungen, Bescheide, Vollmachten oder Nachweise mit optionalem Aktenzeichen."
+          "beschreibung": "Dokumente wie Erklärungen, Bescheide, Vollmachten oder Nachweise, die zuordenbar sein sollen."
         },
         {
           "name": "Dokumentzuordnung",
           "attribute": [
             "Dokumentzuordnung_ID",
             "Dokument_ID",
-            "Bezug_Typ",
-            "Bezug_ID"
+            "Steuerfall_ID",
+            "Bescheid_ID",
+            "Einspruch_ID",
+            "Vollmacht_ID"
           ],
-          "beschreibung": "Zuordnung von Dokumenten zu verschiedenen Vorgängen (Steuerfall, Bescheid, Einspruch, etc.)."
+          "beschreibung": "Zuordnung von Dokumenten zu verschiedenen Vorgängen (Steuerfälle, Bescheide, Einsprüche, Vollmachten)."
         }
       ],
       "beziehungen": [
@@ -1460,7 +1694,7 @@
           "von": "Partei",
           "zu": "Steuer_Identifikationsnummer",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Partei kann mehrere Steuer-Identifikationsnummern haben (z.B. bei Wechsel oder verschiedene Nummerntypen)."
+          "beschreibung": "Eine Partei kann mehrere Steuer-Identifikationsnummern haben (z.B. Steuer-ID und Wirtschafts-ID)."
         },
         {
           "von": "Partei",
@@ -1472,7 +1706,7 @@
           "von": "Adresse",
           "zu": "Adresszweck",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Adresse kann mehrere Zwecke haben (Veranlagung, Zustellung, Betriebsstätte gleichzeitig)."
+          "beschreibung": "Eine Adresse kann mehrere Zwecke haben (Veranlagung, Zustellung, Betriebsstätte)."
         },
         {
           "von": "Partei",
@@ -1494,33 +1728,15 @@
         },
         {
           "von": "Partei",
-          "zu": "Vertretung",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Partei kann mehrere Vertretungen haben, eine Vertretung kann mehrere Parteien vertreten."
-        },
-        {
-          "von": "Partei",
           "zu": "Vollmacht",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Partei kann mehrere Vollmachten erteilen (für verschiedene Vertretungen und Zeiträume)."
+          "beschreibung": "Eine Partei kann im Laufe der Zeit mehrere Vollmachten haben."
         },
         {
           "von": "Vertretung",
           "zu": "Vollmacht",
           "kardinalitaet": "1:N",
-          "beschreibung": "Eine Vertretung kann mehrere Vollmachten haben."
-        },
-        {
-          "von": "Steuerfall",
-          "zu": "Steuererklärung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Steuerfall kann mehrere Steuererklärungen haben."
-        },
-        {
-          "von": "Vertretung",
-          "zu": "Steuererklärung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Eine Vertretung kann mehrere Steuererklärungen einreichen."
+          "beschreibung": "Eine Vertretung kann mehrere Vollmachten für verschiedene Parteien haben."
         },
         {
           "von": "Steuerfall",
@@ -1555,73 +1771,55 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar ist, ob eine Partei mehrere Steuer-Identifikationsnummern gleichzeitig haben kann oder ob nur eine pro Partei gültig ist.",
+          "beschreibung": "Unklar ist, ob eine Partei mehrere Steuer-Identifikationsnummern gleichzeitig haben kann oder ob es sich um eine 1:1-Beziehung handelt. Der Text erwähnt beide Nummerntypen, aber nicht explizit, ob beide gleichzeitig für eine Partei gelten.",
           "betroffene_elemente": [
             "Partei",
             "Steuer_Identifikationsnummer"
           ]
         },
         {
-          "beschreibung": "Unklar ist, wie die Unterscheidung zwischen privater und gewerblicher Tätigkeit technisch abgebildet werden soll (als Attribut, separate Entität oder Beziehung).",
+          "beschreibung": "Unklar ist, wie die Unterscheidung zwischen privater und gewerblicher Tätigkeit modelliert werden soll. Der Text erwähnt, dass es nicht immer klar ist, ob jemand nur privat, gewerblich oder beides ist, aber es ist nicht definiert, wie dies in der Datenstruktur abgebildet werden soll.",
           "betroffene_elemente": [
             "Partei"
           ]
         },
         {
-          "beschreibung": "Unklar ist, welche 'grundlegenden Angaben' zu einer Partei gehören (z.B. Geburtsdatum, Gründungsdatum, Rechtsform, etc.).",
+          "beschreibung": "Unklar ist, wie mehrere Bescheide zum selben Zeitraum behandelt werden sollen, wenn fachlich nicht sofort klar ist, welcher als aktuell gilt. Es ist nicht definiert, wie die Aktualität oder Priorität bestimmt wird.",
           "betroffene_elemente": [
-            "Partei"
+            "Bescheid",
+            "Steuerfall"
           ]
         },
         {
-          "beschreibung": "Unklar ist, wie mehrere Bescheide zum selben Zeitraum priorisiert werden, wenn fachlich nicht sofort klar ist, welcher aktuell gilt.",
-          "betroffene_elemente": [
-            "Bescheid"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob die Vollmacht auf bestimmte Steuerarten beschränkt sein kann und wie dies technisch abgebildet wird.",
+          "beschreibung": "Unklar ist, ob die Vollmacht auf bestimmte Steuerarten beschränkt sein kann und wie dies technisch abgebildet werden soll (z.B. als Liste von Steuerarten oder als separate Beziehung).",
           "betroffene_elemente": [
             "Vollmacht",
             "Steuerart"
           ]
         },
         {
-          "beschreibung": "Unklar ist, wer die Steuererklärung einreicht (Partei selbst oder Vertretung) und wie dies dokumentiert wird.",
-          "betroffene_elemente": [
-            "Steuererklärung",
-            "Partei",
-            "Vertretung"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, wie Zahlungen, Erstattungen und Säumniszuschläge zu Bescheiden oder Steuerfällen zugeordnet werden.",
-          "betroffene_elemente": [
-            "Zahlung",
-            "Erstattung",
-            "Säumniszuschlag",
-            "Bescheid",
-            "Steuerfall"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, wie Dokumente nachträglich einem Aktenzeichen zugeordnet werden, wenn dieses nicht sofort verfügbar ist.",
+          "beschreibung": "Unklar ist, wie Dokumente zugeordnet werden sollen, wenn zu Beginn kein vollständiges Aktenzeichen vorhanden ist. Es ist nicht definiert, wie eine spätere Zuordnung technisch realisiert werden soll.",
           "betroffene_elemente": [
             "Dokument",
             "Dokumentzuordnung"
           ]
         },
         {
-          "beschreibung": "Unklar ist, welche Dokumenttypen es gibt und wie diese kategorisiert werden (Erklärung, Bescheid, Vollmacht, Nachweis, etc.).",
+          "beschreibung": "Unklar ist, ob Zahlungen, Erstattungen und Säumniszuschläge direkt einem Steuerfall oder einem Bescheid zugeordnet werden sollen.",
           "betroffene_elemente": [
-            "Dokument"
+            "Zahlung",
+            "Erstattung",
+            "Säumniszuschlag",
+            "Steuerfall",
+            "Bescheid"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob ein Einspruch nur gegen einen Bescheid oder auch gegen mehrere Bescheide zum selben Zeitraum möglich ist.",
+          "beschreibung": "Unklar ist, wie die Gültigkeitszeiträume von Adressen und Vollmachten bei abweichenden Zeiträumen (nicht Kalenderjahr) für Steuerfälle zu handhaben sind.",
           "betroffene_elemente": [
-            "Einspruch",
-            "Bescheid"
+            "Adresse",
+            "Vollmacht",
+            "Steuerfall"
           ]
         }
       ]
@@ -1662,19 +1860,7 @@
               "pflichtfeld": false
             },
             {
-              "name": "Rechtsform",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Gründungsdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Tätigkeitstyp",
+              "name": "Tätigkeitsform",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1712,7 +1898,7 @@
               "name": "Gültig_Von",
               "datentyp": "DATE",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "Gültig_Bis",
@@ -1795,18 +1981,6 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "Gültig_Von",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Gültig_Bis",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -1820,7 +1994,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Name",
+              "name": "Bezeichnung",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1867,8 +2041,14 @@
               "pflichtfeld": true
             },
             {
-              "name": "Kalenderjahr",
+              "name": "Veranlagungsjahr",
               "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
@@ -1947,6 +2127,18 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "Email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -2015,41 +2207,6 @@
           ]
         },
         {
-          "name": "Steuererklärung",
-          "attribute": [
-            {
-              "name": "Steuererklärung_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Steuerfall_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Eingereicht_Von",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Eingereicht_Am",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Eingereicht_Durch_Vertretung_ID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            }
-          ]
-        },
-        {
           "name": "Zahlung",
           "attribute": [
             {
@@ -2063,6 +2220,12 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Bescheid_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             },
             {
               "name": "Betrag",
@@ -2098,6 +2261,12 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "Bescheid_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             },
             {
               "name": "Betrag",
@@ -2192,6 +2361,12 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "Status",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         },
@@ -2211,20 +2386,32 @@
               "pflichtfeld": true
             },
             {
-              "name": "Dateiname",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Uploaddatum",
-              "datentyp": "TIMESTAMP",
+              "name": "Datum",
+              "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
               "name": "Aktenzeichen",
               "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Inhalt_Referenz",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Dateiname",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Erstellungsdatum",
+              "datentyp": "TIMESTAMP",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
@@ -2246,16 +2433,34 @@
               "pflichtfeld": true
             },
             {
-              "name": "Bezug_Typ",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Bezug_ID",
+              "name": "Steuerfall_ID",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
+            },
+            {
+              "name": "Bescheid_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Einspruch_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Vollmacht_ID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Zuordnungsdatum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": false
             }
           ]
         }
@@ -2323,24 +2528,24 @@
         },
         {
           "von": "Steuerfall",
-          "zu": "Steuererklärung",
+          "zu": "Zahlung",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Vertretung",
-          "zu": "Steuererklärung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Steuerfall",
+          "von": "Bescheid",
           "zu": "Zahlung",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Steuerfall",
+          "zu": "Erstattung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bescheid",
           "zu": "Erstattung",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
@@ -2359,6 +2564,30 @@
         },
         {
           "von": "Dokument",
+          "zu": "Dokumentzuordnung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Steuerfall",
+          "zu": "Dokumentzuordnung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Bescheid",
+          "zu": "Dokumentzuordnung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Einspruch",
+          "zu": "Dokumentzuordnung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Vollmacht",
           "zu": "Dokumentzuordnung",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
@@ -2389,26 +2618,26 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Kritische Entitäten fehlen oder sind unzureichend modelliert: (1) Die Anforderung unterscheidet zwischen natürlichen Personen und Unternehmen, das ER-Modell sieht separate Entitäten vor (natural_persons, companies), aber das LogicalSchema hat diese nicht als separate Tabellen implementiert. Stattdessen wird alles in 'parties' mit party_type-Diskriminator gemischt. (2) Die Entität 'party_activity_types' ist im LogicalSchema vorhanden, aber im ER-Modell nicht explizit als separate Entität definiert – dies ist eine Lücke in der Modellierungskonsistenz. (3) Die Anforderung erwähnt, dass Zahlungen, Erstattungen und Säumniszuschläge zu Bescheiden zugeordnet werden können, aber im LogicalSchema haben diese Tabellen nur optionale assessment_id-Felder. Im ER-Modell ist diese Beziehung nicht explizit modelliert.",
-          "korrekturanweisung": "Entweder: (A) Implementiere separate Tabellen natural_persons und companies mit jeweils party_id als FK zu parties (wie im ER-Modell vorgesehen), oder (B) dokumentiere explizit im ER-Modell, dass die Spezialisierung durch party_type-Diskriminator erfolgt. Stelle sicher, dass party_activity_types im ER-Modell als eigenständige Entität dokumentiert ist. Modelliere die Beziehung zwischen Zahlungen/Erstattungen/Säumniszuschlägen und Bescheiden explizit im ER-Modell."
+          "beschreibung": "Kritische Entität fehlt: 'Tätigkeitsform' ist im ER-Modell als separate Entität 'activity_forms' modelliert, wird aber im LogicalSchema nicht als eigenständige Referenztabelle mit Lookup-Struktur behandelt. Im ER-Modell ist 'Tätigkeitsform' ein Attribut der Partei-Entität, im LogicalSchema jedoch eine separate Tabelle mit id, designation, description. Dies ist eine konzeptionelle Inkonsistenz zwischen ER und LogicalSchema. Zusätzlich fehlt die Entität 'Adresszweck' als eigenständige Referenztabelle – im LogicalSchema existiert 'address_purposes' korrekt, aber die Modellierung der N:M-Beziehung zwischen Adressen und Zwecken über 'address_purpose_assignments' ist nicht im ER-Modell explizit als separate Entität dokumentiert.",
+          "korrekturanweisung": "Klärung erforderlich: (1) Ist 'Tätigkeitsform' ein einfaches Attribut oder eine Referenztabelle? Das ER-Modell zeigt es als VARCHAR-Attribut, das LogicalSchema als separate Tabelle. (2) Die 'address_purpose_assignments'-Tabelle sollte im ER-Modell explizit als Junction-Table dokumentiert sein, um die N:M-Beziehung zwischen Adressen und Zwecken korrekt abzubilden."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unzureichend: (1) Die 'parties'-Tabelle im LogicalSchema hat nur id, party_type und created_at, aber das ER-Modell definiert Name, Vorname, Geburtsdatum, Rechtsform, Gründungsdatum und Tätigkeitstyp als Attribute der Partei-Entität. Diese sind im LogicalSchema nicht vorhanden. (2) Die Anforderung erwähnt 'grundlegende Angaben' zu jeder Partei – diese sind nicht konkretisiert. (3) Im LogicalSchema fehlt ein Attribut zur Unterscheidung, ob eine Partei privat, gewerblich oder beides ist (Tätigkeitstyp). Die Tabelle party_activity_types existiert, aber das ist eine separate Entität, nicht ein Attribut. (4) Die Anforderung sagt, dass Zahlungen und Erstattungen zu Bescheiden zugeordnet werden können – im LogicalSchema ist assessment_id optional, aber es gibt keine Dokumentation, wie dies mit tax_case_id zusammenhängt.",
-          "korrekturanweisung": "Füge der 'parties'-Tabelle die fehlenden Attribute hinzu: name (VARCHAR, NOT NULL), firstname (VARCHAR, nullable), birthdate (DATE, nullable), legal_form (VARCHAR, nullable), founding_date (DATE, nullable). Oder: Implementiere separate Tabellen natural_persons und companies mit diesen spezifischen Attributen. Stelle sicher, dass alle Attribute aus dem ER-Modell im LogicalSchema vorhanden sind."
+          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unzureichend modelliert: (1) Im ER-Modell 'Partei' hat 'Name' als Pflichtfeld, aber im LogicalSchema ist dies in 'lastname' und 'firstname' aufgeteilt – 'lastname' ist NOT NULL, 'firstname' ist nullable. Dies widerspricht der Anforderung, dass grundlegende Angaben festgehalten werden sollen. (2) Im ER-Modell 'Bescheid' hat 'Ist_Aktuell' als optionales BOOLEAN-Attribut, im LogicalSchema ist dies 'is_current' und ebenfalls optional – aber die Anforderung besagt, dass fachlich nicht immer sofort klar ist, welcher Bescheid aktuell gilt. Dies sollte durch ein Geschäftslogik-Attribut oder Constraint gelöst werden, nicht durch ein optionales Feld. (3) 'Adresszweck' im ER-Modell hat nur 'Zweck' als VARCHAR, im LogicalSchema ist dies 'address_purposes' mit 'designation' und 'description' – die Struktur ist konsistent, aber die Semantik ist unklar. (4) Im ER-Modell 'Zahlung' und 'Erstattung' haben optional 'Bescheid_ID', aber die Anforderung erwähnt, dass Zahlungen und Erstattungen erfasst werden sollen – unklar ist, ob diese immer einem Bescheid zugeordnet sein müssen oder nur dem Steuerfall.",
+          "korrekturanweisung": "Klärung erforderlich: (1) Sollte 'firstname' NOT NULL sein, wenn 'Name' ein Pflichtfeld ist? Oder ist 'lastname' allein ausreichend? (2) Wie wird die Aktualität von Bescheiden bestimmt? Sollte 'is_current' ein Constraint sein (z.B. nur ein Bescheid pro Steuerfall kann aktuell sein) oder ein Geschäftslogik-Feld? (3) Sollten Zahlungen und Erstattungen immer einem Bescheid zugeordnet sein (NOT NULL) oder nur optional?"
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Mehrere Beziehungen sind nicht korrekt oder unvollständig modelliert: (1) Die M:N-Beziehung zwischen Partei und Vertretung ist im ER-Modell dokumentiert, aber im LogicalSchema nicht explizit als Junction-Table implementiert. Die Beziehung wird nur über powers_of_attorney modelliert, was eine 1:N-Beziehung ist. Dies ist konzeptionell falsch, da eine Partei mehrere Vertretungen haben kann und eine Vertretung mehrere Parteien vertreten kann – das ist M:N, nicht 1:N über Vollmacht. (2) Die Beziehung zwischen Zahlungen/Erstattungen/Säumniszuschlägen und Bescheiden ist im ER-Modell nicht dokumentiert, aber im LogicalSchema durch optionale assessment_id-Felder angedeutet. Dies ist inkonsistent. (3) Die Beziehung zwischen Steuererklärung und Vertretung ist im LogicalSchema vorhanden (representative_id), aber im ER-Modell ist dies als 1:N von Vertretung zu Steuererklärung dokumentiert, nicht als direkte Beziehung in der Steuererklärung-Entität.",
-          "korrekturanweisung": "Implementiere eine explizite Junction-Table 'party_representatives' (oder ähnlich) mit party_id und representative_id, um die M:N-Beziehung korrekt abzubilden. Dokumentiere im ER-Modell die Beziehung zwischen Zahlungen/Erstattungen/Säumniszuschlägen und Bescheiden. Stelle sicher, dass die Beziehung zwischen Steuererklärung und Vertretung konsistent mit dem ER-Modell ist."
+          "beschreibung": "Mehrere Beziehungen sind nicht korrekt oder unvollständig modelliert: (1) Die Beziehung zwischen 'Vollmacht' und 'Steuerart' ist im ER-Modell als separate Entität 'Vollmacht_Steuerart' modelliert (N:M), im LogicalSchema als 'power_of_attorney_tax_types' mit Composite Primary Key (power_of_attorney_id, tax_type_id). Dies ist korrekt, aber die Semantik ist unklar: Wenn 'scope_id' in 'powers_of_attorney' NULL ist, bedeutet das, dass die Vollmacht allgemein gilt? Oder sollte die Abwesenheit von Einträgen in 'power_of_attorney_tax_types' bedeuten, dass die Vollmacht allgemein gilt? (2) Die Beziehung zwischen 'Bescheid' und 'Zahlung'/'Erstattung' ist optional (assessment_id nullable), aber im ER-Modell ist 'Bescheid_ID' in 'Zahlung' und 'Erstattung' optional. Dies ist konsistent, aber fachlich unklar. (3) Die Beziehung zwischen 'Adresse' und 'Adresszweck' ist im ER-Modell als 1:N modelliert, aber im LogicalSchema ist dies eine N:M-Beziehung über 'address_purpose_assignments'. Dies ist eine konzeptionelle Abweichung: Eine Adresse kann mehrere Zwecke haben (1:N), aber ein Zweck kann auch mehrere Adressen haben (N:M)? Das ER-Modell dokumentiert nur 1:N.",
+          "korrekturanweisung": "Klärung erforderlich: (1) Wie wird die Gültigkeit einer Vollmacht für bestimmte Steuerarten bestimmt? Sollte 'scope_id' und 'power_of_attorney_tax_types' kombiniert verwendet werden? (2) Sollten Zahlungen und Erstattungen immer einem Bescheid zugeordnet sein? (3) Ist die Beziehung zwischen Adresse und Adresszweck wirklich N:M oder nur 1:N? Das ER-Modell sagt 1:N, das LogicalSchema modelliert N:M."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": false,
-          "beschreibung": "Das Schema weist mehrere Normalisierungsprobleme auf: (1) Die 'parties'-Tabelle im LogicalSchema ist nicht normalisiert, wenn sie sowohl Attribute für natürliche Personen (firstname, birthdate) als auch für Unternehmen (legal_form, founding_date) enthält. Dies verstößt gegen die 1NF/3NF, da nicht alle Attribute für alle Entitäten relevant sind. (2) Die Tabelle 'party_activity_types' speichert Tätigkeitstypen mit Gültigkeitszeiträumen – dies ist eine separate Entität, aber die Modellierung ist redundant, wenn party_type bereits in 'parties' existiert. (3) Die Tabellen 'payments', 'refunds' und 'late_payment_surcharges' haben beide tax_case_id und optionale assessment_id. Dies führt zu Redundanz und Anomalien: Ein Datensatz könnte sowohl tax_case_id als auch assessment_id haben, oder nur tax_case_id. Die Beziehung ist nicht eindeutig definiert.",
-          "korrekturanweisung": "Normalisiere die 'parties'-Tabelle durch Spezialisierung: Implementiere separate Tabellen 'natural_persons' und 'companies' mit jeweils party_id als FK. Entferne redundante Attribute aus 'parties'. Überprüfe 'party_activity_types': Wenn dies eine zeitliche Verfolgung von Tätigkeitstypen ist, ist die Modellierung korrekt; wenn es nur eine Klassifizierung ist, sollte es ein Attribut in 'parties' sein. Normalisiere 'payments', 'refunds' und 'late_payment_surcharges': Entscheide, ob diese zu tax_case oder zu assessment gehören, und modelliere die Beziehung eindeutig (entweder nur tax_case_id oder nur assessment_id, nicht beide optional)."
+          "beschreibung": "Mehrere Normalisierungsprobleme: (1) In der Tabelle 'parties' ist 'activity_form_id' ein Fremdschlüssel auf 'activity_forms', aber im ER-Modell ist 'Tätigkeitsform' ein VARCHAR-Attribut. Dies deutet auf eine Denormalisierung hin: Sollte 'Tätigkeitsform' ein Lookup-Wert sein oder ein Freitextfeld? (2) In der Tabelle 'assessments' gibt es sowohl 'status_id' (Fremdschlüssel auf 'assessment_statuses') als auch 'assessment_type_id' (Fremdschlüssel auf 'assessment_types'). Dies ist korrekt, aber die Semantik ist unklar: Ist 'assessment_type_id' eine Klassifizierung (z.B. Erstveranlagung, Änderung) oder ein Status? Im ER-Modell ist 'Bescheid_Typ' ein VARCHAR-Attribut, im LogicalSchema ist dies 'assessment_type_id' ein Fremdschlüssel. (3) In der Tabelle 'documents' gibt es 'file_reference', 'content_reference' und 'filename' – dies sind redundante Felder, die möglicherweise denormalisiert sind. Sollten diese in einer separaten Tabelle 'document_files' sein? (4) In der Tabelle 'objections' gibt es 'status_id' und 'decision_id' – dies ist korrekt, aber die Semantik ist unklar: Ist der Status unabhängig von der Entscheidung? (5) Die Tabelle 'power_of_attorney_tax_types' hat einen Composite Primary Key, aber keine zusätzlichen Attribute. Dies ist korrekt für eine reine Assoziationstabelle, aber es gibt keine Versionierung oder Gültigkeitszeiträume – sollten diese hinzugefügt werden?",
+          "korrekturanweisung": "Klärung erforderlich: (1) Sollte 'activity_form_id' in 'parties' ein Fremdschlüssel sein oder sollte 'Tätigkeitsform' ein einfaches VARCHAR-Attribut bleiben? (2) Ist 'assessment_type_id' eine Klassifizierung oder ein Status? Sollte dies in 'assessment_statuses' integriert werden? (3) Sollten 'file_reference', 'content_reference' und 'filename' in einer separaten Tabelle sein? (4) Sollte 'power_of_attorney_tax_types' Gültigkeitszeiträume haben, um Versionierung zu unterstützen?"
         }
       ],
       "origin_step": "cmd"
@@ -2417,7 +2646,7 @@
     "critic_report_c2": null,
     "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE parties (\n    id INTEGER NOT NULL,\n    party_type VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP NOT NULL,\n    CONSTRAINT pk_parties PRIMARY KEY (id)\n);\n\nCREATE TABLE addresses (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    house_number VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_addresses PRIMARY KEY (id),\n    CONSTRAINT fk_addresses_party_id FOREIGN KEY (party_id) REFERENCES parties (id)\n);\n\nCREATE TABLE address_purposes (\n    id INTEGER NOT NULL,\n    address_id INTEGER NOT NULL,\n    purpose VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_address_purposes PRIMARY KEY (id),\n    CONSTRAINT fk_address_purposes_address_id FOREIGN KEY (address_id) REFERENCES addresses (id)\n);\n\nCREATE TABLE tax_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_tax_types PRIMARY KEY (id)\n);\n\nCREATE TABLE tax_cases (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    tax_type_id INTEGER NOT NULL,\n    period_from DATE NOT NULL,\n    period_until DATE NOT NULL,\n    CONSTRAINT pk_tax_cases PRIMARY KEY (id),\n    CONSTRAINT fk_tax_cases_party_id FOREIGN KEY (party_id) REFERENCES parties (id),\n    CONSTRAINT fk_tax_cases_tax_type_id FOREIGN KEY (tax_type_id) REFERENCES tax_types (id)\n);\n\nCREATE TABLE assessments (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    assessed_amount DECIMAL(18,2) NOT NULL,\n    assessment_type VARCHAR(255) NOT NULL,\n    is_current BOOLEAN,\n    CONSTRAINT pk_assessments PRIMARY KEY (id),\n    CONSTRAINT fk_assessments_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id)\n);\n\nCREATE TABLE companies (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    legal_form VARCHAR(255),\n    founding_date DATE,\n    CONSTRAINT pk_companies PRIMARY KEY (id),\n    CONSTRAINT fk_companies_party_id FOREIGN KEY (party_id) REFERENCES parties (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    document_type VARCHAR(255) NOT NULL,\n    filename VARCHAR(255) NOT NULL,\n    upload_date TIMESTAMP NOT NULL,\n    file_reference VARCHAR(255),\n    CONSTRAINT pk_documents PRIMARY KEY (id)\n);\n\nCREATE TABLE document_assignments (\n    id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    reference_type VARCHAR(255) NOT NULL,\n    reference_id INTEGER NOT NULL,\n    CONSTRAINT pk_document_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_document_assignments_document_id FOREIGN KEY (document_id) REFERENCES documents (id)\n);\n\nCREATE TABLE late_payment_surcharges (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    assessment_id INTEGER,\n    amount DECIMAL(18,2) NOT NULL,\n    date DATE NOT NULL,\n    reason VARCHAR(255),\n    CONSTRAINT pk_late_payment_surcharges PRIMARY KEY (id),\n    CONSTRAINT fk_late_payment_surcharges_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id),\n    CONSTRAINT fk_late_payment_surcharges_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id)\n);\n\nCREATE TABLE natural_persons (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    firstname VARCHAR(255),\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    CONSTRAINT pk_natural_persons PRIMARY KEY (id),\n    CONSTRAINT fk_natural_persons_party_id FOREIGN KEY (party_id) REFERENCES parties (id)\n);\n\nCREATE TABLE objections (\n    id INTEGER NOT NULL,\n    assessment_id INTEGER NOT NULL,\n    received_date DATE NOT NULL,\n    deadline DATE NOT NULL,\n    decision_date DATE,\n    decision VARCHAR(255),\n    CONSTRAINT pk_objections PRIMARY KEY (id),\n    CONSTRAINT fk_objections_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id)\n);\n\nCREATE TABLE party_activity_types (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    activity_type VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_party_activity_types PRIMARY KEY (id),\n    CONSTRAINT fk_party_activity_types_party_id FOREIGN KEY (party_id) REFERENCES parties (id)\n);\n\nCREATE TABLE party_representatives (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    representative_type VARCHAR(255) NOT NULL,\n    contact_info VARCHAR(255),\n    CONSTRAINT pk_party_representatives PRIMARY KEY (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    assessment_id INTEGER,\n    amount DECIMAL(18,2) NOT NULL,\n    date DATE NOT NULL,\n    payment_method VARCHAR(255),\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id),\n    CONSTRAINT fk_payments_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id)\n);\n\nCREATE TABLE powers_of_attorney (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    representative_id INTEGER NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    scope VARCHAR(255),\n    CONSTRAINT pk_powers_of_attorney PRIMARY KEY (id),\n    CONSTRAINT fk_powers_of_attorney_party_id FOREIGN KEY (party_id) REFERENCES parties (id),\n    CONSTRAINT fk_powers_of_attorney_representative_id FOREIGN KEY (representative_id) REFERENCES party_representatives (id)\n);\n\nCREATE TABLE power_of_attorney_tax_types (\n    id INTEGER NOT NULL,\n    power_of_attorney_id INTEGER NOT NULL,\n    tax_type_id INTEGER NOT NULL,\n    CONSTRAINT pk_power_of_attorney_tax_types PRIMARY KEY (id),\n    CONSTRAINT fk_power_of_attorney_tax_types_power_of_attorney_id FOREIGN KEY (power_of_attorney_id) REFERENCES powers_of_attorney (id),\n    CONSTRAINT fk_power_of_attorney_tax_types_tax_type_id FOREIGN KEY (tax_type_id) REFERENCES tax_types (id)\n);\n\nCREATE TABLE refunds (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    assessment_id INTEGER,\n    amount DECIMAL(18,2) NOT NULL,\n    date DATE NOT NULL,\n    status VARCHAR(255),\n    CONSTRAINT pk_refunds PRIMARY KEY (id),\n    CONSTRAINT fk_refunds_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id),\n    CONSTRAINT fk_refunds_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id)\n);\n\nCREATE TABLE tax_declarations (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    submitted_by VARCHAR(255) NOT NULL,\n    submitted_date DATE NOT NULL,\n    representative_id INTEGER,\n    CONSTRAINT pk_tax_declarations PRIMARY KEY (id),\n    CONSTRAINT fk_tax_declarations_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id),\n    CONSTRAINT fk_tax_declarations_representative_id FOREIGN KEY (representative_id) REFERENCES party_representatives (id)\n);\n\nCREATE TABLE tax_identification_numbers (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    number VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_tax_identification_numbers PRIMARY KEY (id),\n    CONSTRAINT fk_tax_identification_numbers_party_id FOREIGN KEY (party_id) REFERENCES parties (id)\n);\n",
+    "final_ddl": "CREATE TABLE activity_forms (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_activity_forms PRIMARY KEY (id)\n);\n\nCREATE TABLE parties (\n    id INTEGER NOT NULL,\n    party_type VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    firstname VARCHAR(255),\n    birthdate DATE,\n    activity_form_id INTEGER,\n    CONSTRAINT pk_parties PRIMARY KEY (id),\n    CONSTRAINT fk_parties_activity_form_id FOREIGN KEY (activity_form_id) REFERENCES activity_forms (id)\n);\n\nCREATE TABLE addresses (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    house_number VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    CONSTRAINT pk_addresses PRIMARY KEY (id),\n    CONSTRAINT fk_addresses_party_id FOREIGN KEY (party_id) REFERENCES parties (id)\n);\n\nCREATE TABLE address_purposes (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_address_purposes PRIMARY KEY (id)\n);\n\nCREATE TABLE address_purpose_assignments (\n    id INTEGER NOT NULL,\n    address_id INTEGER NOT NULL,\n    address_purpose_id INTEGER NOT NULL,\n    CONSTRAINT pk_address_purpose_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_address_purpose_assignments_address_id FOREIGN KEY (address_id) REFERENCES addresses (id),\n    CONSTRAINT fk_address_purpose_assignments_address_purpose_id FOREIGN KEY (address_purpose_id) REFERENCES address_purposes (id)\n);\n\nCREATE TABLE assessment_statuses (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_assessment_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE assessment_types (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_assessment_types PRIMARY KEY (id)\n);\n\nCREATE TABLE tax_types (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_tax_types PRIMARY KEY (id)\n);\n\nCREATE TABLE tax_case_statuses (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_tax_case_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE tax_cases (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    tax_type_id INTEGER NOT NULL,\n    period_from DATE NOT NULL,\n    period_until DATE NOT NULL,\n    assessment_year INTEGER NOT NULL,\n    status_id INTEGER,\n    CONSTRAINT pk_tax_cases PRIMARY KEY (id),\n    CONSTRAINT fk_tax_cases_party_id FOREIGN KEY (party_id) REFERENCES parties (id),\n    CONSTRAINT fk_tax_cases_tax_type_id FOREIGN KEY (tax_type_id) REFERENCES tax_types (id),\n    CONSTRAINT fk_tax_cases_status_id FOREIGN KEY (status_id) REFERENCES tax_case_statuses (id)\n);\n\nCREATE TABLE assessments (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    status_id INTEGER NOT NULL,\n    assessed_amount DECIMAL(18,2) NOT NULL,\n    assessment_type_id INTEGER NOT NULL,\n    is_current BOOLEAN,\n    CONSTRAINT pk_assessments PRIMARY KEY (id),\n    CONSTRAINT fk_assessments_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id),\n    CONSTRAINT fk_assessments_status_id FOREIGN KEY (status_id) REFERENCES assessment_statuses (id),\n    CONSTRAINT fk_assessments_assessment_type_id FOREIGN KEY (assessment_type_id) REFERENCES assessment_types (id)\n);\n\nCREATE TABLE document_types (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_document_types PRIMARY KEY (id)\n);\n\nCREATE TABLE documents (\n    id INTEGER NOT NULL,\n    document_type_id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    file_reference VARCHAR(255),\n    content_reference VARCHAR(255),\n    filename VARCHAR(255),\n    created_at TIMESTAMP,\n    CONSTRAINT pk_documents PRIMARY KEY (id),\n    CONSTRAINT fk_documents_document_type_id FOREIGN KEY (document_type_id) REFERENCES document_types (id)\n);\n\nCREATE TABLE objection_decisions (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_objection_decisions PRIMARY KEY (id)\n);\n\nCREATE TABLE objection_statuses (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_objection_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE objections (\n    id INTEGER NOT NULL,\n    assessment_id INTEGER NOT NULL,\n    receipt_date DATE NOT NULL,\n    deadline DATE NOT NULL,\n    decision_date DATE,\n    decision_id INTEGER,\n    status_id INTEGER,\n    CONSTRAINT pk_objections PRIMARY KEY (id),\n    CONSTRAINT fk_objections_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id),\n    CONSTRAINT fk_objections_decision_id FOREIGN KEY (decision_id) REFERENCES objection_decisions (id),\n    CONSTRAINT fk_objections_status_id FOREIGN KEY (status_id) REFERENCES objection_statuses (id)\n);\n\nCREATE TABLE representative_types (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_representative_types PRIMARY KEY (id)\n);\n\nCREATE TABLE representatives (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    representative_type_id INTEGER NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    CONSTRAINT pk_representatives PRIMARY KEY (id),\n    CONSTRAINT fk_representatives_representative_type_id FOREIGN KEY (representative_type_id) REFERENCES representative_types (id)\n);\n\nCREATE TABLE power_of_attorney_scopes (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_power_of_attorney_scopes PRIMARY KEY (id)\n);\n\nCREATE TABLE powers_of_attorney (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    representative_id INTEGER NOT NULL,\n    valid_from DATE NOT NULL,\n    valid_until DATE,\n    scope_id INTEGER,\n    CONSTRAINT pk_powers_of_attorney PRIMARY KEY (id),\n    CONSTRAINT fk_powers_of_attorney_party_id FOREIGN KEY (party_id) REFERENCES parties (id),\n    CONSTRAINT fk_powers_of_attorney_representative_id FOREIGN KEY (representative_id) REFERENCES representatives (id),\n    CONSTRAINT fk_powers_of_attorney_scope_id FOREIGN KEY (scope_id) REFERENCES power_of_attorney_scopes (id)\n);\n\nCREATE TABLE document_assignments (\n    id INTEGER NOT NULL,\n    document_id INTEGER NOT NULL,\n    tax_case_id INTEGER,\n    assessment_id INTEGER,\n    objection_id INTEGER,\n    power_of_attorney_id INTEGER,\n    assignment_date TIMESTAMP,\n    CONSTRAINT pk_document_assignments PRIMARY KEY (id),\n    CONSTRAINT fk_document_assignments_document_id FOREIGN KEY (document_id) REFERENCES documents (id),\n    CONSTRAINT fk_document_assignments_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id),\n    CONSTRAINT fk_document_assignments_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id),\n    CONSTRAINT fk_document_assignments_objection_id FOREIGN KEY (objection_id) REFERENCES objections (id),\n    CONSTRAINT fk_document_assignments_power_of_attorney_id FOREIGN KEY (power_of_attorney_id) REFERENCES powers_of_attorney (id)\n);\n\nCREATE TABLE late_payment_surcharges (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    date DATE NOT NULL,\n    reason VARCHAR(255),\n    CONSTRAINT pk_late_payment_surcharges PRIMARY KEY (id),\n    CONSTRAINT fk_late_payment_surcharges_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id)\n);\n\nCREATE TABLE payment_methods (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_payment_methods PRIMARY KEY (id)\n);\n\nCREATE TABLE payments (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    assessment_id INTEGER,\n    amount DECIMAL(18,2) NOT NULL,\n    date DATE NOT NULL,\n    payment_method_id INTEGER,\n    CONSTRAINT pk_payments PRIMARY KEY (id),\n    CONSTRAINT fk_payments_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id),\n    CONSTRAINT fk_payments_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id),\n    CONSTRAINT fk_payments_payment_method_id FOREIGN KEY (payment_method_id) REFERENCES payment_methods (id)\n);\n\nCREATE TABLE power_of_attorney_tax_types (\n    power_of_attorney_id INTEGER NOT NULL,\n    tax_type_id INTEGER NOT NULL,\n    CONSTRAINT pk_power_of_attorney_tax_types PRIMARY KEY (power_of_attorney_id, tax_type_id),\n    CONSTRAINT fk_power_of_attorney_tax_types_power_of_attorney_id FOREIGN KEY (power_of_attorney_id) REFERENCES powers_of_attorney (id),\n    CONSTRAINT fk_power_of_attorney_tax_types_tax_type_id FOREIGN KEY (tax_type_id) REFERENCES tax_types (id)\n);\n\nCREATE TABLE refund_statuses (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_refund_statuses PRIMARY KEY (id)\n);\n\nCREATE TABLE refunds (\n    id INTEGER NOT NULL,\n    tax_case_id INTEGER NOT NULL,\n    assessment_id INTEGER,\n    amount DECIMAL(18,2) NOT NULL,\n    date DATE NOT NULL,\n    status_id INTEGER,\n    CONSTRAINT pk_refunds PRIMARY KEY (id),\n    CONSTRAINT fk_refunds_tax_case_id FOREIGN KEY (tax_case_id) REFERENCES tax_cases (id),\n    CONSTRAINT fk_refunds_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id),\n    CONSTRAINT fk_refunds_status_id FOREIGN KEY (status_id) REFERENCES refund_statuses (id)\n);\n\nCREATE TABLE tax_identifications (\n    id INTEGER NOT NULL,\n    party_id INTEGER NOT NULL,\n    number VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    valid_from DATE,\n    valid_until DATE,\n    CONSTRAINT pk_tax_identifications PRIMARY KEY (id),\n    CONSTRAINT fk_tax_identifications_party_id FOREIGN KEY (party_id) REFERENCES parties (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": false,
       "findings": [
@@ -2442,26 +2671,26 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Kritische Entitäten fehlen oder sind unzureichend modelliert: (1) Die Anforderung unterscheidet zwischen natürlichen Personen und Unternehmen, das ER-Modell sieht separate Entitäten vor (natural_persons, companies), aber das LogicalSchema hat diese nicht als separate Tabellen implementiert. Stattdessen wird alles in 'parties' mit party_type-Diskriminator gemischt. (2) Die Entität 'party_activity_types' ist im LogicalSchema vorhanden, aber im ER-Modell nicht explizit als separate Entität definiert – dies ist eine Lücke in der Modellierungskonsistenz. (3) Die Anforderung erwähnt, dass Zahlungen, Erstattungen und Säumniszuschläge zu Bescheiden zugeordnet werden können, aber im LogicalSchema haben diese Tabellen nur optionale assessment_id-Felder. Im ER-Modell ist diese Beziehung nicht explizit modelliert.",
-          "korrekturanweisung": "Entweder: (A) Implementiere separate Tabellen natural_persons und companies mit jeweils party_id als FK zu parties (wie im ER-Modell vorgesehen), oder (B) dokumentiere explizit im ER-Modell, dass die Spezialisierung durch party_type-Diskriminator erfolgt. Stelle sicher, dass party_activity_types im ER-Modell als eigenständige Entität dokumentiert ist. Modelliere die Beziehung zwischen Zahlungen/Erstattungen/Säumniszuschlägen und Bescheiden explizit im ER-Modell."
+          "beschreibung": "Kritische Entität fehlt: 'Tätigkeitsform' ist im ER-Modell als separate Entität 'activity_forms' modelliert, wird aber im LogicalSchema nicht als eigenständige Referenztabelle mit Lookup-Struktur behandelt. Im ER-Modell ist 'Tätigkeitsform' ein Attribut der Partei-Entität, im LogicalSchema jedoch eine separate Tabelle mit id, designation, description. Dies ist eine konzeptionelle Inkonsistenz zwischen ER und LogicalSchema. Zusätzlich fehlt die Entität 'Adresszweck' als eigenständige Referenztabelle – im LogicalSchema existiert 'address_purposes' korrekt, aber die Modellierung der N:M-Beziehung zwischen Adressen und Zwecken über 'address_purpose_assignments' ist nicht im ER-Modell explizit als separate Entität dokumentiert.",
+          "korrekturanweisung": "Klärung erforderlich: (1) Ist 'Tätigkeitsform' ein einfaches Attribut oder eine Referenztabelle? Das ER-Modell zeigt es als VARCHAR-Attribut, das LogicalSchema als separate Tabelle. (2) Die 'address_purpose_assignments'-Tabelle sollte im ER-Modell explizit als Junction-Table dokumentiert sein, um die N:M-Beziehung zwischen Adressen und Zwecken korrekt abzubilden."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": false,
-          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unzureichend: (1) Die 'parties'-Tabelle im LogicalSchema hat nur id, party_type und created_at, aber das ER-Modell definiert Name, Vorname, Geburtsdatum, Rechtsform, Gründungsdatum und Tätigkeitstyp als Attribute der Partei-Entität. Diese sind im LogicalSchema nicht vorhanden. (2) Die Anforderung erwähnt 'grundlegende Angaben' zu jeder Partei – diese sind nicht konkretisiert. (3) Im LogicalSchema fehlt ein Attribut zur Unterscheidung, ob eine Partei privat, gewerblich oder beides ist (Tätigkeitstyp). Die Tabelle party_activity_types existiert, aber das ist eine separate Entität, nicht ein Attribut. (4) Die Anforderung sagt, dass Zahlungen und Erstattungen zu Bescheiden zugeordnet werden können – im LogicalSchema ist assessment_id optional, aber es gibt keine Dokumentation, wie dies mit tax_case_id zusammenhängt.",
-          "korrekturanweisung": "Füge der 'parties'-Tabelle die fehlenden Attribute hinzu: name (VARCHAR, NOT NULL), firstname (VARCHAR, nullable), birthdate (DATE, nullable), legal_form (VARCHAR, nullable), founding_date (DATE, nullable). Oder: Implementiere separate Tabellen natural_persons und companies mit diesen spezifischen Attributen. Stelle sicher, dass alle Attribute aus dem ER-Modell im LogicalSchema vorhanden sind."
+          "beschreibung": "Mehrere kritische Attribute fehlen oder sind unzureichend modelliert: (1) Im ER-Modell 'Partei' hat 'Name' als Pflichtfeld, aber im LogicalSchema ist dies in 'lastname' und 'firstname' aufgeteilt – 'lastname' ist NOT NULL, 'firstname' ist nullable. Dies widerspricht der Anforderung, dass grundlegende Angaben festgehalten werden sollen. (2) Im ER-Modell 'Bescheid' hat 'Ist_Aktuell' als optionales BOOLEAN-Attribut, im LogicalSchema ist dies 'is_current' und ebenfalls optional – aber die Anforderung besagt, dass fachlich nicht immer sofort klar ist, welcher Bescheid aktuell gilt. Dies sollte durch ein Geschäftslogik-Attribut oder Constraint gelöst werden, nicht durch ein optionales Feld. (3) 'Adresszweck' im ER-Modell hat nur 'Zweck' als VARCHAR, im LogicalSchema ist dies 'address_purposes' mit 'designation' und 'description' – die Struktur ist konsistent, aber die Semantik ist unklar. (4) Im ER-Modell 'Zahlung' und 'Erstattung' haben optional 'Bescheid_ID', aber die Anforderung erwähnt, dass Zahlungen und Erstattungen erfasst werden sollen – unklar ist, ob diese immer einem Bescheid zugeordnet sein müssen oder nur dem Steuerfall.",
+          "korrekturanweisung": "Klärung erforderlich: (1) Sollte 'firstname' NOT NULL sein, wenn 'Name' ein Pflichtfeld ist? Oder ist 'lastname' allein ausreichend? (2) Wie wird die Aktualität von Bescheiden bestimmt? Sollte 'is_current' ein Constraint sein (z.B. nur ein Bescheid pro Steuerfall kann aktuell sein) oder ein Geschäftslogik-Feld? (3) Sollten Zahlungen und Erstattungen immer einem Bescheid zugeordnet sein (NOT NULL) oder nur optional?"
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": false,
-          "beschreibung": "Mehrere Beziehungen sind nicht korrekt oder unvollständig modelliert: (1) Die M:N-Beziehung zwischen Partei und Vertretung ist im ER-Modell dokumentiert, aber im LogicalSchema nicht explizit als Junction-Table implementiert. Die Beziehung wird nur über powers_of_attorney modelliert, was eine 1:N-Beziehung ist. Dies ist konzeptionell falsch, da eine Partei mehrere Vertretungen haben kann und eine Vertretung mehrere Parteien vertreten kann – das ist M:N, nicht 1:N über Vollmacht. (2) Die Beziehung zwischen Zahlungen/Erstattungen/Säumniszuschlägen und Bescheiden ist im ER-Modell nicht dokumentiert, aber im LogicalSchema durch optionale assessment_id-Felder angedeutet. Dies ist inkonsistent. (3) Die Beziehung zwischen Steuererklärung und Vertretung ist im LogicalSchema vorhanden (representative_id), aber im ER-Modell ist dies als 1:N von Vertretung zu Steuererklärung dokumentiert, nicht als direkte Beziehung in der Steuererklärung-Entität.",
-          "korrekturanweisung": "Implementiere eine explizite Junction-Table 'party_representatives' (oder ähnlich) mit party_id und representative_id, um die M:N-Beziehung korrekt abzubilden. Dokumentiere im ER-Modell die Beziehung zwischen Zahlungen/Erstattungen/Säumniszuschlägen und Bescheiden. Stelle sicher, dass die Beziehung zwischen Steuererklärung und Vertretung konsistent mit dem ER-Modell ist."
+          "beschreibung": "Mehrere Beziehungen sind nicht korrekt oder unvollständig modelliert: (1) Die Beziehung zwischen 'Vollmacht' und 'Steuerart' ist im ER-Modell als separate Entität 'Vollmacht_Steuerart' modelliert (N:M), im LogicalSchema als 'power_of_attorney_tax_types' mit Composite Primary Key (power_of_attorney_id, tax_type_id). Dies ist korrekt, aber die Semantik ist unklar: Wenn 'scope_id' in 'powers_of_attorney' NULL ist, bedeutet das, dass die Vollmacht allgemein gilt? Oder sollte die Abwesenheit von Einträgen in 'power_of_attorney_tax_types' bedeuten, dass die Vollmacht allgemein gilt? (2) Die Beziehung zwischen 'Bescheid' und 'Zahlung'/'Erstattung' ist optional (assessment_id nullable), aber im ER-Modell ist 'Bescheid_ID' in 'Zahlung' und 'Erstattung' optional. Dies ist konsistent, aber fachlich unklar. (3) Die Beziehung zwischen 'Adresse' und 'Adresszweck' ist im ER-Modell als 1:N modelliert, aber im LogicalSchema ist dies eine N:M-Beziehung über 'address_purpose_assignments'. Dies ist eine konzeptionelle Abweichung: Eine Adresse kann mehrere Zwecke haben (1:N), aber ein Zweck kann auch mehrere Adressen haben (N:M)? Das ER-Modell dokumentiert nur 1:N.",
+          "korrekturanweisung": "Klärung erforderlich: (1) Wie wird die Gültigkeit einer Vollmacht für bestimmte Steuerarten bestimmt? Sollte 'scope_id' und 'power_of_attorney_tax_types' kombiniert verwendet werden? (2) Sollten Zahlungen und Erstattungen immer einem Bescheid zugeordnet sein? (3) Ist die Beziehung zwischen Adresse und Adresszweck wirklich N:M oder nur 1:N? Das ER-Modell sagt 1:N, das LogicalSchema modelliert N:M."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": false,
-          "beschreibung": "Das Schema weist mehrere Normalisierungsprobleme auf: (1) Die 'parties'-Tabelle im LogicalSchema ist nicht normalisiert, wenn sie sowohl Attribute für natürliche Personen (firstname, birthdate) als auch für Unternehmen (legal_form, founding_date) enthält. Dies verstößt gegen die 1NF/3NF, da nicht alle Attribute für alle Entitäten relevant sind. (2) Die Tabelle 'party_activity_types' speichert Tätigkeitstypen mit Gültigkeitszeiträumen – dies ist eine separate Entität, aber die Modellierung ist redundant, wenn party_type bereits in 'parties' existiert. (3) Die Tabellen 'payments', 'refunds' und 'late_payment_surcharges' haben beide tax_case_id und optionale assessment_id. Dies führt zu Redundanz und Anomalien: Ein Datensatz könnte sowohl tax_case_id als auch assessment_id haben, oder nur tax_case_id. Die Beziehung ist nicht eindeutig definiert.",
-          "korrekturanweisung": "Normalisiere die 'parties'-Tabelle durch Spezialisierung: Implementiere separate Tabellen 'natural_persons' und 'companies' mit jeweils party_id als FK. Entferne redundante Attribute aus 'parties'. Überprüfe 'party_activity_types': Wenn dies eine zeitliche Verfolgung von Tätigkeitstypen ist, ist die Modellierung korrekt; wenn es nur eine Klassifizierung ist, sollte es ein Attribut in 'parties' sein. Normalisiere 'payments', 'refunds' und 'late_payment_surcharges': Entscheide, ob diese zu tax_case oder zu assessment gehören, und modelliere die Beziehung eindeutig (entweder nur tax_case_id oder nur assessment_id, nicht beide optional)."
+          "beschreibung": "Mehrere Normalisierungsprobleme: (1) In der Tabelle 'parties' ist 'activity_form_id' ein Fremdschlüssel auf 'activity_forms', aber im ER-Modell ist 'Tätigkeitsform' ein VARCHAR-Attribut. Dies deutet auf eine Denormalisierung hin: Sollte 'Tätigkeitsform' ein Lookup-Wert sein oder ein Freitextfeld? (2) In der Tabelle 'assessments' gibt es sowohl 'status_id' (Fremdschlüssel auf 'assessment_statuses') als auch 'assessment_type_id' (Fremdschlüssel auf 'assessment_types'). Dies ist korrekt, aber die Semantik ist unklar: Ist 'assessment_type_id' eine Klassifizierung (z.B. Erstveranlagung, Änderung) oder ein Status? Im ER-Modell ist 'Bescheid_Typ' ein VARCHAR-Attribut, im LogicalSchema ist dies 'assessment_type_id' ein Fremdschlüssel. (3) In der Tabelle 'documents' gibt es 'file_reference', 'content_reference' und 'filename' – dies sind redundante Felder, die möglicherweise denormalisiert sind. Sollten diese in einer separaten Tabelle 'document_files' sein? (4) In der Tabelle 'objections' gibt es 'status_id' und 'decision_id' – dies ist korrekt, aber die Semantik ist unklar: Ist der Status unabhängig von der Entscheidung? (5) Die Tabelle 'power_of_attorney_tax_types' hat einen Composite Primary Key, aber keine zusätzlichen Attribute. Dies ist korrekt für eine reine Assoziationstabelle, aber es gibt keine Versionierung oder Gültigkeitszeiträume – sollten diese hinzugefügt werden?",
+          "korrekturanweisung": "Klärung erforderlich: (1) Sollte 'activity_form_id' in 'parties' ein Fremdschlüssel sein oder sollte 'Tätigkeitsform' ein einfaches VARCHAR-Attribut bleiben? (2) Ist 'assessment_type_id' eine Klassifizierung oder ein Status? Sollte dies in 'assessment_statuses' integriert werden? (3) Sollten 'file_reference', 'content_reference' und 'filename' in einer separaten Tabelle sein? (4) Sollte 'power_of_attorney_tax_types' Gültigkeitszeiträume haben, um Versionierung zu unterstützen?"
         }
       ],
       "origin_step": "cmd"
@@ -2471,33 +2700,33 @@
   },
   "telemetry": {
     "total_calls": 10,
-    "total_input_tokens": 106036,
-    "total_output_tokens": 43396,
-    "total_tokens": 149432,
+    "total_input_tokens": 123753,
+    "total_output_tokens": 49938,
+    "total_tokens": 173691,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1957,
-        "output_tokens": 3615,
+        "output_tokens": 3260,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 3,
-        "input_tokens": 17559,
-        "output_tokens": 14485,
+        "input_tokens": 31415,
+        "output_tokens": 17562,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 3,
-        "input_tokens": 31421,
-        "output_tokens": 17401,
+        "input_tokens": 33535,
+        "output_tokens": 19571,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 3,
-        "input_tokens": 55099,
-        "output_tokens": 7895,
+        "input_tokens": 56846,
+        "output_tokens": 9545,
         "cost_usd": 0.0
       }
     },
@@ -2508,7 +2737,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1957,
-        "output_tokens": 3615,
+        "output_tokens": 3260,
         "cost_usd": 0.0
       },
       {
@@ -2516,8 +2745,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5853,
-        "output_tokens": 4830,
+        "input_tokens": 5464,
+        "output_tokens": 5238,
         "cost_usd": 0.0
       },
       {
@@ -2525,8 +2754,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8652,
-        "output_tokens": 4814,
+        "input_tokens": 8909,
+        "output_tokens": 5011,
         "cost_usd": 0.0
       },
       {
@@ -2534,8 +2763,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 17371,
-        "output_tokens": 2859,
+        "input_tokens": 17436,
+        "output_tokens": 3348,
         "cost_usd": 0.0
       },
       {
@@ -2543,8 +2772,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5853,
-        "output_tokens": 4824,
+        "input_tokens": 12916,
+        "output_tokens": 6162,
         "cost_usd": 0.0
       },
       {
@@ -2552,8 +2781,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 11439,
-        "output_tokens": 6972,
+        "input_tokens": 12220,
+        "output_tokens": 7338,
         "cost_usd": 0.0
       },
       {
@@ -2561,8 +2790,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 19555,
-        "output_tokens": 2803,
+        "input_tokens": 19763,
+        "output_tokens": 3521,
         "cost_usd": 0.0
       },
       {
@@ -2570,8 +2799,8 @@
         "iteration": 2,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5853,
-        "output_tokens": 4831,
+        "input_tokens": 13035,
+        "output_tokens": 6162,
         "cost_usd": 0.0
       },
       {
@@ -2579,8 +2808,8 @@
         "iteration": 2,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 11330,
-        "output_tokens": 5615,
+        "input_tokens": 12406,
+        "output_tokens": 7222,
         "cost_usd": 0.0
       },
       {
@@ -2588,8 +2817,8 @@
         "iteration": 2,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 18173,
-        "output_tokens": 2233,
+        "input_tokens": 19647,
+        "output_tokens": 2676,
         "cost_usd": 0.0
       }
     ]

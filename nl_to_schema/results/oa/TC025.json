@@ -198,7 +198,7 @@
             "Telefonnummer",
             "E-Mail-Adresse"
           ],
-          "beschreibung": "Repräsentiert einen Kunden des Schuhreparaturbetriebs mit persönlichen Kontaktdaten."
+          "beschreibung": "Ein Kunde des Schuhreparaturbetriebs, von dem Vorname, Nachname, Telefonnummer und optional E-Mail-Adresse gespeichert werden."
         },
         {
           "name": "Schuhpaar",
@@ -208,7 +208,7 @@
             "Farbe",
             "Schuhgroesse"
           ],
-          "beschreibung": "Repräsentiert ein abgegebenes Schuhpaar mit seinen Eigenschaften."
+          "beschreibung": "Ein abgegebenes Schuhpaar mit Informationen zu Marke, Modell, Farbe und Größe. Gehört genau einem Kunden."
         },
         {
           "name": "Reparaturauftrag",
@@ -218,44 +218,44 @@
             "Abgeschlossen",
             "Preis"
           ],
-          "beschreibung": "Repräsentiert einen Reparaturauftrag mit Informationen zu Zeitpunkt, Umfang, Status und Kosten."
+          "beschreibung": "Ein Reparaturauftrag für ein Schuhpaar mit Annahmedatum, gewünschten Arbeiten, Abschluss-Status und Preis."
         }
       ],
       "beziehungen": [
         {
-          "von": "Kunde",
-          "zu": "Schuhpaar",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Kunde kann mehrere Schuhpaare abgeben. Jedes Schuhpaar gehört genau einem Kunden."
+          "von": "Schuhpaar",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jedes Schuhpaar gehört genau einem Kunden. Ein Kunde kann mehrere Schuhpaare abgeben."
         },
         {
-          "von": "Schuhpaar",
-          "zu": "Reparaturauftrag",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Schuhpaar kann mehrere Reparaturaufträge haben. Jeder Reparaturauftrag bezieht sich auf genau ein Schuhpaar."
+          "von": "Reparaturauftrag",
+          "zu": "Schuhpaar",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Reparaturauftrag bezieht sich genau auf ein Schuhpaar. Ein Schuhpaar kann mehrere Reparaturaufträge haben."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Die E-Mail-Adresse ist optional ('auf Wunsch'), aber es ist unklar, ob NULL-Werte in der Datenbank erlaubt sein sollen oder wie mit fehlenden E-Mail-Adressen umzugehen ist.",
+          "beschreibung": "Die E-Mail-Adresse ist optional ('auf Wunsch'). Unklar ist, ob NULL-Werte erlaubt sind oder ob ein Standardwert verwendet werden soll.",
           "betroffene_elemente": [
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Das Attribut 'gewuenschte_Arbeiten' ist als Freitext beschrieben ('welche Arbeiten gewuenscht sind'), aber es ist unklar, ob dies ein einfaches Textfeld, eine Auswahl aus vordefinierten Arbeitstypen oder eine separate Entität sein sollte.",
+          "beschreibung": "Das Attribut 'gewuenschte_Arbeiten' ist als Freitext beschrieben. Unklar ist, ob dies ein einfaches Textfeld ist oder ob eine strukturierte Liste von Reparaturtypen vorgesehen sein sollte.",
           "betroffene_elemente": [
             "Reparaturauftrag"
           ]
         },
         {
-          "beschreibung": "Das Attribut 'Abgeschlossen' wird als boolescher Status erwähnt ('ob der Auftrag bereits abgeschlossen ist'), aber es ist unklar, ob auch ein Abschlussdatum erfasst werden soll.",
+          "beschreibung": "Das Attribut 'Abgeschlossen' wird als boolescher Status beschrieben ('ob der Auftrag bereits abgeschlossen ist'). Unklar ist, ob auch ein Abschlussdatum erfasst werden soll.",
           "betroffene_elemente": [
             "Reparaturauftrag"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob jedes Schuhpaar eine eindeutige Identifikation (z.B. Ticketnummer) benötigt oder wie mehrere identische Schuhpaare desselben Kunden unterschieden werden.",
+          "beschreibung": "Unklar ist, ob jedes Schuhpaar eine eindeutige Identifikation (z.B. Ticketnummer) benötigt, um es von anderen Schuhpaaren desselben Kunden zu unterscheiden.",
           "betroffene_elemente": [
             "Schuhpaar"
           ]
@@ -292,7 +292,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "EMail",
+              "name": "EmailAdresse",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -384,15 +384,15 @@
       ],
       "beziehungen": [
         {
-          "von": "Kunde",
-          "zu": "Schuhpaar",
-          "kardinalitaet": "1:N",
+          "von": "Schuhpaar",
+          "zu": "Kunde",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Schuhpaar",
-          "zu": "Reparaturauftrag",
-          "kardinalitaet": "1:N",
+          "von": "Reparaturauftrag",
+          "zu": "Schuhpaar",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         }
       ]
@@ -427,19 +427,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: customers (firstname, lastname, phone, email), shoes (brand, model, color, size), repair_orders (acceptance_date, desired_work, is_completed, price). Die Namenskonventionen (snake_case, englisch) sind eingehalten.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt abgebildet: Kunde (firstname, lastname, phone, email), Schuhpaar (brand, model, color, size), Reparaturauftrag (acceptance_date, desired_work, is_completed, price). Die Namenskonventionen (snake_case, englisch) sind konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen customers und shoes (customer_id FK), sowie 1:N zwischen shoes und repair_orders (shoe_id FK). Die Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: N:1 zwischen shoes und customers (customer_id FK), N:1 zwischen repair_orders und shoes (shoe_id FK). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF). Es gibt keine Redundanzen, keine Anomalien und keine funktionalen Abhängigkeiten außerhalb der Primärschlüssel. Die Struktur ist normalisiert und wartbar.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Alle Attribute sind atomar, und die Abhängigkeitsstruktur ist sauber.",
           "korrekturanweisung": ""
         }
       ],
@@ -480,19 +480,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt benannt: customers (firstname, lastname, phone, email), shoes (brand, model, color, size), repair_orders (acceptance_date, desired_work, is_completed, price). Die Namenskonventionen (snake_case, englisch) sind eingehalten.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind im LogicalSchema vorhanden und korrekt abgebildet: Kunde (firstname, lastname, phone, email), Schuhpaar (brand, model, color, size), Reparaturauftrag (acceptance_date, desired_work, is_completed, price). Die Namenskonventionen (snake_case, englisch) sind konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen customers und shoes (customer_id FK), sowie 1:N zwischen shoes und repair_orders (shoe_id FK). Die Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: N:1 zwischen shoes und customers (customer_id FK), N:1 zwischen repair_orders und shoes (shoe_id FK). Die Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die Anforderungen der dritten Normalform (3NF). Es gibt keine Redundanzen, keine Anomalien und keine funktionalen Abhängigkeiten außerhalb der Primärschlüssel. Die Struktur ist normalisiert und wartbar.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Alle Attribute sind atomar, und die Abhängigkeitsstruktur ist sauber.",
           "korrekturanweisung": ""
         }
       ],
@@ -503,33 +503,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12420,
-    "total_output_tokens": 3399,
-    "total_tokens": 15819,
+    "total_input_tokens": 12432,
+    "total_output_tokens": 3595,
+    "total_tokens": 16027,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1494,
-        "output_tokens": 898,
+        "output_tokens": 903,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2427,
-        "output_tokens": 900,
+        "input_tokens": 2432,
+        "output_tokens": 1069,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 3352,
+        "input_tokens": 3353,
         "output_tokens": 853,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5147,
-        "output_tokens": 748,
+        "input_tokens": 5153,
+        "output_tokens": 770,
         "cost_usd": 0.0
       }
     },
@@ -540,7 +540,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1494,
-        "output_tokens": 898,
+        "output_tokens": 903,
         "cost_usd": 0.0
       },
       {
@@ -548,8 +548,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2427,
-        "output_tokens": 900,
+        "input_tokens": 2432,
+        "output_tokens": 1069,
         "cost_usd": 0.0
       },
       {
@@ -557,7 +557,7 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3352,
+        "input_tokens": 3353,
         "output_tokens": 853,
         "cost_usd": 0.0
       },
@@ -566,8 +566,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5147,
-        "output_tokens": 748,
+        "input_tokens": 5153,
+        "output_tokens": 770,
         "cost_usd": 0.0
       }
     ]

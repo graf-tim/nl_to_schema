@@ -228,25 +228,25 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Das Attribut 'Zusammenarbeit_aktiv' ist als Boolesch interpretiert worden (ja/nein), könnte aber auch als Datum (z.B. Enddatum der Zusammenarbeit) oder Text (z.B. Status-Beschreibung) gemeint sein.",
+          "beschreibung": "Das Attribut 'Zusammenarbeit_aktiv' ist als Boolesch interpretiert worden (ja/nein), könnte aber auch als Datumsfeld (z.B. Enddatum der Zusammenarbeit) oder Statusfeld mit mehreren Werten ausgelegt werden.",
           "betroffene_elemente": [
             "Lieferant"
           ]
         },
         {
-          "beschreibung": "Das Attribut 'Zustand' ist als kategorisches Feld interpretiert worden (frisch oder tiefgekühlt), es ist unklar, ob weitere Zustände möglich sind.",
+          "beschreibung": "Das Attribut 'Zustand' ist als kategorisches Feld (frisch/tiefgekühlt) interpretiert worden. Unklar ist, ob es weitere Zustände gibt oder ob dies die einzigen zwei Optionen sind.",
           "betroffene_elemente": [
             "Fisch"
           ]
         },
         {
-          "beschreibung": "Es ist nicht klar, ob der 'Gesamtpreis' eines Verkaufs automatisch aus Menge und Preis pro kg berechnet wird oder ob er unabhängig erfasst wird (z.B. mit Rabatten).",
+          "beschreibung": "Unklar ist, ob der 'Gesamtpreis' bei einem Verkauf automatisch aus Menge und Preis pro kg berechnet wird oder ob er unabhängig eingegeben werden kann (z.B. mit Rabatten).",
           "betroffene_elemente": [
             "Verkauf"
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob ein Fisch eindeutig identifiziert wird (z.B. durch eine Fisch-ID) oder ob mehrere Fische mit gleicher Bezeichnung und Warengruppe von verschiedenen Lieferanten existieren können.",
+          "beschreibung": "Es ist nicht spezifiziert, ob ein Fisch eindeutig identifizierbar sein muss (z.B. durch eine Fisch-ID) oder ob die Kombination aus Bezeichnung und Lieferant eindeutig ist.",
           "betroffene_elemente": [
             "Fisch"
           ]
@@ -406,19 +406,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt abgebildet: suppliers (name, location, is_active), fish (designation, product_group, price_per_kg, condition), sales (sale_date, quantity_kg, total_price). Die Namenskonventionen (snake_case, englisch) sind konsistent eingehalten.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt abgebildet: suppliers (name, location, is_active), fish (designation, product_group, price_per_kg, condition), sales (sale_date, quantity_kg, total_price). Namenskonventionen sind eingehalten (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen suppliers und fish (via supplier_id FK), sowie 1:N zwischen fish und sales (via fish_id FK). Kardinalitäten und Referenzen sind konsistent.",
+          "beschreibung": "Beide 1:N-Beziehungen aus dem ERModell sind korrekt im LogicalSchema implementiert: (1) Lieferant:Fisch über supplier_id in fish-Tabelle, (2) Fisch:Verkauf über fish_id in sales-Tabelle. Kardinalitäten und Fremdschlüssel-Definitionen sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die Anforderungen der 3. Normalform: Keine Redundanzen, keine transitiven Abhängigkeiten, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln. Die Struktur ist normalisiert und wartbar.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Alle Attribute sind atomar (keine zusammengesetzten oder wiederholten Gruppen). (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist normalisiert und redundanzfrei.",
           "korrekturanweisung": ""
         }
       ],
@@ -459,19 +459,19 @@
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt abgebildet: suppliers (name, location, is_active), fish (designation, product_group, price_per_kg, condition), sales (sale_date, quantity_kg, total_price). Die Namenskonventionen (snake_case, englisch) sind konsistent eingehalten.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt abgebildet: suppliers (name, location, is_active), fish (designation, product_group, price_per_kg, condition), sales (sale_date, quantity_kg, total_price). Namenskonventionen sind eingehalten (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen aus dem ERModell sind korrekt implementiert: 1:N zwischen suppliers und fish (via supplier_id FK), sowie 1:N zwischen fish und sales (via fish_id FK). Kardinalitäten und Referenzen sind konsistent.",
+          "beschreibung": "Beide 1:N-Beziehungen aus dem ERModell sind korrekt im LogicalSchema implementiert: (1) Lieferant:Fisch über supplier_id in fish-Tabelle, (2) Fisch:Verkauf über fish_id in sales-Tabelle. Kardinalitäten und Fremdschlüssel-Definitionen sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die Anforderungen der 3. Normalform: Keine Redundanzen, keine transitiven Abhängigkeiten, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln. Die Struktur ist normalisiert und wartbar.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Alle Attribute sind atomar (keine zusammengesetzten oder wiederholten Gruppen). (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Struktur ist normalisiert und redundanzfrei.",
           "korrekturanweisung": ""
         }
       ],
@@ -482,21 +482,21 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12210,
-    "total_output_tokens": 3438,
-    "total_tokens": 15648,
+    "total_input_tokens": 12222,
+    "total_output_tokens": 3516,
+    "total_tokens": 15738,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1497,
-        "output_tokens": 930,
+        "output_tokens": 936,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2458,
-        "output_tokens": 962,
+        "input_tokens": 2464,
+        "output_tokens": 940,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
@@ -507,8 +507,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5006,
-        "output_tokens": 759,
+        "input_tokens": 5012,
+        "output_tokens": 853,
         "cost_usd": 0.0
       }
     },
@@ -519,7 +519,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1497,
-        "output_tokens": 930,
+        "output_tokens": 936,
         "cost_usd": 0.0
       },
       {
@@ -527,8 +527,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2458,
-        "output_tokens": 962,
+        "input_tokens": 2464,
+        "output_tokens": 940,
         "cost_usd": 0.0
       },
       {
@@ -545,8 +545,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5006,
-        "output_tokens": 759,
+        "input_tokens": 5012,
+        "output_tokens": 853,
         "cost_usd": 0.0
       }
     ]

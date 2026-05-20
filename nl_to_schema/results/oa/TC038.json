@@ -2,8 +2,8 @@
   "testfall_id": "TC038",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.4137931034482759,
-  "score_gesamt": 0.6482758620689656,
+  "score_semantisch": 0.4303030303030303,
+  "score_gesamt": 0.6581818181818182,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 4
     },
     "attribut": {
-      "precision": 0.4,
-      "recall": 0.3404255319148936,
-      "f1": 0.36781609195402304,
-      "matched": 16,
-      "nur_in_referenz": 31,
-      "nur_in_generiert": 24
+      "precision": 0.43902439024390244,
+      "recall": 0.3829787234042553,
+      "f1": 0.4090909090909091,
+      "matched": 18,
+      "nur_in_referenz": 29,
+      "nur_in_generiert": 23
     },
     "beziehung": {
       "recall": 0.3333333333333333,
@@ -104,17 +104,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "interests.id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "interests.client_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "interests.last_contact_at",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -412,19 +402,43 @@
               "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "search_criteria",
               "type": "TEXT",
               "primary_key": false,
               "nullable": true
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "interests",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "prospect_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "property_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
             },
             {
               "name": "last_contact",
@@ -433,7 +447,18 @@
               "nullable": true
             }
           ],
-          "foreign_keys": []
+          "foreign_keys": [
+            {
+              "from_column": "prospect_id",
+              "references_table": "prospects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "property_id",
+              "references_table": "properties",
+              "references_column": "id"
+            }
+          ]
         },
         {
           "name": "viewings",
@@ -457,7 +482,7 @@
               "nullable": false
             },
             {
-              "name": "appointment_date",
+              "name": "appointment_time",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
@@ -489,58 +514,23 @@
           ]
         },
         {
-          "name": "interests",
+          "name": "property_managements",
           "columns": [
             {
-              "name": "prospect_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
             },
-            {
-              "name": "property_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "interested_since",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "prospect_id",
-              "references_table": "prospects",
-              "references_column": "id"
-            },
-            {
-              "from_column": "property_id",
-              "references_table": "properties",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "broker_properties",
-          "columns": [
             {
               "name": "broker_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
               "nullable": false
             },
             {
               "name": "property_id",
               "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "care_start_date",
-              "type": "DATE",
               "primary_key": false,
               "nullable": false
             }
@@ -559,10 +549,10 @@
           ]
         },
         {
-          "name": "broker_viewings",
+          "name": "viewing_brokers",
           "columns": [
             {
-              "name": "broker_id",
+              "name": "id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
@@ -570,19 +560,25 @@
             {
               "name": "viewing_id",
               "type": "INTEGER",
-              "primary_key": true,
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "broker_id",
+              "type": "INTEGER",
+              "primary_key": false,
               "nullable": false
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "broker_id",
-              "references_table": "brokers",
+              "from_column": "viewing_id",
+              "references_table": "viewings",
               "references_column": "id"
             },
             {
-              "from_column": "viewing_id",
-              "references_table": "viewings",
+              "from_column": "broker_id",
+              "references_table": "brokers",
               "references_column": "id"
             }
           ]
@@ -609,7 +605,7 @@
           "attribute": [
             "Name",
             "Kontaktdaten",
-            "Kontaktpraeferenz"
+            "Kontaktpreferenz"
           ],
           "beschreibung": "Besitzer von Objekten, die vom Maklerbuero vermittelt werden"
         },
@@ -648,13 +644,13 @@
           "von": "Eigentuemer",
           "zu": "Objekt",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Eigentuemer kann mehrere Objekte besitzen"
+          "beschreibung": "Ein Eigentuemer kann mehrere Objekte haben"
         },
         {
           "von": "Makler",
           "zu": "Objekt",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Makler kann mehrere Objekte betreuen, ein Objekt kann von mehreren Maklern betreut werden"
+          "beschreibung": "Ein Objekt kann im Lauf der Zeit von verschiedenen Maklern betreut werden, ein Makler kann mehrere Objekte betreuen"
         },
         {
           "von": "Interessent",
@@ -665,60 +661,60 @@
         {
           "von": "Besichtigung",
           "zu": "Interessent",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Eine Besichtigung wird von einem Interessent durchgefuehrt"
+          "kardinalitaet": "M:1",
+          "beschreibung": "Eine Besichtigung wird von einem Interessent durchgefuehrt, ein Interessent kann mehrere Besichtigungen haben"
         },
         {
           "von": "Besichtigung",
           "zu": "Objekt",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Eine Besichtigung bezieht sich auf ein Objekt"
+          "kardinalitaet": "M:1",
+          "beschreibung": "Eine Besichtigung bezieht sich auf ein Objekt, ein Objekt kann mehrere Besichtigungen haben"
         },
         {
           "von": "Makler",
           "zu": "Besichtigung",
           "kardinalitaet": "M:N",
-          "beschreibung": "Bei einer Besichtigung koennen mehrere Makler beteiligt sein"
+          "beschreibung": "Bei einer Besichtigung koennen mehrere Makler beteiligt sein, ein Makler kann an mehreren Besichtigungen beteiligt sein"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Die genaue Struktur der Kontaktdaten ist nicht spezifiziert (z.B. ob Telefon und E-Mail separate Felder sind oder eine generische Kontaktdaten-Struktur)",
+          "beschreibung": "Die genaue Struktur der Kontaktdaten ist nicht spezifiziert. Unklar ist, ob Telefonnummer und E-Mail als separate Attribute oder als zusammengefasste Kontaktdaten zu modellieren sind.",
           "betroffene_elemente": [
             "Eigentuemer",
-            "Makler",
-            "Interessent"
+            "Makler"
           ]
         },
         {
-          "beschreibung": "Unklar, ob 'Kontaktpraeferenz' des Eigentuemers ein einfaches Feld (Telefon/E-Mail) oder mehrwertig ist",
+          "beschreibung": "Die Kontaktpreferenz des Eigentuemers wird erwaehnt (Telefon oder E-Mail), aber es ist unklar, ob dies ein einfaches Attribut oder eine komplexere Struktur sein soll.",
           "betroffene_elemente": [
             "Eigentuemer"
           ]
         },
         {
-          "beschreibung": "Unklar, ob 'Suchwunsch' des Interessenten ein Freitextfeld oder strukturierte Kriterien (z.B. Objekttyp, Preisrange, Lage) sind",
+          "beschreibung": "Der Suchwunsch des Interessenten wird erwaehnt, aber nicht konkretisiert. Unklar ist, ob dies ein einfaches Textfeld oder eine strukturierte Beschreibung mit Kriterien sein soll.",
           "betroffene_elemente": [
             "Interessent"
           ]
         },
         {
-          "beschreibung": "Unklar, wie 'Letzter Kontakt' technisch realisiert wird (Timestamp, Datum, oder Referenz zu einer Kontakt-Historie)",
-          "betroffene_elemente": [
-            "Interessent"
-          ]
-        },
-        {
-          "beschreibung": "Unklar, ob die M:N-Beziehung zwischen Interessent und Objekt nur durch Besichtigungen oder auch unabhaengig davon existiert",
+          "beschreibung": "Es ist unklar, wie die Beziehung zwischen Interessent und Objekt (Interesse) und die Besichtigung voneinander abgegrenzt werden. Ist das Interesse ein separates Konzept oder wird es nur durch Besichtigungen nachgehalten?",
           "betroffene_elemente": [
             "Interessent",
-            "Objekt"
+            "Objekt",
+            "Besichtigung"
           ]
         },
         {
-          "beschreibung": "Unklar, ob 'Ergebnis' einer Besichtigung ein strukturiertes Feld (z.B. Interessent/nicht interessiert) oder Freitext ist",
+          "beschreibung": "Der Zeitpunkt des letzten Kontakts wird erwaehnt, aber es ist unklar, ob dieser auf Interessent-Ebene oder auf Interessent-Objekt-Ebene zu speichern ist.",
           "betroffene_elemente": [
-            "Besichtigung"
+            "Interessent"
+          ]
+        },
+        {
+          "beschreibung": "Die Verfuegbarkeit eines Objekts wird als Attribut genannt, aber es ist unklar, ob dies ein boolescher Wert oder ein Status mit mehreren Zustaenden sein soll.",
+          "betroffene_elemente": [
+            "Objekt"
           ]
         }
       ]
@@ -741,7 +737,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "telefon",
+              "name": "telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -753,7 +749,7 @@
               "pflichtfeld": false
             },
             {
-              "name": "kontaktpraeferenz",
+              "name": "kontaktpreferenz",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -767,6 +763,12 @@
               "name": "objekt_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "eigentuemer_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
@@ -806,7 +808,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "verfuegbar",
+              "name": "verfuegbarkeit",
               "datentyp": "BOOLEAN",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -814,12 +816,6 @@
             {
               "name": "angebotsbeginn",
               "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "eigentuemer_id",
-              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -841,7 +837,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "telefon",
+              "name": "telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -876,22 +872,45 @@
               "pflichtfeld": true
             },
             {
-              "name": "telefon",
+              "name": "telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "suchwunsch",
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Interesse",
+          "attribute": [
+            {
+              "name": "interesse_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "interessent_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "objekt_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             },
             {
               "name": "letzter_kontakt",
@@ -943,16 +962,16 @@
           ]
         },
         {
-          "name": "Interesse",
+          "name": "Betreuung",
           "attribute": [
             {
-              "name": "interesse_id",
+              "name": "betreuung_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "interessent_id",
+              "name": "makler_id",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -962,10 +981,27 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
+            }
+          ]
+        },
+        {
+          "name": "Besichtigung_Makler",
+          "attribute": [
+            {
+              "name": "besichtigung_makler_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
             },
             {
-              "name": "interessiert_seit",
-              "datentyp": "DATE",
+              "name": "besichtigung_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "makler_id",
+              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -980,37 +1016,51 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Makler",
-          "zu": "Objekt",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": [
-            "betreuungsbeginn"
-          ]
+          "von": "Interessent",
+          "zu": "Interesse",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Objekt",
+          "zu": "Interesse",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
         },
         {
           "von": "Interessent",
-          "zu": "Objekt",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": [
-            "interessiert_seit"
-          ]
-        },
-        {
-          "von": "Besichtigung",
-          "zu": "Interessent",
-          "kardinalitaet": "N:1",
+          "zu": "Besichtigung",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Besichtigung",
-          "zu": "Objekt",
-          "kardinalitaet": "N:1",
+          "von": "Objekt",
+          "zu": "Besichtigung",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Makler",
-          "zu": "Besichtigung",
-          "kardinalitaet": "M:N",
+          "zu": "Betreuung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Objekt",
+          "zu": "Betreuung",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Besichtigung",
+          "zu": "Besichtigung_Makler",
+          "kardinalitaet": "1:N",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Makler",
+          "zu": "Besichtigung_Makler",
+          "kardinalitaet": "1:N",
           "beziehungsattribute": []
         }
       ]
@@ -1039,25 +1089,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: owners, properties, brokers, prospects, viewings, interests, broker_properties, broker_viewings. Die Junction-Table 'broker_viewings' ist korrekt hinzugefügt worden, um die M:N-Beziehung zwischen Makler und Besichtigung abzubilden.",
+          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: owners, properties, brokers, prospects, interests, viewings, property_managements, viewing_brokers. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: Eigentuemer → owners (name, phone, email, contact_preference), Objekt → properties (title, address, property_type, living_area, price, price_type, is_available, offer_start_date), Makler → brokers (name, phone, email, entry_date), Interessent → prospects (name, phone, email, search_criteria, last_contact), Besichtigung → viewings (appointment_date, result, notes), Interesse → interests (interested_since). Namenskonventionen sind konsistent eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden. Namenskonventionen sind konsistent (snake_case, englisch, Umlaute ersetzt). Datentypen entsprechen den Anforderungen. Nullable-Markierungen sind korrekt gesetzt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N (owners→properties), M:N (brokers↔properties via broker_properties mit care_start_date), M:N (prospects↔properties via interests mit interested_since), N:1 (viewings→prospects, viewings→properties), M:N (brokers↔viewings via broker_viewings). Kardinalitäten und Beziehungsattribute sind korrekt abgebildet.",
+          "beschreibung": "Alle 9 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N-Beziehungen (owners→properties, prospects→interests, prospects→viewings, properties→interests, properties→viewings, brokers→property_managements, properties→property_managements, brokers→viewing_brokers, viewings→viewing_brokers) und M:N-Beziehungen (über Junction-Tables property_managements und viewing_brokers). Kardinalitäten sind korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3NF normalisiert. Keine Anomalien erkannt: (1) Keine Wiederholungsgruppen oder mehrwertigen Abhängigkeiten; (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Junction-Tables sind korrekt für M:N-Beziehungen verwendet.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, funktional abhängig vom PK, und es gibt keine transitiven Abhängigkeiten. Junction-Tables sind korrekt für M:N-Beziehungen verwendet.",
           "korrekturanweisung": ""
         }
       ],
@@ -1067,7 +1117,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE brokers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    entry_date DATE NOT NULL,\n    CONSTRAINT pk_brokers PRIMARY KEY (id)\n);\n\nCREATE TABLE owners (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    contact_preference VARCHAR(255),\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE properties (\n    id INTEGER NOT NULL,\n    owner_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    property_type VARCHAR(255) NOT NULL,\n    living_area DECIMAL(18,2) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    price_type VARCHAR(255) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    offer_start_date DATE NOT NULL,\n    CONSTRAINT pk_properties PRIMARY KEY (id),\n    CONSTRAINT fk_properties_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE broker_properties (\n    broker_id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_broker_properties PRIMARY KEY (broker_id, property_id),\n    CONSTRAINT fk_broker_properties_broker_id FOREIGN KEY (broker_id) REFERENCES brokers (id),\n    CONSTRAINT fk_broker_properties_property_id FOREIGN KEY (property_id) REFERENCES properties (id)\n);\n\nCREATE TABLE prospects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    search_criteria TEXT,\n    last_contact TIMESTAMP,\n    CONSTRAINT pk_prospects PRIMARY KEY (id)\n);\n\nCREATE TABLE viewings (\n    id INTEGER NOT NULL,\n    prospect_id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    appointment_date TIMESTAMP NOT NULL,\n    result VARCHAR(255),\n    notes TEXT,\n    CONSTRAINT pk_viewings PRIMARY KEY (id),\n    CONSTRAINT fk_viewings_prospect_id FOREIGN KEY (prospect_id) REFERENCES prospects (id),\n    CONSTRAINT fk_viewings_property_id FOREIGN KEY (property_id) REFERENCES properties (id)\n);\n\nCREATE TABLE broker_viewings (\n    broker_id INTEGER NOT NULL,\n    viewing_id INTEGER NOT NULL,\n    CONSTRAINT pk_broker_viewings PRIMARY KEY (broker_id, viewing_id),\n    CONSTRAINT fk_broker_viewings_broker_id FOREIGN KEY (broker_id) REFERENCES brokers (id),\n    CONSTRAINT fk_broker_viewings_viewing_id FOREIGN KEY (viewing_id) REFERENCES viewings (id)\n);\n\nCREATE TABLE interests (\n    prospect_id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    interested_since DATE NOT NULL,\n    CONSTRAINT pk_interests PRIMARY KEY (prospect_id, property_id),\n    CONSTRAINT fk_interests_prospect_id FOREIGN KEY (prospect_id) REFERENCES prospects (id),\n    CONSTRAINT fk_interests_property_id FOREIGN KEY (property_id) REFERENCES properties (id)\n);\n",
+    "final_ddl": "CREATE TABLE brokers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    entry_date DATE NOT NULL,\n    CONSTRAINT pk_brokers PRIMARY KEY (id)\n);\n\nCREATE TABLE prospects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    search_criteria TEXT,\n    CONSTRAINT pk_prospects PRIMARY KEY (id)\n);\n\nCREATE TABLE owners (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    contact_preference VARCHAR(255),\n    CONSTRAINT pk_owners PRIMARY KEY (id)\n);\n\nCREATE TABLE properties (\n    id INTEGER NOT NULL,\n    owner_id INTEGER NOT NULL,\n    title VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    property_type VARCHAR(255) NOT NULL,\n    living_area DECIMAL(18,2) NOT NULL,\n    price DECIMAL(18,2) NOT NULL,\n    price_type VARCHAR(255) NOT NULL,\n    is_available BOOLEAN NOT NULL,\n    offer_start_date DATE NOT NULL,\n    CONSTRAINT pk_properties PRIMARY KEY (id),\n    CONSTRAINT fk_properties_owner_id FOREIGN KEY (owner_id) REFERENCES owners (id)\n);\n\nCREATE TABLE interests (\n    id INTEGER NOT NULL,\n    prospect_id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    last_contact TIMESTAMP,\n    CONSTRAINT pk_interests PRIMARY KEY (id),\n    CONSTRAINT fk_interests_prospect_id FOREIGN KEY (prospect_id) REFERENCES prospects (id),\n    CONSTRAINT fk_interests_property_id FOREIGN KEY (property_id) REFERENCES properties (id)\n);\n\nCREATE TABLE property_managements (\n    id INTEGER NOT NULL,\n    broker_id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    CONSTRAINT pk_property_managements PRIMARY KEY (id),\n    CONSTRAINT fk_property_managements_broker_id FOREIGN KEY (broker_id) REFERENCES brokers (id),\n    CONSTRAINT fk_property_managements_property_id FOREIGN KEY (property_id) REFERENCES properties (id)\n);\n\nCREATE TABLE viewings (\n    id INTEGER NOT NULL,\n    prospect_id INTEGER NOT NULL,\n    property_id INTEGER NOT NULL,\n    appointment_time TIMESTAMP NOT NULL,\n    result VARCHAR(255),\n    notes TEXT,\n    CONSTRAINT pk_viewings PRIMARY KEY (id),\n    CONSTRAINT fk_viewings_prospect_id FOREIGN KEY (prospect_id) REFERENCES prospects (id),\n    CONSTRAINT fk_viewings_property_id FOREIGN KEY (property_id) REFERENCES properties (id)\n);\n\nCREATE TABLE viewing_brokers (\n    id INTEGER NOT NULL,\n    viewing_id INTEGER NOT NULL,\n    broker_id INTEGER NOT NULL,\n    CONSTRAINT pk_viewing_brokers PRIMARY KEY (id),\n    CONSTRAINT fk_viewing_brokers_viewing_id FOREIGN KEY (viewing_id) REFERENCES viewings (id),\n    CONSTRAINT fk_viewing_brokers_broker_id FOREIGN KEY (broker_id) REFERENCES brokers (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -1092,25 +1142,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: owners, properties, brokers, prospects, viewings, interests, broker_properties, broker_viewings. Die Junction-Table 'broker_viewings' ist korrekt hinzugefügt worden, um die M:N-Beziehung zwischen Makler und Besichtigung abzubilden.",
+          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: owners, properties, brokers, prospects, interests, viewings, property_managements, viewing_brokers. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: Eigentuemer → owners (name, phone, email, contact_preference), Objekt → properties (title, address, property_type, living_area, price, price_type, is_available, offer_start_date), Makler → brokers (name, phone, email, entry_date), Interessent → prospects (name, phone, email, search_criteria, last_contact), Besichtigung → viewings (appointment_date, result, notes), Interesse → interests (interested_since). Namenskonventionen sind konsistent eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden. Namenskonventionen sind konsistent (snake_case, englisch, Umlaute ersetzt). Datentypen entsprechen den Anforderungen. Nullable-Markierungen sind korrekt gesetzt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt implementiert: 1:N (owners→properties), M:N (brokers↔properties via broker_properties mit care_start_date), M:N (prospects↔properties via interests mit interested_since), N:1 (viewings→prospects, viewings→properties), M:N (brokers↔viewings via broker_viewings). Kardinalitäten und Beziehungsattribute sind korrekt abgebildet.",
+          "beschreibung": "Alle 9 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N-Beziehungen (owners→properties, prospects→interests, prospects→viewings, properties→interests, properties→viewings, brokers→property_managements, properties→property_managements, brokers→viewing_brokers, viewings→viewing_brokers) und M:N-Beziehungen (über Junction-Tables property_managements und viewing_brokers). Kardinalitäten sind korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3NF normalisiert. Keine Anomalien erkannt: (1) Keine Wiederholungsgruppen oder mehrwertigen Abhängigkeiten; (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig von ihren Primärschlüsseln; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Junction-Tables sind korrekt für M:N-Beziehungen verwendet.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, funktional abhängig vom PK, und es gibt keine transitiven Abhängigkeiten. Junction-Tables sind korrekt für M:N-Beziehungen verwendet.",
           "korrekturanweisung": ""
         }
       ],
@@ -1121,33 +1171,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 17864,
-    "total_output_tokens": 6510,
-    "total_tokens": 24374,
+    "total_input_tokens": 19012,
+    "total_output_tokens": 6848,
+    "total_tokens": 25860,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1668,
-        "output_tokens": 1481,
+        "output_tokens": 1592,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3124,
-        "output_tokens": 1883,
+        "input_tokens": 3235,
+        "output_tokens": 2207,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4713,
-        "output_tokens": 2181,
+        "input_tokens": 5160,
+        "output_tokens": 2213,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 8359,
-        "output_tokens": 965,
+        "input_tokens": 8949,
+        "output_tokens": 836,
         "cost_usd": 0.0
       }
     },
@@ -1158,7 +1208,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1668,
-        "output_tokens": 1481,
+        "output_tokens": 1592,
         "cost_usd": 0.0
       },
       {
@@ -1166,8 +1216,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3124,
-        "output_tokens": 1883,
+        "input_tokens": 3235,
+        "output_tokens": 2207,
         "cost_usd": 0.0
       },
       {
@@ -1175,8 +1225,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4713,
-        "output_tokens": 2181,
+        "input_tokens": 5160,
+        "output_tokens": 2213,
         "cost_usd": 0.0
       },
       {
@@ -1184,8 +1234,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 8359,
-        "output_tokens": 965,
+        "input_tokens": 8949,
+        "output_tokens": 836,
         "cost_usd": 0.0
       }
     ]

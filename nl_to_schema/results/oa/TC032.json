@@ -2,8 +2,8 @@
   "testfall_id": "TC032",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.9555555555555555,
-  "score_gesamt": 0.9733333333333333,
+  "score_semantisch": 0.611111111111111,
+  "score_gesamt": 0.7666666666666666,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -15,37 +15,72 @@
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "matched": 3,
-      "nur_in_referenz": 0,
-      "nur_in_generiert": 0
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1": 0.6666666666666666,
+      "matched": 2,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
     },
     "attribut": {
-      "precision": 0.8888888888888888,
-      "recall": 0.8888888888888888,
-      "f1": 0.8888888888888888,
-      "matched": 16,
-      "nur_in_referenz": 2,
-      "nur_in_generiert": 2
+      "precision": 0.6111111111111112,
+      "recall": 0.6111111111111112,
+      "f1": 0.6111111111111112,
+      "matched": 11,
+      "nur_in_referenz": 7,
+      "nur_in_generiert": 7
     },
     "beziehung": {
-      "recall": 1.0,
-      "matched": 2,
-      "nur_in_referenz": 0,
+      "recall": 0.5,
+      "matched": 1,
+      "nur_in_referenz": 1,
       "nur_in_generiert": 0
     }
   },
   "abweichungen": [
+    {
+      "element": "playground_equipments",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
+    {
+      "element": "districts.borough",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.playground_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
     {
       "element": "playground_equipments.name",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
-      "element": "districts.borough",
+      "element": "playground_equipments.equipment_type",
       "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.installation_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments.condition",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "playground_equipments → playgrounds",
+      "typ": "beziehung",
       "fehlerklasse": null
     }
   ],
@@ -55,7 +90,7 @@
     "logical_schema": {
       "tables": [
         {
-          "name": "districts_subdivisions",
+          "name": "districts",
           "columns": [
             {
               "name": "id",
@@ -70,7 +105,7 @@
               "nullable": false
             },
             {
-              "name": "district_name",
+              "name": "responsible_district",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -100,13 +135,13 @@
               "nullable": false
             },
             {
-              "name": "house_number",
+              "name": "housenumber",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "postal_code",
+              "name": "postalcode",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -118,7 +153,7 @@
               "nullable": false
             },
             {
-              "name": "opening_date",
+              "name": "openingdate",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -130,7 +165,7 @@
               "nullable": false
             },
             {
-              "name": "district_subdivision_id",
+              "name": "district_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -138,14 +173,14 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "district_subdivision_id",
-              "references_table": "districts_subdivisions",
+              "from_column": "district_id",
+              "references_table": "districts",
               "references_column": "id"
             }
           ]
         },
         {
-          "name": "playground_equipment",
+          "name": "equipment",
           "columns": [
             {
               "name": "id",
@@ -244,21 +279,21 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Das Attribut 'Zuständiger Bezirk' bei Stadtteil ist unklar: Es ist nicht definiert, ob dies eine Referenz zu einer separaten Bezirk-Entität sein soll oder nur ein Textfeld mit dem Namen des Bezirks.",
+          "beschreibung": "Das Attribut 'Zustand' bei Spielgerät ist nicht näher spezifiziert. Unklar ist, ob es sich um einen Freitextfeld, eine Kategorisierung (z.B. 'gut', 'beschädigt', 'defekt') oder einen numerischen Wert handelt.",
           "betroffene_elemente": [
-            "Stadtteil"
+            "Spielgerät"
           ]
         },
         {
-          "beschreibung": "Das Attribut 'Geöffnet' bei Spielplatz ist unklar: Es ist nicht spezifiziert, ob dies ein boolescher Wert (ja/nein) oder ein Zeitstempel (z.B. Öffnungsdatum und -zeit) sein soll.",
+          "beschreibung": "Das Attribut 'Geöffnet' bei Spielplatz ist nicht näher spezifiziert. Unklar ist, ob es sich um einen booleschen Wert (ja/nein), ein Datum oder eine Zeitangabe handelt.",
           "betroffene_elemente": [
             "Spielplatz"
           ]
         },
         {
-          "beschreibung": "Das Attribut 'Zustand' bei Spielgerät ist unklar: Es ist nicht definiert, welche Werte oder Kategorien für den Zustand zulässig sind (z.B. 'gut', 'beschädigt', 'wartungsbedürftig').",
+          "beschreibung": "Das Attribut 'Zuständiger Bezirk' bei Stadtteil ist unklar. Unklar ist, ob es sich um einen Freitextwert oder eine Referenz zu einer separaten Entität 'Bezirk' handelt.",
           "betroffene_elemente": [
-            "Spielgerät"
+            "Stadtteil"
           ]
         }
       ]
@@ -428,25 +463,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Spielplatz, Stadtteil, Spielgerät) sind als Tabellen implementiert. Keine Entitäten fehlen.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind im Schema vorhanden: Spielplatz (playgrounds), Stadtteil (districts) und Spielgerät (equipment). Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Spielplatz (name, street, house_number, postal_code, city, opening_date, is_open), Stadtteil (name, district_name), Spielgerät (designation, equipment_type, installation_date, condition). Die Attributnamen folgen den Konventionen (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt abgebildet: Spielplatz (name, street, housenumber, postalcode, city, openingdate, is_open, district_id), Stadtteil (name, responsible_district), Spielgerät (designation, equipment_type, installation_date, condition, playground_id). Die Namenskonventionen sind englisch und in snake_case.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) Spielplatz N:1 Stadtteil via district_subdivision_id (NOT NULL), (2) Spielgerät N:1 Spielplatz via playground_id (NOT NULL). Die Kardinalitäten entsprechen dem ER-Modell und den Anforderungen.",
+          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) N:1-Beziehung Spielplatz→Stadtteil via district_id (NOT NULL, da 1:1-Zuordnung gefordert), (2) 1:N-Beziehung Spielplatz→Spielgerät via playground_id (NOT NULL, da jedes Gerät genau zu einem Platz gehört). Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Adressinformationen sind nicht denormalisiert, Fremdschlüssel sind korrekt platziert, keine mehrwertigen Abhängigkeiten.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Keine Wiederholungsgruppen oder atomare Verletzungen (1NF), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK (2NF), (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen (3NF). Die Struktur ist normalisiert und redundanzfrei.",
           "korrekturanweisung": ""
         }
       ],
@@ -454,9 +489,9 @@
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 3,
+    "iteration": 2,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE districts_subdivisions (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    district_name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_districts_subdivisions PRIMARY KEY (id)\n);\n\nCREATE TABLE playgrounds (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    house_number VARCHAR(255) NOT NULL,\n    postal_code VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    opening_date DATE NOT NULL,\n    is_open BOOLEAN NOT NULL,\n    district_subdivision_id INTEGER NOT NULL,\n    CONSTRAINT pk_playgrounds PRIMARY KEY (id),\n    CONSTRAINT fk_playgrounds_district_subdivision_id FOREIGN KEY (district_subdivision_id) REFERENCES districts_subdivisions (id)\n);\n\nCREATE TABLE playground_equipment (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    equipment_type VARCHAR(255) NOT NULL,\n    installation_date DATE NOT NULL,\n    condition VARCHAR(255) NOT NULL,\n    playground_id INTEGER NOT NULL,\n    CONSTRAINT pk_playground_equipment PRIMARY KEY (id),\n    CONSTRAINT fk_playground_equipment_playground_id FOREIGN KEY (playground_id) REFERENCES playgrounds (id)\n);\n",
+    "final_ddl": "CREATE TABLE districts (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    responsible_district VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_districts PRIMARY KEY (id)\n);\n\nCREATE TABLE playgrounds (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    street VARCHAR(255) NOT NULL,\n    housenumber VARCHAR(255) NOT NULL,\n    postalcode VARCHAR(255) NOT NULL,\n    city VARCHAR(255) NOT NULL,\n    openingdate DATE NOT NULL,\n    is_open BOOLEAN NOT NULL,\n    district_id INTEGER NOT NULL,\n    CONSTRAINT pk_playgrounds PRIMARY KEY (id),\n    CONSTRAINT fk_playgrounds_district_id FOREIGN KEY (district_id) REFERENCES districts (id)\n);\n\nCREATE TABLE equipment (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    equipment_type VARCHAR(255) NOT NULL,\n    installation_date DATE NOT NULL,\n    condition VARCHAR(255) NOT NULL,\n    playground_id INTEGER NOT NULL,\n    CONSTRAINT pk_equipment PRIMARY KEY (id),\n    CONSTRAINT fk_equipment_playground_id FOREIGN KEY (playground_id) REFERENCES playgrounds (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -481,25 +516,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Spielplatz, Stadtteil, Spielgerät) sind als Tabellen implementiert. Keine Entitäten fehlen.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind im Schema vorhanden: Spielplatz (playgrounds), Stadtteil (districts) und Spielgerät (equipment). Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden: Spielplatz (name, street, house_number, postal_code, city, opening_date, is_open), Stadtteil (name, district_name), Spielgerät (designation, equipment_type, installation_date, condition). Die Attributnamen folgen den Konventionen (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt abgebildet: Spielplatz (name, street, housenumber, postalcode, city, openingdate, is_open, district_id), Stadtteil (name, responsible_district), Spielgerät (designation, equipment_type, installation_date, condition, playground_id). Die Namenskonventionen sind englisch und in snake_case.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) Spielplatz N:1 Stadtteil via district_subdivision_id (NOT NULL), (2) Spielgerät N:1 Spielplatz via playground_id (NOT NULL). Die Kardinalitäten entsprechen dem ER-Modell und den Anforderungen.",
+          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) N:1-Beziehung Spielplatz→Stadtteil via district_id (NOT NULL, da 1:1-Zuordnung gefordert), (2) 1:N-Beziehung Spielplatz→Spielgerät via playground_id (NOT NULL, da jedes Gerät genau zu einem Platz gehört). Kardinalitäten entsprechen den Anforderungen.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform. Keine Redundanzen, keine Anomalien erkannt. Adressinformationen sind nicht denormalisiert, Fremdschlüssel sind korrekt platziert, keine mehrwertigen Abhängigkeiten.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform: (1) Keine Wiederholungsgruppen oder atomare Verletzungen (1NF), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK (2NF), (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen (3NF). Die Struktur ist normalisiert und redundanzfrei.",
           "korrekturanweisung": ""
         }
       ],
@@ -509,34 +544,34 @@
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 10,
-    "total_input_tokens": 36617,
-    "total_output_tokens": 10411,
-    "total_tokens": 47028,
+    "total_calls": 7,
+    "total_input_tokens": 26385,
+    "total_output_tokens": 7491,
+    "total_tokens": 33876,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1474,
-        "output_tokens": 760,
+        "output_tokens": 753,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 3,
-        "input_tokens": 6795,
-        "output_tokens": 3119,
+        "calls": 2,
+        "input_tokens": 6232,
+        "output_tokens": 2214,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 3,
-        "input_tokens": 12972,
-        "output_tokens": 2863,
+        "calls": 2,
+        "input_tokens": 8555,
+        "output_tokens": 1796,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 3,
-        "input_tokens": 15376,
-        "output_tokens": 3669,
+        "calls": 2,
+        "input_tokens": 10124,
+        "output_tokens": 2728,
         "cost_usd": 0.0
       }
     },
@@ -547,7 +582,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1474,
-        "output_tokens": 760,
+        "output_tokens": 753,
         "cost_usd": 0.0
       },
       {
@@ -555,8 +590,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2265,
-        "output_tokens": 905,
+        "input_tokens": 2258,
+        "output_tokens": 1107,
         "cost_usd": 0.0
       },
       {
@@ -573,8 +608,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5070,
-        "output_tokens": 1428,
+        "input_tokens": 5063,
+        "output_tokens": 1823,
         "cost_usd": 0.0
       },
       {
@@ -582,7 +617,7 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2265,
+        "input_tokens": 3974,
         "output_tokens": 1107,
         "cost_usd": 0.0
       },
@@ -591,8 +626,8 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4789,
-        "output_tokens": 1055,
+        "input_tokens": 5184,
+        "output_tokens": 897,
         "cost_usd": 0.0
       },
       {
@@ -600,35 +635,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5226,
-        "output_tokens": 1493,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "conceptual_model_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2265,
-        "output_tokens": 1107,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "logical_schema_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4812,
-        "output_tokens": 909,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "oa_validator",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5080,
-        "output_tokens": 748,
+        "input_tokens": 5061,
+        "output_tokens": 905,
         "cost_usd": 0.0
       }
     ]

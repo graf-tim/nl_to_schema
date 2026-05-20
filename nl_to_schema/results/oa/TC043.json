@@ -2,38 +2,38 @@
   "testfall_id": "TC043",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.9199999999999999,
-  "score_gesamt": 0.952,
+  "score_semantisch": 0.8447619047619048,
+  "score_gesamt": 0.9068571428571429,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 7,
-    "pk_tabellen_mit_pk": 7,
-    "fk_referenzen_gesamt": 6,
+    "pk_tabellen_gesamt": 8,
+    "pk_tabellen_mit_pk": 8,
+    "fk_referenzen_gesamt": 7,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 1.0,
+      "precision": 0.875,
       "recall": 1.0,
-      "f1": 1.0,
+      "f1": 0.9333333333333333,
       "matched": 7,
       "nur_in_referenz": 0,
-      "nur_in_generiert": 0
+      "nur_in_generiert": 1
     },
     "attribut": {
-      "precision": 0.8275862068965517,
+      "precision": 0.75,
       "recall": 0.7741935483870968,
-      "f1": 0.7999999999999999,
+      "f1": 0.7619047619047619,
       "matched": 24,
       "nur_in_referenz": 7,
-      "nur_in_generiert": 5
+      "nur_in_generiert": 8
     },
     "beziehung": {
-      "recall": 1.0,
-      "matched": 6,
-      "nur_in_referenz": 0,
+      "recall": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
       "nur_in_generiert": 0
     }
   },
@@ -69,8 +69,13 @@
       "fehlerklasse": null
     },
     {
-      "element": "doctor_practices.specialty",
+      "element": "dispensings.doctor_practice_id",
       "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "dispensings → doctor_practices",
+      "typ": "beziehung",
       "fehlerklasse": null
     }
   ],
@@ -96,24 +101,6 @@
             },
             {
               "name": "location",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "active_ingredients",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -174,6 +161,24 @@
               "references_column": "id"
             }
           ]
+        },
+        {
+          "name": "active_ingredients",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
         },
         {
           "name": "medicine_active_ingredients",
@@ -256,7 +261,7 @@
               "nullable": false
             },
             {
-              "name": "specialization",
+              "name": "specialty",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
@@ -271,7 +276,7 @@
           "foreign_keys": []
         },
         {
-          "name": "dispensings",
+          "name": "prescriptions",
           "columns": [
             {
               "name": "id",
@@ -280,7 +285,37 @@
               "nullable": false
             },
             {
-              "name": "dispensing_date",
+              "name": "issue_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "medical_practice_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "medical_practice_id",
+              "references_table": "medical_practices",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "dispensations",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "dispensation_date",
               "type": "TIMESTAMP",
               "primary_key": false,
               "nullable": false
@@ -292,19 +327,19 @@
               "nullable": false
             },
             {
-              "name": "medicine_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "customer_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "medical_practice_id",
+              "name": "medicine_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "prescription_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": true
@@ -312,18 +347,18 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "medicine_id",
-              "references_table": "medicines",
-              "references_column": "id"
-            },
-            {
               "from_column": "customer_id",
               "references_table": "customers",
               "references_column": "id"
             },
             {
-              "from_column": "medical_practice_id",
-              "references_table": "medical_practices",
+              "from_column": "medicine_id",
+              "references_table": "medicines",
+              "references_column": "id"
+            },
+            {
+              "from_column": "prescription_id",
+              "references_table": "prescriptions",
               "references_column": "id"
             }
           ]
@@ -349,7 +384,7 @@
             "Name",
             "Sitz"
           ],
-          "beschreibung": "Unternehmen, die Arzneimittel produzieren und an die Apotheke liefern"
+          "beschreibung": "Produzenten von Arzneimitteln"
         },
         {
           "name": "Wirkstoff",
@@ -357,7 +392,7 @@
             "Name",
             "Stärke"
           ],
-          "beschreibung": "Aktive Substanzen in Arzneimitteln, können in verschiedenen Dosierungen vorkommen"
+          "beschreibung": "Aktive Substanzen in Arzneimitteln, können unterschiedlich dosiert sein"
         },
         {
           "name": "Kunde",
@@ -366,7 +401,15 @@
             "Geburtsdatum",
             "Kontaktmöglichkeit"
           ],
-          "beschreibung": "Kundinnen und Kunden, die Medikamente in der Apotheke erhalten"
+          "beschreibung": "Kundinnen und Kunden der Apotheke"
+        },
+        {
+          "name": "Abgabe",
+          "attribute": [
+            "Datum",
+            "Menge"
+          ],
+          "beschreibung": "Dokumentation der Ausgabe von Arzneimitteln an Kunden"
         },
         {
           "name": "Arztpraxis",
@@ -375,15 +418,12 @@
             "Fachrichtung",
             "Anschrift"
           ],
-          "beschreibung": "Medizinische Einrichtungen, die Rezepte für Arzneimittel ausstellen"
+          "beschreibung": "Medizinische Einrichtungen, die Rezepte ausstellen"
         },
         {
-          "name": "Abgabe",
-          "attribute": [
-            "Datum",
-            "Menge"
-          ],
-          "beschreibung": "Dokumentation der Ausgabe von Arzneimitteln an Kunden mit Zeitstempel und Menge"
+          "name": "Rezept",
+          "attribute": [],
+          "beschreibung": "Ärztliche Verordnung für die Abgabe von Arzneimitteln"
         }
       ],
       "beziehungen": [
@@ -391,7 +431,7 @@
           "von": "Arzneimittel",
           "zu": "Hersteller",
           "kardinalitaet": "N:1",
-          "beschreibung": "Jedes Arzneimittel stammt von genau einem Hersteller, ein Hersteller liefert viele Mittel"
+          "beschreibung": "Ein Arzneimittel stammt von genau einem Hersteller, ein Hersteller liefert viele Mittel"
         },
         {
           "von": "Arzneimittel",
@@ -403,47 +443,53 @@
           "von": "Abgabe",
           "zu": "Arzneimittel",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Abgabe bezieht sich auf ein bestimmtes Arzneimittel"
+          "beschreibung": "Eine Abgabe bezieht sich auf ein Arzneimittel"
         },
         {
           "von": "Abgabe",
           "zu": "Kunde",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Abgabe erfolgt an einen Kunden, ein Kunde kann mehrere Abgaben erhalten"
+          "beschreibung": "Eine Abgabe erfolgt an einen Kunden"
         },
         {
           "von": "Abgabe",
+          "zu": "Rezept",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Abgabe kann auf einem Rezept basieren, muss aber nicht"
+        },
+        {
+          "von": "Rezept",
           "zu": "Arztpraxis",
           "kardinalitaet": "N:1",
-          "beschreibung": "Eine Abgabe kann optional auf ein Rezept einer Arztpraxis zurückgehen, nicht jede Abgabe hat ein Rezept"
+          "beschreibung": "Ein Rezept wird von einer Arztpraxis ausgestellt"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Die Beziehung zwischen Wirkstoff und Arzneimittel ist als M:N modelliert, aber unklar ist, ob die Stärke des Wirkstoffs ein Attribut des Wirkstoffs selbst ist oder ob sie spezifisch für die Kombination Wirkstoff-Arzneimittel gilt. Der Text sagt 'dieselben Stoffe je nach Mittel unterschiedlich dosiert sein können', was auf eine Stärke pro Kombination hindeutet.",
+          "beschreibung": "Unklar ist, ob die Stärke des Wirkstoffs als globales Attribut des Wirkstoffs oder als Attribut der Beziehung zwischen Arzneimittel und Wirkstoff zu modellieren ist. Der Text deutet an, dass 'dieselben Stoffe je nach Mittel unterschiedlich dosiert sein können', was für eine Modellierung auf der Beziehungsebene spricht.",
           "betroffene_elemente": [
             "Wirkstoff",
             "Arzneimittel"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Kontaktmöglichkeit bei Kunden ein einzelnes Attribut (z.B. Telefon) oder mehrere Attribute (Telefon, E-Mail, Adresse) sein soll.",
+          "beschreibung": "Unklar ist, ob die Entität 'Rezept' eigenständig modelliert werden soll oder ob die Rezeptinformation nur als Attribut oder Beziehung in der Abgabe enthalten sein sollte. Der Text sagt 'Falls ein Rezept vorlag', was auf eine optionale Beziehung hindeutet.",
           "betroffene_elemente": [
-            "Kunde"
+            "Rezept",
+            "Abgabe"
           ]
         },
         {
-          "beschreibung": "Nicht spezifiziert ist, ob eine Abgabe immer genau ein Arzneimittel betrifft oder ob eine einzelne Abgabe mehrere verschiedene Mittel enthalten kann.",
+          "beschreibung": "Unklar ist, welche Attribute die Entität 'Rezept' haben soll (z.B. Rezeptnummer, Ausstellungsdatum, Gültigkeitsdauer). Der Text erwähnt nur, dass die ausstellende Arztpraxis bekannt sein soll.",
+          "betroffene_elemente": [
+            "Rezept"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob eine Abgabe sich auf mehrere Arzneimittel beziehen kann (z.B. mehrere Mittel in einer Transaktion) oder immer nur auf ein Mittel. Die Kardinalität wird hier als N:1 angenommen, könnte aber auch M:N sein.",
           "betroffene_elemente": [
             "Abgabe",
             "Arzneimittel"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob bei Abgaben ohne Rezept die Arztpraxis-Referenz NULL sein kann oder ob diese Fälle anders zu behandeln sind.",
-          "betroffene_elemente": [
-            "Abgabe",
-            "Arztpraxis"
           ]
         }
       ]
@@ -538,29 +584,6 @@
           ]
         },
         {
-          "name": "Arzneimittel_Wirkstoff",
-          "attribute": [
-            {
-              "name": "arzneimittelId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "wirkstoffId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Stärke",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
           "name": "Kunde",
           "attribute": [
             {
@@ -619,6 +642,29 @@
           ]
         },
         {
+          "name": "Rezept",
+          "attribute": [
+            {
+              "name": "rezeptId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Ausstellungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "arztpraxisId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
           "name": "Abgabe",
           "attribute": [
             {
@@ -640,19 +686,19 @@
               "pflichtfeld": true
             },
             {
-              "name": "arzneimittelId",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
               "name": "kundeId",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "arztpraxisId",
+              "name": "arzneimittelId",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "rezeptId",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -689,6 +735,12 @@
         },
         {
           "von": "Abgabe",
+          "zu": "Rezept",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Rezept",
           "zu": "Arztpraxis",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
@@ -719,25 +771,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: manufacturers, active_ingredients, medicines, customers, medical_practices, dispensings. Die Abgabe-Entität ist als 'dispensings' korrekt abgebildet.",
+          "beschreibung": "Alle 7 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: manufacturers, medicines, active_ingredients, customers, medical_practices, prescriptions, dispensations. Die Junction-Table medicine_active_ingredients ist korrekt als separate Tabelle modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt typisiert: Arzneimittel (name, dosage_form, package_size, sale_price, requires_prescription), Hersteller (name, location), Wirkstoff (name), Kunde (name, birthdate, contact), Arztpraxis (name, specialization, address), Abgabe (dispensing_date, quantity). Die Stärke des Wirkstoffs ist korrekt in der Junction-Table medicine_active_ingredients als Beziehungsattribut modelliert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: (1) medicines: name, dosage_form, package_size, sale_price, requires_prescription; (2) manufacturers: name, location; (3) active_ingredients: name; (4) medicine_active_ingredients: strength (als Beziehungsattribut); (5) customers: name, birthdate, contact; (6) medical_practices: name, specialty, address; (7) prescriptions: issue_date, medical_practice_id; (8) dispensations: dispensation_date, quantity, customer_id, medicine_id, prescription_id (optional). Namenskonventionen sind konsistent eingehalten (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ERModell sind korrekt implementiert: (1) medicines.manufacturer_id → manufacturers (N:1), (2) medicine_active_ingredients als Junction-Table für M:N-Beziehung zwischen medicines und active_ingredients mit Stärke-Attribut, (3) dispensings.medicine_id → medicines (N:1), (4) dispensings.customer_id → customers (N:1), (5) dispensings.medical_practice_id → medical_practices (N:1, optional). Die Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Alle 6 Beziehungen aus dem ERModell sind korrekt implementiert: (1) medicines.manufacturer_id → manufacturers (N:1); (2) medicine_active_ingredients als Junction-Table mit FK zu medicines und active_ingredients (M:N mit Beziehungsattribut strength); (3) dispensations.medicine_id → medicines (N:1); (4) dispensations.customer_id → customers (N:1); (5) dispensations.prescription_id → prescriptions (N:1, optional); (6) prescriptions.medical_practice_id → medical_practices (N:1). Kardinalitäten und Optionalität sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit in einzelnen Spalten), (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln (medicine_active_ingredients hat nur Fremdschlüssel und das Beziehungsattribut Stärke), (3) Keine transitiven Abhängigkeiten. Die Namenskonventionen sind konsistent (snake_case, englisch, Plural für Tabellen).",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar (z.B. strength als VARCHAR, nicht zusammengesetzt); (2) Keine partiellen Abhängigkeiten: Alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom PK; (3) Keine transitiven Abhängigkeiten: Keine Nicht-Schlüssel-Attribute hängen von anderen Nicht-Schlüssel-Attributen ab. Die M:N-Beziehung ist korrekt durch eine Junction-Table aufgelöst. Optionale Fremdschlüssel (prescription_id) sind sachlich begründet und führen nicht zu Normalisierungsproblemen.",
           "korrekturanweisung": ""
         }
       ],
@@ -747,7 +799,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE active_ingredients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_active_ingredients PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    contact VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE medicines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    dosage_form VARCHAR(255) NOT NULL,\n    package_size VARCHAR(255) NOT NULL,\n    sale_price DECIMAL(18,2) NOT NULL,\n    requires_prescription BOOLEAN NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_medicines PRIMARY KEY (id),\n    CONSTRAINT fk_medicines_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE medical_practices (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    specialization VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medical_practices PRIMARY KEY (id)\n);\n\nCREATE TABLE dispensings (\n    id INTEGER NOT NULL,\n    dispensing_date TIMESTAMP NOT NULL,\n    quantity INTEGER NOT NULL,\n    medicine_id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    medical_practice_id INTEGER,\n    CONSTRAINT pk_dispensings PRIMARY KEY (id),\n    CONSTRAINT fk_dispensings_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_dispensings_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_dispensings_medical_practice_id FOREIGN KEY (medical_practice_id) REFERENCES medical_practices (id)\n);\n\nCREATE TABLE medicine_active_ingredients (\n    medicine_id INTEGER NOT NULL,\n    active_ingredient_id INTEGER NOT NULL,\n    strength VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medicine_active_ingredients PRIMARY KEY (medicine_id, active_ingredient_id),\n    CONSTRAINT fk_medicine_active_ingredients_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_medicine_active_ingredients_active_ingredient_id FOREIGN KEY (active_ingredient_id) REFERENCES active_ingredients (id)\n);\n",
+    "final_ddl": "CREATE TABLE active_ingredients (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_active_ingredients PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    contact VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE manufacturers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_manufacturers PRIMARY KEY (id)\n);\n\nCREATE TABLE medicines (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    dosage_form VARCHAR(255) NOT NULL,\n    package_size VARCHAR(255) NOT NULL,\n    sale_price DECIMAL(18,2) NOT NULL,\n    requires_prescription BOOLEAN NOT NULL,\n    manufacturer_id INTEGER NOT NULL,\n    CONSTRAINT pk_medicines PRIMARY KEY (id),\n    CONSTRAINT fk_medicines_manufacturer_id FOREIGN KEY (manufacturer_id) REFERENCES manufacturers (id)\n);\n\nCREATE TABLE medical_practices (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    specialty VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medical_practices PRIMARY KEY (id)\n);\n\nCREATE TABLE prescriptions (\n    id INTEGER NOT NULL,\n    issue_date DATE NOT NULL,\n    medical_practice_id INTEGER NOT NULL,\n    CONSTRAINT pk_prescriptions PRIMARY KEY (id),\n    CONSTRAINT fk_prescriptions_medical_practice_id FOREIGN KEY (medical_practice_id) REFERENCES medical_practices (id)\n);\n\nCREATE TABLE dispensations (\n    id INTEGER NOT NULL,\n    dispensation_date TIMESTAMP NOT NULL,\n    quantity INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    medicine_id INTEGER NOT NULL,\n    prescription_id INTEGER,\n    CONSTRAINT pk_dispensations PRIMARY KEY (id),\n    CONSTRAINT fk_dispensations_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_dispensations_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_dispensations_prescription_id FOREIGN KEY (prescription_id) REFERENCES prescriptions (id)\n);\n\nCREATE TABLE medicine_active_ingredients (\n    medicine_id INTEGER NOT NULL,\n    active_ingredient_id INTEGER NOT NULL,\n    strength VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_medicine_active_ingredients PRIMARY KEY (medicine_id, active_ingredient_id),\n    CONSTRAINT fk_medicine_active_ingredients_medicine_id FOREIGN KEY (medicine_id) REFERENCES medicines (id),\n    CONSTRAINT fk_medicine_active_ingredients_active_ingredient_id FOREIGN KEY (active_ingredient_id) REFERENCES active_ingredients (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -772,25 +824,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 6 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: manufacturers, active_ingredients, medicines, customers, medical_practices, dispensings. Die Abgabe-Entität ist als 'dispensings' korrekt abgebildet.",
+          "beschreibung": "Alle 7 Entitäten aus dem RequirementsReport sind im LogicalSchema vorhanden: manufacturers, medicines, active_ingredients, customers, medical_practices, prescriptions, dispensations. Die Junction-Table medicine_active_ingredients ist korrekt als separate Tabelle modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt typisiert: Arzneimittel (name, dosage_form, package_size, sale_price, requires_prescription), Hersteller (name, location), Wirkstoff (name), Kunde (name, birthdate, contact), Arztpraxis (name, specialization, address), Abgabe (dispensing_date, quantity). Die Stärke des Wirkstoffs ist korrekt in der Junction-Table medicine_active_ingredients als Beziehungsattribut modelliert.",
+          "beschreibung": "Alle erforderlichen Attribute sind vorhanden und korrekt typisiert: (1) medicines: name, dosage_form, package_size, sale_price, requires_prescription; (2) manufacturers: name, location; (3) active_ingredients: name; (4) medicine_active_ingredients: strength (als Beziehungsattribut); (5) customers: name, birthdate, contact; (6) medical_practices: name, specialty, address; (7) prescriptions: issue_date, medical_practice_id; (8) dispensations: dispensation_date, quantity, customer_id, medicine_id, prescription_id (optional). Namenskonventionen sind konsistent eingehalten (snake_case, englisch, Umlaute ersetzt).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ERModell sind korrekt implementiert: (1) medicines.manufacturer_id → manufacturers (N:1), (2) medicine_active_ingredients als Junction-Table für M:N-Beziehung zwischen medicines und active_ingredients mit Stärke-Attribut, (3) dispensings.medicine_id → medicines (N:1), (4) dispensings.customer_id → customers (N:1), (5) dispensings.medical_practice_id → medical_practices (N:1, optional). Die Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Alle 6 Beziehungen aus dem ERModell sind korrekt implementiert: (1) medicines.manufacturer_id → manufacturers (N:1); (2) medicine_active_ingredients als Junction-Table mit FK zu medicines und active_ingredients (M:N mit Beziehungsattribut strength); (3) dispensations.medicine_id → medicines (N:1); (4) dispensations.customer_id → customers (N:1); (5) dispensations.prescription_id → prescriptions (N:1, optional); (6) prescriptions.medical_practice_id → medical_practices (N:1). Kardinalitäten und Optionalität sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Mehrwertigkeit in einzelnen Spalten), (2) Keine partiellen Abhängigkeiten von zusammengesetzten Schlüsseln (medicine_active_ingredients hat nur Fremdschlüssel und das Beziehungsattribut Stärke), (3) Keine transitiven Abhängigkeiten. Die Namenskonventionen sind konsistent (snake_case, englisch, Plural für Tabellen).",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar (z.B. strength als VARCHAR, nicht zusammengesetzt); (2) Keine partiellen Abhängigkeiten: Alle Nicht-Schlüssel-Attribute sind voll funktional abhängig vom PK; (3) Keine transitiven Abhängigkeiten: Keine Nicht-Schlüssel-Attribute hängen von anderen Nicht-Schlüssel-Attributen ab. Die M:N-Beziehung ist korrekt durch eine Junction-Table aufgelöst. Optionale Fremdschlüssel (prescription_id) sind sachlich begründet und führen nicht zu Normalisierungsproblemen.",
           "korrekturanweisung": ""
         }
       ],
@@ -801,33 +853,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 16481,
-    "total_output_tokens": 5581,
-    "total_tokens": 22062,
+    "total_input_tokens": 16967,
+    "total_output_tokens": 6007,
+    "total_tokens": 22974,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1655,
-        "output_tokens": 1337,
+        "output_tokens": 1447,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3055,
-        "output_tokens": 1628,
+        "input_tokens": 3165,
+        "output_tokens": 1650,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4375,
-        "output_tokens": 1612,
+        "input_tokens": 4414,
+        "output_tokens": 1800,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7396,
-        "output_tokens": 1004,
+        "input_tokens": 7733,
+        "output_tokens": 1110,
         "cost_usd": 0.0
       }
     },
@@ -838,7 +890,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1655,
-        "output_tokens": 1337,
+        "output_tokens": 1447,
         "cost_usd": 0.0
       },
       {
@@ -846,8 +898,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3055,
-        "output_tokens": 1628,
+        "input_tokens": 3165,
+        "output_tokens": 1650,
         "cost_usd": 0.0
       },
       {
@@ -855,8 +907,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4375,
-        "output_tokens": 1612,
+        "input_tokens": 4414,
+        "output_tokens": 1800,
         "cost_usd": 0.0
       },
       {
@@ -864,8 +916,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7396,
-        "output_tokens": 1004,
+        "input_tokens": 7733,
+        "output_tokens": 1110,
         "cost_usd": 0.0
       }
     ]

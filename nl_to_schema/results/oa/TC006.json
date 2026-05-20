@@ -257,7 +257,7 @@
           ]
         },
         {
-          "beschreibung": "Es ist nicht spezifiziert, ob Schüler und Lehrkräfte eindeutige Identifikatoren (z.B. Schüler-ID, Lehrkraft-ID) benötigen",
+          "beschreibung": "Es ist nicht spezifiziert, ob Schüler und Lehrkräfte eindeutige Identifikatoren (IDs) benötigen oder ob diese automatisch generiert werden sollen",
           "betroffene_elemente": [
             "Schüler",
             "Lehrkraft"
@@ -267,12 +267,6 @@
           "beschreibung": "Es ist unklar, ob ein Schüler sein Fach wechseln kann und wie historische Zuordnungen behandelt werden sollen",
           "betroffene_elemente": [
             "Schüler",
-            "Unterrichtsfach"
-          ]
-        },
-        {
-          "beschreibung": "Es ist nicht definiert, ob die monatliche Gebühr pro Schüler oder pauschal pro Fach gilt",
-          "betroffene_elemente": [
             "Unterrichtsfach"
           ]
         }
@@ -443,25 +437,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Schüler, Lehrkraft, Unterrichtsfach) sind als Tabellen vorhanden. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind vorhanden: students (Schüler), teachers (Lehrkräfte), subjects (Unterrichtsfächer). Die Namenskonvention ist korrekt (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt übersetzt: Schüler (firstname, lastname, birthdate, phonenumber, enrollmentdate, is_active), Lehrkraft (firstname, lastname, email, phonenumber, hiredate), Unterrichtsfach (name, description, monthly_fee). Datentypen und Nullable-Einstellungen entsprechen den Anforderungen und dem ER-Modell.",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt benannt: students (firstname, lastname, birthdate, phonenumber, enrollmentdate, is_active), teachers (firstname, lastname, email, phonenumber, hiredate), subjects (name, description, monthly_fee). Datentypen entsprechen den Konventionen (VARCHAR für Namen/Email, DATE für Daten, BOOLEAN für Status, DECIMAL für Gebühr, TEXT für Beschreibung).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) N:1 Schüler → Unterrichtsfach über subject_id (jeder Schüler genau einem Fach), (2) N:1 Unterrichtsfach → Lehrkraft über teacher_id (jedes Fach genau einer Lehrkraft, eine Lehrkraft mehrere Fächer). Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) N:1 Schüler→Fach durch subject_id in students-Tabelle, (2) N:1 Fach→Lehrkraft durch teacher_id in subjects-Tabelle. Die Kardinalitäten entsprechen den Anforderungen ('Jeder Schüler ist genau einem Fach zugeordnet', 'Jedes Fach wird genau von einer Lehrkraft unterrichtet, eine Lehrkraft kann aber mehrere Fächer unterrichten').",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen in Attributen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Jede Tabelle hat einen eindeutigen Primärschlüssel und alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, und es gibt keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen.",
           "korrekturanweisung": ""
         }
       ],
@@ -496,25 +490,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem RequirementsReport (Schüler, Lehrkraft, Unterrichtsfach) sind als Tabellen vorhanden. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind vorhanden: students (Schüler), teachers (Lehrkräfte), subjects (Unterrichtsfächer). Die Namenskonvention ist korrekt (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem RequirementsReport sind vorhanden und korrekt übersetzt: Schüler (firstname, lastname, birthdate, phonenumber, enrollmentdate, is_active), Lehrkraft (firstname, lastname, email, phonenumber, hiredate), Unterrichtsfach (name, description, monthly_fee). Datentypen und Nullable-Einstellungen entsprechen den Anforderungen und dem ER-Modell.",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt benannt: students (firstname, lastname, birthdate, phonenumber, enrollmentdate, is_active), teachers (firstname, lastname, email, phonenumber, hiredate), subjects (name, description, monthly_fee). Datentypen entsprechen den Konventionen (VARCHAR für Namen/Email, DATE für Daten, BOOLEAN für Status, DECIMAL für Gebühr, TEXT für Beschreibung).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) N:1 Schüler → Unterrichtsfach über subject_id (jeder Schüler genau einem Fach), (2) N:1 Unterrichtsfach → Lehrkraft über teacher_id (jedes Fach genau einer Lehrkraft, eine Lehrkraft mehrere Fächer). Kardinalitäten entsprechen den Anforderungen.",
+          "beschreibung": "Beide Beziehungen sind korrekt implementiert: (1) N:1 Schüler→Fach durch subject_id in students-Tabelle, (2) N:1 Fach→Lehrkraft durch teacher_id in subjects-Tabelle. Die Kardinalitäten entsprechen den Anforderungen ('Jeder Schüler ist genau einem Fach zugeordnet', 'Jedes Fach wird genau von einer Lehrkraft unterrichtet, eine Lehrkraft kann aber mehrere Fächer unterrichten').",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Keine Redundanzen in Attributen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Jede Tabelle hat einen eindeutigen Primärschlüssel und alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Jede Tabelle hat einen eindeutigen Primärschlüssel, alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, und es gibt keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen.",
           "korrekturanweisung": ""
         }
       ],
@@ -525,20 +519,20 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 12357,
-    "total_output_tokens": 3578,
-    "total_tokens": 15935,
+    "total_input_tokens": 12211,
+    "total_output_tokens": 3535,
+    "total_tokens": 15746,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1489,
-        "output_tokens": 863,
+        "output_tokens": 790,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 2327,
+        "input_tokens": 2254,
         "output_tokens": 922,
         "cost_usd": 0.0
       },
@@ -550,8 +544,8 @@
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 5160,
-        "output_tokens": 861,
+        "input_tokens": 5087,
+        "output_tokens": 891,
         "cost_usd": 0.0
       }
     },
@@ -562,7 +556,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1489,
-        "output_tokens": 863,
+        "output_tokens": 790,
         "cost_usd": 0.0
       },
       {
@@ -570,7 +564,7 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2327,
+        "input_tokens": 2254,
         "output_tokens": 922,
         "cost_usd": 0.0
       },
@@ -588,8 +582,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5160,
-        "output_tokens": 861,
+        "input_tokens": 5087,
+        "output_tokens": 891,
         "cost_usd": 0.0
       }
     ]

@@ -2,15 +2,15 @@
   "testfall_id": "TC036",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.5452100840336136,
-  "score_gesamt": 0.7271260504201682,
+  "score_semantisch": 0.5989726594863298,
+  "score_gesamt": 0.7593835956917979,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
     "pk_tabellen_gesamt": 9,
     "pk_tabellen_mit_pk": 9,
-    "fk_referenzen_gesamt": 12,
+    "fk_referenzen_gesamt": 13,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
@@ -23,12 +23,12 @@
       "nur_in_generiert": 3
     },
     "attribut": {
-      "precision": 0.4444444444444444,
-      "recall": 0.47058823529411764,
-      "f1": 0.45714285714285713,
-      "matched": 16,
-      "nur_in_referenz": 18,
-      "nur_in_generiert": 20
+      "precision": 0.5675675675675675,
+      "recall": 0.6176470588235294,
+      "f1": 0.5915492957746479,
+      "matched": 21,
+      "nur_in_referenz": 13,
+      "nur_in_generiert": 16
     },
     "beziehung": {
       "recall": 0.4,
@@ -49,27 +49,12 @@
       "fehlerklasse": null
     },
     {
-      "element": "teachers.firstname",
+      "element": "assessments.assessment_date",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
-      "element": "teachers.lastname",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "teachers.hiredate",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "students.firstname",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "students.lastname",
+      "element": "assessments.title",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -90,16 +75,6 @@
     },
     {
       "element": "subject_teachers.school_class_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "assessments.assessment_date",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "assessments.title",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -184,16 +159,16 @@
               "nullable": false
             },
             {
-              "name": "name",
+              "name": "firstname",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "phone",
+              "name": "lastname",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "email",
@@ -202,7 +177,7 @@
               "nullable": true
             },
             {
-              "name": "address",
+              "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -214,7 +189,7 @@
               "nullable": false
             },
             {
-              "name": "learning_group_id",
+              "name": "learninggroup_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -222,8 +197,8 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "learning_group_id",
-              "references_table": "learning_groups",
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
               "references_column": "id"
             }
           ]
@@ -238,16 +213,16 @@
               "nullable": false
             },
             {
-              "name": "name",
+              "name": "firstname",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "phone",
+              "name": "lastname",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "email",
@@ -256,7 +231,13 @@
               "nullable": true
             },
             {
-              "name": "hire_date",
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hiredate",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -283,7 +264,7 @@
           "foreign_keys": []
         },
         {
-          "name": "learning_groups",
+          "name": "learninggroups",
           "columns": [
             {
               "name": "id",
@@ -298,13 +279,13 @@
               "nullable": false
             },
             {
-              "name": "school_year",
+              "name": "schoolyear",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "class_teacher_id",
+              "name": "headteacher_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -312,85 +293,8 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "class_teacher_id",
+              "from_column": "headteacher_id",
               "references_table": "teachers",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "performance_assessments",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "topic",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "subject_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "subject_id",
-              "references_table": "subjects",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "grades",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "value",
-              "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "student_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "performance_assessment_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "student_id",
-              "references_table": "students",
-              "references_column": "id"
-            },
-            {
-              "from_column": "performance_assessment_id",
-              "references_table": "performance_assessments",
               "references_column": "id"
             }
           ]
@@ -425,7 +329,7 @@
           ]
         },
         {
-          "name": "instructions",
+          "name": "lessons",
           "columns": [
             {
               "name": "id",
@@ -446,7 +350,7 @@
               "nullable": false
             },
             {
-              "name": "learning_group_id",
+              "name": "learninggroup_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -464,14 +368,14 @@
               "references_column": "id"
             },
             {
-              "from_column": "learning_group_id",
-              "references_table": "learning_groups",
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
               "references_column": "id"
             }
           ]
         },
         {
-          "name": "supervisions",
+          "name": "assessments",
           "columns": [
             {
               "name": "id",
@@ -480,15 +384,97 @@
               "nullable": false
             },
             {
-              "name": "teacher_id",
+              "name": "date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "topic",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "subject_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "learning_group_id",
+              "name": "learninggroup_id",
               "type": "INTEGER",
               "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "subject_id",
+              "references_table": "subjects",
+              "references_column": "id"
+            },
+            {
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "grades",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "value",
+              "type": "DECIMAL",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "student_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "assessment_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "student_id",
+              "references_table": "students",
+              "references_column": "id"
+            },
+            {
+              "from_column": "assessment_id",
+              "references_table": "assessments",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "supervisions",
+          "columns": [
+            {
+              "name": "teacher_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "learninggroup_id",
+              "type": "INTEGER",
+              "primary_key": true,
               "nullable": false
             },
             {
@@ -505,8 +491,8 @@
               "references_column": "id"
             },
             {
-              "from_column": "learning_group_id",
-              "references_table": "learning_groups",
+              "from_column": "learninggroup_id",
+              "references_table": "learninggroups",
               "references_column": "id"
             }
           ]
@@ -557,7 +543,7 @@
             "Thema",
             "Fach"
           ],
-          "beschreibung": "Überprüfungen von Schülerleistungen, bei denen ein Datum, das Thema und das betroffene Fach festgehalten werden."
+          "beschreibung": "Überprüfungen von Schülerleistungen mit Datum und Thema. Jeder Leistungsnachweis bezieht sich auf ein Fach und wird in einer Lerngruppe durchgeführt."
         },
         {
           "name": "Note",
@@ -592,51 +578,51 @@
           "von": "Lehrkraft",
           "zu": "Fach",
           "kardinalitaet": "M:N",
-          "beschreibung": "Verknüpfung: Welche Lehrkraft unterrichtet welches Fach in welcher Lerngruppe (ternäre Beziehung)."
+          "beschreibung": "Unterrichtsbeziehung: Welche Lehrkraft welches Fach in welcher Lerngruppe unterrichtet (ternäre Beziehung)."
         },
         {
           "von": "Leistungsnachweis",
+          "zu": "Lerngruppe",
+          "kardinalitaet": "M:1",
+          "beschreibung": "Ein Leistungsnachweis findet in einer Lerngruppe statt. Eine Lerngruppe hat mehrere Leistungsnachweise."
+        },
+        {
+          "von": "Note",
           "zu": "Schüler",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Leistungsnachweis wird von mehreren Schülern absolviert, ein Schüler hat mehrere Leistungsnachweise."
+          "kardinalitaet": "M:1",
+          "beschreibung": "Eine Note wird einem Schüler gegeben. Ein Schüler erhält mehrere Noten."
         },
         {
           "von": "Note",
           "zu": "Leistungsnachweis",
           "kardinalitaet": "M:1",
-          "beschreibung": "Eine Note bezieht sich auf einen konkreten Leistungsnachweis. Ein Leistungsnachweis kann mehrere Noten haben (eine pro Schüler)."
-        },
-        {
-          "von": "Note",
-          "zu": "Schüler",
-          "kardinalitaet": "M:1",
-          "beschreibung": "Eine Note gehört zu einem Schüler. Ein Schüler hat mehrere Noten."
+          "beschreibung": "Eine Note bezieht sich auf einen Leistungsnachweis. Ein Leistungsnachweis hat mehrere Noten (eine pro Schüler)."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Kardinalität der Klassenleitung: Ist eine Lehrkraft Klassenleitung von genau einer Lerngruppe (1:1) oder kann eine Lehrkraft mehrere Lerngruppen leiten (1:N)?",
+          "beschreibung": "Kardinalität der Klassenleitung: Ist eine Klassenleitung immer genau eine Lehrkraft pro Lerngruppe (1:1), oder können mehrere Lehrkräfte gemeinsam Klassenleitung sein (M:1)?",
           "betroffene_elemente": [
             "Lehrkraft",
             "Lerngruppe"
           ]
         },
         {
-          "beschreibung": "Unterscheidung zwischen Klassenleitung und Betreuung: Der Text erwähnt, dass eine Lehrkraft Klassenleitung ist und dass mehrere Lehrkräfte eine Lerngruppe betreuen. Ist die Klassenleitung eine spezielle Form der Betreuung oder eine separate Rolle?",
+          "beschreibung": "Unterscheidung zwischen Klassenleitung und Betreuung: Der Text erwähnt, dass eine Lehrkraft Klassenleitung ist und dass mehrere Lehrkräfte eine Lerngruppe betreuen können. Ist die Klassenleitung Teil der Betreuung oder eine separate Rolle?",
           "betroffene_elemente": [
             "Lehrkraft",
             "Lerngruppe"
           ]
         },
         {
-          "beschreibung": "Definition von Betreuung: Der Text gibt an, dass 'was genau als Betreuung gilt' je nach organisatorischer Regelung unterschiedlich ausgelegt werden kann. Es ist unklar, welche Attribute oder Kriterien eine Betreuungsbeziehung definieren.",
+          "beschreibung": "Definition von Betreuung: Der Text sagt, dass 'was genau als Betreuung gilt' je nach organisatorischer Regelung unterschiedlich ausgelegt werden kann. Sind konkrete Kriterien oder Attribute für Betreuung erforderlich?",
           "betroffene_elemente": [
             "Lehrkraft",
             "Lerngruppe"
           ]
         },
         {
-          "beschreibung": "Ternäre Beziehung: Der Text erwähnt 'welche Lehrkraft welches Fach in welcher Lerngruppe übernimmt'. Dies deutet auf eine ternäre Beziehung zwischen Lehrkraft, Fach und Lerngruppe hin. Die genaue Modellierung (separate Entität oder Attribut) ist unklar.",
+          "beschreibung": "Ternäre Beziehung: Der Text erwähnt 'welche Lehrkraft welches Fach in welcher Lerngruppe übernimmt'. Dies deutet auf eine ternäre Beziehung hin. Soll dies als separate Entität (z.B. Unterrichtseinheit) modelliert werden?",
           "betroffene_elemente": [
             "Lehrkraft",
             "Fach",
@@ -644,21 +630,14 @@
           ]
         },
         {
-          "beschreibung": "Zeitliche Gültigkeit: Es ist unklar, ob die Zugehörigkeit eines Schülers zu einer Lerngruppe historisiert werden soll (mehrere Lerngruppen über die Zeit) oder nur die aktuelle Zugehörigkeit relevant ist.",
+          "beschreibung": "Zeitliche Gültigkeit: Ist die aktuelle Lerngruppenzugehörigkeit eines Schülers zeitlich begrenzt (z.B. pro Schuljahr), oder wird nur der aktuelle Status gespeichert?",
           "betroffene_elemente": [
             "Schüler",
             "Lerngruppe"
           ]
         },
         {
-          "beschreibung": "Kontaktdaten: Der Text erwähnt 'übliche Kontaktdaten' ohne zu spezifizieren, welche Felder (z.B. Telefon, E-Mail, Adresse) konkret gemeint sind.",
-          "betroffene_elemente": [
-            "Schüler",
-            "Lehrkraft"
-          ]
-        },
-        {
-          "beschreibung": "Leistungsnachweis und Fach: Es ist unklar, ob ein Leistungsnachweis sich immer auf genau ein Fach bezieht oder ob es Leistungsnachweise gibt, die mehrere Fächer abdecken.",
+          "beschreibung": "Leistungsnachweis und Fach: Ist ein Leistungsnachweis immer an ein Fach gebunden, oder kann er fachübergreifend sein?",
           "betroffene_elemente": [
             "Leistungsnachweis",
             "Fach"
@@ -684,19 +663,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "telefon",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
               "name": "email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "adresse",
+              "name": "telefon",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -731,13 +704,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "telefon",
+              "name": "email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "email",
+              "name": "telefon",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -822,6 +795,12 @@
               "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
+            },
+            {
+              "name": "lerngruppe_id",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -855,10 +834,10 @@
           ]
         },
         {
-          "name": "Unterricht",
+          "name": "Unterrichtseinheit",
           "attribute": [
             {
-              "name": "unterricht_id",
+              "name": "unterrichtseinheit_id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -905,7 +884,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "betreuungsart",
+              "name": "supervision_type",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -922,30 +901,30 @@
         },
         {
           "von": "Lehrkraft",
-          "zu": "Lerngruppe",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Lehrkraft",
           "zu": "Fach",
           "kardinalitaet": "M:N",
           "beziehungsattribute": []
         },
         {
-          "von": "Unterricht",
+          "von": "Lerngruppe",
+          "zu": "Lehrkraft",
+          "kardinalitaet": "1:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "Unterrichtseinheit",
           "zu": "Lehrkraft",
           "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Unterricht",
+          "von": "Unterrichtseinheit",
           "zu": "Fach",
           "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
-          "von": "Unterricht",
+          "von": "Unterrichtseinheit",
           "zu": "Lerngruppe",
           "kardinalitaet": "M:1",
           "beziehungsattribute": []
@@ -959,12 +938,20 @@
         {
           "von": "Betreuung",
           "zu": "Lerngruppe",
+          "kardinalitaet": "M:1",
+          "beziehungsattribute": [
+            "supervision_type"
+          ]
+        },
+        {
+          "von": "Leistungsnachweis",
+          "zu": "Fach",
           "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
         {
           "von": "Leistungsnachweis",
-          "zu": "Fach",
+          "zu": "Lerngruppe",
           "kardinalitaet": "M:1",
           "beziehungsattribute": []
         },
@@ -983,7 +970,7 @@
       ]
     },
     "critic_report": {
-      "qualitaet_ausreichend": true,
+      "qualitaet_ausreichend": false,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -1005,38 +992,38 @@
         },
         {
           "criterion": "entitaets_vollstaendigkeit",
-          "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: students, teachers, subjects, learning_groups, performance_assessments, grades, teacher_subjects, instructions, supervisions. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Unterrichtseinheit' aus dem ER-Modell fehlt im LogicalSchema. Das ER-Modell definiert eine separate Entität 'Unterrichtseinheit' zur Modellierung der ternären Beziehung (Lehrkraft, Fach, Lerngruppe), die im Anforderungstext als kritisch beschrieben wird ('welche Lehrkraft welches Fach in welcher Lerngruppe übernimmt'). Im LogicalSchema wurde stattdessen die Tabelle 'lessons' verwendet, die semantisch äquivalent sein könnte, aber im ER-Modell nicht als 'Unterrichtseinheit' benannt ist. Dies ist eine Inkonsistenz zwischen ER-Modell und LogicalSchema.",
+          "korrekturanweisung": "Entweder (1) die Tabelle 'lessons' in 'teaching_units' oder 'unterrichtseinheiten' umbenennen, um Konsistenz mit dem ER-Modell herzustellen, oder (2) das ER-Modell aktualisieren, um 'lessons' als offizielle Entität zu verwenden. Die Struktur selbst ist korrekt, aber die Benennung ist inkonsistent."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell geforderten Attribute sind im LogicalSchema vorhanden und korrekt typisiert. Kontaktdaten (phone, email, address) sind optional (nullable: true), Pflichtfelder wie name, birthdate, hire_date sind nicht nullable. Attributnamen folgen der Konvention (snake_case, englisch).",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "Im ER-Modell ist 'Schüler' mit Attribut 'name' (singular) definiert, während das LogicalSchema 'firstname' und 'lastname' (getrennt) verwendet. Dies ist eine Abweichung vom ER-Modell. Zwar ist die Aufteilung in Vorname/Nachname praktisch sinnvoll, aber sie wurde nicht im ER-Modell dokumentiert. Ähnlich: Das ER-Modell nennt 'telefon', das LogicalSchema verwendet 'phone'. Diese Inkonsistenzen deuten auf eine unzureichende Abstimmung zwischen ER-Modell und LogicalSchema hin.",
+          "korrekturanweisung": "Entweder (1) das ER-Modell aktualisieren, um 'firstname' und 'lastname' statt 'name' zu verwenden, oder (2) das LogicalSchema anpassen, um ein einzelnes 'name'-Attribut zu verwenden (mit Vor- und Nachname kombiniert). Gleiches für 'telefon' vs. 'phone'. Konsistenz zwischen ER-Modell und LogicalSchema ist erforderlich."
         },
         {
           "criterion": "beziehungs_korrektheit",
-          "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: (1) M:1 Schüler→Lerngruppe via learning_group_id in students; (2) M:N Lehrkraft↔Fach via teacher_subjects Junction-Table; (3) Ternäre Beziehung Lehrkraft-Fach-Lerngruppe via instructions-Tabelle; (4) M:N Lehrkraft↔Lerngruppe (Betreuung) via supervisions-Tabelle mit optionalem supervision_type; (5) M:1 Leistungsnachweis→Fach via subject_id; (6) M:1 Note→Schüler und Note→Leistungsnachweis via student_id und performance_assessment_id. Kardinalitäten sind korrekt implementiert.",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "Das ER-Modell definiert eine 1:1-Beziehung zwischen 'Lerngruppe' und 'Lehrkraft' (Klassenleitung), aber das LogicalSchema modelliert dies als einfacher Fremdschlüssel 'headteacher_id' in der Tabelle 'learninggroups'. Dies ist korrekt für die Klassenleitung (1:1 oder M:1 je Lerngruppe). JEDOCH: Das ER-Modell definiert zusätzlich eine separate Entität 'Betreuung' (mit Tabelle 'supervisions' im LogicalSchema), um die M:N-Beziehung zwischen Lehrkräften und Lerngruppen zu modellieren. Die Anforderung besagt, dass 'mehrere Lehrkräfte eine Lerngruppe betreuen können' und dass dies 'nicht immer nur die Klassenleitung betrifft'. Das LogicalSchema hat die Tabelle 'supervisions' mit Composite-PK (teacher_id, learninggroup_id) und optionalem 'supervision_type', was korrekt ist. ABER: Es gibt eine semantische Unklarheit: Ist die Klassenleitung (headteacher_id) auch in der 'supervisions'-Tabelle eingetragen, oder ist sie eine separate Rolle? Das ER-Modell und LogicalSchema klären dies nicht. Dies ist ein konzeptionelles Problem aus dem ER-Modell.",
+          "korrekturanweisung": "Klärung erforderlich: (1) Sollte die Klassenleitung auch als Eintrag in 'supervisions' mit supervision_type='Klassenleitung' modelliert werden, oder (2) ist die Klassenleitung eine separate, nicht-redundante Rolle? Das LogicalSchema selbst ist strukturell korrekt, aber die semantische Konsistenz zwischen 'headteacher_id' und 'supervisions' ist unklar."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Keine Wiederholungsgruppen oder atomare Verletzungen (1NF erfüllt); (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK (2NF erfüllt); (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen (3NF erfüllt). Junction-Tables und Beziehungstabellen sind korrekt normalisiert. Keine redundanten Daten oder Anomalien erkannt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, keine partiellen Abhängigkeiten, und keine transitiven Abhängigkeiten. Junction-Tabellen ('teacher_subjects', 'supervisions') sind korrekt für M:N-Beziehungen modelliert. Die Tabelle 'lessons' ist eine korrekte Modellierung der ternären Beziehung.",
           "korrekturanweisung": ""
         }
       ],
-      "origin_step": null
+      "origin_step": "cmd"
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 1,
+    "iteration": 3,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE teachers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    hire_date DATE NOT NULL,\n    CONSTRAINT pk_teachers PRIMARY KEY (id)\n);\n\nCREATE TABLE learning_groups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    school_year VARCHAR(255) NOT NULL,\n    class_teacher_id INTEGER NOT NULL,\n    CONSTRAINT pk_learning_groups PRIMARY KEY (id),\n    CONSTRAINT fk_learning_groups_class_teacher_id FOREIGN KEY (class_teacher_id) REFERENCES teachers (id)\n);\n\nCREATE TABLE students (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address VARCHAR(255),\n    birthdate DATE NOT NULL,\n    learning_group_id INTEGER NOT NULL,\n    CONSTRAINT pk_students PRIMARY KEY (id),\n    CONSTRAINT fk_students_learning_group_id FOREIGN KEY (learning_group_id) REFERENCES learning_groups (id)\n);\n\nCREATE TABLE subjects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_subjects PRIMARY KEY (id)\n);\n\nCREATE TABLE performance_assessments (\n    id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    topic VARCHAR(255) NOT NULL,\n    subject_id INTEGER NOT NULL,\n    CONSTRAINT pk_performance_assessments PRIMARY KEY (id),\n    CONSTRAINT fk_performance_assessments_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id)\n);\n\nCREATE TABLE grades (\n    id INTEGER NOT NULL,\n    value DECIMAL(18,2) NOT NULL,\n    student_id INTEGER NOT NULL,\n    performance_assessment_id INTEGER NOT NULL,\n    CONSTRAINT pk_grades PRIMARY KEY (id),\n    CONSTRAINT fk_grades_student_id FOREIGN KEY (student_id) REFERENCES students (id),\n    CONSTRAINT fk_grades_performance_assessment_id FOREIGN KEY (performance_assessment_id) REFERENCES performance_assessments (id)\n);\n\nCREATE TABLE instructions (\n    id INTEGER NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    subject_id INTEGER NOT NULL,\n    learning_group_id INTEGER NOT NULL,\n    CONSTRAINT pk_instructions PRIMARY KEY (id),\n    CONSTRAINT fk_instructions_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_instructions_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id),\n    CONSTRAINT fk_instructions_learning_group_id FOREIGN KEY (learning_group_id) REFERENCES learning_groups (id)\n);\n\nCREATE TABLE supervisions (\n    id INTEGER NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    learning_group_id INTEGER NOT NULL,\n    supervision_type VARCHAR(255),\n    CONSTRAINT pk_supervisions PRIMARY KEY (id),\n    CONSTRAINT fk_supervisions_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_supervisions_learning_group_id FOREIGN KEY (learning_group_id) REFERENCES learning_groups (id)\n);\n\nCREATE TABLE teacher_subjects (\n    teacher_id INTEGER NOT NULL,\n    subject_id INTEGER NOT NULL,\n    CONSTRAINT pk_teacher_subjects PRIMARY KEY (teacher_id, subject_id),\n    CONSTRAINT fk_teacher_subjects_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_teacher_subjects_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id)\n);\n",
+    "final_ddl": "CREATE TABLE subjects (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_subjects PRIMARY KEY (id)\n);\n\nCREATE TABLE teachers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    hiredate DATE NOT NULL,\n    CONSTRAINT pk_teachers PRIMARY KEY (id)\n);\n\nCREATE TABLE learninggroups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    schoolyear VARCHAR(255) NOT NULL,\n    headteacher_id INTEGER NOT NULL,\n    CONSTRAINT pk_learninggroups PRIMARY KEY (id),\n    CONSTRAINT fk_learninggroups_headteacher_id FOREIGN KEY (headteacher_id) REFERENCES teachers (id)\n);\n\nCREATE TABLE assessments (\n    id INTEGER NOT NULL,\n    date DATE NOT NULL,\n    topic VARCHAR(255) NOT NULL,\n    subject_id INTEGER NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    CONSTRAINT pk_assessments PRIMARY KEY (id),\n    CONSTRAINT fk_assessments_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id),\n    CONSTRAINT fk_assessments_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n\nCREATE TABLE students (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    birthdate DATE NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    CONSTRAINT pk_students PRIMARY KEY (id),\n    CONSTRAINT fk_students_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n\nCREATE TABLE grades (\n    id INTEGER NOT NULL,\n    value DECIMAL(18,2) NOT NULL,\n    student_id INTEGER NOT NULL,\n    assessment_id INTEGER NOT NULL,\n    CONSTRAINT pk_grades PRIMARY KEY (id),\n    CONSTRAINT fk_grades_student_id FOREIGN KEY (student_id) REFERENCES students (id),\n    CONSTRAINT fk_grades_assessment_id FOREIGN KEY (assessment_id) REFERENCES assessments (id)\n);\n\nCREATE TABLE lessons (\n    id INTEGER NOT NULL,\n    teacher_id INTEGER NOT NULL,\n    subject_id INTEGER NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    CONSTRAINT pk_lessons PRIMARY KEY (id),\n    CONSTRAINT fk_lessons_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_lessons_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id),\n    CONSTRAINT fk_lessons_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n\nCREATE TABLE supervisions (\n    teacher_id INTEGER NOT NULL,\n    learninggroup_id INTEGER NOT NULL,\n    supervision_type VARCHAR(255),\n    CONSTRAINT pk_supervisions PRIMARY KEY (teacher_id, learninggroup_id),\n    CONSTRAINT fk_supervisions_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_supervisions_learninggroup_id FOREIGN KEY (learninggroup_id) REFERENCES learninggroups (id)\n);\n\nCREATE TABLE teacher_subjects (\n    teacher_id INTEGER NOT NULL,\n    subject_id INTEGER NOT NULL,\n    CONSTRAINT pk_teacher_subjects PRIMARY KEY (teacher_id, subject_id),\n    CONSTRAINT fk_teacher_subjects_teacher_id FOREIGN KEY (teacher_id) REFERENCES teachers (id),\n    CONSTRAINT fk_teacher_subjects_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id)\n);\n",
     "final_critic_report": {
-      "qualitaet_ausreichend": true,
+      "qualitaet_ausreichend": false,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
@@ -1058,63 +1045,63 @@
         },
         {
           "criterion": "entitaets_vollstaendigkeit",
-          "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: students, teachers, subjects, learning_groups, performance_assessments, grades, teacher_subjects, instructions, supervisions. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "Die Entität 'Unterrichtseinheit' aus dem ER-Modell fehlt im LogicalSchema. Das ER-Modell definiert eine separate Entität 'Unterrichtseinheit' zur Modellierung der ternären Beziehung (Lehrkraft, Fach, Lerngruppe), die im Anforderungstext als kritisch beschrieben wird ('welche Lehrkraft welches Fach in welcher Lerngruppe übernimmt'). Im LogicalSchema wurde stattdessen die Tabelle 'lessons' verwendet, die semantisch äquivalent sein könnte, aber im ER-Modell nicht als 'Unterrichtseinheit' benannt ist. Dies ist eine Inkonsistenz zwischen ER-Modell und LogicalSchema.",
+          "korrekturanweisung": "Entweder (1) die Tabelle 'lessons' in 'teaching_units' oder 'unterrichtseinheiten' umbenennen, um Konsistenz mit dem ER-Modell herzustellen, oder (2) das ER-Modell aktualisieren, um 'lessons' als offizielle Entität zu verwenden. Die Struktur selbst ist korrekt, aber die Benennung ist inkonsistent."
         },
         {
           "criterion": "attribut_vollstaendigkeit",
-          "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell geforderten Attribute sind im LogicalSchema vorhanden und korrekt typisiert. Kontaktdaten (phone, email, address) sind optional (nullable: true), Pflichtfelder wie name, birthdate, hire_date sind nicht nullable. Attributnamen folgen der Konvention (snake_case, englisch).",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "Im ER-Modell ist 'Schüler' mit Attribut 'name' (singular) definiert, während das LogicalSchema 'firstname' und 'lastname' (getrennt) verwendet. Dies ist eine Abweichung vom ER-Modell. Zwar ist die Aufteilung in Vorname/Nachname praktisch sinnvoll, aber sie wurde nicht im ER-Modell dokumentiert. Ähnlich: Das ER-Modell nennt 'telefon', das LogicalSchema verwendet 'phone'. Diese Inkonsistenzen deuten auf eine unzureichende Abstimmung zwischen ER-Modell und LogicalSchema hin.",
+          "korrekturanweisung": "Entweder (1) das ER-Modell aktualisieren, um 'firstname' und 'lastname' statt 'name' zu verwenden, oder (2) das LogicalSchema anpassen, um ein einzelnes 'name'-Attribut zu verwenden (mit Vor- und Nachname kombiniert). Gleiches für 'telefon' vs. 'phone'. Konsistenz zwischen ER-Modell und LogicalSchema ist erforderlich."
         },
         {
           "criterion": "beziehungs_korrektheit",
-          "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt im LogicalSchema abgebildet: (1) M:1 Schüler→Lerngruppe via learning_group_id in students; (2) M:N Lehrkraft↔Fach via teacher_subjects Junction-Table; (3) Ternäre Beziehung Lehrkraft-Fach-Lerngruppe via instructions-Tabelle; (4) M:N Lehrkraft↔Lerngruppe (Betreuung) via supervisions-Tabelle mit optionalem supervision_type; (5) M:1 Leistungsnachweis→Fach via subject_id; (6) M:1 Note→Schüler und Note→Leistungsnachweis via student_id und performance_assessment_id. Kardinalitäten sind korrekt implementiert.",
-          "korrekturanweisung": ""
+          "erfuellt": false,
+          "beschreibung": "Das ER-Modell definiert eine 1:1-Beziehung zwischen 'Lerngruppe' und 'Lehrkraft' (Klassenleitung), aber das LogicalSchema modelliert dies als einfacher Fremdschlüssel 'headteacher_id' in der Tabelle 'learninggroups'. Dies ist korrekt für die Klassenleitung (1:1 oder M:1 je Lerngruppe). JEDOCH: Das ER-Modell definiert zusätzlich eine separate Entität 'Betreuung' (mit Tabelle 'supervisions' im LogicalSchema), um die M:N-Beziehung zwischen Lehrkräften und Lerngruppen zu modellieren. Die Anforderung besagt, dass 'mehrere Lehrkräfte eine Lerngruppe betreuen können' und dass dies 'nicht immer nur die Klassenleitung betrifft'. Das LogicalSchema hat die Tabelle 'supervisions' mit Composite-PK (teacher_id, learninggroup_id) und optionalem 'supervision_type', was korrekt ist. ABER: Es gibt eine semantische Unklarheit: Ist die Klassenleitung (headteacher_id) auch in der 'supervisions'-Tabelle eingetragen, oder ist sie eine separate Rolle? Das ER-Modell und LogicalSchema klären dies nicht. Dies ist ein konzeptionelles Problem aus dem ER-Modell.",
+          "korrekturanweisung": "Klärung erforderlich: (1) Sollte die Klassenleitung auch als Eintrag in 'supervisions' mit supervision_type='Klassenleitung' modelliert werden, oder (2) ist die Klassenleitung eine separate, nicht-redundante Rolle? Das LogicalSchema selbst ist strukturell korrekt, aber die semantische Konsistenz zwischen 'headteacher_id' und 'supervisions' ist unklar."
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): (1) Keine Wiederholungsgruppen oder atomare Verletzungen (1NF erfüllt); (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK (2NF erfüllt); (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen (3NF erfüllt). Junction-Tables und Beziehungstabellen sind korrekt normalisiert. Keine redundanten Daten oder Anomalien erkannt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Tabellen haben einen eindeutigen Primärschlüssel, keine partiellen Abhängigkeiten, und keine transitiven Abhängigkeiten. Junction-Tabellen ('teacher_subjects', 'supervisions') sind korrekt für M:N-Beziehungen modelliert. Die Tabelle 'lessons' ist eine korrekte Modellierung der ternären Beziehung.",
           "korrekturanweisung": ""
         }
       ],
-      "origin_step": null
+      "origin_step": "cmd"
     },
     "error": null,
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 4,
-    "total_input_tokens": 19653,
-    "total_output_tokens": 7393,
-    "total_tokens": 27046,
+    "total_calls": 10,
+    "total_input_tokens": 64961,
+    "total_output_tokens": 20817,
+    "total_tokens": 85778,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1672,
-        "output_tokens": 2021,
+        "output_tokens": 1901,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 1,
-        "input_tokens": 3784,
-        "output_tokens": 2168,
+        "calls": 3,
+        "input_tokens": 17591,
+        "output_tokens": 7192,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 1,
-        "input_tokens": 4942,
-        "output_tokens": 2192,
+        "calls": 3,
+        "input_tokens": 18041,
+        "output_tokens": 6806,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 1,
-        "input_tokens": 9255,
-        "output_tokens": 1012,
+        "calls": 3,
+        "input_tokens": 27657,
+        "output_tokens": 4918,
         "cost_usd": 0.0
       }
     },
@@ -1125,7 +1112,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1672,
-        "output_tokens": 2021,
+        "output_tokens": 1901,
         "cost_usd": 0.0
       },
       {
@@ -1133,8 +1120,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3784,
-        "output_tokens": 2168,
+        "input_tokens": 3656,
+        "output_tokens": 2182,
         "cost_usd": 0.0
       },
       {
@@ -1142,8 +1129,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4942,
-        "output_tokens": 2192,
+        "input_tokens": 4932,
+        "output_tokens": 2309,
         "cost_usd": 0.0
       },
       {
@@ -1151,8 +1138,62 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 9255,
-        "output_tokens": 1012,
+        "input_tokens": 9234,
+        "output_tokens": 1814,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 7217,
+        "output_tokens": 2452,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6676,
+        "output_tokens": 2225,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 9132,
+        "output_tokens": 1457,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6718,
+        "output_tokens": 2558,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 6433,
+        "output_tokens": 2272,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 2,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 9291,
+        "output_tokens": 1647,
         "cost_usd": 0.0
       }
     ]

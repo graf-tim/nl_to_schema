@@ -2,8 +2,8 @@
   "testfall_id": "TC049",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.5263157894736843,
-  "score_gesamt": 0.7157894736842105,
+  "score_semantisch": 0.5493333333333335,
+  "score_gesamt": 0.7296,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 2
     },
     "attribut": {
-      "precision": 0.3870967741935484,
-      "recall": 0.26666666666666666,
-      "f1": 0.3157894736842105,
-      "matched": 12,
-      "nur_in_referenz": 33,
-      "nur_in_generiert": 19
+      "precision": 0.4666666666666667,
+      "recall": 0.3111111111111111,
+      "f1": 0.37333333333333335,
+      "matched": 14,
+      "nur_in_referenz": 31,
+      "nur_in_generiert": 16
     },
     "beziehung": {
       "recall": 0.5714285714285714,
@@ -115,16 +115,6 @@
     },
     {
       "element": "branches.address",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "branches.phone",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "branches.email",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -259,10 +249,16 @@
               "name": "address",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
-              "name": "contact_info",
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -292,13 +288,49 @@
               "nullable": false
             },
             {
-              "name": "contact_info",
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "branch_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "branch_id",
+              "references_table": "branches",
+              "references_column": "id"
+            }
+          ]
         },
         {
           "name": "accounts",
@@ -320,48 +352,6 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "creation_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "branch_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "branch_id",
-              "references_table": "branches",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "employees",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "contact_info",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
             },
             {
               "name": "branch_id",
@@ -477,13 +467,7 @@
               "nullable": false
             },
             {
-              "name": "care_start_date",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "care_end_date",
+              "name": "care_since",
               "type": "DATE",
               "primary_key": false,
               "nullable": true
@@ -522,8 +506,7 @@
           "attribute": [
             "KontoID",
             "Kontoart",
-            "Status",
-            "Erstellungsdatum"
+            "Status"
           ],
           "beschreibung": "Bankkonto (z.B. Giro- oder Sparkonto), das zu genau einer Filiale gehört und von einer oder mehreren Personen genutzt werden kann"
         },
@@ -541,10 +524,9 @@
           "name": "Mitarbeiter",
           "attribute": [
             "MitarbeiterID",
-            "Name",
-            "Kontaktinformationen"
+            "Name"
           ],
-          "beschreibung": "Mitarbeitender einer Filiale, der Kunden betreut"
+          "beschreibung": "Mitarbeitender einer Bank, der in einer Filiale arbeitet und Kunden betreut"
         },
         {
           "name": "Buchung",
@@ -566,16 +548,10 @@
           "beschreibung": "Jedes Konto gehört zu genau einer Filiale, in der es geführt wird"
         },
         {
-          "von": "Person",
-          "zu": "Konto",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Eine Person kann mehrere Konten besitzen, und ein Konto kann von mehreren Personen gemeinsam geführt werden"
-        },
-        {
           "von": "Konto",
-          "zu": "Buchung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Zu jedem Konto gehören mehrere Buchungen, die Kontobewegungen nachvollziehbar machen"
+          "zu": "Person",
+          "kardinalitaet": "M:N",
+          "beschreibung": "Ein Konto kann von mehreren Personen genutzt werden (z.B. Ehepartner), und eine Person kann mehrere Konten besitzen"
         },
         {
           "von": "Mitarbeiter",
@@ -587,40 +563,48 @@
           "von": "Mitarbeiter",
           "zu": "Person",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Mitarbeiter betreut mehrere Kunden, und eine Person kann von mehreren Mitarbeitern unterstützt werden"
+          "beschreibung": "Ein Mitarbeiter kann mehrere Kunden betreuen, und ein Kunde kann von mehreren Mitarbeitern unterstützt werden"
+        },
+        {
+          "von": "Buchung",
+          "zu": "Konto",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jede Buchung gehört zu genau einem Konto und dokumentiert eine Kontobewegung"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unterschiedliche Verfügungsrechte: Der Text erwähnt, dass 'ob dabei jede eingetragene Person automatisch in gleicher Weise über das Konto verfügen darf, von der Bank fachlich geregelt und abbildbar sein' soll. Es ist unklar, wie diese Verfügungsrechte konkret modelliert werden sollen (z.B. als Attribut der M:N-Beziehung Person-Konto oder als separate Entität)",
-          "betroffene_elemente": [
-            "Person",
-            "Konto"
-          ]
-        },
-        {
-          "beschreibung": "Kontostatus für geschlossene Konten: Der Text erwähnt, dass geschlossene Konten 'aus historischen Gründen weiterhin erhalten bleiben' sollen. Es ist unklar, ob dies durch ein Status-Attribut (z.B. 'aktiv'/'geschlossen') oder durch ein Schließungsdatum abgebildet werden soll",
-          "betroffene_elemente": [
-            "Konto"
-          ]
-        },
-        {
-          "beschreibung": "Kontoart-Werte: Der Text nennt Beispiele wie 'Giro- oder Sparkonten', aber es ist unklar, ob dies eine abgeschlossene Liste ist oder weitere Kontoarten möglich sind",
-          "betroffene_elemente": [
-            "Konto"
-          ]
-        },
-        {
-          "beschreibung": "Historisierung von Stammdaten: Der Text erwähnt, dass sich Anschrift oder Erreichbarkeit 'im Lauf der Zeit ändern können'. Es ist unklar, ob alte Adressen/Kontaktdaten archiviert werden sollen oder nur die aktuelle Version gespeichert wird",
-          "betroffene_elemente": [
-            "Person"
-          ]
-        },
-        {
-          "beschreibung": "Betreuungsbeziehung: Es ist unklar, ob die M:N-Beziehung zwischen Mitarbeiter und Person (Kunde) mit zusätzlichen Attributen wie Betreuungszeitraum oder Betreuungsart versehen sein soll",
+          "beschreibung": "Die Beziehung zwischen Mitarbeiter und Person ist als M:N modelliert, aber unklar ist, ob dies tatsächlich eine Kundenbeziehung darstellt oder ob Mitarbeiter nur bestimmte Personen (Kunden) betreuen. Möglicherweise sollte die Beziehung über Konten oder eine explizite Kundenentität laufen.",
           "betroffene_elemente": [
             "Mitarbeiter",
             "Person"
+          ]
+        },
+        {
+          "beschreibung": "Bei der M:N-Beziehung zwischen Konto und Person ist unklar, welche Attribute die Verknüpfungstabelle haben soll. Der Text erwähnt, dass 'ob dabei jede eingetragene Person automatisch in gleicher Weise über das Konto verfügen darf, von der Bank fachlich geregelt und abbildbar sein' soll – dies deutet auf ein Attribut hin (z.B. Verfügungsrecht, Rolle), dessen genaue Ausprägungen aber nicht spezifiziert sind.",
+          "betroffene_elemente": [
+            "Konto",
+            "Person"
+          ]
+        },
+        {
+          "beschreibung": "Der Status eines Kontos wird erwähnt (geschlossene Konten sollen erhalten bleiben), aber die möglichen Werte oder Bedeutung des Status sind nicht präzisiert.",
+          "betroffene_elemente": [
+            "Konto"
+          ]
+        },
+        {
+          "beschreibung": "Unklar ist, ob 'Kontaktinformationen' bei Filiale und 'Erreichbarkeit' bei Person dasselbe bedeuten oder unterschiedliche Attribute sind (z.B. Telefon, E-Mail, Adresse).",
+          "betroffene_elemente": [
+            "Person",
+            "Filiale"
+          ]
+        },
+        {
+          "beschreibung": "Es ist nicht klar, ob Personen nur als Kunden oder auch als Mitarbeiter in der Datenbank vorkommen können, und ob es eine Unterscheidung geben soll.",
+          "betroffene_elemente": [
+            "Person",
+            "Mitarbeiter"
           ]
         }
       ]
@@ -652,10 +636,16 @@
               "name": "Anschrift",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
-              "name": "Erreichbarkeit",
+              "name": "Telefon",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -684,10 +674,39 @@
               "pflichtfeld": true
             },
             {
-              "name": "Kontaktinformationen",
+              "name": "Telefon",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
+            },
+            {
+              "name": "Email",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "Mitarbeiter",
+          "attribute": [
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Name",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "FilialeID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
             }
           ]
         },
@@ -711,41 +730,6 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "Erstellungsdatum",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "FilialeID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
-        },
-        {
-          "name": "Mitarbeiter",
-          "attribute": [
-            {
-              "name": "MitarbeiterID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Name",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Kontaktinformationen",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             },
             {
               "name": "FilialeID",
@@ -805,18 +789,12 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Person",
-          "zu": "Konto",
+          "von": "Konto",
+          "zu": "Person",
           "kardinalitaet": "M:N",
           "beziehungsattribute": [
-            "Verfügungsrecht"
+            "Verfuegungsrecht"
           ]
-        },
-        {
-          "von": "Konto",
-          "zu": "Buchung",
-          "kardinalitaet": "1:N",
-          "beziehungsattribute": []
         },
         {
           "von": "Mitarbeiter",
@@ -829,9 +807,14 @@
           "zu": "Person",
           "kardinalitaet": "M:N",
           "beziehungsattribute": [
-            "Betreuungszeitraum_von",
-            "Betreuungszeitraum_bis"
+            "BetreuungSeit"
           ]
+        },
+        {
+          "von": "Buchung",
+          "zu": "Konto",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
         }
       ]
     },
@@ -859,25 +842,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: persons, branches, accounts, employees, transactions. Zusätzlich sind die beiden M:N-Beziehungstabellen (account_holders, employee_customers) korrekt als Junction Tables implementiert.",
+          "beschreibung": "Alle 5 Entitäten aus dem ER-Modell (Person, Filiale, Mitarbeiter, Konto, Buchung) sind als Tabellen implementiert. Zusätzlich wurden die beiden M:N-Beziehungen (Konto↔Person, Mitarbeiter↔Person) korrekt als Junction-Tabellen (account_holders, employee_customers) modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt übersetzt: Person (firstname, lastname, address, contact_info), Filiale (name, location, contact_info), Konto (account_type, status, creation_date), Mitarbeiter (name, contact_info), Buchung (transaction_date, amount, transaction_type, purpose). Beziehungsattribute sind ebenfalls vorhanden: access_rights in account_holders, care_start_date und care_end_date in employee_customers.",
+          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: Person (id, firstname, lastname, address, phone, email), Filiale (id, name, location, phone, email), Mitarbeiter (id, name, branch_id), Konto (id, account_type, status, branch_id), Buchung (id, account_id, transaction_date, amount, transaction_type, purpose). Beziehungsattribute sind ebenfalls vorhanden: access_rights in account_holders, care_since in employee_customers.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Konto→Filiale (N:1) via branch_id, (2) Person↔Konto (M:N) via account_holders Junction Table mit access_rights, (3) Konto→Buchung (1:N) via account_id, (4) Mitarbeiter→Filiale (N:1) via branch_id, (5) Mitarbeiter↔Person (M:N) via employee_customers Junction Table mit care_start_date und care_end_date. Kardinalitäten und Fremdschlüssel sind konsistent mit dem ER-Modell.",
+          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Konto→Filiale (N:1) via branch_id, (2) Konto↔Person (M:N) via account_holders Junction, (3) Mitarbeiter→Filiale (N:1) via branch_id, (4) Mitarbeiter↔Person (M:N) via employee_customers Junction, (5) Buchung→Konto (N:1) via account_id. Kardinalitäten und Referenzen sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar, (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Junction Tables sind korrekt normalisiert mit Composite PKs und FKs.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Junctions sind korrekt normalisiert mit zusammengesetzten PKs und FK-Referenzen. Alle Attribute sind atomar und funktional abhängig von ihren PKs.",
           "korrekturanweisung": ""
         }
       ],
@@ -887,7 +870,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE branches (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    contact_info VARCHAR(255),\n    CONSTRAINT pk_branches PRIMARY KEY (id)\n);\n\nCREATE TABLE accounts (\n    id INTEGER NOT NULL,\n    account_type VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    creation_date DATE NOT NULL,\n    branch_id INTEGER NOT NULL,\n    CONSTRAINT pk_accounts PRIMARY KEY (id),\n    CONSTRAINT fk_accounts_branch_id FOREIGN KEY (branch_id) REFERENCES branches (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    address VARCHAR(255) NOT NULL,\n    contact_info VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE account_holders (\n    account_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    access_rights VARCHAR(255),\n    CONSTRAINT pk_account_holders PRIMARY KEY (account_id, person_id),\n    CONSTRAINT fk_account_holders_account_id FOREIGN KEY (account_id) REFERENCES accounts (id),\n    CONSTRAINT fk_account_holders_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    contact_info VARCHAR(255),\n    branch_id INTEGER NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id),\n    CONSTRAINT fk_employees_branch_id FOREIGN KEY (branch_id) REFERENCES branches (id)\n);\n\nCREATE TABLE employee_customers (\n    employee_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    care_start_date DATE,\n    care_end_date DATE,\n    CONSTRAINT pk_employee_customers PRIMARY KEY (employee_id, person_id),\n    CONSTRAINT fk_employee_customers_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_customers_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE transactions (\n    id INTEGER NOT NULL,\n    account_id INTEGER NOT NULL,\n    transaction_date DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    transaction_type VARCHAR(255) NOT NULL,\n    purpose TEXT,\n    CONSTRAINT pk_transactions PRIMARY KEY (id),\n    CONSTRAINT fk_transactions_account_id FOREIGN KEY (account_id) REFERENCES accounts (id)\n);\n",
+    "final_ddl": "CREATE TABLE branches (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    location VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_branches PRIMARY KEY (id)\n);\n\nCREATE TABLE accounts (\n    id INTEGER NOT NULL,\n    account_type VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    branch_id INTEGER NOT NULL,\n    CONSTRAINT pk_accounts PRIMARY KEY (id),\n    CONSTRAINT fk_accounts_branch_id FOREIGN KEY (branch_id) REFERENCES branches (id)\n);\n\nCREATE TABLE persons (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE account_holders (\n    account_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    access_rights VARCHAR(255),\n    CONSTRAINT pk_account_holders PRIMARY KEY (account_id, person_id),\n    CONSTRAINT fk_account_holders_account_id FOREIGN KEY (account_id) REFERENCES accounts (id),\n    CONSTRAINT fk_account_holders_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    branch_id INTEGER NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id),\n    CONSTRAINT fk_employees_branch_id FOREIGN KEY (branch_id) REFERENCES branches (id)\n);\n\nCREATE TABLE employee_customers (\n    employee_id INTEGER NOT NULL,\n    person_id INTEGER NOT NULL,\n    care_since DATE,\n    CONSTRAINT pk_employee_customers PRIMARY KEY (employee_id, person_id),\n    CONSTRAINT fk_employee_customers_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_customers_person_id FOREIGN KEY (person_id) REFERENCES persons (id)\n);\n\nCREATE TABLE transactions (\n    id INTEGER NOT NULL,\n    account_id INTEGER NOT NULL,\n    transaction_date DATE NOT NULL,\n    amount DECIMAL(18,2) NOT NULL,\n    transaction_type VARCHAR(255) NOT NULL,\n    purpose TEXT,\n    CONSTRAINT pk_transactions PRIMARY KEY (id),\n    CONSTRAINT fk_transactions_account_id FOREIGN KEY (account_id) REFERENCES accounts (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -912,25 +895,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: persons, branches, accounts, employees, transactions. Zusätzlich sind die beiden M:N-Beziehungstabellen (account_holders, employee_customers) korrekt als Junction Tables implementiert.",
+          "beschreibung": "Alle 5 Entitäten aus dem ER-Modell (Person, Filiale, Mitarbeiter, Konto, Buchung) sind als Tabellen implementiert. Zusätzlich wurden die beiden M:N-Beziehungen (Konto↔Person, Mitarbeiter↔Person) korrekt als Junction-Tabellen (account_holders, employee_customers) modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind vorhanden und korrekt übersetzt: Person (firstname, lastname, address, contact_info), Filiale (name, location, contact_info), Konto (account_type, status, creation_date), Mitarbeiter (name, contact_info), Buchung (transaction_date, amount, transaction_type, purpose). Beziehungsattribute sind ebenfalls vorhanden: access_rights in account_holders, care_start_date und care_end_date in employee_customers.",
+          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: Person (id, firstname, lastname, address, phone, email), Filiale (id, name, location, phone, email), Mitarbeiter (id, name, branch_id), Konto (id, account_type, status, branch_id), Buchung (id, account_id, transaction_date, amount, transaction_type, purpose). Beziehungsattribute sind ebenfalls vorhanden: access_rights in account_holders, care_since in employee_customers.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Konto→Filiale (N:1) via branch_id, (2) Person↔Konto (M:N) via account_holders Junction Table mit access_rights, (3) Konto→Buchung (1:N) via account_id, (4) Mitarbeiter→Filiale (N:1) via branch_id, (5) Mitarbeiter↔Person (M:N) via employee_customers Junction Table mit care_start_date und care_end_date. Kardinalitäten und Fremdschlüssel sind konsistent mit dem ER-Modell.",
+          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Konto→Filiale (N:1) via branch_id, (2) Konto↔Person (M:N) via account_holders Junction, (3) Mitarbeiter→Filiale (N:1) via branch_id, (4) Mitarbeiter↔Person (M:N) via employee_customers Junction, (5) Buchung→Konto (N:1) via account_id. Kardinalitäten und Referenzen sind konsistent.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar, (2) Alle nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK, (3) Keine transitiven Abhängigkeiten zwischen nicht-Schlüssel-Attributen. Junction Tables sind korrekt normalisiert mit Composite PKs und FKs.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF): Keine Redundanzen, keine partiellen Abhängigkeiten, keine transitiven Abhängigkeiten. Junctions sind korrekt normalisiert mit zusammengesetzten PKs und FK-Referenzen. Alle Attribute sind atomar und funktional abhängig von ihren PKs.",
           "korrekturanweisung": ""
         }
       ],
@@ -941,32 +924,32 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 16320,
-    "total_output_tokens": 5532,
-    "total_tokens": 21852,
+    "total_input_tokens": 16155,
+    "total_output_tokens": 5391,
+    "total_tokens": 21546,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1685,
-        "output_tokens": 1434,
+        "output_tokens": 1411,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3190,
-        "output_tokens": 1401,
+        "input_tokens": 3167,
+        "output_tokens": 1334,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4104,
-        "output_tokens": 1723,
+        "input_tokens": 4070,
+        "output_tokens": 1672,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7341,
+        "input_tokens": 7233,
         "output_tokens": 974,
         "cost_usd": 0.0
       }
@@ -978,7 +961,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1685,
-        "output_tokens": 1434,
+        "output_tokens": 1411,
         "cost_usd": 0.0
       },
       {
@@ -986,8 +969,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3190,
-        "output_tokens": 1401,
+        "input_tokens": 3167,
+        "output_tokens": 1334,
         "cost_usd": 0.0
       },
       {
@@ -995,8 +978,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4104,
-        "output_tokens": 1723,
+        "input_tokens": 4070,
+        "output_tokens": 1672,
         "cost_usd": 0.0
       },
       {
@@ -1004,7 +987,7 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7341,
+        "input_tokens": 7233,
         "output_tokens": 974,
         "cost_usd": 0.0
       }

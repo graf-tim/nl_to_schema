@@ -2,38 +2,38 @@
   "testfall_id": "TC079",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.35984313725490197,
-  "score_gesamt": 0.6159058823529412,
+  "score_semantisch": 0.3912336719883891,
+  "score_gesamt": 0.6347402031930335,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
-    "pk_tabellen_gesamt": 10,
-    "pk_tabellen_mit_pk": 10,
-    "fk_referenzen_gesamt": 11,
+    "pk_tabellen_gesamt": 11,
+    "pk_tabellen_mit_pk": 11,
+    "fk_referenzen_gesamt": 12,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 0.6,
-      "recall": 0.4,
-      "f1": 0.48,
-      "matched": 6,
-      "nur_in_referenz": 9,
+      "precision": 0.6363636363636364,
+      "recall": 0.4666666666666667,
+      "f1": 0.5384615384615385,
+      "matched": 7,
+      "nur_in_referenz": 8,
       "nur_in_generiert": 4
     },
     "attribut": {
-      "precision": 0.38571428571428573,
+      "precision": 0.35526315789473684,
       "recall": 0.3253012048192771,
-      "f1": 0.35294117647058826,
+      "f1": 0.339622641509434,
       "matched": 27,
       "nur_in_referenz": 56,
-      "nur_in_generiert": 43
+      "nur_in_generiert": 49
     },
     "beziehung": {
-      "recall": 0.13333333333333333,
-      "matched": 2,
-      "nur_in_referenz": 13,
+      "recall": 0.2,
+      "matched": 3,
+      "nur_in_referenz": 12,
       "nur_in_generiert": 3
     }
   },
@@ -55,11 +55,6 @@
     },
     {
       "element": "authorizations",
-      "typ": "tabelle",
-      "fehlerklasse": null
-    },
-    {
-      "element": "diagnoses_treatment_cases",
       "typ": "tabelle",
       "fehlerklasse": null
     },
@@ -109,6 +104,11 @@
       "fehlerklasse": null
     },
     {
+      "element": "service_providers.address",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "contribution_reports.report_period_start",
       "typ": "attribut",
       "fehlerklasse": null
@@ -129,17 +129,32 @@
       "fehlerklasse": null
     },
     {
-      "element": "insured_persons.insured_since",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
       "element": "treatment_cases.authorization_id",
       "typ": "attribut",
       "fehlerklasse": null
     },
     {
+      "element": "treatment_cases.case_end_date",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "treatment_cases.documentation",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "insured_persons.insured_since",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "diagnoses_treatment_cases.diagnosis_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "diagnoses_treatment_cases.diagnosis_status",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -235,26 +250,6 @@
     },
     {
       "element": "authorizations.valid_to",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "diagnoses_treatment_cases.id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "diagnoses_treatment_cases.diagnosis_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "diagnoses_treatment_cases.treatment_case_id",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "diagnoses_treatment_cases.diagnosis_status",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -399,11 +394,6 @@
       "fehlerklasse": null
     },
     {
-      "element": "diagnoses_treatment_cases → treatment_cases",
-      "typ": "beziehung",
-      "fehlerklasse": null
-    },
-    {
       "element": "employment_periods → employers",
       "typ": "beziehung",
       "fehlerklasse": null
@@ -435,7 +425,7 @@
     "logical_schema": {
       "tables": [
         {
-          "name": "insured_persons",
+          "name": "insureds",
           "columns": [
             {
               "name": "id",
@@ -468,13 +458,19 @@
               "nullable": true
             },
             {
-              "name": "address",
+              "name": "street",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "gender",
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "postal_code",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -492,7 +488,7 @@
               "nullable": false
             },
             {
-              "name": "registration_date",
+              "name": "enrollment_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -516,13 +512,13 @@
               "nullable": false
             },
             {
-              "name": "institution_identifier",
+              "name": "institution_id",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "address",
+              "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -534,7 +530,19 @@
               "nullable": true
             },
             {
-              "name": "email",
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "postal_code",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -558,19 +566,13 @@
               "nullable": false
             },
             {
-              "name": "institution_identifier",
+              "name": "institution_id",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "specialty",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "address",
+              "name": "email",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -582,7 +584,25 @@
               "nullable": true
             },
             {
-              "name": "email",
+              "name": "street",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "city",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "postal_code",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "specialty",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
@@ -600,7 +620,7 @@
               "nullable": false
             },
             {
-              "name": "insured_person_id",
+              "name": "insured_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -612,28 +632,22 @@
               "nullable": false
             },
             {
-              "name": "start_date",
+              "name": "employment_start",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "end_date",
+              "name": "employment_end",
               "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "contributory_income",
-              "type": "DECIMAL",
               "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "insured_person_id",
-              "references_table": "insured_persons",
+              "from_column": "insured_id",
+              "references_table": "insureds",
               "references_column": "id"
             },
             {
@@ -665,20 +679,26 @@
               "nullable": false
             },
             {
-              "name": "validity_start_date",
+              "name": "contract_basis",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "validity_scope",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "validity_start",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "validity_end_date",
+              "name": "validity_end",
               "type": "DATE",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "regionality",
-              "type": "VARCHAR",
               "primary_key": false,
               "nullable": true
             }
@@ -707,7 +727,7 @@
               "nullable": false
             },
             {
-              "name": "insured_person_id",
+              "name": "insured_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -719,25 +739,19 @@
               "nullable": false
             },
             {
-              "name": "accreditation_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
               "name": "documentation_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "start_date",
+              "name": "case_start",
               "type": "DATE",
               "primary_key": false,
               "nullable": true
             },
             {
-              "name": "end_date",
+              "name": "case_end",
               "type": "DATE",
               "primary_key": false,
               "nullable": true
@@ -745,18 +759,13 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "insured_person_id",
-              "references_table": "insured_persons",
+              "from_column": "insured_id",
+              "references_table": "insureds",
               "references_column": "id"
             },
             {
               "from_column": "service_provider_id",
               "references_table": "service_providers",
-              "references_column": "id"
-            },
-            {
-              "from_column": "accreditation_id",
-              "references_table": "accreditations",
               "references_column": "id"
             }
           ]
@@ -819,7 +828,7 @@
               "nullable": false
             },
             {
-              "name": "insured_person_id",
+              "name": "insured_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
@@ -857,8 +866,8 @@
           ],
           "foreign_keys": [
             {
-              "from_column": "insured_person_id",
-              "references_table": "insured_persons",
+              "from_column": "insured_id",
+              "references_table": "insureds",
               "references_column": "id"
             }
           ]
@@ -906,6 +915,41 @@
           ]
         },
         {
+          "name": "application_treatment_cases",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "application_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "treatment_case_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "application_id",
+              "references_table": "applications",
+              "references_column": "id"
+            },
+            {
+              "from_column": "treatment_case_id",
+              "references_table": "treatment_cases",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
           "name": "contribution_reports",
           "columns": [
             {
@@ -915,31 +959,31 @@
               "nullable": false
             },
             {
-              "name": "report_number",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
               "name": "employer_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "insured_person_id",
+              "name": "insured_id",
               "type": "INTEGER",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "period_start_date",
+              "name": "report_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "period_end_date",
+              "name": "period_start",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "period_end",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -947,12 +991,6 @@
             {
               "name": "contribution_amount",
               "type": "DECIMAL",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "report_date",
-              "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
@@ -970,8 +1008,8 @@
               "references_column": "id"
             },
             {
-              "from_column": "insured_person_id",
-              "references_table": "insured_persons",
+              "from_column": "insured_id",
+              "references_table": "insureds",
               "references_column": "id"
             }
           ]
@@ -1022,8 +1060,8 @@
           "name": "Zulassung",
           "attribute": [
             "Zulassungsnummer",
-            "Gültigkeitszeitraum",
-            "Regionalität"
+            "Gültigkeitsbereich",
+            "Vertragsbasis"
           ],
           "beschreibung": "Eine Zulassung oder ein Vertrag eines Leistungserbringers, auf dessen Grundlage Leistungen abgerechnet werden."
         },
@@ -1051,9 +1089,10 @@
             "Antragsdatum",
             "Antragtyp",
             "Status",
-            "Entscheidungsdatum"
+            "Entscheidungsdatum",
+            "Entscheidung"
           ],
-          "beschreibung": "Ein Antrag auf Leistungen wie Reha, Hilfsmittel oder Krankengeld mit möglichen Positionen und Begründungen."
+          "beschreibung": "Ein Antrag auf Leistungen wie Reha, Hilfsmittel oder Krankengeld, mit möglichen Positionen und Begründungen."
         },
         {
           "name": "Antragposition",
@@ -1062,15 +1101,15 @@
             "Beschreibung",
             "Begründung"
           ],
-          "beschreibung": "Eine einzelne Position oder Begründung innerhalb eines Antrags."
+          "beschreibung": "Eine Position oder Begründung innerhalb eines Antrags."
         },
         {
           "name": "Beitragsmeldung",
           "attribute": [
-            "Meldungsnummer",
+            "Meldungsdatum",
             "Zeitraum",
             "Beitragshöhe",
-            "Meldedatum"
+            "Meldungstyp"
           ],
           "beschreibung": "Eine Meldung von Beiträgen durch einen Arbeitgeber für einen Versicherten in einem bestimmten Zeitraum."
         }
@@ -1080,7 +1119,7 @@
           "von": "Versicherter",
           "zu": "Arbeitgeber",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Versicherter kann mehrere Arbeitgeber haben, ein Arbeitgeber mehrere Versicherte. Die Beziehung wird durch Beschäftigungsverhältnis modelliert."
+          "beschreibung": "Ein Versicherter kann mehrere Arbeitgeber haben, ein Arbeitgeber mehrere Versicherte beschäftigen. Die Beziehung wird durch Beschäftigungsverhältnis modelliert."
         },
         {
           "von": "Beschäftigungsverhältnis",
@@ -1093,6 +1132,12 @@
           "zu": "Arbeitgeber",
           "kardinalitaet": "N:1",
           "beschreibung": "Ein Beschäftigungsverhältnis gehört zu genau einem Arbeitgeber."
+        },
+        {
+          "von": "Leistungserbringer",
+          "zu": "Zulassung",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Leistungserbringer kann mehrere Zulassungen oder Verträge haben."
         },
         {
           "von": "Behandlungsfall",
@@ -1125,12 +1170,6 @@
           "beschreibung": "Eine Antragposition gehört zu genau einem Antrag. Ein Antrag kann mehrere Positionen enthalten."
         },
         {
-          "von": "Zulassung",
-          "zu": "Leistungserbringer",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Eine Zulassung gehört zu genau einem Leistungserbringer. Ein Leistungserbringer kann mehrere Zulassungen haben."
-        },
-        {
           "von": "Beitragsmeldung",
           "zu": "Arbeitgeber",
           "kardinalitaet": "N:1",
@@ -1152,58 +1191,46 @@
           ]
         },
         {
-          "beschreibung": "Müssen parallele Beschäftigungen eines Versicherten vollständig getrennt betrachtet werden, oder können sie zusammengefasst werden?",
+          "beschreibung": "Ob parallele Beschäftigungen (mehrere gleichzeitige Arbeitgeber) vollständig getrennt betrachtet werden müssen oder ob es Abhängigkeiten gibt, ist noch offen.",
           "betroffene_elemente": [
-            "Versicherter",
             "Beschäftigungsverhältnis",
+            "Versicherter",
             "Arbeitgeber"
           ]
         },
         {
-          "beschreibung": "Ist die Regionalität von Zulassungen ein Attribut der Zulassung oder eine separate Entität? Wie wird die regionale Einschränkung konkret modelliert?",
+          "beschreibung": "Ob jede Zulassung eines Leistungserbringers bundesweit gilt oder regional eingeschränkt ist, wurde noch nicht abschließend geklärt.",
           "betroffene_elemente": [
             "Zulassung",
-            "Leistungserbringer"
+            "Gültigkeitsbereich"
           ]
         },
         {
-          "beschreibung": "Wie werden Rückfragen und Nachforderungen zu Anträgen abgebildet? Benötigen diese einen eigenen Vorgang oder reichen Notizen aus?",
+          "beschreibung": "Ob Rückfragen und Nachforderungen zu Anträgen als eigene Vorgänge modelliert werden müssen oder ob Notizen ausreichen, ist noch offen.",
           "betroffene_elemente": [
             "Antrag",
             "Antragposition"
           ]
         },
         {
-          "beschreibung": "Wie werden Korrekturmeldungen von Beiträgen behandelt? Ersetzen sie die alte Meldung oder werden beide Versionen gespeichert?",
+          "beschreibung": "Ob Korrekturmeldungen die alte Beitragsmeldung ersetzen oder zusätzlich gespeichert werden, muss das System grundsätzlich abbilden können. Die genaue Strategie ist noch nicht definiert.",
           "betroffene_elemente": [
-            "Beitragsmeldung"
+            "Beitragsmeldung",
+            "Meldungstyp"
           ]
         },
         {
-          "beschreibung": "Welche konkreten Stammdaten werden für Versicherte benötigt (z.B. Name, Geburtsdatum, Adresse, Geschlecht)?",
+          "beschreibung": "Welche konkreten Stammdaten für Versicherte erforderlich sind (z.B. Name, Geburtsdatum, Adresse), wird nicht spezifiziert.",
           "betroffene_elemente": [
-            "Versicherter"
+            "Versicherter",
+            "Stammdaten"
           ]
         },
         {
-          "beschreibung": "Welche Kontaktdaten werden für Arbeitgeber und Leistungserbringer benötigt (z.B. Adresse, Telefon, E-Mail)?",
+          "beschreibung": "Ob ein Antrag mit mehreren Behandlungsfällen verknüpft sein kann oder ob die Beziehung 1:1 ist, wird nicht geklärt.",
           "betroffene_elemente": [
-            "Arbeitgeber",
-            "Leistungserbringer"
-          ]
-        },
-        {
-          "beschreibung": "Wie wird die Beziehung zwischen Behandlungsfall und Zulassung modelliert? Wird ein Behandlungsfall auf Basis einer bestimmten Zulassung durchgeführt?",
-          "betroffene_elemente": [
-            "Behandlungsfall",
-            "Zulassung",
-            "Leistungserbringer"
-          ]
-        },
-        {
-          "beschreibung": "Welche möglichen Werte hat der Status eines Antrags (z.B. eingereicht, in Bearbeitung, bewilligt, teilweise bewilligt, abgelehnt)?",
-          "betroffene_elemente": [
-            "Antrag"
+            "Antrag",
+            "Behandlungsfall"
           ]
         }
       ]
@@ -1250,12 +1277,6 @@
               "pflichtfeld": false
             },
             {
-              "name": "Geschlecht",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
               "name": "Status",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
@@ -1297,19 +1318,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Adresse",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Telefon",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Email",
+              "name": "Kontaktdaten",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1338,25 +1347,13 @@
               "pflichtfeld": true
             },
             {
+              "name": "Kontaktdaten",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
               "name": "Fachgebiet",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Adresse",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Telefon",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1385,20 +1382,14 @@
               "pflichtfeld": true
             },
             {
-              "name": "Startdatum",
+              "name": "Beschäftigungsbeginn",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Enddatum",
+              "name": "Beschäftigungsende",
               "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "BeitragspflichtigeEinnahmen",
-              "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
@@ -1426,20 +1417,26 @@
               "pflichtfeld": true
             },
             {
-              "name": "Gültigkeitsstartdatum",
+              "name": "Vertragsbasis",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Gültigkeitsbereich",
+              "datentyp": "VARCHAR",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            },
+            {
+              "name": "Gültigkeitsbeginn",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Gültigkeitsenddatum",
+              "name": "Gültigkeitsende",
               "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
-              "name": "Regionalität",
-              "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             }
@@ -1473,25 +1470,19 @@
               "pflichtfeld": true
             },
             {
-              "name": "ZulassungsID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": false
-            },
-            {
               "name": "Dokumentationsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "Startdatum",
+              "name": "Fallbeginn",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "Enddatum",
+              "name": "Fallende",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -1622,18 +1613,35 @@
           ]
         },
         {
+          "name": "AntragBehandlungsfall",
+          "attribute": [
+            {
+              "name": "AntragBehandlungsfallID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "AntragID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "BehandlungsfallID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
+        },
+        {
           "name": "Beitragsmeldung",
           "attribute": [
             {
               "name": "BeitragsmeldungID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Meldungsnummer",
-              "datentyp": "VARCHAR",
-              "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
@@ -1649,7 +1657,13 @@
               "pflichtfeld": true
             },
             {
-              "name": "Zeitraumstart",
+              "name": "Meldungsdatum",
+              "datentyp": "DATE",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Zeitraumbeginn",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -1663,12 +1677,6 @@
             {
               "name": "Beitragshöhe",
               "datentyp": "DECIMAL",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "Meldedatum",
-              "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
@@ -1695,6 +1703,12 @@
           "beziehungsattribute": []
         },
         {
+          "von": "Zulassung",
+          "zu": "Leistungserbringer",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
           "von": "Behandlungsfall",
           "zu": "Versicherter",
           "kardinalitaet": "N:1",
@@ -1703,12 +1717,6 @@
         {
           "von": "Behandlungsfall",
           "zu": "Leistungserbringer",
-          "kardinalitaet": "N:1",
-          "beziehungsattribute": []
-        },
-        {
-          "von": "Behandlungsfall",
-          "zu": "Zulassung",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
@@ -1731,8 +1739,14 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Zulassung",
-          "zu": "Leistungserbringer",
+          "von": "AntragBehandlungsfall",
+          "zu": "Antrag",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "AntragBehandlungsfall",
+          "zu": "Behandlungsfall",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
         },
@@ -1774,25 +1788,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 10 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: insured_persons, employers, service_providers, employments, accreditations, treatment_cases, diagnoses, applications, application_positions, contribution_reports. Die Abbildung ist vollständig und konsistent.",
+          "beschreibung": "Alle 10 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: insureds, employers, service_providers, employments, accreditations, treatment_cases, diagnoses, applications, application_positions, contribution_reports. Zusätzlich existiert die Junction-Table application_treatment_cases für die M:N-Beziehung zwischen Antrag und Behandlungsfall.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt. Stammdaten (firstname, lastname, birthdate, address, gender), Kontaktdaten (phone, email), Institutionskennungen, Zeiträume, Beträge und Status sind alle abgebildet. Die Namenskonventionen (snake_case, englisch) sind konsistent eingehalten.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Beispiele: insurance_number, firstname, lastname, birthdate, enrollment_date, institution_id, specialty, accreditation_number, contract_basis, validity_scope, case_number, diagnosis_code, certainty_status, application_number, application_type, decision_date, contribution_amount, report_type. Die Adresse wurde sinnvoll in street, city, postal_code aufgeteilt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 11 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: N:1-Beziehungen durch Fremdschlüssel, M:N-Beziehung (Versicherter-Arbeitgeber) durch die Tabelle employments. Die Kardinalitäten sind korrekt implementiert.",
+          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: N:1-Beziehungen durch Fremdschlüssel (z.B. employments.insured_id, treatment_cases.service_provider_id), M:N-Beziehung (Antrag ↔ Behandlungsfall) durch Junction-Table application_treatment_cases mit zwei Fremdschlüsseln. Kardinalitäten sind konsistent mit dem ER-Modell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine Transitivabhängigkeiten. Die Zerlegung in separate Tabellen (z.B. employments, accreditations, application_positions, contribution_reports) ist angemessen und vermeidet Redundanzen.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Anomalien erkannt: Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine Transitivabhängigkeiten. Kontaktdaten (email, phone, street, city, postal_code) sind atomare Attribute. Keine Redundanzen zwischen Tabellen. Die Aufteilung in employments, accreditations und contribution_reports ist angemessen.",
           "korrekturanweisung": ""
         }
       ],
@@ -1800,9 +1814,9 @@
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 1,
+    "iteration": 2,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE service_providers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    institution_identifier VARCHAR(255) NOT NULL,\n    specialty VARCHAR(255),\n    address VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_service_providers PRIMARY KEY (id)\n);\n\nCREATE TABLE accreditations (\n    id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    accreditation_number VARCHAR(255) NOT NULL,\n    validity_start_date DATE NOT NULL,\n    validity_end_date DATE,\n    regionality VARCHAR(255),\n    CONSTRAINT pk_accreditations PRIMARY KEY (id),\n    CONSTRAINT fk_accreditations_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE insured_persons (\n    id INTEGER NOT NULL,\n    insurance_number VARCHAR(255) NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    address VARCHAR(255),\n    gender VARCHAR(255),\n    status VARCHAR(255) NOT NULL,\n    insurance_type VARCHAR(255) NOT NULL,\n    registration_date DATE NOT NULL,\n    CONSTRAINT pk_insured_persons PRIMARY KEY (id)\n);\n\nCREATE TABLE applications (\n    id INTEGER NOT NULL,\n    application_number VARCHAR(255) NOT NULL,\n    insured_person_id INTEGER NOT NULL,\n    application_date DATE NOT NULL,\n    application_type VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    decision_date DATE,\n    decision VARCHAR(255),\n    CONSTRAINT pk_applications PRIMARY KEY (id),\n    CONSTRAINT fk_applications_insured_person_id FOREIGN KEY (insured_person_id) REFERENCES insured_persons (id)\n);\n\nCREATE TABLE application_positions (\n    id INTEGER NOT NULL,\n    application_id INTEGER NOT NULL,\n    position_number INTEGER NOT NULL,\n    description TEXT NOT NULL,\n    justification TEXT,\n    CONSTRAINT pk_application_positions PRIMARY KEY (id),\n    CONSTRAINT fk_application_positions_application_id FOREIGN KEY (application_id) REFERENCES applications (id)\n);\n\nCREATE TABLE employers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    institution_identifier VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    CONSTRAINT pk_employers PRIMARY KEY (id)\n);\n\nCREATE TABLE contribution_reports (\n    id INTEGER NOT NULL,\n    report_number VARCHAR(255) NOT NULL,\n    employer_id INTEGER NOT NULL,\n    insured_person_id INTEGER NOT NULL,\n    period_start_date DATE NOT NULL,\n    period_end_date DATE NOT NULL,\n    contribution_amount DECIMAL(18,2) NOT NULL,\n    report_date DATE NOT NULL,\n    report_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_contribution_reports PRIMARY KEY (id),\n    CONSTRAINT fk_contribution_reports_employer_id FOREIGN KEY (employer_id) REFERENCES employers (id),\n    CONSTRAINT fk_contribution_reports_insured_person_id FOREIGN KEY (insured_person_id) REFERENCES insured_persons (id)\n);\n\nCREATE TABLE treatment_cases (\n    id INTEGER NOT NULL,\n    case_number VARCHAR(255) NOT NULL,\n    insured_person_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    accreditation_id INTEGER,\n    documentation_date DATE NOT NULL,\n    start_date DATE,\n    end_date DATE,\n    CONSTRAINT pk_treatment_cases PRIMARY KEY (id),\n    CONSTRAINT fk_treatment_cases_insured_person_id FOREIGN KEY (insured_person_id) REFERENCES insured_persons (id),\n    CONSTRAINT fk_treatment_cases_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id),\n    CONSTRAINT fk_treatment_cases_accreditation_id FOREIGN KEY (accreditation_id) REFERENCES accreditations (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    treatment_case_id INTEGER NOT NULL,\n    diagnosis_code VARCHAR(255) NOT NULL,\n    diagnosis_text TEXT NOT NULL,\n    certainty_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id),\n    CONSTRAINT fk_diagnoses_treatment_case_id FOREIGN KEY (treatment_case_id) REFERENCES treatment_cases (id)\n);\n\nCREATE TABLE employments (\n    id INTEGER NOT NULL,\n    insured_person_id INTEGER NOT NULL,\n    employer_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    end_date DATE,\n    contributory_income DECIMAL(18,2),\n    CONSTRAINT pk_employments PRIMARY KEY (id),\n    CONSTRAINT fk_employments_insured_person_id FOREIGN KEY (insured_person_id) REFERENCES insured_persons (id),\n    CONSTRAINT fk_employments_employer_id FOREIGN KEY (employer_id) REFERENCES employers (id)\n);\n",
+    "final_ddl": "CREATE TABLE service_providers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    institution_id VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    street VARCHAR(255),\n    city VARCHAR(255),\n    postal_code VARCHAR(255),\n    specialty VARCHAR(255),\n    CONSTRAINT pk_service_providers PRIMARY KEY (id)\n);\n\nCREATE TABLE accreditations (\n    id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    accreditation_number VARCHAR(255) NOT NULL,\n    contract_basis VARCHAR(255) NOT NULL,\n    validity_scope VARCHAR(255),\n    validity_start DATE NOT NULL,\n    validity_end DATE,\n    CONSTRAINT pk_accreditations PRIMARY KEY (id),\n    CONSTRAINT fk_accreditations_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE insureds (\n    id INTEGER NOT NULL,\n    insurance_number VARCHAR(255) NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE,\n    street VARCHAR(255),\n    city VARCHAR(255),\n    postal_code VARCHAR(255),\n    status VARCHAR(255) NOT NULL,\n    insurance_type VARCHAR(255) NOT NULL,\n    enrollment_date DATE NOT NULL,\n    CONSTRAINT pk_insureds PRIMARY KEY (id)\n);\n\nCREATE TABLE applications (\n    id INTEGER NOT NULL,\n    application_number VARCHAR(255) NOT NULL,\n    insured_id INTEGER NOT NULL,\n    application_date DATE NOT NULL,\n    application_type VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    decision_date DATE,\n    decision VARCHAR(255),\n    CONSTRAINT pk_applications PRIMARY KEY (id),\n    CONSTRAINT fk_applications_insured_id FOREIGN KEY (insured_id) REFERENCES insureds (id)\n);\n\nCREATE TABLE application_positions (\n    id INTEGER NOT NULL,\n    application_id INTEGER NOT NULL,\n    position_number INTEGER NOT NULL,\n    description TEXT NOT NULL,\n    justification TEXT,\n    CONSTRAINT pk_application_positions PRIMARY KEY (id),\n    CONSTRAINT fk_application_positions_application_id FOREIGN KEY (application_id) REFERENCES applications (id)\n);\n\nCREATE TABLE treatment_cases (\n    id INTEGER NOT NULL,\n    case_number VARCHAR(255) NOT NULL,\n    insured_id INTEGER NOT NULL,\n    service_provider_id INTEGER NOT NULL,\n    documentation_date DATE NOT NULL,\n    case_start DATE,\n    case_end DATE,\n    CONSTRAINT pk_treatment_cases PRIMARY KEY (id),\n    CONSTRAINT fk_treatment_cases_insured_id FOREIGN KEY (insured_id) REFERENCES insureds (id),\n    CONSTRAINT fk_treatment_cases_service_provider_id FOREIGN KEY (service_provider_id) REFERENCES service_providers (id)\n);\n\nCREATE TABLE application_treatment_cases (\n    id INTEGER NOT NULL,\n    application_id INTEGER NOT NULL,\n    treatment_case_id INTEGER NOT NULL,\n    CONSTRAINT pk_application_treatment_cases PRIMARY KEY (id),\n    CONSTRAINT fk_application_treatment_cases_application_id FOREIGN KEY (application_id) REFERENCES applications (id),\n    CONSTRAINT fk_application_treatment_cases_treatment_case_id FOREIGN KEY (treatment_case_id) REFERENCES treatment_cases (id)\n);\n\nCREATE TABLE employers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    institution_id VARCHAR(255) NOT NULL,\n    email VARCHAR(255),\n    phone VARCHAR(255),\n    street VARCHAR(255),\n    city VARCHAR(255),\n    postal_code VARCHAR(255),\n    CONSTRAINT pk_employers PRIMARY KEY (id)\n);\n\nCREATE TABLE contribution_reports (\n    id INTEGER NOT NULL,\n    employer_id INTEGER NOT NULL,\n    insured_id INTEGER NOT NULL,\n    report_date DATE NOT NULL,\n    period_start DATE NOT NULL,\n    period_end DATE NOT NULL,\n    contribution_amount DECIMAL(18,2) NOT NULL,\n    report_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_contribution_reports PRIMARY KEY (id),\n    CONSTRAINT fk_contribution_reports_employer_id FOREIGN KEY (employer_id) REFERENCES employers (id),\n    CONSTRAINT fk_contribution_reports_insured_id FOREIGN KEY (insured_id) REFERENCES insureds (id)\n);\n\nCREATE TABLE diagnoses (\n    id INTEGER NOT NULL,\n    treatment_case_id INTEGER NOT NULL,\n    diagnosis_code VARCHAR(255) NOT NULL,\n    diagnosis_text TEXT NOT NULL,\n    certainty_status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_diagnoses PRIMARY KEY (id),\n    CONSTRAINT fk_diagnoses_treatment_case_id FOREIGN KEY (treatment_case_id) REFERENCES treatment_cases (id)\n);\n\nCREATE TABLE employments (\n    id INTEGER NOT NULL,\n    insured_id INTEGER NOT NULL,\n    employer_id INTEGER NOT NULL,\n    employment_start DATE NOT NULL,\n    employment_end DATE,\n    CONSTRAINT pk_employments PRIMARY KEY (id),\n    CONSTRAINT fk_employments_insured_id FOREIGN KEY (insured_id) REFERENCES insureds (id),\n    CONSTRAINT fk_employments_employer_id FOREIGN KEY (employer_id) REFERENCES employers (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -1827,25 +1841,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 10 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: insured_persons, employers, service_providers, employments, accreditations, treatment_cases, diagnoses, applications, application_positions, contribution_reports. Die Abbildung ist vollständig und konsistent.",
+          "beschreibung": "Alle 10 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: insureds, employers, service_providers, employments, accreditations, treatment_cases, diagnoses, applications, application_positions, contribution_reports. Zusätzlich existiert die Junction-Table application_treatment_cases für die M:N-Beziehung zwischen Antrag und Behandlungsfall.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt. Stammdaten (firstname, lastname, birthdate, address, gender), Kontaktdaten (phone, email), Institutionskennungen, Zeiträume, Beträge und Status sind alle abgebildet. Die Namenskonventionen (snake_case, englisch) sind konsistent eingehalten.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Beispiele: insurance_number, firstname, lastname, birthdate, enrollment_date, institution_id, specialty, accreditation_number, contract_basis, validity_scope, case_number, diagnosis_code, certainty_status, application_number, application_type, decision_date, contribution_amount, report_type. Die Adresse wurde sinnvoll in street, city, postal_code aufgeteilt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 11 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: N:1-Beziehungen durch Fremdschlüssel, M:N-Beziehung (Versicherter-Arbeitgeber) durch die Tabelle employments. Die Kardinalitäten sind korrekt implementiert.",
+          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: N:1-Beziehungen durch Fremdschlüssel (z.B. employments.insured_id, treatment_cases.service_provider_id), M:N-Beziehung (Antrag ↔ Behandlungsfall) durch Junction-Table application_treatment_cases mit zwei Fremdschlüsseln. Kardinalitäten sind konsistent mit dem ER-Modell.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine Transitivabhängigkeiten. Die Zerlegung in separate Tabellen (z.B. employments, accreditations, application_positions, contribution_reports) ist angemessen und vermeidet Redundanzen.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Anomalien erkannt: Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel. Keine Transitivabhängigkeiten. Kontaktdaten (email, phone, street, city, postal_code) sind atomare Attribute. Keine Redundanzen zwischen Tabellen. Die Aufteilung in employments, accreditations und contribution_reports ist angemessen.",
           "korrekturanweisung": ""
         }
       ],
@@ -1855,34 +1869,34 @@
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 4,
-    "total_input_tokens": 27121,
-    "total_output_tokens": 11427,
-    "total_tokens": 38548,
+    "total_calls": 7,
+    "total_input_tokens": 57927,
+    "total_output_tokens": 20869,
+    "total_tokens": 78796,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1949,
-        "output_tokens": 2750,
+        "output_tokens": 2601,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 1,
-        "input_tokens": 4674,
-        "output_tokens": 4249,
+        "calls": 2,
+        "input_tokens": 14188,
+        "output_tokens": 8228,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 1,
-        "input_tokens": 7109,
-        "output_tokens": 3546,
+        "calls": 2,
+        "input_tokens": 15740,
+        "output_tokens": 7064,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 1,
-        "input_tokens": 13389,
-        "output_tokens": 882,
+        "calls": 2,
+        "input_tokens": 26050,
+        "output_tokens": 2976,
         "cost_usd": 0.0
       }
     },
@@ -1893,7 +1907,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1949,
-        "output_tokens": 2750,
+        "output_tokens": 2601,
         "cost_usd": 0.0
       },
       {
@@ -1901,8 +1915,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4674,
-        "output_tokens": 4249,
+        "input_tokens": 4525,
+        "output_tokens": 3939,
         "cost_usd": 0.0
       },
       {
@@ -1910,8 +1924,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7109,
-        "output_tokens": 3546,
+        "input_tokens": 6788,
+        "output_tokens": 3249,
         "cost_usd": 0.0
       },
       {
@@ -1919,8 +1933,35 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 13389,
-        "output_tokens": 882,
+        "input_tokens": 12622,
+        "output_tokens": 1959,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "conceptual_model_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 9663,
+        "output_tokens": 4289,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "logical_schema_designer",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 8952,
+        "output_tokens": 3815,
+        "cost_usd": 0.0
+      },
+      {
+        "workflow_name": "oa",
+        "iteration": 1,
+        "agent_name": "oa_validator",
+        "model": "claude-haiku-4-5-20251001",
+        "input_tokens": 13428,
+        "output_tokens": 1017,
         "cost_usd": 0.0
       }
     ]

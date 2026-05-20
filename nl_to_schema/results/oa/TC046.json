@@ -2,8 +2,8 @@
   "testfall_id": "TC046",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.36892230576441104,
-  "score_gesamt": 0.6213533834586467,
+  "score_semantisch": 0.37142857142857144,
+  "score_gesamt": 0.6228571428571429,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -23,12 +23,12 @@
       "nur_in_generiert": 4
     },
     "attribut": {
-      "precision": 0.35714285714285715,
+      "precision": 0.37037037037037035,
       "recall": 0.3448275862068966,
-      "f1": 0.3508771929824561,
+      "f1": 0.35714285714285715,
       "matched": 10,
       "nur_in_referenz": 19,
-      "nur_in_generiert": 18
+      "nur_in_generiert": 17
     },
     "beziehung": {
       "recall": 0.2857142857142857,
@@ -59,6 +59,11 @@
       "fehlerklasse": null
     },
     {
+      "element": "article_suppliers.lead_time_days",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
       "element": "suppliers.contact_email",
       "typ": "attribut",
       "fehlerklasse": null
@@ -70,11 +75,6 @@
     },
     {
       "element": "articles.name",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "article_suppliers.lead_time_days",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -258,12 +258,6 @@
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
-            {
-              "name": "description",
-              "type": "TEXT",
-              "primary_key": false,
-              "nullable": true
             }
           ],
           "foreign_keys": []
@@ -310,7 +304,7 @@
           ]
         },
         {
-          "name": "supplier_articles",
+          "name": "article_suppliers",
           "columns": [
             {
               "name": "id",
@@ -334,13 +328,13 @@
               "name": "supplier_article_number",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             },
             {
               "name": "delivery_time_days",
               "type": "INTEGER",
               "primary_key": false,
-              "nullable": false
+              "nullable": true
             }
           ],
           "foreign_keys": [
@@ -372,7 +366,7 @@
               "nullable": false
             },
             {
-              "name": "delivery_date",
+              "name": "receipt_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
@@ -393,7 +387,7 @@
           ]
         },
         {
-          "name": "delivery_items",
+          "name": "delivery_positions",
           "columns": [
             {
               "name": "id",
@@ -443,7 +437,7 @@
             "Bezeichnung",
             "Beschreibung",
             "Interne Kennung",
-            "Aktiv (ja/nein)"
+            "Aktiv (ob noch geführt)"
           ],
           "beschreibung": "Artikel, die im Lager geführt werden"
         },
@@ -459,39 +453,36 @@
           "name": "Lagerbereich",
           "attribute": [
             "Bezeichnung",
-            "Beschreibung"
+            "Vorgesehene Artikel"
           ],
           "beschreibung": "Bereiche, in die das Lager gegliedert ist"
         },
         {
           "name": "Lagerstelle",
           "attribute": [
-            "Menge"
+            "Menge",
+            "Artikel",
+            "Lagerbereich"
           ],
-          "beschreibung": "Konkrete Lagerposition eines Artikels in einem Bereich mit aktueller Bestandsmenge"
+          "beschreibung": "Konkrete Positionen von Artikeln in Lagerbereichen mit aktuellen Bestandsmengen"
         },
         {
           "name": "Lieferung",
           "attribute": [
-            "Lieferdatum",
+            "Lieferant",
+            "Eingangsdatum",
             "Bemerkungen"
           ],
-          "beschreibung": "Wareneingänge von Lieferanten mit Dokumentation"
+          "beschreibung": "Wareneingänge mit Informationen zu Lieferant und Zeitpunkt"
         },
         {
           "name": "Lieferungsposition",
           "attribute": [
-            "Menge"
+            "Artikel",
+            "Menge",
+            "Lieferung"
           ],
-          "beschreibung": "Einzelne Artikel einer Lieferung mit Mengenangabe"
-        },
-        {
-          "name": "Lieferantenbeziehung",
-          "attribute": [
-            "Lieferantennummer des Artikels",
-            "Lieferzeit"
-          ],
-          "beschreibung": "Beziehung zwischen Lieferant und Artikel mit spezifischen Informationen"
+          "beschreibung": "Einzelne Artikel und deren Mengen innerhalb einer Lieferung"
         }
       ],
       "beziehungen": [
@@ -499,13 +490,13 @@
           "von": "Artikel",
           "zu": "Lieferant",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Artikel kann von mehreren Lieferanten bezogen werden, ein Lieferant kann viele verschiedene Artikel liefern. Vermittelt durch Lieferantenbeziehung."
+          "beschreibung": "Ein Artikel kann von mehreren Lieferanten bezogen werden, ein Lieferant kann mehrere Artikel liefern. Zusätzliche Attribute: Lieferantennummer des Artikels, Lieferzeit"
         },
         {
           "von": "Artikel",
-          "zu": "Lagerbereich",
-          "kardinalitaet": "M:N",
-          "beschreibung": "Ein Artikel kann an mehreren Lagerstellen liegen, ein Bereich kann für mehrere Artikel vorgesehen sein. Vermittelt durch Lagerstelle."
+          "zu": "Lagerstelle",
+          "kardinalitaet": "1:N",
+          "beschreibung": "Ein Artikel kann an mehreren Lagerstellen liegen"
         },
         {
           "von": "Lagerbereich",
@@ -514,16 +505,10 @@
           "beschreibung": "Ein Lagerbereich enthält mehrere Lagerstellen"
         },
         {
-          "von": "Artikel",
-          "zu": "Lagerstelle",
+          "von": "Lieferant",
+          "zu": "Lieferung",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Artikel kann an mehreren Lagerstellen vorhanden sein"
-        },
-        {
-          "von": "Lieferung",
-          "zu": "Lieferant",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Eine Lieferung kommt von genau einem Lieferanten, ein Lieferant kann mehrere Lieferungen durchführen"
+          "beschreibung": "Ein Lieferant kann mehrere Lieferungen durchführen"
         },
         {
           "von": "Lieferung",
@@ -532,57 +517,45 @@
           "beschreibung": "Eine Lieferung enthält mehrere Positionen mit verschiedenen Artikeln"
         },
         {
-          "von": "Lieferungsposition",
-          "zu": "Artikel",
-          "kardinalitaet": "N:1",
-          "beschreibung": "Eine Lieferungsposition bezieht sich auf einen Artikel"
-        },
-        {
           "von": "Artikel",
-          "zu": "Lieferantenbeziehung",
+          "zu": "Lieferungsposition",
           "kardinalitaet": "1:N",
-          "beschreibung": "Ein Artikel kann mit mehreren Lieferanten verknüpft sein"
-        },
-        {
-          "von": "Lieferant",
-          "zu": "Lieferantenbeziehung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Lieferant kann mit mehreren Artikeln verknüpft sein"
+          "beschreibung": "Ein Artikel kann in mehreren Lieferungspositionen vorkommen"
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Unklar ist, ob die Entität 'Lagerbereich' als Kandidat für eine Lagerstelle fungiert oder ob es eine separate Entität 'Lagerstelle' mit eigenem Primärschlüssel gibt. Der Text deutet darauf hin, dass ein Artikel 'an mehreren Stellen' liegen kann, was auf konkrete Lagerpositionen hindeutet, nicht nur auf Bereiche.",
-          "betroffene_elemente": [
-            "Lagerbereich",
-            "Lagerstelle"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob die Lieferantennummer des Artikels (Fremdnummer beim Lieferanten) als Attribut des Lieferanten oder als Attribut einer Beziehungstabelle modelliert werden soll.",
-          "betroffene_elemente": [
-            "Lieferant",
-            "Lieferantenbeziehung"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob 'Lieferzeit' eine feste Eigenschaft pro Lieferant-Artikel-Kombination ist oder ob sie variabel pro Lieferung sein kann.",
-          "betroffene_elemente": [
-            "Lieferantenbeziehung",
-            "Lieferung"
-          ]
-        },
-        {
-          "beschreibung": "Unklar ist, ob ein Lagerbereich für bestimmte Artikel 'vorgesehen' sein kann, aber auch andere Artikel dort lagern dürfen, oder ob es eine strikte Zuordnung gibt.",
+          "beschreibung": "Die Beziehung zwischen Lagerbereich und Artikel ist unklar: Der Text sagt, ein Bereich 'kann für bestimmte Artikel vorgesehen sein', aber es ist nicht definiert, ob dies eine zwingende Zuordnung ist oder nur eine Empfehlung. Auch ist unklar, ob ein Artikel nur in vorgesehenen Bereichen liegen darf oder auch in anderen.",
           "betroffene_elemente": [
             "Lagerbereich",
             "Artikel"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob die Lieferantennummer ein eindeutiger Identifikator für einen Lieferanten ist oder ob es ein separates Attribut gibt.",
+          "beschreibung": "Die Struktur der M:N-Beziehung zwischen Artikel und Lieferant ist nicht vollständig spezifiziert: Es ist unklar, ob die Attribute 'Lieferantennummer' und 'Lieferzeit' in einer separaten Verknüpfungstabelle oder direkt bei einem der Entitäten gespeichert werden sollen.",
+          "betroffene_elemente": [
+            "Artikel",
+            "Lieferant"
+          ]
+        },
+        {
+          "beschreibung": "Die Entität 'Lagerstelle' ist konzeptionell unklar: Ist eine Lagerstelle ein physischer Ort (z.B. Regal, Fach) oder eine logische Zuordnung von Artikel zu Bereich? Die Beziehung zu Lagerbereich ist daher mehrdeutig.",
+          "betroffene_elemente": [
+            "Lagerstelle",
+            "Lagerbereich"
+          ]
+        },
+        {
+          "beschreibung": "Für die Entität 'Lieferant' sind nur implizite Attribute genannt. Es ist unklar, welche weiteren Attribute (z.B. Adresse, Kontaktdaten, Zahlungsbedingungen) erforderlich sind.",
           "betroffene_elemente": [
             "Lieferant"
+          ]
+        },
+        {
+          "beschreibung": "Die Beziehung zwischen Lieferung und Lagerstelle ist nicht explizit modelliert: Es ist unklar, ob dokumentiert werden soll, in welchen Lagerbereich/Lagerstelle die Ware aus einer Lieferung eingelagert wurde.",
+          "betroffene_elemente": [
+            "Lieferung",
+            "Lagerstelle"
           ]
         }
       ]
@@ -661,12 +634,6 @@
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
-            },
-            {
-              "name": "Beschreibung",
-              "datentyp": "TEXT",
-              "primaerschluessel": false,
-              "pflichtfeld": false
             }
           ]
         },
@@ -700,10 +667,10 @@
           ]
         },
         {
-          "name": "Lieferantenbeziehung",
+          "name": "ArtikelLieferant",
           "attribute": [
             {
-              "name": "LieferantenbeziehungID",
+              "name": "ArtikelLieferantID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -721,16 +688,16 @@
               "pflichtfeld": true
             },
             {
-              "name": "LieferantennummerDesArtikels",
+              "name": "LieferantennummerArtikel",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             },
             {
               "name": "Lieferzeit",
               "datentyp": "INTEGER",
               "primaerschluessel": false,
-              "pflichtfeld": true
+              "pflichtfeld": false
             }
           ]
         },
@@ -750,7 +717,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "Lieferdatum",
+              "name": "Eingangsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -808,13 +775,13 @@
         },
         {
           "von": "Artikel",
-          "zu": "Lieferantenbeziehung",
+          "zu": "ArtikelLieferant",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
         {
           "von": "Lieferant",
-          "zu": "Lieferantenbeziehung",
+          "zu": "ArtikelLieferant",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
         },
@@ -862,25 +829,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: articles, suppliers, warehouse_areas, warehouse_locations, supplier_articles, deliveries, delivery_items. Die Abbildung ist vollständig und korrekt.",
+          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: articles, suppliers, warehouse_areas, warehouse_locations, article_suppliers, deliveries, delivery_positions. Die Namenskonvention (Plural, snake_case, englisch) ist konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt typisiert. Beispiele: articles.designation, articles.internal_code, articles.is_active, suppliers.name, warehouse_areas.designation, warehouse_locations.quantity, supplier_articles.supplier_article_number, supplier_articles.delivery_time_days, deliveries.delivery_date, deliveries.remarks, delivery_items.quantity. Optionale Attribute (description, remarks) sind korrekt als nullable definiert.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt typisiert. Beispiele: articles.designation, articles.internal_code, articles.is_active, suppliers.name, warehouse_areas.designation, warehouse_locations.quantity, article_suppliers.supplier_article_number, article_suppliers.delivery_time_days, deliveries.receipt_date, deliveries.remarks, delivery_positions.quantity. Nullable-Flags entsprechen den Pflichtfeld-Definitionen des ER-Modells.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N-Beziehungen (Artikel→Lagerstelle, Lagerbereich→Lagerstelle, Artikel→Lieferantenbeziehung, Lieferant→Lieferantenbeziehung, Lieferant→Lieferung, Lieferung→Lieferungsposition, Artikel→Lieferungsposition) sind durch Fremdschlüssel korrekt implementiert. M:N-Beziehungen (Artikel↔Lieferant) sind durch die Junction-Table supplier_articles korrekt vermittelt.",
+          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: (1) Artikel 1:N Lagerstelle via warehouse_locations.article_id, (2) Lagerbereich 1:N Lagerstelle via warehouse_locations.warehouse_area_id, (3) Artikel 1:N ArtikelLieferant via article_suppliers.article_id, (4) Lieferant 1:N ArtikelLieferant via article_suppliers.supplier_id, (5) Lieferant 1:N Lieferung via deliveries.supplier_id, (6) Lieferung 1:N Lieferungsposition via delivery_positions.delivery_id, (7) Artikel 1:N Lieferungsposition via delivery_positions.article_id. Die M:N-Beziehung Artikel-Lieferant ist korrekt durch die Junction-Table article_suppliers modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine nicht-Schlüssel-Attribute sind von Teilen des Primärschlüssels abhängig (alle Tabellen haben atomare PKs). (2) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. (3) Alle Attribute sind direkt vom PK abhängig. Die Junction-Table supplier_articles ist korrekt normalisiert mit eigenem PK und zwei FKs. Mengenattribute (quantity) sind korrekt als DECIMAL typisiert und nicht redundant.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Wiederholungsgruppen), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel (keine partiellen Abhängigkeiten), (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table article_suppliers ist korrekt normalisiert und enthält nur die notwendigen Fremdschlüssel und Beziehungsattribute.",
           "korrekturanweisung": ""
         }
       ],
@@ -890,7 +857,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    internal_code VARCHAR(255) NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    supplier_number VARCHAR(255),\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE deliveries (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    delivery_date DATE NOT NULL,\n    remarks TEXT,\n    CONSTRAINT pk_deliveries PRIMARY KEY (id),\n    CONSTRAINT fk_deliveries_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n\nCREATE TABLE delivery_items (\n    id INTEGER NOT NULL,\n    delivery_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_delivery_items PRIMARY KEY (id),\n    CONSTRAINT fk_delivery_items_delivery_id FOREIGN KEY (delivery_id) REFERENCES deliveries (id),\n    CONSTRAINT fk_delivery_items_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE supplier_articles (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    supplier_article_number VARCHAR(255) NOT NULL,\n    delivery_time_days INTEGER NOT NULL,\n    CONSTRAINT pk_supplier_articles PRIMARY KEY (id),\n    CONSTRAINT fk_supplier_articles_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_supplier_articles_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n\nCREATE TABLE warehouse_areas (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_warehouse_areas PRIMARY KEY (id)\n);\n\nCREATE TABLE warehouse_locations (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    warehouse_area_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_warehouse_locations PRIMARY KEY (id),\n    CONSTRAINT fk_warehouse_locations_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_warehouse_locations_warehouse_area_id FOREIGN KEY (warehouse_area_id) REFERENCES warehouse_areas (id)\n);\n",
+    "final_ddl": "CREATE TABLE articles (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    description TEXT,\n    internal_code VARCHAR(255) NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_articles PRIMARY KEY (id)\n);\n\nCREATE TABLE suppliers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    supplier_number VARCHAR(255),\n    CONSTRAINT pk_suppliers PRIMARY KEY (id)\n);\n\nCREATE TABLE article_suppliers (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    supplier_article_number VARCHAR(255),\n    delivery_time_days INTEGER,\n    CONSTRAINT pk_article_suppliers PRIMARY KEY (id),\n    CONSTRAINT fk_article_suppliers_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_article_suppliers_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n\nCREATE TABLE deliveries (\n    id INTEGER NOT NULL,\n    supplier_id INTEGER NOT NULL,\n    receipt_date DATE NOT NULL,\n    remarks TEXT,\n    CONSTRAINT pk_deliveries PRIMARY KEY (id),\n    CONSTRAINT fk_deliveries_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id)\n);\n\nCREATE TABLE delivery_positions (\n    id INTEGER NOT NULL,\n    delivery_id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_delivery_positions PRIMARY KEY (id),\n    CONSTRAINT fk_delivery_positions_delivery_id FOREIGN KEY (delivery_id) REFERENCES deliveries (id),\n    CONSTRAINT fk_delivery_positions_article_id FOREIGN KEY (article_id) REFERENCES articles (id)\n);\n\nCREATE TABLE warehouse_areas (\n    id INTEGER NOT NULL,\n    designation VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_warehouse_areas PRIMARY KEY (id)\n);\n\nCREATE TABLE warehouse_locations (\n    id INTEGER NOT NULL,\n    article_id INTEGER NOT NULL,\n    warehouse_area_id INTEGER NOT NULL,\n    quantity DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_warehouse_locations PRIMARY KEY (id),\n    CONSTRAINT fk_warehouse_locations_article_id FOREIGN KEY (article_id) REFERENCES articles (id),\n    CONSTRAINT fk_warehouse_locations_warehouse_area_id FOREIGN KEY (warehouse_area_id) REFERENCES warehouse_areas (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -915,25 +882,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: articles, suppliers, warehouse_areas, warehouse_locations, supplier_articles, deliveries, delivery_items. Die Abbildung ist vollständig und korrekt.",
+          "beschreibung": "Alle 7 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: articles, suppliers, warehouse_areas, warehouse_locations, article_suppliers, deliveries, delivery_positions. Die Namenskonvention (Plural, snake_case, englisch) ist konsistent eingehalten.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt typisiert. Beispiele: articles.designation, articles.internal_code, articles.is_active, suppliers.name, warehouse_areas.designation, warehouse_locations.quantity, supplier_articles.supplier_article_number, supplier_articles.delivery_time_days, deliveries.delivery_date, deliveries.remarks, delivery_items.quantity. Optionale Attribute (description, remarks) sind korrekt als nullable definiert.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt typisiert. Beispiele: articles.designation, articles.internal_code, articles.is_active, suppliers.name, warehouse_areas.designation, warehouse_locations.quantity, article_suppliers.supplier_article_number, article_suppliers.delivery_time_days, deliveries.receipt_date, deliveries.remarks, delivery_positions.quantity. Nullable-Flags entsprechen den Pflichtfeld-Definitionen des ER-Modells.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: 1:N-Beziehungen (Artikel→Lagerstelle, Lagerbereich→Lagerstelle, Artikel→Lieferantenbeziehung, Lieferant→Lieferantenbeziehung, Lieferant→Lieferung, Lieferung→Lieferungsposition, Artikel→Lieferungsposition) sind durch Fremdschlüssel korrekt implementiert. M:N-Beziehungen (Artikel↔Lieferant) sind durch die Junction-Table supplier_articles korrekt vermittelt.",
+          "beschreibung": "Alle 7 Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: (1) Artikel 1:N Lagerstelle via warehouse_locations.article_id, (2) Lagerbereich 1:N Lagerstelle via warehouse_locations.warehouse_area_id, (3) Artikel 1:N ArtikelLieferant via article_suppliers.article_id, (4) Lieferant 1:N ArtikelLieferant via article_suppliers.supplier_id, (5) Lieferant 1:N Lieferung via deliveries.supplier_id, (6) Lieferung 1:N Lieferungsposition via delivery_positions.delivery_id, (7) Artikel 1:N Lieferungsposition via delivery_positions.article_id. Die M:N-Beziehung Artikel-Lieferant ist korrekt durch die Junction-Table article_suppliers modelliert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine nicht-Schlüssel-Attribute sind von Teilen des Primärschlüssels abhängig (alle Tabellen haben atomare PKs). (2) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. (3) Alle Attribute sind direkt vom PK abhängig. Die Junction-Table supplier_articles ist korrekt normalisiert mit eigenem PK und zwei FKs. Mengenattribute (quantity) sind korrekt als DECIMAL typisiert und nicht redundant.",
+          "beschreibung": "Das Schema erfüllt die 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Nicht-Schlüssel-Attribute sind atomar (keine Wiederholungsgruppen), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel (keine partiellen Abhängigkeiten), (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Junction-Table article_suppliers ist korrekt normalisiert und enthält nur die notwendigen Fremdschlüssel und Beziehungsattribute.",
           "korrekturanweisung": ""
         }
       ],
@@ -944,33 +911,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 17130,
-    "total_output_tokens": 6076,
-    "total_tokens": 23206,
+    "total_input_tokens": 16605,
+    "total_output_tokens": 5875,
+    "total_tokens": 22480,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1612,
-        "output_tokens": 1733,
+        "output_tokens": 1585,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3358,
-        "output_tokens": 1741,
+        "input_tokens": 3172,
+        "output_tokens": 1618,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4395,
-        "output_tokens": 1615,
+        "input_tokens": 4337,
+        "output_tokens": 1578,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7765,
-        "output_tokens": 987,
+        "input_tokens": 7484,
+        "output_tokens": 1094,
         "cost_usd": 0.0
       }
     },
@@ -981,7 +948,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1612,
-        "output_tokens": 1733,
+        "output_tokens": 1585,
         "cost_usd": 0.0
       },
       {
@@ -989,8 +956,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3358,
-        "output_tokens": 1741,
+        "input_tokens": 3172,
+        "output_tokens": 1618,
         "cost_usd": 0.0
       },
       {
@@ -998,8 +965,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4395,
-        "output_tokens": 1615,
+        "input_tokens": 4337,
+        "output_tokens": 1578,
         "cost_usd": 0.0
       },
       {
@@ -1007,8 +974,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7765,
-        "output_tokens": 987,
+        "input_tokens": 7484,
+        "output_tokens": 1094,
         "cost_usd": 0.0
       }
     ]

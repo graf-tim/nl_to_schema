@@ -1,16 +1,16 @@
 {
   "testfall_id": "TC018",
   "workflow": "oa",
-  "score_strukturell": 0.0,
+  "score_strukturell": 1.0,
   "score_semantisch": 0.5228070175438596,
-  "score_gesamt": 0.31368421052631573,
+  "score_gesamt": 0.7136842105263157,
   "detail_strukturell": {
-    "syntax_gate": 0,
+    "syntax_gate": 1,
     "fk_gate": 1,
     "pk_rate": 1.0,
     "pk_tabellen_gesamt": 3,
     "pk_tabellen_mit_pk": 3,
-    "fk_referenzen_gesamt": 3,
+    "fk_referenzen_gesamt": 2,
     "fk_referenzen_ungueltig": 0
   },
   "detail_semantisch": {
@@ -44,7 +44,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "groups.age_range",
+      "element": "children.notes",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -54,7 +54,7 @@
       "fehlerklasse": null
     },
     {
-      "element": "children.notes",
+      "element": "groups.leader_staff_id",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -125,28 +125,76 @@
               "nullable": false
             },
             {
-              "name": "agerange",
+              "name": "age_range",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "grouproom",
+              "name": "group_room",
               "type": "VARCHAR",
               "primary_key": false,
               "nullable": false
-            },
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "caregivers",
+          "columns": [
             {
-              "name": "leader_id",
+              "name": "id",
               "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "firstname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "lastname",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "phone",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": true
+            },
+            {
+              "name": "hire_date",
+              "type": "DATE",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_active",
+              "type": "BOOLEAN",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "group_id",
+              "type": "INTEGER",
+              "primary_key": false,
+              "nullable": false
+            },
+            {
+              "name": "is_leader",
+              "type": "BOOLEAN",
               "primary_key": false,
               "nullable": false
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "leader_id",
-              "references_table": "caregivers",
+              "from_column": "group_id",
+              "references_table": "groups",
               "references_column": "id"
             }
           ]
@@ -179,70 +227,16 @@
               "nullable": false
             },
             {
-              "name": "admissiondate",
+              "name": "admission_date",
               "type": "DATE",
               "primary_key": false,
               "nullable": false
             },
             {
-              "name": "specialnotes",
+              "name": "special_notes",
               "type": "TEXT",
               "primary_key": false,
               "nullable": true
-            },
-            {
-              "name": "group_id",
-              "type": "INTEGER",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "group_id",
-              "references_table": "groups",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "caregivers",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "firstname",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "lastname",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "phonenumber",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": true
-            },
-            {
-              "name": "hiredate",
-              "type": "DATE",
-              "primary_key": false,
-              "nullable": false
-            },
-            {
-              "name": "isactive",
-              "type": "BOOLEAN",
-              "primary_key": false,
-              "nullable": false
             },
             {
               "name": "group_id",
@@ -317,21 +311,14 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Die Beziehung zwischen Gruppe und Betreuungsperson ist redundant modelliert: Es gibt eine N:1-Beziehung (Betreuungsperson arbeitet in Gruppe) und eine 1:1-Beziehung (Gruppe hat Leitung). Unklar ist, ob die Leitung als Fremdschlüssel in der Gruppe-Tabelle oder als separates Attribut in der Betreuungsperson-Tabelle modelliert werden soll.",
+          "beschreibung": "Die Beziehung zwischen Gruppe und Betreuungsperson als Leitung ist redundant zur allgemeinen Zuordnung. Es ist unklar, ob die Leitung als separate Fremdschlüssel-Beziehung oder als Attribut in der Gruppe modelliert werden soll.",
           "betroffene_elemente": [
             "Gruppe",
             "Betreuungsperson"
           ]
         },
         {
-          "beschreibung": "Unklar ist, ob eine Betreuungsperson die Leitung mehrerer Gruppen sein kann oder ob eine Person nur die Leitung einer einzigen Gruppe sein darf.",
-          "betroffene_elemente": [
-            "Betreuungsperson",
-            "Gruppe"
-          ]
-        },
-        {
-          "beschreibung": "Das Attribut 'aktiv' bei Betreuungsperson ist als boolescher Wert interpretiert worden. Unklar ist, ob dies ein einfaches Ja/Nein-Flag ist oder ob komplexere Informationen wie Zeiträume der Aktivität erforderlich sind.",
+          "beschreibung": "Das Attribut 'aktiv' bei Betreuungsperson ist als boolescher Wert interpretiert worden ('ob sie aktuell aktiv sind'), könnte aber auch ein Datum oder Status sein.",
           "betroffene_elemente": [
             "Betreuungsperson"
           ]
@@ -344,37 +331,37 @@
           "name": "Kind",
           "attribute": [
             {
-              "name": "kind_id",
+              "name": "id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "vorname",
+              "name": "Vorname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "nachname",
+              "name": "Nachname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "geburtsdatum",
+              "name": "Geburtsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "aufnahmedatum",
+              "name": "Aufnahmedatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "besondere_hinweise",
+              "name": "besondere_Hinweise",
               "datentyp": "TEXT",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -391,32 +378,26 @@
           "name": "Gruppe",
           "attribute": [
             {
-              "name": "gruppe_id",
+              "name": "id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "name",
+              "name": "Name",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "altersbereich",
+              "name": "Altersbereich",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "gruppenraum",
+              "name": "Gruppenraum",
               "datentyp": "VARCHAR",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "leitung_id",
-              "datentyp": "INTEGER",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -426,31 +407,31 @@
           "name": "Betreuungsperson",
           "attribute": [
             {
-              "name": "betreuungsperson_id",
+              "name": "id",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
             },
             {
-              "name": "vorname",
+              "name": "Vorname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "nachname",
+              "name": "Nachname",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
             },
             {
-              "name": "telefonnummer",
+              "name": "Telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
             },
             {
-              "name": "einstellungsdatum",
+              "name": "Einstellungsdatum",
               "datentyp": "DATE",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -464,6 +445,12 @@
             {
               "name": "gruppe_id",
               "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "is_leader",
+              "datentyp": "BOOLEAN",
               "primaerschluessel": false,
               "pflichtfeld": true
             }
@@ -482,23 +469,17 @@
           "zu": "Gruppe",
           "kardinalitaet": "N:1",
           "beziehungsattribute": []
-        },
-        {
-          "von": "Gruppe",
-          "zu": "Betreuungsperson",
-          "kardinalitaet": "1:1",
-          "beziehungsattribute": []
         }
       ]
     },
     "critic_report": {
-      "qualitaet_ausreichend": false,
+      "qualitaet_ausreichend": true,
       "findings": [
         {
           "criterion": "syntaktische_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "DDL nicht erzeugbar/parsebar: Zirkelreferenz im Schema entdeckt: caregivers -> groups -> caregivers. Topologische Sortierung nicht möglich.",
-          "korrekturanweisung": "Stelle sicher, dass jede Tabelle Spalten hat und keine Zirkelreferenzen vorliegen."
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "pk_vollstaendigkeit",
@@ -515,68 +496,115 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext (Kind, Gruppe, Betreuungsperson) sind im Schema vorhanden und korrekt als Tabellen 'children', 'groups', 'caregivers' modelliert.",
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind vorhanden: Kind (children), Gruppe (groups), Betreuungsperson (caregivers). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute sind vorhanden: Kind (firstname, lastname, birthdate, admissiondate, specialnotes), Gruppe (name, agerange, grouproom, leader_id), Betreuungsperson (firstname, lastname, phonenumber, hiredate, isactive, group_id). Die Attributnamen folgen den Konventionen (snake_case, englisch).",
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt typisiert: Kind (firstname, lastname, birthdate, admission_date, special_notes), Gruppe (name, age_range, group_room), Betreuungsperson (firstname, lastname, phone, hire_date, is_active). Attributnamen folgen der Konvention (snake_case, englisch). Nullable-Status ist korrekt: special_notes und phone sind optional (nullable: true), alle anderen Pflichtfelder sind NOT NULL.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
-          "erfuellt": false,
-          "beschreibung": "Die Modellierung der 1:1-Beziehung 'Gruppe hat Leitung' ist fehlerhaft. Das Schema implementiert diese als Fremdschlüssel 'leader_id' in 'groups', was zu einer Zirkelreferenz mit der N:1-Beziehung 'Betreuungsperson arbeitet in Gruppe' führt. Zudem gibt es keine Constraint, die garantiert, dass die Leitung tatsächlich in der Gruppe arbeitet. Die Anforderung 'Jede Gruppe hat genau eine Leitung, und diese Leitung ist immer eine der Betreuungspersonen dieser Gruppe' wird nicht vollständig durchgesetzt.",
-          "korrekturanweisung": "Empfohlene Lösung: Entfernen Sie 'leader_id' aus 'groups' und fügen Sie stattdessen ein BOOLEAN-Attribut 'is_leader' in 'caregivers' ein (nullable: false, default: false). Dies eliminiert die Zirkelreferenz und ermöglicht eine Constraint (UNIQUE auf (group_id, is_leader) mit is_leader=true), die garantiert, dass jede Gruppe genau eine Leitung hat. Alternativ: Fremdschlüssel mit DEFERRED CONSTRAINT verwenden."
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: (1) Kind N:1 Gruppe via group_id in children (NOT NULL), (2) Betreuungsperson N:1 Gruppe via group_id in caregivers (NOT NULL). Die 1:1-Beziehung 'Gruppe hat genau eine Leitung' ist durch das Attribut is_leader in caregivers gelöst, das anzeigt, welche Betreuungsperson die Leitung ist. Dies ist eine pragmatische und normalisierte Lösung: Statt einen separaten Fremdschlüssel leader_id in groups zu verwenden (was zu Redundanz führen würde), wird die Information in der caregivers-Tabelle gespeichert. Die Constraint 'genau eine Leitung pro Gruppe' müsste auf Applikationsebene durchgesetzt werden, ist aber strukturell korrekt abgebildet.",
+          "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Alle Attribute sind atomar, es gibt keine partiellen oder transitiven Abhängigkeiten. Jede Tabelle hat einen eindeutigen Primärschlüssel, und Fremdschlüssel verweisen auf Primärschlüssel.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar (keine zusammengesetzten oder mehwertigen Attribute), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Modellierung der Leitung als is_leader-Flag in caregivers ist normalisiert und vermeidet Redundanz.",
           "korrekturanweisung": ""
         }
       ],
-      "origin_step": "cmd"
+      "origin_step": null
     },
     "critic_report_c1": null,
     "critic_report_c2": null,
-    "iteration": 3,
+    "iteration": 2,
     "max_iter": 3,
-    "final_ddl": "",
-    "final_critic_report": null,
-    "error": "ddl_generation_failed: Zirkelreferenz im Schema entdeckt: caregivers -> groups -> caregivers. Topologische Sortierung nicht möglich.",
+    "final_ddl": "CREATE TABLE groups (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    age_range VARCHAR(255) NOT NULL,\n    group_room VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_groups PRIMARY KEY (id)\n);\n\nCREATE TABLE caregivers (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    hire_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    group_id INTEGER NOT NULL,\n    is_leader BOOLEAN NOT NULL,\n    CONSTRAINT pk_caregivers PRIMARY KEY (id),\n    CONSTRAINT fk_caregivers_group_id FOREIGN KEY (group_id) REFERENCES groups (id)\n);\n\nCREATE TABLE children (\n    id INTEGER NOT NULL,\n    firstname VARCHAR(255) NOT NULL,\n    lastname VARCHAR(255) NOT NULL,\n    birthdate DATE NOT NULL,\n    admission_date DATE NOT NULL,\n    special_notes TEXT,\n    group_id INTEGER NOT NULL,\n    CONSTRAINT pk_children PRIMARY KEY (id),\n    CONSTRAINT fk_children_group_id FOREIGN KEY (group_id) REFERENCES groups (id)\n);\n",
+    "final_critic_report": {
+      "qualitaet_ausreichend": true,
+      "findings": [
+        {
+          "criterion": "syntaktische_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "DDL ist syntaktisch valide.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "pk_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "PK-Quote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "fk_integritaet",
+          "erfuellt": true,
+          "beschreibung": "FK-Integritätsquote: 1.00",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "entitaets_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle drei Entitäten aus dem Anforderungstext sind vorhanden: Kind (children), Gruppe (groups), Betreuungsperson (caregivers). Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "attribut_vollstaendigkeit",
+          "erfuellt": true,
+          "beschreibung": "Alle geforderten Attribute sind vorhanden und korrekt typisiert: Kind (firstname, lastname, birthdate, admission_date, special_notes), Gruppe (name, age_range, group_room), Betreuungsperson (firstname, lastname, phone, hire_date, is_active). Attributnamen folgen der Konvention (snake_case, englisch). Nullable-Status ist korrekt: special_notes und phone sind optional (nullable: true), alle anderen Pflichtfelder sind NOT NULL.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "beziehungs_korrektheit",
+          "erfuellt": true,
+          "beschreibung": "Die Beziehungen sind korrekt modelliert: (1) Kind N:1 Gruppe via group_id in children (NOT NULL), (2) Betreuungsperson N:1 Gruppe via group_id in caregivers (NOT NULL). Die 1:1-Beziehung 'Gruppe hat genau eine Leitung' ist durch das Attribut is_leader in caregivers gelöst, das anzeigt, welche Betreuungsperson die Leitung ist. Dies ist eine pragmatische und normalisierte Lösung: Statt einen separaten Fremdschlüssel leader_id in groups zu verwenden (was zu Redundanz führen würde), wird die Information in der caregivers-Tabelle gespeichert. Die Constraint 'genau eine Leitung pro Gruppe' müsste auf Applikationsebene durchgesetzt werden, ist aber strukturell korrekt abgebildet.",
+          "korrekturanweisung": ""
+        },
+        {
+          "criterion": "normalisierung",
+          "erfuellt": true,
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Alle Attribute sind atomar (keine zusammengesetzten oder mehwertigen Attribute), (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom Primärschlüssel, (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Die Modellierung der Leitung als is_leader-Flag in caregivers ist normalisiert und vermeidet Redundanz.",
+          "korrekturanweisung": ""
+        }
+      ],
+      "origin_step": null
+    },
+    "error": null,
     "diskussionsverlauf": []
   },
   "telemetry": {
-    "total_calls": 10,
-    "total_input_tokens": 37904,
-    "total_output_tokens": 10678,
-    "total_tokens": 48582,
+    "total_calls": 7,
+    "total_input_tokens": 25877,
+    "total_output_tokens": 7175,
+    "total_tokens": 33052,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1484,
-        "output_tokens": 955,
+        "output_tokens": 801,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
-        "calls": 3,
-        "input_tokens": 7422,
-        "output_tokens": 3003,
+        "calls": 2,
+        "input_tokens": 6060,
+        "output_tokens": 2140,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
-        "calls": 3,
-        "input_tokens": 12632,
-        "output_tokens": 2892,
+        "calls": 2,
+        "input_tokens": 7827,
+        "output_tokens": 1914,
         "cost_usd": 0.0
       },
       "oa_validator": {
-        "calls": 3,
-        "input_tokens": 16366,
-        "output_tokens": 3828,
+        "calls": 2,
+        "input_tokens": 10506,
+        "output_tokens": 2320,
         "cost_usd": 0.0
       }
     },
@@ -587,7 +615,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1484,
-        "output_tokens": 955,
+        "output_tokens": 801,
         "cost_usd": 0.0
       },
       {
@@ -595,7 +623,7 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2474,
+        "input_tokens": 2312,
         "output_tokens": 1001,
         "cost_usd": 0.0
       },
@@ -613,8 +641,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5482,
-        "output_tokens": 1295,
+        "input_tokens": 5320,
+        "output_tokens": 1264,
         "cost_usd": 0.0
       },
       {
@@ -622,8 +650,8 @@
         "iteration": 1,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2474,
-        "output_tokens": 1001,
+        "input_tokens": 3748,
+        "output_tokens": 1139,
         "cost_usd": 0.0
       },
       {
@@ -631,7 +659,7 @@
         "iteration": 1,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4571,
+        "input_tokens": 4360,
         "output_tokens": 936,
         "cost_usd": 0.0
       },
@@ -640,35 +668,8 @@
         "iteration": 1,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5402,
-        "output_tokens": 1142,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "conceptual_model_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 2474,
-        "output_tokens": 1001,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "logical_schema_designer",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4594,
-        "output_tokens": 978,
-        "cost_usd": 0.0
-      },
-      {
-        "workflow_name": "oa",
-        "iteration": 2,
-        "agent_name": "oa_validator",
-        "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 5482,
-        "output_tokens": 1391,
+        "input_tokens": 5186,
+        "output_tokens": 1056,
         "cost_usd": 0.0
       }
     ]

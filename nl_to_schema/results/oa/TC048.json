@@ -362,7 +362,72 @@
           ]
         },
         {
-          "name": "issues",
+          "name": "specialties",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employees",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "name",
+              "type": "VARCHAR",
+              "primary_key": false,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "employee_specialties",
+          "columns": [
+            {
+              "name": "employee_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            },
+            {
+              "name": "specialty_id",
+              "type": "INTEGER",
+              "primary_key": true,
+              "nullable": false
+            }
+          ],
+          "foreign_keys": [
+            {
+              "from_column": "employee_id",
+              "references_table": "employees",
+              "references_column": "id"
+            },
+            {
+              "from_column": "specialty_id",
+              "references_table": "specialties",
+              "references_column": "id"
+            }
+          ]
+        },
+        {
+          "name": "requests",
           "columns": [
             {
               "name": "id",
@@ -433,75 +498,10 @@
           ]
         },
         {
-          "name": "employees",
+          "name": "request_assignments",
           "columns": [
             {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "specializations",
-          "columns": [
-            {
-              "name": "id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "name",
-              "type": "VARCHAR",
-              "primary_key": false,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": []
-        },
-        {
-          "name": "employee_specializations",
-          "columns": [
-            {
-              "name": "employee_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            },
-            {
-              "name": "specialization_id",
-              "type": "INTEGER",
-              "primary_key": true,
-              "nullable": false
-            }
-          ],
-          "foreign_keys": [
-            {
-              "from_column": "employee_id",
-              "references_table": "employees",
-              "references_column": "id"
-            },
-            {
-              "from_column": "specialization_id",
-              "references_table": "specializations",
-              "references_column": "id"
-            }
-          ]
-        },
-        {
-          "name": "issue_assignments",
-          "columns": [
-            {
-              "name": "issue_id",
+              "name": "request_id",
               "type": "INTEGER",
               "primary_key": true,
               "nullable": false
@@ -519,16 +519,16 @@
               "nullable": false
             },
             {
-              "name": "role",
-              "type": "VARCHAR",
+              "name": "sequence",
+              "type": "INTEGER",
               "primary_key": false,
               "nullable": true
             }
           ],
           "foreign_keys": [
             {
-              "from_column": "issue_id",
-              "references_table": "issues",
+              "from_column": "request_id",
+              "references_table": "requests",
               "references_column": "id"
             },
             {
@@ -551,7 +551,7 @@
             "Kontaktinformation",
             "Seit-Datum"
           ],
-          "beschreibung": "Personen oder Firmen, die sich mit Anliegen an den Kundendienst wenden. Erfasst werden Kontaktdaten und seit wann sie als Kunde geführt werden."
+          "beschreibung": "Personen oder Firmen, die sich mit Anliegen an den Kundendienst wenden. Erfasst werden Name, Kontaktinformation und seit wann sie als Kunde geführt werden."
         },
         {
           "name": "Anliegen",
@@ -564,7 +564,7 @@
             "Lösungsbeschreibung",
             "Lösungsdatum"
           ],
-          "beschreibung": "Anfragen oder Probleme, die von Kunden eingereicht werden. Erfasst werden Zeitpunkt, Inhalt, Priorität, Status und ggf. die Lösung."
+          "beschreibung": "Anfragen oder Probleme von Kunden. Erfasst werden Eingangsdatum, Inhalt, Dringlichkeit, Bearbeitungsstand und bei Lösung die Antwort/Massnahme sowie Lösungszeitpunkt."
         },
         {
           "name": "Produkt",
@@ -573,7 +573,7 @@
             "Produktname",
             "Produktart"
           ],
-          "beschreibung": "Geräte oder Produkte, auf die sich ein Anliegen beziehen kann. Allgemeine Produktinformationen."
+          "beschreibung": "Geräte oder Produkte, auf die sich ein Anliegen beziehen kann. Allgemeiner Produktname und Produktart."
         },
         {
           "name": "Geraet",
@@ -582,14 +582,14 @@
             "Seriennummer",
             "ProduktID"
           ],
-          "beschreibung": "Konkrete Instanzen von Produkten mit eindeutiger Seriennummer, die ein Kunde nutzt und auf die sich Anliegen beziehen können."
+          "beschreibung": "Konkrete Instanz eines Produkts mit eindeutiger Seriennummer, die der Kunde nutzt. Wichtig für Rückfragen."
         },
         {
           "name": "Mitarbeiter",
           "attribute": [
             "MitarbeiterID",
             "Name",
-            "Fachgebiete"
+            "Fachgebiet"
           ],
           "beschreibung": "Servicemitarbeiter mit unterschiedlichen Fähigkeiten und Fachgebieten, die Anliegen bearbeiten."
         },
@@ -599,7 +599,7 @@
             "FachgebietID",
             "Bezeichnung"
           ],
-          "beschreibung": "Thematische Spezialisierungen oder Kompetenzbereiche von Mitarbeitern."
+          "beschreibung": "Fachliche Spezialisierungen von Mitarbeitern, um passende Mitarbeiter für Anliegen einzusetzen."
         }
       ],
       "beziehungen": [
@@ -625,7 +625,7 @@
           "von": "Anliegen",
           "zu": "Mitarbeiter",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Anliegen kann von mehreren Mitarbeitern bearbeitet werden. Ein Mitarbeiter kann mehrere Anliegen bearbeiten."
+          "beschreibung": "Ein Anliegen kann im Laufe der Bearbeitung von mehreren Mitarbeitern begleitet werden. Ein Mitarbeiter kann mehrere Anliegen bearbeiten."
         },
         {
           "von": "Mitarbeiter",
@@ -636,51 +636,43 @@
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Ist die Beziehung zwischen Anliegen und Gerät optional oder obligatorisch? Der Text sagt 'manche Anliegen beziehen sich auf ein bestimmtes Gerät', was impliziert, dass nicht alle Anliegen ein Gerät haben müssen.",
+          "beschreibung": "Ist die Beziehung zwischen Anliegen und Gerät optional oder obligatorisch? Der Text sagt 'Manche Anliegen beziehen sich auf ein bestimmtes Gerät', was impliziert, dass nicht alle Anliegen ein Gerät haben müssen.",
           "betroffene_elemente": [
             "Anliegen",
             "Geraet"
           ]
         },
         {
-          "beschreibung": "Wie wird die M:N-Beziehung zwischen Anliegen und Mitarbeiter dokumentiert? Sollen Zeiträume der Bearbeitung, Rollen oder Reihenfolge erfasst werden?",
+          "beschreibung": "Wie wird die M:N-Beziehung zwischen Anliegen und Mitarbeiter dokumentiert? Sollen Zeitpunkte der Zuweisung, Reihenfolge oder Rollen der Mitarbeiter erfasst werden?",
           "betroffene_elemente": [
             "Anliegen",
             "Mitarbeiter"
           ]
         },
         {
-          "beschreibung": "Was genau sind die möglichen Werte für 'Bearbeitungsstand'? Sind dies z.B. 'offen', 'in Bearbeitung', 'gelöst', 'geschlossen'?",
+          "beschreibung": "Sind 'Fachgebiete' separate Entitäten oder nur Attribute von Mitarbeitern? Der Text sagt 'Fachgebiete der Mitarbeiter sollen gepflegt werden', was auf eine separate Verwaltung hindeutet.",
           "betroffene_elemente": [
-            "Anliegen"
+            "Mitarbeiter",
+            "Fachgebiet"
           ]
         },
         {
-          "beschreibung": "Wie wird 'Dringlichkeit' gemessen oder klassifiziert? (z.B. numerische Skala, Kategorien wie 'niedrig/mittel/hoch')",
-          "betroffene_elemente": [
-            "Anliegen"
-          ]
-        },
-        {
-          "beschreibung": "Sind 'Kontaktinformation' und 'Seit-Datum' ausreichend spezifiziert? Welche Kontaktdaten sind erforderlich (Telefon, E-Mail, Adresse)?",
+          "beschreibung": "Wie wird die Kontaktinformation strukturiert? Sollen Telefon, E-Mail, Adresse separat erfasst werden oder als einzelnes Feld?",
           "betroffene_elemente": [
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Ist die Unterscheidung zwischen 'Produkt' (allgemein) und 'Gerät' (konkrete Instanz mit Seriennummer) korrekt interpretiert, oder sollten diese zusammengefasst werden?",
+          "beschreibung": "Ist ein Anliegen erst 'abgeschlossen', wenn es gelöst wurde, oder gibt es andere Abschlussszenarien (z.B. Ablehnung, Weitergabe)? Der Text sagt 'Nicht jedes Anliegen ist sofort abgeschlossen', was unklar lässt, ob alle Anliegen irgendwann abgeschlossen werden.",
           "betroffene_elemente": [
-            "Produkt",
-            "Geraet"
+            "Anliegen"
           ]
         },
         {
-          "beschreibung": "Sollen Auswertungen (z.B. 'welche Produktarten verursachen Probleme', 'welche Mitarbeiter sind an bestimmten Themen beteiligt') durch zusätzliche Attribute oder Abfragen realisiert werden?",
+          "beschreibung": "Sollen Anliegen auch einem oder mehreren Themen/Kategorien zugeordnet werden, um 'passende Mitarbeiter einzusetzen'? Der Text erwähnt 'je nach Thema', aber es ist unklar, ob dies eine separate Entität sein sollte.",
           "betroffene_elemente": [
             "Anliegen",
-            "Produkt",
-            "Mitarbeiter",
-            "Fachgebiet"
+            "Mitarbeiter"
           ]
         }
       ]
@@ -872,6 +864,64 @@
               "pflichtfeld": true
             }
           ]
+        },
+        {
+          "name": "AnliegenBearbeitung",
+          "attribute": [
+            {
+              "name": "AnliegenBearbeitungID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "AnliegenID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "ZuweisungsDatum",
+              "datentyp": "TIMESTAMP",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "Reihenfolge",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": false
+            }
+          ]
+        },
+        {
+          "name": "MitarbeiterFachgebiet",
+          "attribute": [
+            {
+              "name": "MitarbeiterFachgebietID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": true,
+              "pflichtfeld": true
+            },
+            {
+              "name": "MitarbeiterID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            },
+            {
+              "name": "FachgebietID",
+              "datentyp": "INTEGER",
+              "primaerschluessel": false,
+              "pflichtfeld": true
+            }
+          ]
         }
       ],
       "beziehungen": [
@@ -894,18 +944,27 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Anliegen",
-          "zu": "Mitarbeiter",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": [
-            "Zuordnungsdatum",
-            "Bearbeitungsrolle"
-          ]
+          "von": "AnliegenBearbeitung",
+          "zu": "Anliegen",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
         },
         {
-          "von": "Mitarbeiter",
+          "von": "AnliegenBearbeitung",
+          "zu": "Mitarbeiter",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "MitarbeiterFachgebiet",
+          "zu": "Mitarbeiter",
+          "kardinalitaet": "N:1",
+          "beziehungsattribute": []
+        },
+        {
+          "von": "MitarbeiterFachgebiet",
           "zu": "Fachgebiet",
-          "kardinalitaet": "M:N",
+          "kardinalitaet": "N:1",
           "beziehungsattribute": []
         }
       ]
@@ -934,25 +993,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: customers, issues, products, devices, employees, specializations. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, products, devices, specialties, employees, employee_specialties, requests, request_assignments. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im ERModell definierten Attribute sind im LogicalSchema vorhanden und korrekt übersetzt: z.B. 'SeitDatum' → 'customer_since', 'Eingangsdatum' → 'received_at', 'Lösungsbeschreibung' → 'solution_description', 'Lösungsdatum' → 'resolved_at'. Kontaktinformationen (phone, email, address) sind vollständig erfasst.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Beispiele: customer_since (SeitDatum), received_at (Eingangsdatum), solution_description (Lösungsbeschreibung), resolved_at (Lösungsdatum). Kontaktinformationen sind korrekt aufgeteilt in phone, email, address.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: (1) Anliegen→Kunde (N:1) via customer_id, (2) Anliegen→Gerät (N:1, optional) via device_id, (3) Gerät→Produkt (N:1) via product_id, (4) Anliegen↔Mitarbeiter (M:N) via Junction-Table 'issue_assignments' mit Beziehungsattributen (assigned_at, role), (5) Mitarbeiter↔Fachgebiet (M:N) via Junction-Table 'employee_specializations'. Alle Kardinalitäten sind korrekt abgebildet.",
+          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: N:1-Beziehungen (customers→requests, devices→requests, products→devices) durch FK-Spalten; M:N-Beziehungen (employees↔requests via request_assignments, employees↔specialties via employee_specialties) durch Junction-Tables mit korrekten Primärschlüsseln und Fremdschlüsseln. Kardinalitäten sind korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen erkannt. Alle Attribute sind atomar. Keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Junction-Tables sind korrekt normalisiert. Keine Anomalien bei Insert, Update oder Delete erkannt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen; (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Junction-Tables (employee_specialties, request_assignments) sind korrekt normalisiert mit zusammengesetzten PKs.",
           "korrekturanweisung": ""
         }
       ],
@@ -962,7 +1021,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT,\n    customer_since DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    product_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_products PRIMARY KEY (id)\n);\n\nCREATE TABLE devices (\n    id INTEGER NOT NULL,\n    serial_number VARCHAR(255) NOT NULL,\n    product_id INTEGER NOT NULL,\n    CONSTRAINT pk_devices PRIMARY KEY (id),\n    CONSTRAINT fk_devices_product_id FOREIGN KEY (product_id) REFERENCES products (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE specializations (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_specializations PRIMARY KEY (id)\n);\n\nCREATE TABLE employee_specializations (\n    employee_id INTEGER NOT NULL,\n    specialization_id INTEGER NOT NULL,\n    CONSTRAINT pk_employee_specializations PRIMARY KEY (employee_id, specialization_id),\n    CONSTRAINT fk_employee_specializations_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_specializations_specialization_id FOREIGN KEY (specialization_id) REFERENCES specializations (id)\n);\n\nCREATE TABLE issues (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    device_id INTEGER,\n    received_at TIMESTAMP NOT NULL,\n    description TEXT NOT NULL,\n    urgency VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    solution_description TEXT,\n    resolved_at TIMESTAMP,\n    CONSTRAINT pk_issues PRIMARY KEY (id),\n    CONSTRAINT fk_issues_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_issues_device_id FOREIGN KEY (device_id) REFERENCES devices (id)\n);\n\nCREATE TABLE issue_assignments (\n    issue_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    assigned_at TIMESTAMP NOT NULL,\n    role VARCHAR(255),\n    CONSTRAINT pk_issue_assignments PRIMARY KEY (issue_id, employee_id),\n    CONSTRAINT fk_issue_assignments_issue_id FOREIGN KEY (issue_id) REFERENCES issues (id),\n    CONSTRAINT fk_issue_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n",
+    "final_ddl": "CREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    type VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    address TEXT,\n    customer_since DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE products (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    product_type VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_products PRIMARY KEY (id)\n);\n\nCREATE TABLE devices (\n    id INTEGER NOT NULL,\n    serial_number VARCHAR(255) NOT NULL,\n    product_id INTEGER NOT NULL,\n    CONSTRAINT pk_devices PRIMARY KEY (id),\n    CONSTRAINT fk_devices_product_id FOREIGN KEY (product_id) REFERENCES products (id)\n);\n\nCREATE TABLE employees (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_employees PRIMARY KEY (id)\n);\n\nCREATE TABLE specialties (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_specialties PRIMARY KEY (id)\n);\n\nCREATE TABLE employee_specialties (\n    employee_id INTEGER NOT NULL,\n    specialty_id INTEGER NOT NULL,\n    CONSTRAINT pk_employee_specialties PRIMARY KEY (employee_id, specialty_id),\n    CONSTRAINT fk_employee_specialties_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id),\n    CONSTRAINT fk_employee_specialties_specialty_id FOREIGN KEY (specialty_id) REFERENCES specialties (id)\n);\n\nCREATE TABLE requests (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    device_id INTEGER,\n    received_at TIMESTAMP NOT NULL,\n    description TEXT NOT NULL,\n    urgency VARCHAR(255) NOT NULL,\n    status VARCHAR(255) NOT NULL,\n    solution_description TEXT,\n    resolved_at TIMESTAMP,\n    CONSTRAINT pk_requests PRIMARY KEY (id),\n    CONSTRAINT fk_requests_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_requests_device_id FOREIGN KEY (device_id) REFERENCES devices (id)\n);\n\nCREATE TABLE request_assignments (\n    request_id INTEGER NOT NULL,\n    employee_id INTEGER NOT NULL,\n    assigned_at TIMESTAMP NOT NULL,\n    sequence INTEGER,\n    CONSTRAINT pk_request_assignments PRIMARY KEY (request_id, employee_id),\n    CONSTRAINT fk_request_assignments_request_id FOREIGN KEY (request_id) REFERENCES requests (id),\n    CONSTRAINT fk_request_assignments_employee_id FOREIGN KEY (employee_id) REFERENCES employees (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -987,25 +1046,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im RequirementsReport und ERModell definierten Entitäten sind im LogicalSchema vorhanden: customers, issues, products, devices, employees, specializations. Die Tabellennamen folgen der Konvention (Plural, snake_case, englisch).",
+          "beschreibung": "Alle 8 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, products, devices, specialties, employees, employee_specialties, requests, request_assignments. Die Abbildung ist vollständig und korrekt.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle im ERModell definierten Attribute sind im LogicalSchema vorhanden und korrekt übersetzt: z.B. 'SeitDatum' → 'customer_since', 'Eingangsdatum' → 'received_at', 'Lösungsbeschreibung' → 'solution_description', 'Lösungsdatum' → 'resolved_at'. Kontaktinformationen (phone, email, address) sind vollständig erfasst.",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt benannt (snake_case, englisch). Beispiele: customer_since (SeitDatum), received_at (Eingangsdatum), solution_description (Lösungsbeschreibung), resolved_at (Lösungsdatum). Kontaktinformationen sind korrekt aufgeteilt in phone, email, address.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle Beziehungen aus dem ERModell sind korrekt implementiert: (1) Anliegen→Kunde (N:1) via customer_id, (2) Anliegen→Gerät (N:1, optional) via device_id, (3) Gerät→Produkt (N:1) via product_id, (4) Anliegen↔Mitarbeiter (M:N) via Junction-Table 'issue_assignments' mit Beziehungsattributen (assigned_at, role), (5) Mitarbeiter↔Fachgebiet (M:N) via Junction-Table 'employee_specializations'. Alle Kardinalitäten sind korrekt abgebildet.",
+          "beschreibung": "Alle Beziehungen aus dem ER-Modell sind korrekt im LogicalSchema abgebildet: N:1-Beziehungen (customers→requests, devices→requests, products→devices) durch FK-Spalten; M:N-Beziehungen (employees↔requests via request_assignments, employees↔specialties via employee_specialties) durch Junction-Tables mit korrekten Primärschlüsseln und Fremdschlüsseln. Kardinalitäten sind korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen erkannt. Alle Attribute sind atomar. Keine Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Junction-Tables sind korrekt normalisiert. Keine Anomalien bei Insert, Update oder Delete erkannt.",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Anomalien erkannt: (1) Keine Redundanzen in Attributen; (2) Alle Nicht-Schlüssel-Attribute sind vollständig funktional abhängig vom PK; (3) Keine transitiven Abhängigkeiten zwischen Nicht-Schlüssel-Attributen. Junction-Tables (employee_specialties, request_assignments) sind korrekt normalisiert mit zusammengesetzten PKs.",
           "korrekturanweisung": ""
         }
       ],
@@ -1016,33 +1075,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 17089,
-    "total_output_tokens": 6187,
-    "total_tokens": 23276,
+    "total_input_tokens": 18187,
+    "total_output_tokens": 6723,
+    "total_tokens": 24910,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1652,
-        "output_tokens": 1705,
+        "output_tokens": 1707,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3456,
-        "output_tokens": 1749,
+        "input_tokens": 3448,
+        "output_tokens": 2307,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4191,
-        "output_tokens": 1786,
+        "input_tokens": 4749,
+        "output_tokens": 1784,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7790,
-        "output_tokens": 947,
+        "input_tokens": 8338,
+        "output_tokens": 925,
         "cost_usd": 0.0
       }
     },
@@ -1053,7 +1112,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1652,
-        "output_tokens": 1705,
+        "output_tokens": 1707,
         "cost_usd": 0.0
       },
       {
@@ -1061,8 +1120,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3456,
-        "output_tokens": 1749,
+        "input_tokens": 3448,
+        "output_tokens": 2307,
         "cost_usd": 0.0
       },
       {
@@ -1070,8 +1129,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4191,
-        "output_tokens": 1786,
+        "input_tokens": 4749,
+        "output_tokens": 1784,
         "cost_usd": 0.0
       },
       {
@@ -1079,8 +1138,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7790,
-        "output_tokens": 947,
+        "input_tokens": 8338,
+        "output_tokens": 925,
         "cost_usd": 0.0
       }
     ]

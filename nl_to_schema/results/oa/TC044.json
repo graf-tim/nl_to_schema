@@ -2,8 +2,8 @@
   "testfall_id": "TC044",
   "workflow": "oa",
   "score_strukturell": 1.0,
-  "score_semantisch": 0.9076923076923078,
-  "score_gesamt": 0.9446153846153846,
+  "score_semantisch": 0.7005128205128206,
+  "score_gesamt": 0.8203076923076924,
   "detail_strukturell": {
     "syntax_gate": 1,
     "fk_gate": 1,
@@ -15,29 +15,34 @@
   },
   "detail_semantisch": {
     "entitaet": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "matched": 6,
-      "nur_in_referenz": 0,
-      "nur_in_generiert": 0
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "matched": 5,
+      "nur_in_referenz": 1,
+      "nur_in_generiert": 1
     },
     "attribut": {
-      "precision": 0.78125,
-      "recall": 0.7575757575757576,
-      "f1": 0.7692307692307692,
-      "matched": 25,
-      "nur_in_referenz": 8,
-      "nur_in_generiert": 7
+      "precision": 0.59375,
+      "recall": 0.5757575757575758,
+      "f1": 0.5846153846153846,
+      "matched": 19,
+      "nur_in_referenz": 14,
+      "nur_in_generiert": 13
     },
     "beziehung": {
-      "recall": 1.0,
-      "matched": 6,
-      "nur_in_referenz": 0,
+      "recall": 0.6666666666666666,
+      "matched": 4,
+      "nur_in_referenz": 2,
       "nur_in_generiert": 0
     }
   },
   "abweichungen": [
+    {
+      "element": "claims",
+      "typ": "tabelle",
+      "fehlerklasse": null
+    },
     {
       "element": "customers.firstname",
       "typ": "attribut",
@@ -50,11 +55,6 @@
     },
     {
       "element": "customers.managed_since",
-      "typ": "attribut",
-      "fehlerklasse": null
-    },
-    {
-      "element": "claims.claimdate",
       "typ": "attribut",
       "fehlerklasse": null
     },
@@ -76,6 +76,51 @@
     {
       "element": "advisor_customers.id",
       "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.contract_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.advisor_id",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.claimdate",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.description",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.processed_amount",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims.status",
+      "typ": "attribut",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims → advisors",
+      "typ": "beziehung",
+      "fehlerklasse": null
+    },
+    {
+      "element": "claims → contracts",
+      "typ": "beziehung",
       "fehlerklasse": null
     }
   ],
@@ -234,7 +279,7 @@
               "name": "phone",
               "type": "VARCHAR",
               "primary_key": false,
-              "nullable": true
+              "nullable": false
             },
             {
               "name": "start_date",
@@ -287,7 +332,7 @@
           ]
         },
         {
-          "name": "claims",
+          "name": "damage_claims",
           "columns": [
             {
               "name": "id",
@@ -352,7 +397,7 @@
         {
           "name": "Kunde",
           "attribute": [
-            "KundenID",
+            "Kundennummer",
             "Name",
             "Kontaktdaten",
             "Betreuungsbeginn"
@@ -362,42 +407,42 @@
         {
           "name": "Vertrag",
           "attribute": [
-            "VertragID",
+            "Vertragsnummer",
             "Beginn",
-            "geplantesEnde",
+            "geplantes Ende",
             "Status",
-            "regelmäßigerBeitrag"
+            "regelmäßiger Beitrag"
           ],
-          "beschreibung": "Versicherungsverträge für Kunden mit Laufzeit, Status und Beitragsinformationen."
+          "beschreibung": "Versicherungsverträge, die für Kunden laufen. Jeder Kunde kann mehrere Verträge haben."
         },
         {
           "name": "Versicherungsart",
           "attribute": [
-            "VersicherungsartID",
+            "Versicherungsart-ID",
             "Bezeichnung",
             "Beschreibung"
           ],
-          "beschreibung": "Verschiedene Versicherungsarten wie Auto, Hausrat oder Haftpflicht mit eigenen Bezeichnungen und allgemeinen Beschreibungen."
+          "beschreibung": "Die verschiedenen Versicherungsarten (z.B. Auto, Hausrat, Haftpflicht) mit eigenen Bezeichnungen und allgemeinen Beschreibungen."
         },
         {
           "name": "Berater",
           "attribute": [
-            "BeraterID",
+            "Berater-ID",
             "Name",
-            "EMail",
+            "E-Mail",
             "Telefonnummer",
             "Eintrittsdatum",
             "aktiv"
           ],
-          "beschreibung": "Beraterinnen und Berater der Agentur mit Kontaktdaten, Eintrittsdatum und Aktivitätsstatus."
+          "beschreibung": "Beraterinnen und Berater der Agentur mit ihren Kontaktdaten, Eintrittsdatum und aktuellem Status."
         },
         {
           "name": "Schadensmeldung",
           "attribute": [
-            "SchadensmeldungID",
+            "Meldungsnummer",
             "Meldedatum",
             "Schilderung",
-            "bearbeiteterBetrag",
+            "bearbeiteter Betrag",
             "Stand"
           ],
           "beschreibung": "Schadensmeldungen zu Verträgen mit Meldedatum, Beschreibung, bearbeitetem Betrag und aktuellem Stand."
@@ -411,16 +456,16 @@
           "beschreibung": "Ein Kunde kann mehrere Verträge haben."
         },
         {
-          "von": "Versicherungsart",
-          "zu": "Vertrag",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Eine Versicherungsart kann mehrere Verträge haben."
+          "von": "Vertrag",
+          "zu": "Versicherungsart",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Jeder Vertrag bezieht sich auf genau eine Versicherungsart."
         },
         {
           "von": "Kunde",
           "zu": "Berater",
           "kardinalitaet": "M:N",
-          "beschreibung": "Ein Kunde kann von mehreren Beratern betreut werden, und ein Berater betreut mehrere Kunden."
+          "beschreibung": "Ein Kunde kann von mehreren Beratern betreut werden, und ein Berater betreut in der Regel viele Kunden."
         },
         {
           "von": "Vertrag",
@@ -429,47 +474,47 @@
           "beschreibung": "Ein Vertrag kann mehrere Schadensmeldungen haben."
         },
         {
-          "von": "Berater",
-          "zu": "Schadensmeldung",
-          "kardinalitaet": "1:N",
-          "beschreibung": "Ein Berater nimmt eine Schadensmeldung auf und ist die erste Zuständigkeit."
+          "von": "Schadensmeldung",
+          "zu": "Berater",
+          "kardinalitaet": "N:1",
+          "beschreibung": "Eine Schadensmeldung wird von einem Berater aufgenommen, der sich zunächst darum kümmert. Nur diese erste Zuständigkeit wird festgehalten."
         }
       ],
       "unklarheiten": [
         {
-          "beschreibung": "Die genaue Struktur der 'Kontaktdaten' ist nicht spezifiziert. Unklar ist, ob diese als einzelne Attribute (z.B. Adresse, Telefon, E-Mail) oder als zusammengefasstes Feld modelliert werden sollen.",
+          "beschreibung": "Die genaue Struktur und der Umfang der 'Kontaktdaten' beim Kunden sind nicht spezifiziert (z.B. Adresse, Telefon, E-Mail, oder nur einzelne davon?).",
           "betroffene_elemente": [
             "Kunde"
           ]
         },
         {
-          "beschreibung": "Bei der M:N-Beziehung zwischen Kunde und Berater ist unklar, ob zusätzliche Informationen wie Betreuungsbeginn oder Betreuungsart pro Zuordnung festgehalten werden sollen.",
+          "beschreibung": "Unklar, ob 'aktiv' beim Berater ein boolesches Feld ist oder weitere Statuswerte möglich sind.",
           "betroffene_elemente": [
-            "Kunde",
             "Berater"
           ]
         },
         {
-          "beschreibung": "Es ist nicht klar, ob die 'Schilderung' bei Schadensmeldungen ein einfaches Textfeld oder strukturierte Daten sein soll.",
-          "betroffene_elemente": [
-            "Schadensmeldung"
-          ]
-        },
-        {
-          "beschreibung": "Der Text erwähnt, dass bei Übernahme durch einen anderen Berater 'trotzdem nur diese erste Zuständigkeit festgehalten wird'. Unklar ist, ob es eine separate Entität oder ein Feld für die aktuelle Bearbeitung geben soll.",
+          "beschreibung": "Der Text erwähnt, dass bei Schadensmeldungen 'später jemand anderes die weitere Bearbeitung übernehmen' kann, aber nur die erste Zuständigkeit festgehalten wird. Unklar ist, ob es ein Feld für den aktuellen Bearbeiter gibt oder nur der Aufnehmende Berater gespeichert wird.",
           "betroffene_elemente": [
             "Schadensmeldung",
             "Berater"
           ]
         },
         {
-          "beschreibung": "Die möglichen Werte für den 'Status' eines Vertrags sind nicht definiert (z.B. aktiv, beendet, ausgesetzt).",
+          "beschreibung": "Unklar, ob die Beziehung zwischen Kunde und Berater zusätzliche Attribute hat (z.B. Betreuungsbeginn, Betreuungsende, Betreuungstyp).",
+          "betroffene_elemente": [
+            "Kunde",
+            "Berater"
+          ]
+        },
+        {
+          "beschreibung": "Nicht spezifiziert, welche Werte das Feld 'Status' beim Vertrag annehmen kann (z.B. aktiv, beendet, ausgesetzt).",
           "betroffene_elemente": [
             "Vertrag"
           ]
         },
         {
-          "beschreibung": "Die möglichen Werte für den 'Stand' einer Schadensmeldung sind nicht definiert (z.B. offen, in Bearbeitung, abgeschlossen).",
+          "beschreibung": "Nicht spezifiziert, welche Werte das Feld 'Stand' bei der Schadensmeldung annehmen kann (z.B. offen, in Bearbeitung, abgeschlossen).",
           "betroffene_elemente": [
             "Schadensmeldung"
           ]
@@ -506,7 +551,7 @@
               "pflichtfeld": false
             },
             {
-              "name": "EMail",
+              "name": "Email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": false
@@ -582,7 +627,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "regelmäßigerBeitrag",
+              "name": "regelmaessigerBeitrag",
               "datentyp": "DECIMAL",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -605,7 +650,7 @@
               "pflichtfeld": true
             },
             {
-              "name": "EMail",
+              "name": "Email",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
               "pflichtfeld": true
@@ -614,7 +659,7 @@
               "name": "Telefonnummer",
               "datentyp": "VARCHAR",
               "primaerschluessel": false,
-              "pflichtfeld": false
+              "pflichtfeld": true
             },
             {
               "name": "Eintrittsdatum",
@@ -634,7 +679,7 @@
           "name": "Schadensmeldung",
           "attribute": [
             {
-              "name": "SchadensmeldungID",
+              "name": "MeldungsID",
               "datentyp": "INTEGER",
               "primaerschluessel": true,
               "pflichtfeld": true
@@ -676,35 +721,6 @@
               "pflichtfeld": true
             }
           ]
-        },
-        {
-          "name": "Betreuung",
-          "attribute": [
-            {
-              "name": "BetreuungID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": true,
-              "pflichtfeld": true
-            },
-            {
-              "name": "KundenID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "BeraterID",
-              "datentyp": "INTEGER",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            },
-            {
-              "name": "BetreuungsbeginnBerater",
-              "datentyp": "DATE",
-              "primaerschluessel": false,
-              "pflichtfeld": true
-            }
-          ]
         }
       ],
       "beziehungen": [
@@ -721,14 +737,6 @@
           "beziehungsattribute": []
         },
         {
-          "von": "Kunde",
-          "zu": "Berater",
-          "kardinalitaet": "M:N",
-          "beziehungsattribute": [
-            "BetreuungsbeginnBerater"
-          ]
-        },
-        {
           "von": "Vertrag",
           "zu": "Schadensmeldung",
           "kardinalitaet": "1:N",
@@ -739,6 +747,14 @@
           "zu": "Schadensmeldung",
           "kardinalitaet": "1:N",
           "beziehungsattribute": []
+        },
+        {
+          "von": "Kunde",
+          "zu": "Berater",
+          "kardinalitaet": "M:N",
+          "beziehungsattribute": [
+            "Betreuungsbeginn"
+          ]
         }
       ]
     },
@@ -766,25 +782,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, insurance_types, contracts, advisors, claims. Die Junction-Table customer_advisors (für die M:N-Beziehung Kunde↔Berater) ist korrekt implementiert.",
+          "beschreibung": "Alle 5 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, insurance_types, contracts, advisors, damage_claims. Die Junction-Table customer_advisors für die M:N-Beziehung ist korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: customers (name, address, phone, email, care_start_date), insurance_types (name, description), contracts (start_date, planned_end_date, status, regular_premium), advisors (name, email, phone, start_date, is_active), claims (report_date, description, processed_amount, status). Namenskonventionen sind eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt. Kontaktdaten (address, phone, email) sind als separate Spalten modelliert. Das Beziehungsattribut 'care_start_date' in customer_advisors ist vorhanden. Alle Pflichtfelder sind nullable=false, optionale Felder sind nullable=true.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Kunde→Vertrag (1:N via customer_id), (2) Versicherungsart→Vertrag (1:N via insurance_type_id), (3) Kunde↔Berater (M:N via customer_advisors Junction-Table mit care_start_date), (4) Vertrag→Schadensmeldung (1:N via contract_id), (5) Berater→Schadensmeldung (1:N via advisor_id). Kardinalitäten sind korrekt abgebildet.",
+          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Kunde→Vertrag (1:N via customer_id FK), (2) Versicherungsart→Vertrag (1:N via insurance_type_id FK), (3) Vertrag→Schadensmeldung (1:N via contract_id FK), (4) Berater→Schadensmeldung (1:N via advisor_id FK), (5) Kunde↔Berater (M:N via customer_advisors Junction-Table mit beiden FKs). Kardinalitäten sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, Abhängigkeiten sind funktional und nicht transitiv. Die Junction-Table customer_advisors ist korrekt normalisiert mit Composite-PK (customer_id, advisor_id).",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Alle Attribute sind atomar. Junction-Table customer_advisors ist korrekt normalisiert mit Composite-PK (customer_id, advisor_id) und zusätzlichem Beziehungsattribut care_start_date.",
           "korrekturanweisung": ""
         }
       ],
@@ -794,7 +810,7 @@
     "critic_report_c2": null,
     "iteration": 1,
     "max_iter": 3,
-    "final_ddl": "CREATE TABLE advisors (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255),\n    start_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_advisors PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE insurance_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_insurance_types PRIMARY KEY (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    insurance_type_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    planned_end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    regular_premium DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_contracts_insurance_type_id FOREIGN KEY (insurance_type_id) REFERENCES insurance_types (id)\n);\n\nCREATE TABLE claims (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    advisor_id INTEGER NOT NULL,\n    report_date DATE NOT NULL,\n    description TEXT NOT NULL,\n    processed_amount DECIMAL(18,2),\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_claims PRIMARY KEY (id),\n    CONSTRAINT fk_claims_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_claims_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id)\n);\n\nCREATE TABLE customer_advisors (\n    customer_id INTEGER NOT NULL,\n    advisor_id INTEGER NOT NULL,\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customer_advisors PRIMARY KEY (customer_id, advisor_id),\n    CONSTRAINT fk_customer_advisors_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_customer_advisors_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id)\n);\n",
+    "final_ddl": "CREATE TABLE advisors (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    email VARCHAR(255) NOT NULL,\n    phone VARCHAR(255) NOT NULL,\n    start_date DATE NOT NULL,\n    is_active BOOLEAN NOT NULL,\n    CONSTRAINT pk_advisors PRIMARY KEY (id)\n);\n\nCREATE TABLE customers (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    address VARCHAR(255),\n    phone VARCHAR(255),\n    email VARCHAR(255),\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customers PRIMARY KEY (id)\n);\n\nCREATE TABLE insurance_types (\n    id INTEGER NOT NULL,\n    name VARCHAR(255) NOT NULL,\n    description TEXT,\n    CONSTRAINT pk_insurance_types PRIMARY KEY (id)\n);\n\nCREATE TABLE contracts (\n    id INTEGER NOT NULL,\n    customer_id INTEGER NOT NULL,\n    insurance_type_id INTEGER NOT NULL,\n    start_date DATE NOT NULL,\n    planned_end_date DATE,\n    status VARCHAR(255) NOT NULL,\n    regular_premium DECIMAL(18,2) NOT NULL,\n    CONSTRAINT pk_contracts PRIMARY KEY (id),\n    CONSTRAINT fk_contracts_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_contracts_insurance_type_id FOREIGN KEY (insurance_type_id) REFERENCES insurance_types (id)\n);\n\nCREATE TABLE customer_advisors (\n    customer_id INTEGER NOT NULL,\n    advisor_id INTEGER NOT NULL,\n    care_start_date DATE NOT NULL,\n    CONSTRAINT pk_customer_advisors PRIMARY KEY (customer_id, advisor_id),\n    CONSTRAINT fk_customer_advisors_customer_id FOREIGN KEY (customer_id) REFERENCES customers (id),\n    CONSTRAINT fk_customer_advisors_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id)\n);\n\nCREATE TABLE damage_claims (\n    id INTEGER NOT NULL,\n    contract_id INTEGER NOT NULL,\n    advisor_id INTEGER NOT NULL,\n    report_date DATE NOT NULL,\n    description TEXT NOT NULL,\n    processed_amount DECIMAL(18,2),\n    status VARCHAR(255) NOT NULL,\n    CONSTRAINT pk_damage_claims PRIMARY KEY (id),\n    CONSTRAINT fk_damage_claims_contract_id FOREIGN KEY (contract_id) REFERENCES contracts (id),\n    CONSTRAINT fk_damage_claims_advisor_id FOREIGN KEY (advisor_id) REFERENCES advisors (id)\n);\n",
     "final_critic_report": {
       "qualitaet_ausreichend": true,
       "findings": [
@@ -819,25 +835,25 @@
         {
           "criterion": "entitaets_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, insurance_types, contracts, advisors, claims. Die Junction-Table customer_advisors (für die M:N-Beziehung Kunde↔Berater) ist korrekt implementiert.",
+          "beschreibung": "Alle 5 Entitäten aus dem ER-Modell sind im LogicalSchema vorhanden: customers, insurance_types, contracts, advisors, damage_claims. Die Junction-Table customer_advisors für die M:N-Beziehung ist korrekt implementiert.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "attribut_vollstaendigkeit",
           "erfuellt": true,
-          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt: customers (name, address, phone, email, care_start_date), insurance_types (name, description), contracts (start_date, planned_end_date, status, regular_premium), advisors (name, email, phone, start_date, is_active), claims (report_date, description, processed_amount, status). Namenskonventionen sind eingehalten (snake_case, englisch, Umlaute ersetzt).",
+          "beschreibung": "Alle erforderlichen Attribute aus dem ER-Modell sind im LogicalSchema vorhanden und korrekt übersetzt. Kontaktdaten (address, phone, email) sind als separate Spalten modelliert. Das Beziehungsattribut 'care_start_date' in customer_advisors ist vorhanden. Alle Pflichtfelder sind nullable=false, optionale Felder sind nullable=true.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "beziehungs_korrektheit",
           "erfuellt": true,
-          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Kunde→Vertrag (1:N via customer_id), (2) Versicherungsart→Vertrag (1:N via insurance_type_id), (3) Kunde↔Berater (M:N via customer_advisors Junction-Table mit care_start_date), (4) Vertrag→Schadensmeldung (1:N via contract_id), (5) Berater→Schadensmeldung (1:N via advisor_id). Kardinalitäten sind korrekt abgebildet.",
+          "beschreibung": "Alle 5 Beziehungen aus dem ER-Modell sind korrekt implementiert: (1) Kunde→Vertrag (1:N via customer_id FK), (2) Versicherungsart→Vertrag (1:N via insurance_type_id FK), (3) Vertrag→Schadensmeldung (1:N via contract_id FK), (4) Berater→Schadensmeldung (1:N via advisor_id FK), (5) Kunde↔Berater (M:N via customer_advisors Junction-Table mit beiden FKs). Kardinalitäten sind korrekt abgebildet.",
           "korrekturanweisung": ""
         },
         {
           "criterion": "normalisierung",
           "erfuellt": true,
-          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine Anomalien erkannt. Alle Attribute sind atomar, Abhängigkeiten sind funktional und nicht transitiv. Die Junction-Table customer_advisors ist korrekt normalisiert mit Composite-PK (customer_id, advisor_id).",
+          "beschreibung": "Das Schema ist in 3. Normalform (3NF). Keine Redundanzen, keine partiellen oder transitiven Abhängigkeiten. Alle Attribute sind atomar. Junction-Table customer_advisors ist korrekt normalisiert mit Composite-PK (customer_id, advisor_id) und zusätzlichem Beziehungsattribut care_start_date.",
           "korrekturanweisung": ""
         }
       ],
@@ -848,33 +864,33 @@
   },
   "telemetry": {
     "total_calls": 4,
-    "total_input_tokens": 17094,
-    "total_output_tokens": 6115,
-    "total_tokens": 23209,
+    "total_input_tokens": 16726,
+    "total_output_tokens": 5983,
+    "total_tokens": 22709,
     "total_cost_usd": 0.0,
     "per_agent": {
       "requirements_analyst": {
         "calls": 1,
         "input_tokens": 1663,
-        "output_tokens": 1406,
+        "output_tokens": 1561,
         "cost_usd": 0.0
       },
       "conceptual_model_designer": {
         "calls": 1,
-        "input_tokens": 3150,
-        "output_tokens": 2086,
+        "input_tokens": 3199,
+        "output_tokens": 1808,
         "cost_usd": 0.0
       },
       "logical_schema_designer": {
         "calls": 1,
-        "input_tokens": 4545,
-        "output_tokens": 1695,
+        "input_tokens": 4311,
+        "output_tokens": 1697,
         "cost_usd": 0.0
       },
       "oa_validator": {
         "calls": 1,
-        "input_tokens": 7736,
-        "output_tokens": 928,
+        "input_tokens": 7553,
+        "output_tokens": 917,
         "cost_usd": 0.0
       }
     },
@@ -885,7 +901,7 @@
         "agent_name": "requirements_analyst",
         "model": "claude-haiku-4-5-20251001",
         "input_tokens": 1663,
-        "output_tokens": 1406,
+        "output_tokens": 1561,
         "cost_usd": 0.0
       },
       {
@@ -893,8 +909,8 @@
         "iteration": 0,
         "agent_name": "conceptual_model_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 3150,
-        "output_tokens": 2086,
+        "input_tokens": 3199,
+        "output_tokens": 1808,
         "cost_usd": 0.0
       },
       {
@@ -902,8 +918,8 @@
         "iteration": 0,
         "agent_name": "logical_schema_designer",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 4545,
-        "output_tokens": 1695,
+        "input_tokens": 4311,
+        "output_tokens": 1697,
         "cost_usd": 0.0
       },
       {
@@ -911,8 +927,8 @@
         "iteration": 0,
         "agent_name": "oa_validator",
         "model": "claude-haiku-4-5-20251001",
-        "input_tokens": 7736,
-        "output_tokens": 928,
+        "input_tokens": 7553,
+        "output_tokens": 917,
         "cost_usd": 0.0
       }
     ]
