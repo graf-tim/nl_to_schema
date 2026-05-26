@@ -296,7 +296,7 @@ def main() -> int:
     try:
         structured_llm = _get_structured_llm()
     except Exception as exc:
-        print(f"Konnte ChatAnthropic nicht initialisieren: {exc}", file=sys.stderr)
+        print(f"Konnte ChatOpenAi nicht initialisieren: {exc}", file=sys.stderr)
         return 2
 
     selected = _select_assignments(
