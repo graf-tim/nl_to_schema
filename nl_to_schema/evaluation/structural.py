@@ -1,15 +1,4 @@
-"""Strukturelle Evaluation.
-
-Score-Formel:  score = syntax_gate * fk_gate * pk_rate
-
-Gates (0 oder 1):
-  - syntax_gate:  1 wenn DDL als CREATE-TABLE-Sequenz parsbar, sonst 0
-  - fk_gate:      1 wenn FK-Referenzen deklariert UND alle gültig, sonst 0
-                  (auch 0, wenn gar keine FK-Beziehungen deklariert sind)
-
-Rate:
-  - pk_rate:      Anteil Tabellen mit mind. einem Primärschlüssel
-"""
+"""Strukturelle Evaluation."""
 from __future__ import annotations
 
 from ddl_generator import validate_ddl_structural

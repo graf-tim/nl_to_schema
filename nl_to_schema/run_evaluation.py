@@ -9,8 +9,7 @@ Bewertet zwei Dimensionen:
 
 Pro (testfall, workflow) wird zusätzlich eine Liste "abweichungen" persistiert:
 nicht-gematchte Referenz-Elemente (Tabellen/Attribute/Beziehungen) mit
-`fehlerklasse: null`. Diese Klasse wird vom separaten Modul
-`run_error_classification.py` für eine manuell ausgewählte Stichprobe befüllt.
+`fehlerklasse: null`.
 """
 from __future__ import annotations
 

@@ -44,7 +44,6 @@ pip install -r nl_to_schema/requirements.txt
 ```env
 ANTHROPIC_API_KEY=sk-ant-...
 OPENAI_API_KEY=sk-...
-GOOGLE_API_KEY=...          # optional, nur für Fehlerklassifikator
 WORKFLOW_MODEL=claude-haiku-4-5-20251001
 ```
 

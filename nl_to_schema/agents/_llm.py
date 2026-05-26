@@ -64,9 +64,7 @@ def call_structured(
     geschrieben werden können.
 
     Args:
-        llm_factory: Optionaler LLM-Konstruktor. Default: workflow-LLM
-            (Claude Opus 4.6). Für den qualitativen Judge wird hier
-            workflows.base.get_judge_llm übergeben.
+        llm_factory: Optionaler LLM-Konstruktor.
     """
     factory = llm_factory or get_llm
     base_llm = factory()

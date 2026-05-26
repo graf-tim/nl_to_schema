@@ -325,8 +325,6 @@ def finalize(state: WorkflowState) -> WorkflowState:
 # ---------------------------------------------------------------------------
 
 WORKFLOW_DEFAULT_MODEL = "claude-haiku-4-5-20251001"
-ERROR_CLASSIFIER_DEFAULT_MODEL = "gemini-2.5-pro"
-ERROR_CLASSIFIER_DEFAULT_TEMPERATURE = 1.0
 
 
 def get_llm(temperature: float = 0.0):
@@ -339,17 +337,3 @@ def get_llm(temperature: float = 0.0):
 
     model = os.getenv("WORKFLOW_MODEL", WORKFLOW_DEFAULT_MODEL)
     return ChatAnthropic(model=model, temperature=temperature)
-
-
-def get_error_classifier_llm(temperature: float = ERROR_CLASSIFIER_DEFAULT_TEMPERATURE):
-    """LLM für die diagnostische Fehlerklassifikation (kein Score-Gewicht).
-
-    Bewusst ein anderer Provider als für die Workflows und die Testdaten-
-    Generierung, um Preference Leakage zu minimieren. Default: Gemini 2.5 Pro
-    (überschreibbar via ERROR_CLASSIFIER_MODEL). Voraussetzung:
-    GOOGLE_API_KEY in der Umgebung.
-    """
-    from langchain_google_genai import ChatGoogleGenerativeAI
-
-    model = os.getenv("ERROR_CLASSIFIER_MODEL", ERROR_CLASSIFIER_DEFAULT_MODEL)
-    return ChatGoogleGenerativeAI(model=model, temperature=temperature)

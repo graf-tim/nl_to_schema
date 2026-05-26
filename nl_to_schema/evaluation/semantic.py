@@ -1,17 +1,4 @@
-"""Semantische Evaluation per Embedding-Matching.
-
-Bewertungslogik (unverändert):
-  - all-MiniLM-L6-v2 Embeddings
-  - Greedy-Matching mit hartem Threshold 0.75 (keine Grauzone)
-  - Tabellen-, Attribut- und Beziehungs-Matching wie bisher
-  - Score = 0.4·entitaet_f1 + 0.4·attribut_f1 + 0.2·beziehung_recall
-
-Output-Erweiterung:
-  - Pro Dimension: precision/recall/f1 plus absolute Zählwerte
-    (matched, nur_in_referenz, nur_in_generiert)
-  - Abweichungs-Liste: alle nicht-gematchten Referenzelemente, jeweils mit
-    fehlerklasse=None (wird durch error_classifier befüllt)
-"""
+"""Semantische Evaluation per Embedding-Matching."""
 from __future__ import annotations
 
 import logging

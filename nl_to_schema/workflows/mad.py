@@ -1,12 +1,4 @@
-"""Multi-Agent Discussion (MAD): Architekt <-> {C1, C2} -> Moderator -> finalize.
-
-Hinweis: Die beiden Critics werden konzeptionell parallel ausgeführt (sehen
-beide das gleiche Schema, ohne Information voneinander). Aufgrund der
-Pydantic-State-Architektur ohne Reducer für die einzelnen Felder
-(diskussionsverlauf, critic_report_c1, critic_report_c2) werden sie hier
-sequenziell innerhalb eines einzigen Knotens aufgerufen. Das logische Ergebnis
-ist identisch zu echter Parallelausführung.
-"""
+"""Multi-Agent Discussion (MAD): Architekt <-> {C1, C2} -> Moderator -> finalize."""
 from __future__ import annotations
 
 from langgraph.graph import StateGraph, END
